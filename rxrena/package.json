@@ -1,0 +1,24 @@
+{
+  "name": "admind",
+  "version": "1.0.0",
+  "description": "spa for iot admin",
+  "main": "webpack.config.js",
+  "scripts": {
+    "pf": "node setenv portforward&&node ../node_modules/webpack/bin/webpack -w --config webpack.config.js",
+    "lo": "node setenv local&&node ../node_modules/webpack/bin/webpack -w --config webpack.config.js",
+    "ht": "node setenv http&& node ../node_modules/webpack/bin/webpack -w --config webpack.config.js",
+    "hs": "node setenv https&& node ../node_modules/webpack/bin/webpack -w --config webpack.config.js",
+    "so": "node setenv soloapi&& node ../node_modules/webpack/bin/webpack -w --config webpack.config.js",
+    "pr": "node setenv production&& node ../node_modules/webpack/bin/webpack -w --config webpack.production.config.js",
+    "wpw": "node ../node_modules/webpack/bin/webpack -w --config webpack.config.js",
+    "wpp": "node ../node_modules/webpack/bin/webpack -w --config webpack.production.config.js",
+    "te": "node test/tests" 
+  },
+  "author": "Timothy S. McKenna <mckenna.tim@gmail.com> (http://mckennatim.github.io/mckennatim/)",
+  "license": "MIT",
+  "devDependencies": {
+  }
+}
+
+
+
