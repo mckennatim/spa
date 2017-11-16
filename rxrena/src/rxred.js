@@ -23,16 +23,16 @@ const actionCreator = (func) => (...args) => {
   return action;
 };
 
-// const combineReducers=(reducersObject)=> {
-//   const keys = Object.keys(reducersObject);
-//   //console.log(keys)
-//   return (state = {}, action) => keys.reduce((currState, key) => {
-//     const reducer = reducersObject[key];
-//     return {
-//       ...currState,
-//       [key]: reducer(currState[key], action)
-//     };
-//   }, state);
-// }
+const combineReducers=(reducersObject)=> {
+  const keys = Object.keys(reducersObject);
+  //console.log(keys)
+  return (state = {}, action) => keys.reduce((currState, key) => {
+    const reducer = reducersObject[key];
+    return {
+      ...currState,
+      [key]: reducer(currState[key], action)
+    };
+  }, state);
+}
 
-export{actionCreator, createStore}
+export{actionCreator, createStore, combineReducers}
