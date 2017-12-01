@@ -1,15 +1,14 @@
 # spa
 
 ## tags
-### 01-rxrena-admind-aapoj
-moved up to react 16.1.1, rxjs 5.5, navigo5.3.3, paho.mqtt.js 2.0.5
-got rid of createClass in Devinf.js so admind would run. brought over just the basic active stuff from spas
+### 03-egg
+added directory with notes and references from egghead.io classes
 ### 02-rxrena-rsasredux
 added ui/k3
 
 #### on embedding a timer_ctrl
 
-A heating system app would have one or more locations in a house. The main page would have basic data for the house (location, temp, setpt, ison, lastchange). 
+A heating system app would have one or more locations in a house. The main page would have basic data for the house (location, temp, setpt, ison, lastchange).
 
 _The house could be comprised of 1 or more esp8266s, each with one or more sensors/relays (senrels)._
 
@@ -19,7 +18,7 @@ Clicking on todays schedule takes you to a __timer_ctrl__.
 
 Clicking on schedule takes you to a table that lists the overall schedule: by day, everyday, weekend, weekday, for_date. From there, clicking on anything but for_date takes you to __timer_ctrl__. Schedule also has a copy_to button to copy schedule to other locations.
 
-_to mock it <sb-timr-ctrl sched={sched} schedChanged={handleSchedChange}> gets placed in a page that has state and passes a schedule array as props. __timer_ctrl__ messes with that schedule until it gets it right and then schedChanged gets called with an sched object returned  _ 
+_to mock it <sb-timr-ctrl sched={sched} schedChanged={handleSchedChange}> gets placed in a page that has state and passes a schedule array as props. __timer_ctrl__ messes with that schedule until it gets it right and then schedChanged gets called with an sched object returned  _
 
 __timr_ctrl__ takes an object like
 
@@ -43,10 +42,14 @@ and transforms it to
 
 and then draws that. Modifying the cornerGrabs changes the associated object  
 
-### review of rxasred
+### 01-rxrena-admind-aapoj
+moved up to react 16.1.1, rxjs 5.5, navigo5.3.3, paho.mqtt.js 2.0.5
+got rid of createClass in Devinf.js so admind would run. brought over just the basic active stuff from spas
+
+## review of rxasred
 Ok so at the heart of things:
 
-    action$.scan(reducer).subscribe(renderer) 
+    action$.scan(reducer).subscribe(renderer)
 
     action$ is an observable stream.  
 
@@ -80,7 +83,7 @@ the first argument of bind sets 'this'
 
     $("button").click (user.clickHandler.bind (user));
 
-You need .bind(user) because otherwise it expects button to have a user.clickHandler method. .bind(user) says the function is actually here(in user) 
+You need .bind(user) because otherwise it expects button to have a user.clickHandler method. .bind(user) says the function is actually here(in user)
 
 Bind Allows Us to Curry a Function 
 The remaining arguments of bind can be stepped over and selectively reset. Below, the first argument(after this) is "" is skipped over and the second argument is preset to 16.
@@ -92,7 +95,7 @@ The remaining arguments of bind can be stepped over and selectively reset. Below
 
 
 
-We can create a function that presets one or more of the parameters of another function. 
+We can create a function that presets one or more of the parameters of another function.
 
 
 ### common issues
@@ -101,9 +104,3 @@ We can create a function that presets one or more of the parameters of another f
 - DO try new stuff in local node_moodules then move them here and fix what needs fixing
 - DON'T run npm global stuff. To get to the binary for cli do something like `node ../node_modules/webpack/bin/webpack` to run the latest version
 - DON'T assume you have loaded enough babel presets to actually use all es6 features. DO on error first look for a babel preset before you assume some other problem
-
-
-
-
-
-

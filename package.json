@@ -10,10 +10,12 @@
   "license": "MIT",
   "dependencies": {
     "create-react-class": "15.6.2",
+    "immutable": "3.8.2",
     "navigo": "5.3.3",
     "paho.mqtt.js": "2.0.5",
     "react": "16.1.1",
     "react-dom": "16.1.1",
+    "recompose": "0.26.0",
     "rxjs": "5.5.2"
   },
   "devDependencies": {
@@ -25,6 +27,7 @@
     "babel-preset-stage-2": "6.24.1",
     "babel-register": "6.26.0",
     "chai": "4.1.2",
+    "chai-immutable": "1.6.0",
     "mocha": "4.0.1",
     "webpack": "3.8.1"
   }
