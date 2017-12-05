@@ -1,6 +1,77 @@
 # spa
 
 ## tags
+### 04-admind-responsive-routing
+Updated navigo to 6.0.0 so the proper url shows up.
+#### review of admind responsive routing
+
+switchPage is an action of type 'PAGE_SWITCHED' that gets reduced and changes the state.responsive.page object. Here's what happens when you navigate to /registered.
+
+      const routing = ()=>{
+      	const cfg ={root: null, useHash: true}
+      	router = new Navigo(cfg.root, cfg.useHash);
+      	router
+      	  .on({
+            ...  
+            'registered': (params, query)=>{
+              switchPage({name: 'Registered', params: {query: query}});
+            },...
+
+rxasred/createStore creates a subject stream and app.js subscribes to it. When this store changes react rerenders the App component with the new state.     
+
+    createStore(initState)
+      .do(log)
+      .subscribe((state) =>{
+      	copyStore(state)
+        return ReactDOM.render(<App {...state} />, container)
+      });   
+
+So whenever the state change, App.js's render function is called and its showPage() method is run which returns the utilities/wfuncs/responsivePage(this.props) function.
+
+    showPage=()=>{
+      return responsivePage(this.props)
+    }
+    render(){
+      return(
+        <div className="container">
+          <div className="header item-default">
+            {this.loadNav()}
+          </div>
+          {this.showPage().map((el,i)=>{
+            return <div className="content item-default" key={i}>{el}</div>
+          })}
+        </div>
+        )    
+
+The state updates the responsive/browser string whenever the page is resized and from the browser type a lookup is done on how many panes should be displayed. That info combined with the page name filters multi to the appropriate  multi.mul array of page names to be displayed.
+
+    const multi =[{pri:'About', mul:[
+    								['About', 'Products'],
+    								['Products', 'About', 'Home']]
+    							 }, ...
+
+If that multiList isn't found for a state.responsive.page.name then the function/class of that page.name is put in an array.
+
+compoi is components components/index.js exports. along with `panes` and `multi` (used to set up reponsive panes). index.js exports and compoi also gets all the components. `compoi[pagename](state)` is a component.
+
+If there is a multiList for that page and browsersize, elList maps through the component names and creates a new array of real components.
+
+    if (multiList.length==0){ // if the multilist is empty
+      const singleElement = compoi[pageName](state)
+      elArr.push(singleElement)
+    }else{//use the array matching the panesPerType size and add all its names to the element arrray
+      const elList = multiList[0].map((pgStr, i)=>{
+        const pg = compoi[pgStr](state)
+        return pg
+      })
+      elArr = elList
+    }
+
+The render function of App.js maps through the component list creating a div for each one.
+
+    {this.showPage().map((el,i)=>{
+      return <div className="content item-default" key={i}>{el}</div>
+    })}
 ### 03-egg
 added directory with notes and references from egghead.io classes
 ### 02-rxrena-rsasredux

@@ -28,12 +28,12 @@ const About = (props) =>{
 		console.log("in get github followers")
 		loadGithubFollowers('mckennatim')
 	}
-	function renderFollowers(followers) {  
+	function renderFollowers(followers) {
 	  if (!followers) return;
 	  return (
 	    <ul>{ followers.map((follower, index) => <li key={index}>{follower}</li>) }</ul>
 	  );
-	}	
+	}
 	return(
 		<div style={style.outer}>
 			<h3> About</h3>
@@ -41,7 +41,7 @@ const About = (props) =>{
       { isLoading ?
         <p>Loading...</p> :
         "dog" }
-      { renderFollowers(followers) } 			
+      { renderFollowers(followers) }
 		</div>
 	)
 }
@@ -60,12 +60,13 @@ const Home = (props) =>{
 			<button id="but" onClick={goprod}>goto about</button>
 		</div>
 	)
-}	
+}
 //const multi=[] multi delared but empty defaults to single pane
 
 const multi =[{pri:'About', mul:[
 								['About', 'Products'],
-								['Products', 'About', 'Home']]
+								['About', 'Products', 'Home'],
+								['About','Products', 'About', 'Home']]
 							 },
 							{pri:'Products', mul:[
 								['Products', 'About'],
@@ -90,6 +91,6 @@ const multi =[{pri:'About', mul:[
 							]
 
 //['watch', 'phone', 'phoneL', 'tablet', 'tabletL', 'laptop']
-const panes= [1,1,2,2,3,3]
+const panes= [1,1,2,2,3,3,4]
 
 export {Admin, Super, About, Products, Verify, VerifyList, Home, Dog, Registered, Devices, DevicesApps, DevInf, SenRel, App, Nav, multi, panes}

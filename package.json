@@ -11,7 +11,8 @@
   "dependencies": {
     "create-react-class": "15.6.2",
     "immutable": "3.8.2",
-    "navigo": "5.3.3",
+    "lodash": "4.17.4",
+    "navigo": "6.0.0",
     "paho.mqtt.js": "2.0.5",
     "react": "16.1.1",
     "react-dom": "16.1.1",

@@ -5,6 +5,7 @@ import { switchPage, changeDevInfo} from './actions';
 var router
 
 const routing = ()=>{
+	//const cfg ={root: 'http://10.0.1.233/spa/admin/dist/', useHash: true}
 	const cfg ={root: null, useHash: true}
 	router = new Navigo(cfg.root, cfg.useHash);
 	router
@@ -48,7 +49,7 @@ const routing = ()=>{
 	    '*': ()=>{switchPage({name: 'Home', params: null});}
 	  })
 	  .resolve();
-	return router  
+	return router
 }
 
 export {routing, router}

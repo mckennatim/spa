@@ -45,3 +45,10 @@ const filt = (predicate)=>(reducer)=>{
 console.log([1,2,3,4].map(dbl));
 console.log([1,2,3,4].filter(isev));
 console.log([1,2,3,4].reduce(filt(isev)(map(dbl)),[]))
+
+const nmap = new Map()
+nmap.set('a',1)
+nmap.set('b',2)
+nmap.set('c',3)
+nmap.set('d',4)
+console.log(nmap);

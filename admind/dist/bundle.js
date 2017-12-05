@@ -2456,7 +2456,7 @@ var Home = function Home(props) {
 };
 //const multi=[] multi delared but empty defaults to single pane
 
-var multi = [{ pri: 'About', mul: [['About', 'Products'], ['Products', 'About', 'Home']]
+var multi = [{ pri: 'About', mul: [['About', 'Products'], ['About', 'Products', 'Home'], ['About', 'Products', 'About', 'Home']]
 }, { pri: 'Products', mul: [['Products', 'About'], ['About', 'Products', 'Home']]
 }, { pri: 'Dog', mul: [['Dog', 'Home'], ['Dog', 'About', 'Home']]
 }, { pri: 'Home', mul: [['Home', 'About'], ['Dog', 'About', 'Home']]
@@ -2465,7 +2465,7 @@ var multi = [{ pri: 'About', mul: [['About', 'Products'], ['Products', 'About', 
 }];
 
 //['watch', 'phone', 'phoneL', 'tablet', 'tabletL', 'laptop']
-var panes = [1, 1, 2, 2, 3, 3];
+var panes = [1, 1, 2, 2, 3, 3, 4];
 
 exports.Admin = _Admin.Admin;
 exports.Super = _Super.Super;
@@ -3503,6 +3503,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var router;
 
 var routing = function routing() {
+     //const cfg ={root: 'http://10.0.1.233/spa/admin/dist/', useHash: true}
      var cfg = { root: null, useHash: true };
      exports.router = router = new _navigo2.default(cfg.root, cfg.useHash);
      router.on({
@@ -51203,7 +51204,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return this._lastRouteResolved;
 	  },
 	  getLinkPath: function getLinkPath(link) {
-	    return link.pathname || link.getAttribute('href');
+	    return link.getAttribute('href');
 	  },
 	  hooks: function hooks(_hooks) {
 	    this._genericHooks = _hooks;
@@ -51329,14 +51330,8 @@ var responsivePage = function responsivePage(state) {
   });
   if (pageList.length == 0) {
     //if there is no multi array for the page
-    //try{
-    // console.log(pageName)
-    // console.log(compoi[pageName](state))
     var singleElement = compoi[pageName](state);
     elArr.push(singleElement);
-    // }catch(err){
-    //   console.error('There is no page named '+pageName + err)
-    // }
   } else {
     var multiList = pageList[0].mul.filter(function (mu) {
       return mu.length == panesPerType;
@@ -67257,8 +67252,8 @@ var initState = {
 var initialBrowser = function initialBrowser() {
   var ws = window.innerWidth;
   var devInfo = {
-    types: ['watch', 'phone', 'phoneL', 'tablet', 'tabletL', 'laptop'],
-    sizes: [300, 500, 600, 800, 900, 1800],
+    types: ['watch', 'phone', 'phoneL', 'tablet', 'tabletL', 'laptop', 'monitor'],
+    sizes: [300, 500, 600, 800, 900, 1800, 3000],
     browser: '',
     size: ws,
     page: { name: 'Home', params: {} }
