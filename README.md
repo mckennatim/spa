@@ -1,6 +1,30 @@
 # spa
 
 ## tags
+### 06-spa-hvac-v2-routing
+basic routing without responsive
+### 05-hvac-v1-homeOrlogin
+A blank project with a few routes.
+
+    <home-or-login app={appinfo} home={home} login={login}></home-or-login>
+
+    appinfo={appId:, authUrl:, cbPath:, api: }
+
+    spa
+      admind
+      rxasred
+      hvac
+        dist
+        src
+          components
+            Home.js
+            About.js
+            Nav.js
+      login
+        HomeOrLogin.js
+
+step1: create a dummy hvac with         
+
 ### 04-admind-responsive-routing
 Updated navigo to 6.0.0 so the proper url shows up.
 #### review of admind responsive routing
@@ -46,13 +70,13 @@ So whenever the state change, App.js's render function is called and its showPag
 The state updates the responsive/browser string whenever the page is resized and from the browser type a lookup is done on how many panes should be displayed. That info combined with the page name filters multi to the appropriate  multi.mul array of page names to be displayed.
 
     const multi =[{pri:'About', mul:[
-    								['About', 'Products'],
-    								['Products', 'About', 'Home']]
-    							 }, ...
+				['About', 'Products'],
+				['Products', 'About', 'Home']]
+			 }, ...
 
 If that multiList isn't found for a state.responsive.page.name then the function/class of that page.name is put in an array.
 
-compoi is components components/index.js exports. along with `panes` and `multi` (used to set up reponsive panes). index.js exports and compoi also gets all the components. `compoi[pagename](state)` is a component.
+compoi is the components components/index.js exports. along with `panes` and `multi` (used to set up reponsive panes). index.js exports and compoi also gets all the components. `compoi[pagename](state)` is a component.
 
 If there is a multiList for that page and browsersize, elList maps through the component names and creates a new array of real components.
 

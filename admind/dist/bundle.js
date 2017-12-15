@@ -3494,7 +3494,7 @@ var _navigo = __webpack_require__(207);
 
 var _navigo2 = _interopRequireDefault(_navigo);
 
-var _components = __webpack_require__(25);
+__webpack_require__(25);
 
 var _actions = __webpack_require__(24);
 

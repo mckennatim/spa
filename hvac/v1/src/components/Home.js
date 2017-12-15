@@ -5,12 +5,12 @@ const style = {
 }
 pStyle.outer.background='#C4A265'
 
-function Dog(props){
+function Home(props){
   const { name } = props;
-	console.log('dog');
+	console.log('frog');
   return(
-    <div style={style.outer} ><h4>in doDog {name} </h4></div>
+    <div className="content item-default" style={style.outer} ><h4>in doHome {name} </h4></div>
     )
 }
 
-export {Dog}
+export {Home}
