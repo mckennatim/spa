@@ -1,0 +1,17 @@
+{
+  "name": "rr4",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0",
+    "react-scripts": "1.0.17"
+  },
+  "scripts": {
+    "start": "set PORT=3003 && node ../node_modules/react-scripts/bin/react-scripts.js start",
+    "build": "node ../node_modules/react-scripts/bin/react-scripts.js build",
+    "test": "node ../node_modules/react-scripts/bin/react-scripts test --env=jsdom",
+    "eject": "node ../node_modules/react-scripts/bin/react-scripts eject"
+  },
+  "homepage": "http://tryit.sitebuilt.net/rr4"
+}

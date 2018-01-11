@@ -14,6 +14,7 @@
     "lodash": "4.17.4",
     "navigo": "6.0.0",
     "paho.mqtt.js": "2.0.5",
+    "query-string": "5.0.1",
     "react": "16.1.1",
     "react-dom": "16.1.1",
     "recompose": "0.26.0",

@@ -1,6 +1,115 @@
 # spa
 
 ## tags
+
+### 08-spa-cra-rr4
+Using create-react-app and react-router-dom 4.
+https://medium.com/@mckenna.tim/using-npm-on-an-old-computer-2fd3a79d16cf
+#### Using npm on an old computer
+
+ `npm` installs created when you use `cli's` like `create-react-app` are on the order of hundreds of megabytes. On my 7 year old Windows 7 HP Pavilion (Git bash) it can take 5 minutes install `hello world` and just as long to delete. That's the only thing that bothers me for software development. Tests run fine; transpiling is reasonable. Otherwise, I see little other reason to upgrade to another machine. But I have found a work around.
+
+  My style of learning is to build many quick and dirty apps to try out things. Running `create-react-app` for each one ain't happening. `package.json` will look for `node_modules` all the way up the directory tree so creating a parent directory to hold shared `node_modules` works great. Here is a directory tree...
+
+     cra
+      blank
+      biggerapp
+      hello-world
+      hello-react-router
+      killer-app
+        v1
+        v2
+        v17
+      node_modules
+
+First run something like `create-reat-app blank` from `cra` then move the `node_modules` out of `cra/blank` and into `cra`. `create-react-app` relies on `react-scripts` for start, build test and eject but now it won't find them. Open  `package.json` for `blank` and change
+
+    "scripts": {
+      "start": "react-scripts start",
+      "build": "react-scripts build",
+      "test": "react-scripts test --env=jsdom",
+      "eject": "react-scripts eject"
+    }
+to
+
+    "scripts": {
+      "start": "set PORT=3003 && node ../node_modules/react-scripts/bin/react-scripts.js start",
+      "build": "node ../node_modules/react-scripts/bin/react-scripts.js build",
+      "test": "node ../node_modules/react-scripts/bin/react-scripts test --env=jsdom",
+      "eject": "node ../node_modules/react-scripts/bin/react-scripts eject"
+    }
+
+On a mac I would guess it would be something like
+
+    "start": "PORT=3003 ../node_modules/react-scripts/bin/react-scripts.js start"
+
+Then each time you want to spin up another app just create a duplicate the `blank` directory, change the port in `package.json` and (npm) start it right up. Some variation of this technique works for any big stack, if something can't be found automatically just add the `../../node_modules/...path` to the binary it can't find. Later when you want to run off a more updated stack, create another master directory and a
+basic blank code skeleton, move back the `node_modules` and duplicate/modify/version quickly whenever you want.   
+
+## deploying a react router 4 app to a subdirectory
+
+`creat-react-app` is a good base for adding `react-router-dom 4`. And having your routes work without `#` just looks cooler. `BrowserRouter` works fine on the devserver. Here's what you have to do to get it to deploy and still work.
+
+Say you want to deploy the app in the `rr4` subdirectory of the host `tryit.sitebuilt.net` . ie you type in `tryit.sitebuilt.net/rr4` to run it.
+
+in `package.json` add this line... `"homepage": "http://tryit.sitebuilt.net/rr4"`. In the `src/index.js` file of the app add the prop `path='rr4'` to `ReactDOM.render(<App path='rr4'/>, document.getElementById('root'));` When in the devserver and it says `You can now view xxx in the browser.` add `rr4` to the url in the browser. On the server, copy everything from the build directory into `/home/tryit/public_html/rr4`
+### 07-spa-hvac-v3
+Things load because of import. So the entry point is app.js and the first thing loaded is showRWD. Routing is implemented with showRWD.js on its own and routing like admind.
+
+What should wrap `home/locid`, `loclist` and `login` to authenticate user?
+
+    If home/locid
+      if devices email  and token in ls
+        `connect to devices` with email and getToken
+        if connect
+          start getting data
+        else navto login  
+      else if no devices but email and token
+        `get devices for this user and app and loc store in ls`
+        `connect to devices`
+
+    if LocList
+      on click `get devices for this user and app and loc and store in ls`
+          navto home/locid
+
+    if login
+      onclick navto soauth
+      on callback
+        store email and token in ls
+        `get locids for this user and appId`
+        if locids==1
+          `get devices for this user and app and loc and store in ls`
+          navto home/locids
+        else navto loclist  
+
+What should ls look like?
+
+currently...
+
+appid: {
+  email:
+  token
+}
+
+should be...
+appid: {
+  email:
+  token:
+  locs: [
+    locid:
+    devices: [
+      CYURD006,
+      CYURD007
+    ]
+  ]
+}
+
+what queries need to get done?
+
+select locids for user and app
+select devices for locid and user and app
+
+
 ### 06-spa-hvac-v2-routing
 basic routing without responsive
 ### 05-hvac-v1-homeOrlogin
@@ -25,7 +134,6 @@ A blank project with a few routes.
 
 step1: create a dummy hvac with         
 
-### 04-admind-responsive-routing
 Updated navigo to 6.0.0 so the proper url shows up.
 #### review of admind responsive routing
 
