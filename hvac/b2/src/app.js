@@ -1,24 +1,21 @@
 import React from 'react'
+import {routing} from './routing'
 import { log } from './utilities';
+// import { history } from './utilities/loc';
 import { createStore } from './rxred';
 import {initState} from './store'
+// console.log(history.location);
+// console.log(initState);
+// console.log('in app');
 import ReactDOM from 'react-dom';
 import {App} from './components'
-import {routing} from './routing'
-
-var router
 
 const container = document.getElementById('app');
 createStore(initState)
   .do(log)
   .subscribe((state) =>{
-    console.log('doggy');
-    router = routing()
-    console.log(router);
-    // router.navigate('about')
-    // router.navigate('loclist')
     return ReactDOM.render(<App {...state} />, container)
   });
 
-console.log('in app');
-export {router}
+var router = routing()
+export{router}

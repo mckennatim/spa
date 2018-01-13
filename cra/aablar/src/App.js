@@ -6,7 +6,6 @@ import {
 } from 'react-router-dom';
 import createHistory from 'history/createBrowserHistory'
 const history = createHistory();
-console.log(history);
 
 const Links = () => (
   <nav>
@@ -26,8 +25,7 @@ const Dog = ()=>{
 const About=()=>{
   function godog() {
     console.log('in godog');
-    console.log(history);
-    history.push('/rr4/dog/');
+    history.push('/aablar/dog')
   }
   return(<div>
     <h1>About</h1>
@@ -41,10 +39,10 @@ const App = (props) => {
   <Router basename={props.path}>
     <div>
       <Links />
-      <Route path="/dog" render={() => Dog()} />
       <Route exact path="/" render={() => <h1>Home</h1>} />
       <Route path="/about" component={() => About()} />
       <Route path="/contact" render={() => <h1>Contact</h1>} />
+      <Route path="/dog" component={() => Dog()} />
     </div>
   </Router>
   );

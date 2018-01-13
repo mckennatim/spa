@@ -1,6 +1,18 @@
 # spa
 
 ## tags
+### 09-hvac-b2-code-splitting
+delay loading history from utilities/loc until componentDidMout  of App
+
+https://stackoverflow.com/questions/33199959/how-to-detect-a-react-component-vs-a-react-element
+
+
+
+WTF rr4 makes you jump trough hoops to nowhere to programmatically navigate to a new route.
+
+whatif any principle or subroutes are controlled by an observable?
+
+ie history is  
 
 ### 08-spa-cra-rr4
 Using create-react-app and react-router-dom 4.

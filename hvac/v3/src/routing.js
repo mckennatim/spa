@@ -1,8 +1,5 @@
 import Navigo from 'navigo'
-//import {} from './components'
 import { switchPage} from './actions';
-
-
 
 const routing = ()=>{
 	const cfg ={root: null, useHash: true}
@@ -18,6 +15,4 @@ const routing = ()=>{
 	  .resolve();
 	return router
 }
-// var router = routing()
-// console.log(routing);
 export {routing}
