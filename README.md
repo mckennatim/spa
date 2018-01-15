@@ -2,7 +2,7 @@
 
 ## tags
 ### 10-hvac-v4-paring-down
-[initial navigation](####initial-navigation)
+[initial navigation](#initial-navigation)
 ### 09-hvac-b2-code-splitting
 delay loading history from utilities/loc until componentDidMout  of App
 
