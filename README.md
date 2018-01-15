@@ -71,6 +71,7 @@ in `package.json` add this line... `"homepage": "http://tryit.sitebuilt.net/rr4"
 Things load because of import. So the entry point is app.js and the first thing loaded is showRWD. Routing is implemented with showRWD.js on its own and routing like admind.
 
 ###initial-navigation
+
 What should wrap `home/locid`, `loclist` and `login` to authenticate user?
 
     If home
