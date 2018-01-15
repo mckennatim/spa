@@ -3,7 +3,7 @@ import { log } from './utilities';
 import { createStore } from './rxred';
 import {initState} from './store'
 import ReactDOM from 'react-dom';
-import {App} from './components'
+import {App} from './components/app'
 import {routing} from './routing'
 
 var router

@@ -10,7 +10,7 @@ const history = createHistory()
 const refreshPage = (location,action)=>{
   // location is an object like window.location
   console.log(action, location.pathname, location.state)
-  console.log(location);
+  console.log(location.hash.slice(1));
   switchPage({name: 'LocList', params: null})
 }
 refreshPage(history.location, "POP")
@@ -62,4 +62,4 @@ const router = createRouter(rts2)
 // console.log(findInRt2(1, 'Login'));
 console.log(findByRt('login'));
 console.log(findByFn('Login'));
-export {history}
+export {history, router}

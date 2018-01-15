@@ -1,6 +1,8 @@
 # spa
 
 ## tags
+### 10-hvac-v4-paring-down
+[initial navigation](####initial-navigation)
 ### 09-hvac-b2-code-splitting
 delay loading history from utilities/loc until componentDidMout  of App
 
@@ -68,21 +70,34 @@ in `package.json` add this line... `"homepage": "http://tryit.sitebuilt.net/rr4"
 ### 07-spa-hvac-v3
 Things load because of import. So the entry point is app.js and the first thing loaded is showRWD. Routing is implemented with showRWD.js on its own and routing like admind.
 
+####initial navigation
 What should wrap `home/locid`, `loclist` and `login` to authenticate user?
 
-    If home/locid
+    If home
+      if curloc, email and token in ls
+        navto homw/:locid  
+      else if no loc but email and token
+        navto loclist
+      else navto login    
+
+
+    If home/:locid
       if devices email  and token in ls
-        `connect to devices` with email and getToken
+        `connect to devices` with email and token
         if connect
           start getting data
         else navto login  
-      else if no devices but email and token
+      else if no devices but curloc email and token
         `get devices for this user and app and loc store in ls`
         `connect to devices`
 
-    if LocList
+    if in LocList
+      get locs for this user
+      if only one
+        navto home/:locid
+      else make list  
       on click `get devices for this user and app and loc and store in ls`
-          navto home/locid
+        navto home/:locid
 
     if login
       onclick navto soauth
@@ -91,30 +106,31 @@ What should wrap `home/locid`, `loclist` and `login` to authenticate user?
         `get locids for this user and appId`
         if locids==1
           `get devices for this user and app and loc and store in ls`
-          navto home/locids
+          navto home/:locid[0]
         else navto loclist  
 
 What should ls look like?
 
 currently...
 
-appid: {
-  email:
-  token
-}
+    appid: {
+      email:
+      token
+    }
 
 should be...
-appid: {
-  email:
-  token:
-  locs: [
-    locid:
-    devices: [
-      CYURD006,
-      CYURD007
-    ]
-  ]
-}
+    appid: {
+      email:
+      token:
+      currentLoc:
+      locs: [
+        locid:
+        devices: [
+          CYURD006,
+          CYURD007
+        ]
+      ]
+    }
 
 what queries need to get done?
 

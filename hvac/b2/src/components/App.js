@@ -15,7 +15,11 @@ class App extends React.Component{
   }
   componentDidMount= ()=>{
     console.log('component did mount');
-    import('../utilities/loc').then(history=>console.log(history.history));
+    import('../utilities/loc').then(history=>{
+      const router = history.router
+      console.log(router.rts);
+
+    })
   }
 
   showPage=()=>{

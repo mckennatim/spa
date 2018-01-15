@@ -1,5 +1,5 @@
 import React from 'react'
-import {routing} from '../routing'
+//import {routing} from '../routing'
 import {showRWD} from '../showRWD'
 import {switchPage} from '../actions'
 
