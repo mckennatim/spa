@@ -5,11 +5,12 @@ const style = {
 }
 pStyle.outer.background='#C4A265'
 
-function Dog(props){
-  const { name } = props;
+function Loc(props){
+	console.log(props);
+  const { name } = props.test;
   return(
-    <div style={style.outer} ><h4>in big doDog {name} </h4></div>
+    <div style={style.outer} ><h4>in dd doLoc {name} </h4></div>
     )
 }
 
-export {Dog}
+export {Loc}
