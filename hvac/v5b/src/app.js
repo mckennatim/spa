@@ -9,7 +9,6 @@ import {initState} from './store'
 import {setDeviceType, copyStore, disconnect, reconnect} from './actions'
 
 
-
 window.onblur = ()=>{
 	console.log('in app disconnect')
 	disconnect()
@@ -34,6 +33,4 @@ createStore(initState)
   });
 
 var router=routing()
-console.log(router);
-
 export{router,}

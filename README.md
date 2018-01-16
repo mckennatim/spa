@@ -1,7 +1,11 @@
 # spa
 
 ## tags
+### 12-hvac-v5
+navigate only works (like in Home) if the element is rendered and you use a button
+rationalize cfg and get it constructed in app.js
 ### 11-hvac-v5
+v5a is working copy
 ### 10-hvac-v4-paring-down
 [initial navigation](#initial-navigation)
 ### 09-hvac-b2-code-splitting
@@ -101,11 +105,10 @@ What should wrap `home/locid`, `loclist` and `login` to authenticate user?
       on click `get devices for this user and app and loc and store in ls`
         navto home/:locid
 
-    if login
-      onclick navto soauth
+    if registered
       on callback
         store email and token in ls
-        `get locids for this user and appId`
+        if ! locids `get locids for this user and appId`
         if locids==1
           `get devices for this user and app and loc and store in ls`
           navto home/:locid[0]
@@ -121,17 +124,18 @@ currently...
     }
 
 should be...
+
     appid: {
       email:
       token:
-      currentLoc:
-      locs: [
+      currentLoc: {
         locid:
         devices: [
           CYURD006,
           CYURD007
         ]
-      ]
+      }
+      locs: []
     }
 
 what queries need to get done?

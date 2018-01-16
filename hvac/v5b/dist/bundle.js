@@ -1989,8 +1989,6 @@ var container = document.getElementById('app');
 });
 
 var router = (0, _routing.routing)();
-console.log(router);
-
 exports.router = router;
 
 /***/ }),
@@ -33177,37 +33175,94 @@ var get = function get(path, props) {
 	}, props);
 };
 
-var ana = { type: { animal: { dog: 'Ulysses' } } };
+var ana = { type: { animal: { dog: 'Ulysses' } }
+	// console.log(ana.type.animal.dog)
+	// console.log(get('ana.type.animal.dog', ana))
+	//console.log(App)
 
-var storageLocal = function storageLocal(itemName) {
-	var itemStr = localStorage.getItem(itemName);
+};var storageLocal = function storageLocal(item) {
+	var itemStr = localStorage.getItem(item);
 	var getItem = function getItem() {
 		// console.log('in getItem')
-		if (!localStorage.getItem(itemName)) {
+		if (!localStorage.getItem(item)) {
 			return null;
 		}
-		return JSON.parse(localStorage.getItem(itemName));
+		return JSON.parse(localStorage.getItem(item));
 	};
 	var setItem = function setItem(obj) {
-		localStorage.setItem(itemName, JSON.stringify(obj));
+		localStorage.setItem(item, JSON.stringify(obj));
 	};
 	var itemObj;
 	return {
-		itemName: itemName,
 		itemStr: itemStr,
 		getItem: getItem,
 		setItem: setItem,
-		modItem: function modItem(key, val) {
-			var ni = getItem();
-			ni[key] = val;
-			setItem(ni);
+		addToSet: function addToSet(ob) {
+			var isEmailIn = function isEmailIn(el, i, x) {
+				return x[i].email == ob.email;
+			};
+			var x = getItem();
+			if (!x) x = {};
+			if (!get('x.users', x)) {
+				x.users = [];
+			} else {
+				var idx = x.users.findIndex(isEmailIn);
+				if (idx > -1) {
+					x.users[idx] = ob;
+				} else {
+					console.log('not here adding new email/key');
+					x.users.push(ob);
+				}
+			}
+			setItem(x);
 		},
-		addToSet: function addToSet(ob) {},
-		deleteToken: function deleteToken(em) {},
-		getApps: function getApps() {},
-		setCurrentApps: function setCurrentApps(aps) {},
-		getToken: function getToken() {
-			return getItem().token;
+		deleteToken: function deleteToken(em) {
+			var isEmailIn = function isEmailIn(el, i, x) {
+				return x[i].email == em;
+			};
+			var x = getItem();
+			if (!x) x = {};
+			if (!get('x.users', x)) {
+				x.users = [];
+			} else {
+				var idx = x.users.findIndex(isEmailIn);
+				if (idx > -1) {
+					console.log('found at ' + idx + ' and deleting');
+					x.users.splice(idx, 1);
+				}
+			}
+			setItem(x);
+		},
+		getApps: function getApps() {
+			var x = getItem();
+			if (!x) x = {};
+			if (get('x.currentApps', x)) {
+				return x.currentApps;
+			} else return null;
+		},
+		setCurrentApps: function setCurrentApps(aps) {
+			console.log('setting current aps in sl');
+			console.log(aps);
+			var x = getItem();
+			if (!x) x = {};
+			x.currentApps = aps;
+			setItem(x);
+		},
+		getCurrentToken: function getCurrentToken() {
+			var x = getItem();
+			var eid = get('x.currentApps.id', x);
+			var isEmailIn = function isEmailIn(el, i, x) {
+				return x[i].email == eid;
+			};
+			if (eid) {
+				var users = get('x.users', x);
+				if (users) {
+					var idx = users.findIndex(isEmailIn);
+					if (idx > -1) {
+						return { email: eid, token: users[idx].token };
+					}
+				}
+			}
 		}
 	};
 };
@@ -33230,13 +33285,6 @@ var sol = function sol(i) {
 };
 var sl = sol('item');
 //console.log(sl("search", "array"))
-// console.log('testin in utilities');
-// localStorage.setItem('test', "")
-// setTimeout(()=>{
-//   localStorage.removeItem('test')
-//   localStorage.removeItem('hvac')
-//   localStorage.removeItem('admin')
-// },2000)
 
 /***/ }),
 /* 194 */,
@@ -64824,7 +64872,7 @@ exports.fromMqtt$ = fromMqtt$;
 
 
 Object.defineProperty(exports, "__esModule", {
-	value: true
+  value: true
 });
 exports.Registered = undefined;
 
@@ -64846,8 +64894,6 @@ var _utilities = __webpack_require__(19);
 
 var _getCfg = __webpack_require__(18);
 
-var _app = __webpack_require__(20);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var style = _extends({}, _styles.pStyle, { outer: _extends({}, _styles.pStyle.outer, { background: '#FF9966' })
@@ -64855,50 +64901,43 @@ var style = _extends({}, _styles.pStyle, { outer: _extends({}, _styles.pStyle.ou
 _styles.pStyle.outer.background = '#C4A265';
 
 function Registered(props) {
-	console.log('in Registered');
-	console.log(_app.router);
-	var getLocs = function getLocs() {
-		console.log('in getLocs');
-		//setTimeout(router.navigate('about'),3000);
-	};
-	var em = 'NOT';
-	var regstr = 'dog';
-	var query = props.responsive.page.params.query;
-	var mobj = (0, _utilities.parseQuery)(query);
-	if (mobj != undefined) {
-		em = mobj.email;
-		_getCfg.ls.setItem(mobj);
-		getLocs();
-		// ls.modItem('locs', [])
-		// console.log(ls.getToken());
-	} else {
-		regstr = 'so register already';
-	}
+  //console.log('in Registe5red')
+  // console.log(props)
+  var em = "not";
+  var query = props.responsive.page.params.query;
+  var mobj = (0, _utilities.parseQuery)(query);
+  if (mobj) {
+    em = mobj.email;
+    _getCfg.ls.addToSet(mobj);
+  }
+  console.log('RUNNING Registered');
+  console.log(location);
+  location.replace(_getCfg.cfg.cbPath);
 
-	var handleGetApps = function handleGetApps() {
-		console.log('handling get apps');
-		// ls.deleteToken('tim2@sitebuilt.net')
-		// console.log(ls.getItem())
-		(0, _actions.getApps)(mobj);
-	};
+  var handleGetApps = function handleGetApps() {
+    console.log('handling get apps');
+    // ls.deleteToken('tim2@sitebuilt.net')
+    // console.log(ls.getItem())
+    (0, _actions.getApps)(mobj);
+  };
 
-	return _react2.default.createElement(
-		'div',
-		{ style: style.outer },
-		_react2.default.createElement(
-			'h4',
-			null,
-			'You Be Registered ',
-			em,
-			' '
-		),
-		_react2.default.createElement(
-			'a',
-			{ style: _styles.mStyle.a, href: _getCfg.cfg.url.authqry },
-			regstr
-		),
-		_react2.default.createElement('span', null)
-	);
+  return _react2.default.createElement(
+    'div',
+    { style: style.outer },
+    _react2.default.createElement(
+      'h4',
+      null,
+      'You Be Registered ',
+      em,
+      ' '
+    ),
+    _react2.default.createElement(
+      'button',
+      { onClick: handleGetApps },
+      'get your apps and devices'
+    ),
+    _react2.default.createElement('span', null)
+  );
 }
 
 exports.Registered = Registered;
@@ -65165,21 +65204,13 @@ var style = _extends({}, _styles.pStyle, { outer: _extends({}, _styles.pStyle.ou
 _styles.pStyle.outer.background = '#C4A265';
 
 var Home = function Home(props) {
-
 	function goAbout() {
 		console.log("in home goAbout");
-		_app.router.navigate('about');
+		_app.router.navigate('/about');
 	}
 	var style = _extends({}, _styles.pStyle, { outer: _extends({}, _styles.pStyle.outer, { background: '#CC66CC' })
 	});
-	var direct2 = function direct2() {
-		console.log(_app.router);
-		return _react2.default.createElement(
-			'p',
-			null,
-			'ha'
-		);
-	};
+	var direct2 = function direct2() {};
 
 	return _react2.default.createElement(
 		'div',

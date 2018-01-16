@@ -8,90 +8,40 @@ const get=(path, props)=>{
   	.reduce((xs,x)=>(xs && xs[x]) ? xs[x] : null , props)
 }
 
-
 var ana={type: {animal: {dog: 'Ulysses'}}}
-// console.log(ana.type.animal.dog)
-// console.log(get('ana.type.animal.dog', ana))
-//console.log(App)
 
-const storageLocal = (item)=>{
-	var itemStr =  localStorage.getItem(item)
+const storageLocal = (itemName)=>{
+	var itemStr =  localStorage.getItem(itemName)
 	const getItem=()=>{
 		// console.log('in getItem')
-		if(!localStorage.getItem(item)){
+		if(!localStorage.getItem(itemName)){
 			return null
 		}
-		return JSON.parse(localStorage.getItem(item))
+		return JSON.parse(localStorage.getItem(itemName))
 	}
 	const setItem=(obj)=>{
-		localStorage.setItem(item, JSON.stringify(obj))
+		localStorage.setItem(itemName, JSON.stringify(obj))
 	}
 	var itemObj
 	return{
+    itemName: itemName,
 		itemStr: itemStr,
 		getItem: getItem,
 		setItem: setItem,
+    modItem: (key, val)=>{
+      var ni= getItem();
+      ni[key] =val
+      setItem(ni)
+    },
 		addToSet: (ob)=>{
-			const isEmailIn=(el,i,x)=>(x[i].email==ob.email)
-			var x = getItem()
-			if (!x) x ={}
-			if (!get('x.users', x)){
-				x.users=[]
-			}else{
-				var idx = x.users.findIndex(isEmailIn)
-				if (idx >-1){
-					x.users[idx]=ob
-				}else{
-					console.log('not here adding new email/key')
-					x.users.push(ob)
-				}
-			}
-			setItem(x)
 		},
 		deleteToken: (em)=>{
-			const isEmailIn=(el,i,x)=>(x[i].email==em)
-			var x = getItem()
-			if (!x) x ={}
-			if (!get('x.users', x)){
-				x.users=[]
-			}else{
-				var idx = x.users.findIndex(isEmailIn)
-				if (idx >-1){
-					console.log('found at '+idx+' and deleting')
-					x.users.splice(idx, 1)
-				}
-			}
-			setItem(x)
 		},
 		getApps: ()=>{
-			var x = getItem()
-			if (!x) x ={}
-			if (get('x.currentApps',x)){
-				return x.currentApps
-			} else return null
 		},
 		setCurrentApps: (aps)=>{
-			console.log('setting current aps in sl')
-			console.log(aps)
-			var x = getItem()
-			if (!x) x ={}
-			x.currentApps=aps
-			setItem(x)
 		},
-		getCurrentToken: ()=>{
-			var x = getItem()
-			var eid = get('x.currentApps.id',x)
-			const isEmailIn=(el,i,x)=>(x[i].email==eid)
-			if(eid ){
-				var users = get('x.users', x)
-				if (users){
-				  var idx = users.findIndex(isEmailIn)
-				  if (idx>-1){
-				  	return {email: eid, token: users[idx].token}
-				  }
-				}
-			}
-		}
+		getToken: ()=>getItem().token
 	}
 }
 
@@ -109,3 +59,10 @@ const stoLo = (i, s, a) =>{
 const sol = (i)=>((s,a)=>stoLo(i,s,a))
 const sl = sol('item')
 //console.log(sl("search", "array"))
+// console.log('testin in utilities');
+// localStorage.setItem('test', "")
+// setTimeout(()=>{
+//   localStorage.removeItem('test')
+//   localStorage.removeItem('hvac')
+//   localStorage.removeItem('admin')
+// },2000)

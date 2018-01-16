@@ -4,9 +4,6 @@ import {pStyle} from '../styles'
 import {getApps} from '../actions'
 import {parseQuery} from '../utilities'
 import {cfg, ls} from '../utilities/getCfg'
-import {mStyle} from '../styles'
-import {router} from '../app'
-
 
 const style = {
 	...pStyle, outer: {...pStyle.outer, background: '#FF9966'}
@@ -14,25 +11,18 @@ const style = {
 pStyle.outer.background='#C4A265'
 
 function Registered(props){
-	console.log('in Registered');
-	console.log(router);	
-	const getLocs = () =>{
-		console.log('in getLocs');
-		//setTimeout(router.navigate('about'),3000);
-	}
-	var em ='NOT'
-	var regstr = 'dog'
+  //console.log('in Registe5red')
+  // console.log(props)
+	var em ="not"
   const query= props.responsive.page.params.query;
   var mobj = parseQuery(query)
-	if (mobj!=undefined) {
-		em = mobj.email
-		ls.setItem(mobj);
-		getLocs()
-		// ls.modItem('locs', [])
-		// console.log(ls.getToken());
-	}else{
-		regstr = 'so register already'
+	if (mobj) {
+		em = mobj.email;
+		ls.addToSet(mobj);
 	}
+  console.log('RUNNING Registered')
+	console.log(location);
+	location.replace(cfg.cbPath)
 
   const handleGetApps=()=>{
   	console.log('handling get apps')
@@ -44,7 +34,7 @@ function Registered(props){
   return(
     <div style={style.outer} >
     	<h4>You Be Registered {em} </h4>
-    	<a style={mStyle.a} href={cfg.url.authqry}>{regstr}</a>
+    	<button onClick={handleGetApps}>get your apps and devices</button>
       <span></span>
     </div>
     )
