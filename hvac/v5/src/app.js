@@ -34,6 +34,5 @@ createStore(initState)
   });
 
 var router=routing()
-console.log(router);
 
-export{router,}
+export{router}

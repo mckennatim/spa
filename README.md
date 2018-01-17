@@ -1,9 +1,17 @@
 # spa
 
 ## tags
+###
 ### 12-hvac-v5
+https://reactjs.org/docs/higher-order-components.html
+
+https://medium.com/@svensauleau/render-async-stateless-functional-components-in-react-11a888ceb828
+
+https://github.com/esphen/fetch-hoc/blob/master/src/index.js
+
+
 navigate only works (like in Home) if the element is rendered and you use a button
-rationalize cfg and get it constructed in app.js
+rationalize cfg and get it constructed in app.js----. use location. instead
 ### 11-hvac-v5
 v5a is working copy
 ### 10-hvac-v4-paring-down

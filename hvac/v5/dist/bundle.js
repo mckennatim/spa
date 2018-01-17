@@ -1989,7 +1989,6 @@ var container = document.getElementById('app');
 });
 
 var router = (0, _routing.routing)();
-console.log(router);
 
 exports.router = router;
 
@@ -33208,6 +33207,9 @@ var storageLocal = function storageLocal(itemName) {
 		setCurrentApps: function setCurrentApps(aps) {},
 		getToken: function getToken() {
 			return getItem().token;
+		},
+		getKey: function getKey(key) {
+			return getItem()[key];
 		}
 	};
 };
@@ -64859,6 +64861,7 @@ function Registered(props) {
 	console.log(_app.router);
 	var getLocs = function getLocs() {
 		console.log('in getLocs');
+		location.replace('#loclist');
 		//setTimeout(router.navigate('about'),3000);
 	};
 	var em = 'NOT';
@@ -65006,7 +65009,7 @@ exports.initState = initState;
 
 
 Object.defineProperty(exports, "__esModule", {
-  value: true
+	value: true
 });
 exports.LocList = undefined;
 
@@ -65015,6 +65018,10 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 var _react = __webpack_require__(5);
 
 var _react2 = _interopRequireDefault(_react);
+
+var _getCfg = __webpack_require__(18);
+
+var _utilities = __webpack_require__(19);
 
 var _styles = __webpack_require__(14);
 
@@ -65025,20 +65032,47 @@ var style = _extends({}, _styles.pStyle, { outer: _extends({}, _styles.pStyle.ou
 _styles.pStyle.outer.background = '#C4A265';
 
 function LocList(props) {
-  // console.log(props);
-  var name = props.test.name;
+	var name = props.test.name;
 
-  return _react2.default.createElement(
-    'div',
-    { style: style.outer },
-    _react2.default.createElement(
-      'h4',
-      null,
-      'in doLocList ',
-      name,
-      ' '
-    )
-  );
+
+	var onlyOne = function onlyOne(locid) {
+		console.log(locid);
+	};
+	var makeList = function makeList(loclist) {
+		console.log(loclist);
+	};
+	var isOnly1 = function isOnly1(json) {
+		json.length == 1 ? onlyOne(json[0]) : makeList(json);
+	};
+
+	var lsh = _getCfg.ls.getItem();
+	if ((0, _utilities.geta)('lsh.token', lsh)) {
+		console.log(lsh.token);
+		var url = _getCfg.cfg.url.api + '/dedata/loclist/' + _getCfg.cfg.appid + '/' + _getCfg.ls.getKey('email');
+		console.log(url);
+		fetch(url, {
+			headers: {
+				'Authorization': 'Bearer ' + _getCfg.ls.getKey('token')
+			}
+		}).then(function (response) {
+			return response.json();
+		}).then(function (json) {
+			isOnly1(json);
+		});
+	} else {
+		console.log('null is false');
+	}
+	return _react2.default.createElement(
+		'div',
+		{ style: style.outer },
+		_react2.default.createElement(
+			'h4',
+			null,
+			'in doLocList ',
+			name,
+			' '
+		)
+	);
 }
 
 exports.LocList = LocList;

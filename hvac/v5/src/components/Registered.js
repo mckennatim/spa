@@ -15,9 +15,10 @@ pStyle.outer.background='#C4A265'
 
 function Registered(props){
 	console.log('in Registered');
-	console.log(router);	
+	console.log(router);
 	const getLocs = () =>{
 		console.log('in getLocs');
+		location.replace('#loclist')
 		//setTimeout(router.navigate('about'),3000);
 	}
 	var em ='NOT'

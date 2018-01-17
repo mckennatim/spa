@@ -41,7 +41,8 @@ const storageLocal = (itemName)=>{
 		},
 		setCurrentApps: (aps)=>{
 		},
-		getToken: ()=>getItem().token
+		getToken: ()=>getItem().token,
+    getKey: (key)=>getItem()[key]
 	}
 }
 
