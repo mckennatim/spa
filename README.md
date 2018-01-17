@@ -2,7 +2,9 @@
 
 ## tags
 ###
-### 12-hvac-v5
+### 13-qd-HOC
+qd = quick and dirty, a test of functional HOC
+### 12-hvac-v5-loclist2hoc
 https://reactjs.org/docs/higher-order-components.html
 
 https://medium.com/@svensauleau/render-async-stateless-functional-components-in-react-11a888ceb828

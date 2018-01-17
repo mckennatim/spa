@@ -65031,71 +65031,49 @@ var style = _extends({}, _styles.pStyle, { outer: _extends({}, _styles.pStyle.ou
 });
 _styles.pStyle.outer.background = '#C4A265';
 
-var fetchOptions = function fetchOptions() {
-	var api = _getCfg.cfg.url.api;
-	var url = api + '/dedata/loclist/' + _getCfg.cfg.appid + '/' + _getCfg.ls.getKey('email');
-	var token = _getCfg.ls.getKey('token');
-	var headers = {
-		'Authorization': 'Bearer ' + token
-	};
-	return {
-		api: api,
-		url: url,
-		token: token,
-		headers: headers
-	};
-};
+function LocList(props) {
+	var name = props.test.name;
 
-function LocationList(props) {
-	//const {isLoading, data} = props
+
+	var onlyOne = function onlyOne(locid) {
+		console.log(locid);
+	};
+	var makeList = function makeList(loclist) {
+		console.log(loclist);
+	};
+	var isOnly1 = function isOnly1(json) {
+		json.length == 1 ? onlyOne(json[0]) : makeList(json);
+	};
+
+	var lsh = _getCfg.ls.getItem();
+	if ((0, _utilities.geta)('lsh.token', lsh)) {
+		console.log(lsh.token);
+		var url = _getCfg.cfg.url.api + '/dedata/loclist/' + _getCfg.cfg.appid + '/' + _getCfg.ls.getKey('email');
+		console.log(url);
+		fetch(url, {
+			headers: {
+				'Authorization': 'Bearer ' + _getCfg.ls.getKey('token')
+			}
+		}).then(function (response) {
+			return response.json();
+		}).then(function (json) {
+			isOnly1(json);
+		});
+	} else {
+		console.log('null is false');
+	}
 	return _react2.default.createElement(
 		'div',
 		{ style: style.outer },
 		_react2.default.createElement(
-			'h3',
+			'h4',
 			null,
-			' Location List '
+			'in doLocList ',
+			name,
+			' '
 		)
 	);
 }
-
-var foptions = fetchOptions();
-
-var LocList = function LocList(LocationList) {
-	console.log(LocationList);
-	// const { name } = props.test;
-
-	// const onlyOne=(locid)=>{
-	// 	console.log(locid);
-	// }
-	// const makeList=(loclist)=>{
-	// 	console.log(loclist);
-	// }
-	// const isOnly1=(json)=>{
-	// 	json.length==1 ? onlyOne(json[0]) : makeList(json)
-	// }
-	//
-	// var lsh = ls.getItem();
-	// if(geta('lsh.token', lsh)){
-	// 	console.log(lsh.token);
-	// 	var url=cfg.url.api+'/dedata/loclist/'+cfg.appid+'/'+ls.getKey('email')
-	// 	console.log(url);
-	//   fetch(url,{
-	//     headers: {
-	//       'Authorization': 'Bearer ' + ls.getKey('token')
-	//     }
-	//   })
-	//     .then((response)=>response.json())
-	//     .then((json)=>{
-	//       isOnly1(json)
-	//     })
-	// }else{
-	// 	console.log('null is false');
-	// }
-	//   return (props)=>(
-	// 			<LocationList {...props}/>
-	//     )
-};
 
 exports.LocList = LocList;
 
