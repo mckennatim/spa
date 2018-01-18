@@ -1,73 +1,113 @@
 import React from 'react'
-import {cfg, ls} from '../utilities/getCfg'
-import {geta} from '../utilities'
-import {pStyle} from '../styles'
-const style = {
-	...pStyle, outer: {...pStyle.outer, background: '#C4A265'}
-}
-pStyle.outer.background='#C4A265'
 
-const fetchOptions = ()=> {
-	const api = cfg.url.api
-	const url =api+'/dedata/loclist/'+cfg.appid+'/'+ls.getKey('email')
-	const token = ls.getKey('token')
-	const headers = {
-		'Authorization': 'Bearer ' + token
-	}
-	return{
-		api,
-		url,
-		token,
-		headers
-	}
-}
+var tops = {dog: 'Ulysses'}
 
-function LocationList(props){
-	//const {isLoading, data} = props
+let LocList = (props)=>{
+	// console.log(props);
+	const {isLoading, data} = props
 	return(
-		<div style={style.outer}>
+		<div >
 			<h3> Location List </h3>
 		</div>
 	)
 }
 
+let fetchFor=(Comp)=>{
+	return class PP extends React.Component {
+		constructor (props){
+			super(props);
+			this.state= {isLoading: true, data: ['12parleyVale', '255Chestnut']}
+		}
+		componentDidMount(){
+		}
+		render() {
+			return (
+				<Comp {...this.props} {...this.state} />
+			)
+		}
+	}
+}
+let NocList = fetchFor(LocList)
+export {LocList}
 
-const foptions = fetchOptions()
-
-let LocList=(LocationList)=>{
-	console.log(LocationList);
-	// const { name } = props.test;
-
-	// const onlyOne=(locid)=>{
-	// 	console.log(locid);
-	// }
-	// const makeList=(loclist)=>{
-	// 	console.log(loclist);
-	// }
-	// const isOnly1=(json)=>{
-	// 	json.length==1 ? onlyOne(json[0]) : makeList(json)
-	// }
-  //
-	// var lsh = ls.getItem();
-	// if(geta('lsh.token', lsh)){
-	// 	console.log(lsh.token);
-	// 	var url=cfg.url.api+'/dedata/loclist/'+cfg.appid+'/'+ls.getKey('email')
-	// 	console.log(url);
-  //   fetch(url,{
-  //     headers: {
-  //       'Authorization': 'Bearer ' + ls.getKey('token')
-  //     }
-  //   })
-  //     .then((response)=>response.json())
-  //     .then((json)=>{
-  //       isOnly1(json)
-  //     })
-	// }else{
-	// 	console.log('null is false');
-	// }
-//   return (props)=>(
-// 			<LocationList {...props}/>
-//     )
+function isClassComponent(component) {
+    return (
+        typeof component === 'function' &&
+        !!component.prototype.isReactComponent
+    ) ? true : false
 }
 
-export {LocList}
+function isFunction(component) {
+    return (
+        typeof component === 'function'
+    ) ? true : false;
+}
+
+function isFunctionComponent(component) {
+    return (
+        typeof component === 'function' &&
+        String(component).includes('return React.createElement')
+    ) ? true : false;
+}
+
+function isReactComponent(component) {
+    return (
+        isClassComponent(component) ||
+        isFunctionComponent(component)
+    ) ? true : false;
+}
+
+function isElement(element) {
+    return React.isValidElement(element);
+}
+
+function isDOMTypeElement(element) {
+    return isElement(element) && typeof element.type === 'string';
+}
+
+function isCompositeTypeElement(element) {
+    return isElement(element) && typeof element.type === 'function';
+}
+
+console.log('for <LocList />');
+console.log('isReactComponent ',isReactComponent(<LocList />))
+console.log('isClassComponent ',isClassComponent(<LocList />))
+console.log('isFunction ',isFunction(<LocList />))
+console.log('isFunctionComponent ',isFunctionComponent(<LocList />))
+console.log('isElement ',isElement(<LocList />))
+console.log('isDOMTypeElement ',isDOMTypeElement(<LocList />))
+console.log('isCompositeTypeElement ', isCompositeTypeElement(<LocList />))
+
+console.log('for LocList');
+console.log('isReactComponent ',isReactComponent(LocList))
+console.log('isClassComponent ',isClassComponent(LocList))
+console.log('isFunction ',isFunction(LocList))
+console.log('isFunctionComponent ',isFunctionComponent(LocList))
+console.log('isElement ',isElement(LocList))
+console.log('isDOMTypeElement ',isDOMTypeElement(LocList))
+console.log('isCompositeTypeElement ', isCompositeTypeElement(LocList))
+
+console.log(LocList(tops));
+console.log('isReactComponent ',isReactComponent(LocList(tops)))
+console.log('isClassComponent ',isClassComponent(LocList(tops)))
+console.log('isFunction ',isFunction(LocList(tops)))
+console.log('isFunctionComponent ',isFunctionComponent(LocList(tops)))
+console.log('isElement ',isElement(LocList(tops)))
+console.log('isDOMTypeElement ',isDOMTypeElement(LocList(tops)))
+console.log('isCompositeTypeElement ', isCompositeTypeElement(LocList(tops)))
+
+console.log('for noclist');
+console.log('isReactComponent ',isReactComponent(NocList))
+console.log('isClassComponent ',isClassComponent(NocList))
+console.log('isFunctionComponent ',isFunctionComponent(NocList))
+console.log('isElement ',isElement(NocList))
+console.log('isDOMTypeElement ',isDOMTypeElement(NocList))
+console.log('isCompositeTypeElement ', isCompositeTypeElement(NocList))
+
+console.log('for <noclist />');
+console.log('isReactComponent ',isReactComponent(<NocList />))
+console.log('isClassComponent ',isClassComponent(<NocList />))
+console.log('isFunctionComponent ',isFunctionComponent(<NocList />))
+console.log('isElement ',isElement(<NocList />))
+console.log('isDOMTypeElement ',isDOMTypeElement(<NocList />))
+console.log('isCompositeTypeElement ', isCompositeTypeElement(<NocList />))

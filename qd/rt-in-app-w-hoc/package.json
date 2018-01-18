@@ -1,0 +1,15 @@
+{
+  "name": "rt-in-app-w-hoc",
+  "version": "1.0.0",
+  "description": "quick and dirty frame with navigo in app.js and a HOC in dog with async timout then map to page",
+  "main": "webpack.config.js",
+  "scripts": {
+    "wpw": "node ../../node_modules/webpack/bin/webpack -w --config webpack.config.js",
+    "wpp": "node ../../node_modules/webpack/bin/webpack -w --config webpack.production.config.js",
+    "test": "mocha"
+  },
+  "author": "Timothy S. McKenna <mckenna.tim@gmail.com> (http://mckennatim.github.io/mckennatim/)",
+  "license": "MIT",
+  "devDependencies": {
+  }
+}

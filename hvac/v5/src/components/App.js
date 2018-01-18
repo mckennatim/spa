@@ -3,7 +3,6 @@ import {router} from '../app'
 import {Nav} from '../components'
 import {responsivePage} from '../showRWD'
 
-
 class App extends React.Component{
   constructor(props) {
     super(props);

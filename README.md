@@ -1,8 +1,15 @@
 # spa
 
 ## tags
-###
+### 14-rt-in-app-w-hoc
+
+*   "description": "quick and dirty frame with navigo in app.js and a HOC in dog with async timout then map to page"
+* class constructor and componentDidMount only fire on the first render of App
+* Navigo picks up the hash on refresh
+
+https://stackoverflow.com/questions/33199959/how-to-detect-a-react-component-vs-a-react-element
 ### 13-qd-HOC
+
 qd = quick and dirty, a test of functional HOC
 ### 12-hvac-v5-loclist2hoc
 https://reactjs.org/docs/higher-order-components.html

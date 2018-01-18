@@ -65009,95 +65009,144 @@ exports.initState = initState;
 
 
 Object.defineProperty(exports, "__esModule", {
-	value: true
+				value: true
 });
 exports.LocList = undefined;
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
 var _react = __webpack_require__(5);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _getCfg = __webpack_require__(18);
-
-var _utilities = __webpack_require__(19);
-
-var _styles = __webpack_require__(14);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var style = _extends({}, _styles.pStyle, { outer: _extends({}, _styles.pStyle.outer, { background: '#C4A265' })
-});
-_styles.pStyle.outer.background = '#C4A265';
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var fetchOptions = function fetchOptions() {
-	var api = _getCfg.cfg.url.api;
-	var url = api + '/dedata/loclist/' + _getCfg.cfg.appid + '/' + _getCfg.ls.getKey('email');
-	var token = _getCfg.ls.getKey('token');
-	var headers = {
-		'Authorization': 'Bearer ' + token
-	};
-	return {
-		api: api,
-		url: url,
-		token: token,
-		headers: headers
-	};
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var tops = { dog: 'Ulysses' };
+
+var LocList = function LocList(props) {
+				// console.log(props);
+				var isLoading = props.isLoading,
+				    data = props.data;
+
+				return _react2.default.createElement(
+								'div',
+								null,
+								_react2.default.createElement(
+												'h3',
+												null,
+												' Location List '
+								)
+				);
 };
 
-function LocationList(props) {
-	//const {isLoading, data} = props
-	return _react2.default.createElement(
-		'div',
-		{ style: style.outer },
-		_react2.default.createElement(
-			'h3',
-			null,
-			' Location List '
-		)
-	);
+var fetchFor = function fetchFor(Comp) {
+				return function (_React$Component) {
+								_inherits(PP, _React$Component);
+
+								function PP(props) {
+												_classCallCheck(this, PP);
+
+												var _this = _possibleConstructorReturn(this, (PP.__proto__ || Object.getPrototypeOf(PP)).call(this, props));
+
+												_this.state = { isLoading: true, data: ['12parleyVale', '255Chestnut'] };
+												return _this;
+								}
+
+								_createClass(PP, [{
+												key: 'componentDidMount',
+												value: function componentDidMount() {}
+								}, {
+												key: 'render',
+												value: function render() {
+																return _react2.default.createElement(Comp, _extends({}, this.props, this.state));
+												}
+								}]);
+
+								return PP;
+				}(_react2.default.Component);
+};
+var NocList = fetchFor(LocList);
+exports.LocList = LocList;
+
+
+function isClassComponent(component) {
+				return typeof component === 'function' && !!component.prototype.isReactComponent ? true : false;
 }
 
-var foptions = fetchOptions();
+function isFunction(component) {
+				return typeof component === 'function' ? true : false;
+}
 
-var LocList = function LocList(LocationList) {
-	console.log(LocationList);
-	// const { name } = props.test;
+function isFunctionComponent(component) {
+				return typeof component === 'function' && String(component).includes('return React.createElement') ? true : false;
+}
 
-	// const onlyOne=(locid)=>{
-	// 	console.log(locid);
-	// }
-	// const makeList=(loclist)=>{
-	// 	console.log(loclist);
-	// }
-	// const isOnly1=(json)=>{
-	// 	json.length==1 ? onlyOne(json[0]) : makeList(json)
-	// }
-	//
-	// var lsh = ls.getItem();
-	// if(geta('lsh.token', lsh)){
-	// 	console.log(lsh.token);
-	// 	var url=cfg.url.api+'/dedata/loclist/'+cfg.appid+'/'+ls.getKey('email')
-	// 	console.log(url);
-	//   fetch(url,{
-	//     headers: {
-	//       'Authorization': 'Bearer ' + ls.getKey('token')
-	//     }
-	//   })
-	//     .then((response)=>response.json())
-	//     .then((json)=>{
-	//       isOnly1(json)
-	//     })
-	// }else{
-	// 	console.log('null is false');
-	// }
-	//   return (props)=>(
-	// 			<LocationList {...props}/>
-	//     )
-};
+function isReactComponent(component) {
+				return isClassComponent(component) || isFunctionComponent(component) ? true : false;
+}
 
-exports.LocList = LocList;
+function isElement(element) {
+				return _react2.default.isValidElement(element);
+}
+
+function isDOMTypeElement(element) {
+				return isElement(element) && typeof element.type === 'string';
+}
+
+function isCompositeTypeElement(element) {
+				return isElement(element) && typeof element.type === 'function';
+}
+
+console.log('for <LocList />');
+console.log('isReactComponent ', isReactComponent(_react2.default.createElement(LocList, null)));
+console.log('isClassComponent ', isClassComponent(_react2.default.createElement(LocList, null)));
+console.log('isFunction ', isFunction(_react2.default.createElement(LocList, null)));
+console.log('isFunctionComponent ', isFunctionComponent(_react2.default.createElement(LocList, null)));
+console.log('isElement ', isElement(_react2.default.createElement(LocList, null)));
+console.log('isDOMTypeElement ', isDOMTypeElement(_react2.default.createElement(LocList, null)));
+console.log('isCompositeTypeElement ', isCompositeTypeElement(_react2.default.createElement(LocList, null)));
+
+console.log('for LocList');
+console.log('isReactComponent ', isReactComponent(LocList));
+console.log('isClassComponent ', isClassComponent(LocList));
+console.log('isFunction ', isFunction(LocList));
+console.log('isFunctionComponent ', isFunctionComponent(LocList));
+console.log('isElement ', isElement(LocList));
+console.log('isDOMTypeElement ', isDOMTypeElement(LocList));
+console.log('isCompositeTypeElement ', isCompositeTypeElement(LocList));
+
+console.log(LocList(tops));
+console.log('isReactComponent ', isReactComponent(LocList(tops)));
+console.log('isClassComponent ', isClassComponent(LocList(tops)));
+console.log('isFunction ', isFunction(LocList(tops)));
+console.log('isFunctionComponent ', isFunctionComponent(LocList(tops)));
+console.log('isElement ', isElement(LocList(tops)));
+console.log('isDOMTypeElement ', isDOMTypeElement(LocList(tops)));
+console.log('isCompositeTypeElement ', isCompositeTypeElement(LocList(tops)));
+
+console.log('for noclist');
+console.log('isReactComponent ', isReactComponent(NocList));
+console.log('isClassComponent ', isClassComponent(NocList));
+console.log('isFunctionComponent ', isFunctionComponent(NocList));
+console.log('isElement ', isElement(NocList));
+console.log('isDOMTypeElement ', isDOMTypeElement(NocList));
+console.log('isCompositeTypeElement ', isCompositeTypeElement(NocList));
+
+console.log('for <noclist />');
+console.log('isReactComponent ', isReactComponent(_react2.default.createElement(NocList, null)));
+console.log('isClassComponent ', isClassComponent(_react2.default.createElement(NocList, null)));
+console.log('isFunctionComponent ', isFunctionComponent(_react2.default.createElement(NocList, null)));
+console.log('isElement ', isElement(_react2.default.createElement(NocList, null)));
+console.log('isDOMTypeElement ', isDOMTypeElement(_react2.default.createElement(NocList, null)));
+console.log('isCompositeTypeElement ', isCompositeTypeElement(_react2.default.createElement(NocList, null)));
 
 /***/ }),
 /* 522 */
