@@ -1,8 +1,28 @@
 # spa
 
 ## tags
-### 14-rt-in-app-w-hoc
+### 15-hvac-v6e-fetchFor-w-errorhandling
+Using HOC's as a way to change state asynchronously in `LocList`. `fetchFor`...
 
+* takes `fetchFor(Component, fconfig)` where fconfig has a base `url` and `options`
+* when it mounts, grabs the token and email from ls and combines it with url and options.
+* adds and object with `{isloading: true, data: data, message:, message}` to the state, which is linked to the props of the `Component`.
+* returns a class component.
+* should be reusable as a wrapper on other components awaiting server data
+
+### 14-qd-rt-in-app-w-hoc
+
+* Since HOC's need to return an element in order to get turned into returned JSX, there needs to be an `mapClass2Element` HOC around HOC's like `HocSetTimeout` that update a component on an async change. It is like this...
+
+      function mapClass2Element(anElement){
+        //returns a function called later with store as its arg and anElement from here
+        return (state)=>{
+          const props= state
+          return React.createElement(anElement, props)
+        }
+      }
+      HOC = mapClass2Element(HocSetTimeout(HOC))
+* /src/util/isa.js has a bunch of functions to test for `isClassComponent, isFunction, isFunctionComponent, isReactComponent, isElement, isDOMTypeElement, isCompositeTypeElement`
 *   "description": "quick and dirty frame with navigo in app.js and a HOC in dog with async timout then map to page"
 * class constructor and componentDidMount only fire on the first render of App
 * Navigo picks up the hash on refresh

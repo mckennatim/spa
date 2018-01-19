@@ -29,7 +29,13 @@ let HOC = (props)=>{
 		</div>
     )
 }
+function mapClass2Element(anElement){
+  //returns a function called later with store as its arg and anElement from here
+  return (state)=>{
+    const props= state
+    return React.createElement(anElement, props)
+  }
+}
 
-
-HOC = HocSetTimeout(HOC)
+HOC = mapClass2Element(HocSetTimeout(HOC))
 export {HOC}

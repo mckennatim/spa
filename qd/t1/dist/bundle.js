@@ -963,8 +963,6 @@ var _comp = __webpack_require__(36);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-//import {routing} from './routing'
-
 var container = document.getElementById('app');
 var state = {
 	name: 'Ulysses'
@@ -975,32 +973,32 @@ var refreshRouter = function refreshRouter(state, page) {
 	_reactDom2.default.render(_react2.default.createElement(_comp.App, newState), container);
 };
 
-function switchPage(params) {
+var switchPage = function switchPage(params) {
 	refreshRouter(state, params);
-}
-
+};
+//////////////// routing ///////////////////////////
+var routes = {
+	'about': function about() {
+		switchPage({ name: 'About', params: null });
+	},
+	'dog': function dog() {
+		switchPage({ name: 'Dog', params: null });
+	},
+	'home': function home() {
+		switchPage({ name: 'Home', params: null });
+	},
+	'hoc': function hoc() {
+		switchPage({ name: 'HOC', params: null });
+	},
+	'*': function _() {
+		switchPage({ name: 'Home', params: null });
+	}
+};
 var router;
-
 var routing = function routing() {
 	var cfg = { root: null, useHash: true };
 	exports.router = router = new _navigo2.default(cfg.root, cfg.useHash);
-	router.on({
-		'about': function about() {
-			switchPage({ name: 'About', params: null });
-		},
-		'dog': function dog() {
-			switchPage({ name: 'Dog', params: null });
-		},
-		'home': function home() {
-			switchPage({ name: 'Home', params: null });
-		},
-		'HOC': function HOC() {
-			switchPage({ name: 'HOC', params: null });
-		},
-		'*': function _() {
-			switchPage({ name: 'Home', params: null });
-		}
-	}).resolve();
+	router.on(routes).resolve();
 	return router;
 };
 var router = routing();
@@ -18389,7 +18387,7 @@ module.exports = {"local":{"appid":"t1","cbPath":"#registered","url":{"soauth":"
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.Home = exports.About = exports.Nav = exports.App = exports.Dog = undefined;
+exports.HOC = exports.Home = exports.About = exports.Nav = exports.App = exports.Dog = undefined;
 
 var _react = __webpack_require__(4);
 
@@ -18405,6 +18403,8 @@ var _About = __webpack_require__(47);
 
 var _Home = __webpack_require__(48);
 
+var _HOC = __webpack_require__(42);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.Dog = _Dog.Dog;
@@ -18412,6 +18412,7 @@ exports.App = _App.App;
 exports.Nav = _Nav.Nav;
 exports.About = _About.About;
 exports.Home = _Home.Home;
+exports.HOC = _HOC.HOC;
 
 /***/ }),
 /* 37 */
@@ -18557,7 +18558,7 @@ var Nav = function Nav(props) {
 					{ style: _styles.mStyle.li },
 					_react2.default.createElement(
 						'a',
-						{ style: _styles.mStyle.a, href: 'home', 'data-navigo': true },
+						{ style: _styles.mStyle.a, href: '#home', 'data-navigo': true },
 						'home'
 					)
 				),
@@ -18566,7 +18567,7 @@ var Nav = function Nav(props) {
 					{ style: _styles.mStyle.li },
 					_react2.default.createElement(
 						'a',
-						{ style: _styles.mStyle.a, href: 'about', 'data-navigo': true },
+						{ style: _styles.mStyle.a, href: '#about', 'data-navigo': true },
 						'about'
 					)
 				),
@@ -18575,8 +18576,17 @@ var Nav = function Nav(props) {
 					{ style: _styles.mStyle.li },
 					_react2.default.createElement(
 						'a',
-						{ style: _styles.mStyle.a, href: 'dog', 'data-navigo': true },
+						{ style: _styles.mStyle.a, href: '#dog', 'data-navigo': true },
 						'dog'
+					)
+				),
+				_react2.default.createElement(
+					'li',
+					{ style: _styles.mStyle.li },
+					_react2.default.createElement(
+						'a',
+						{ style: _styles.mStyle.a, href: '#hoc', 'data-navigo': true },
+						'HOC'
 					)
 				),
 				_react2.default.createElement(
@@ -18604,7 +18614,7 @@ exports.Nav = Nav;
 
 
 Object.defineProperty(exports, "__esModule", {
-  value: true
+	value: true
 });
 exports.Dog = undefined;
 
@@ -18625,20 +18635,22 @@ var style = _extends({}, _styles.pStyle, { outer: _extends({}, _styles.pStyle.ou
 _styles.pStyle.outer.background = '#C4A265';
 
 function Dog(props) {
-  var name = props.name;
+	var name = props.name;
 
-  return _react2.default.createElement(
-    'div',
-    { style: style.outer },
-    _react2.default.createElement(
-      'h4',
-      null,
-      'in big doDog ',
-      name,
-      ' '
-    ),
-    _react2.default.createElement(_HOC.HOC, props)
-  );
+	var style = _extends({}, _styles.pStyle, { outer: _extends({}, _styles.pStyle.outer, { background: '#CC99CC' })
+	});
+	return _react2.default.createElement(
+		'div',
+		{ style: style.outer },
+		_react2.default.createElement(
+			'h4',
+			null,
+			'in big doDog ',
+			name,
+			' '
+		),
+		_react2.default.createElement(_HOC.HOC, props)
+	);
 }
 
 exports.Dog = Dog;
@@ -18788,6 +18800,7 @@ var style = _extends({}, _styles.pStyle, { outer: _extends({}, _styles.pStyle.ou
 _styles.pStyle.outer.background = '#C4A265';
 
 var HOC = function HOC(props) {
+	console.log(props);
 	var name = props.name,
 	    isLoading = props.isLoading,
 	    data = props.data;
@@ -18832,8 +18845,15 @@ var HOC = function HOC(props) {
 		ml
 	);
 };
+function mapClass2Element(aClassElement) {
+	//returns a function called later with store as its arg and aClassElement from here
+	return function (state) {
+		var props = state;
+		return _react2.default.createElement(aClassElement, props);
+	};
+}
 
-exports.HOC = HOC = (0, _HocSetTimeout.HocSetTimeout)(HOC);
+exports.HOC = HOC = mapClass2Element((0, _HocSetTimeout.HocSetTimeout)(HOC));
 exports.HOC = HOC;
 
 /***/ }),
@@ -19446,7 +19466,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 Object.defineProperty(exports, "__esModule", {
-  value: true
+	value: true
 });
 exports.About = undefined;
 
@@ -19465,20 +19485,22 @@ var style = _extends({}, _styles.pStyle, { outer: _extends({}, _styles.pStyle.ou
 _styles.pStyle.outer.background = '#C4A265';
 
 function About(props) {
-  console.log(props);
-  var name = props.name;
+	console.log(props);
+	var name = props.name;
 
-  return _react2.default.createElement(
-    'div',
-    { style: style.outer },
-    _react2.default.createElement(
-      'h4',
-      null,
-      'in big doAbout ',
-      name,
-      ' '
-    )
-  );
+	var style = _extends({}, _styles.pStyle, { outer: _extends({}, _styles.pStyle.outer, { background: '#FF9966' })
+	});
+	return _react2.default.createElement(
+		'div',
+		{ style: style.outer },
+		_react2.default.createElement(
+			'h4',
+			null,
+			'in big doAbout ',
+			name,
+			' '
+		)
+	);
 }
 
 exports.About = About;
@@ -19491,7 +19513,7 @@ exports.About = About;
 
 
 Object.defineProperty(exports, "__esModule", {
-  value: true
+	value: true
 });
 exports.Home = undefined;
 
@@ -19500,6 +19522,8 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 var _react = __webpack_require__(4);
 
 var _react2 = _interopRequireDefault(_react);
+
+var _app = __webpack_require__(14);
 
 var _styles = __webpack_require__(31);
 
@@ -19510,20 +19534,31 @@ var style = _extends({}, _styles.pStyle, { outer: _extends({}, _styles.pStyle.ou
 _styles.pStyle.outer.background = '#C4A265';
 
 function Home(props) {
-  console.log(props);
-  var name = props.name;
+	console.log(props);
+	var name = props.name;
 
-  return _react2.default.createElement(
-    'div',
-    { style: style.outer },
-    _react2.default.createElement(
-      'h4',
-      null,
-      'in big doHome ',
-      name,
-      ' '
-    )
-  );
+	var style = _extends({}, _styles.pStyle, { outer: _extends({}, _styles.pStyle.outer, { background: '#CC66CC' })
+	});
+	function goAbout() {
+		console.log("in home goAbout");
+		_app.router.navigate('about');
+	}
+	return _react2.default.createElement(
+		'div',
+		{ style: style.outer },
+		_react2.default.createElement(
+			'h4',
+			null,
+			'in big doHome ',
+			name,
+			' '
+		),
+		_react2.default.createElement(
+			'button',
+			{ id: 'but', onClick: goAbout },
+			'goto about'
+		)
+	);
 }
 
 exports.Home = Home;

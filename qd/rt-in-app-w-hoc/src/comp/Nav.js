@@ -14,9 +14,10 @@ const Nav = (props) =>(
 		<h3>navigo-react-rxjs-responsive demo </h3>
 		<div id="menu"> <ul>
 			<li style={mStyle.li}><a style={mStyle.a} href={url}>register</a></li>
-			<li style={mStyle.li}><a style={mStyle.a} href="home" data-navigo>home</a></li>
-			<li style={mStyle.li}><a style={mStyle.a} href="about" data-navigo>about</a></li>
-			<li style={mStyle.li}><a style={mStyle.a} href="dog" data-navigo>dog</a></li>
+			<li style={mStyle.li}><a style={mStyle.a} href="#home" data-navigo>home</a></li>
+			<li style={mStyle.li}><a style={mStyle.a} href="#about" data-navigo>about</a></li>
+			<li style={mStyle.li}><a style={mStyle.a} href="#dog" data-navigo>dog</a></li>
+			<li style={mStyle.li}><a style={mStyle.a} href="#hoc" data-navigo>HOC</a></li>
 			<li style={mStyle.li}><a style={mStyle.a} href="registered" data-navigo>registered</a></li>
 		</ul></div><br/>
 		<hr/>

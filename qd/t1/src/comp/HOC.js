@@ -7,6 +7,7 @@ const style = {
 pStyle.outer.background='#C4A265'
 
 let HOC = (props)=>{
+	console.log(props);
 	const {name, isLoading, data} =props
 	const listItems= data.map((item, i)=>{
 		return(
@@ -29,7 +30,13 @@ let HOC = (props)=>{
 		</div>
     )
 }
+function mapClass2Element(aClassElement){
+  //returns a function called later with store as its arg and aClassElement from here
+  return (state)=>{
+    const props= state
+    return React.createElement(aClassElement, props)
+  }
+}
 
-
-HOC = HocSetTimeout(HOC)
+HOC = mapClass2Element(HocSetTimeout(HOC))
 export {HOC}
