@@ -64748,40 +64748,58 @@ var _getCfg = __webpack_require__(31);
 
 var _hoc = __webpack_require__(506);
 
+var _styles = __webpack_require__(17);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var tops = { dog: 'Ulysses' };
 
 var LocList = function LocList(props) {
 	console.log(props);
-	var isLoading = props.isLoading,
+	var status = props.status,
 	    data = props.data,
 	    message = props.message;
 
 	var listItems = data.map(function (item, i) {
+		var hash = '#at/' + item;
 		return _react2.default.createElement(
 			'li',
 			{ key: i },
-			item
+			_react2.default.createElement(
+				'a',
+				{ href: hash, 'data-navigo': true },
+				item
+			)
 		);
 	});
 	var maybeLoad = function maybeLoad() {
-		if (isLoading) {
-			return _react2.default.createElement(
-				'p',
-				null,
-				message
-			);
-		} else {
-			return _react2.default.createElement(
-				'div',
-				null,
-				_react2.default.createElement(
+		switch (true) {
+			case status == 'error':
+				return _react2.default.createElement(
+					'p',
+					null,
+					message
+				);
+			case status == 'success' && message == 'no-records':
+				return _react2.default.createElement(
+					'p',
+					null,
+					'You are not registered at any Location'
+				);
+			case status == 'success' && message == 'just-1':
+				location.replace('#at/' + data[0]);
+			case status == 'success' && message == 'multi':
+				return _react2.default.createElement(
 					'ul',
 					null,
 					listItems
-				)
-			);
+				);
+			default:
+				return _react2.default.createElement(
+					'p',
+					null,
+					message
+				);
 		}
 	};
 	var ml = maybeLoad();
@@ -64804,88 +64822,6 @@ var fconfig = {
 
 exports.LocList = LocList = (0, _hoc.mapClass2Element)((0, _hoc.fetchFor)(LocList, fconfig));
 exports.LocList = LocList;
-
-// function isClassComponent(component) {
-//     return (
-//         typeof component === 'function' &&
-//         !!component.prototype.isReactComponent
-//     ) ? true : false
-// }
-//
-// function isFunction(component) {
-//     return (
-//         typeof component === 'function'
-//     ) ? true : false;
-// }
-//
-// function isFunctionComponent(component) {
-//     return (
-//         typeof component === 'function' &&
-//         String(component).includes('return React.createElement')
-//     ) ? true : false;
-// }
-//
-// function isReactComponent(component) {
-//     return (
-//         isClassComponent(component) ||
-//         isFunctionComponent(component)
-//     ) ? true : false;
-// }
-//
-// function isElement(element) {
-//     return React.isValidElement(element);
-// }
-//
-// function isDOMTypeElement(element) {
-//     return isElement(element) && typeof element.type === 'string';
-// }
-//
-// function isCompositeTypeElement(element) {
-//     return isElement(element) && typeof element.type === 'function';
-// }
-//
-// console.log('for <LocList />');
-// console.log('isReactComponent ',isReactComponent(<LocList />))
-// console.log('isClassComponent ',isClassComponent(<LocList />))
-// console.log('isFunction ',isFunction(<LocList />))
-// console.log('isFunctionComponent ',isFunctionComponent(<LocList />))
-// console.log('isElement ',isElement(<LocList />))
-// console.log('isDOMTypeElement ',isDOMTypeElement(<LocList />))
-// console.log('isCompositeTypeElement ', isCompositeTypeElement(<LocList />))
-//
-// console.log('for LocList');
-// console.log('isReactComponent ',isReactComponent(LocList))
-// console.log('isClassComponent ',isClassComponent(LocList))
-// console.log('isFunction ',isFunction(LocList))
-// console.log('isFunctionComponent ',isFunctionComponent(LocList))
-// console.log('isElement ',isElement(LocList))
-// console.log('isDOMTypeElement ',isDOMTypeElement(LocList))
-// console.log('isCompositeTypeElement ', isCompositeTypeElement(LocList))
-//
-// console.log(LocList(tops));
-// console.log('isReactComponent ',isReactComponent(LocList(tops)))
-// console.log('isClassComponent ',isClassComponent(LocList(tops)))
-// console.log('isFunction ',isFunction(LocList(tops)))
-// console.log('isFunctionComponent ',isFunctionComponent(LocList(tops)))
-// console.log('isElement ',isElement(LocList(tops)))
-// console.log('isDOMTypeElement ',isDOMTypeElement(LocList(tops)))
-// console.log('isCompositeTypeElement ', isCompositeTypeElement(LocList(tops)))
-//
-// console.log('for noclist');
-// console.log('isReactComponent ',isReactComponent(NocList))
-// console.log('isClassComponent ',isClassComponent(NocList))
-// console.log('isFunctionComponent ',isFunctionComponent(NocList))
-// console.log('isElement ',isElement(NocList))
-// console.log('isDOMTypeElement ',isDOMTypeElement(NocList))
-// console.log('isCompositeTypeElement ', isCompositeTypeElement(NocList))
-//
-// console.log('for <noclist />');
-// console.log('isReactComponent ',isReactComponent(<NocList />))
-// console.log('isClassComponent ',isClassComponent(<NocList />))
-// console.log('isFunctionComponent ',isFunctionComponent(<NocList />))
-// console.log('isElement ',isElement(<NocList />))
-// console.log('isDOMTypeElement ',isDOMTypeElement(<NocList />))
-// console.log('isCompositeTypeElement ', isCompositeTypeElement(<NocList />))
 
 /***/ }),
 /* 506 */
@@ -64960,36 +64896,41 @@ var fetchFor = function fetchFor(Comp, cfg) {
 				if ((0, _utilities.geta)('lsh.token', lsh)) {
 					var url = cfg.url + lsh['email'];
 					cfg.options.headers.Authorization = 'Bearer ' + lsh['token'];
+					this.setState(_extends({}, this.state, {
+						status: 'waiting',
+						data: [],
+						message: 'is-loading'
+					}));
 					fetch(url, cfg.options).then(function (response) {
 						return response.json();
 					}).then(function (json) {
 						if (json.message) {
 							console.log(json.message);
 							_this2.setState(_extends({}, _this2.state, {
-								isLoading: true,
+								status: 'error',
 								data: [],
-								message: 'Not authorized for this app'
+								message: 'not-authorized'
 							}));
 						} else {
 							console.log(json);
 							if (json.length == 0) {
 								_this2.setState(_extends({}, _this2.state, {
-									isLoading: true,
+									status: 'success',
 									data: json,
-									message: 'You are not authorized for any locations on this app'
+									message: 'no-records'
 								}));
 							} else if (json.length == 1) {
-								location.replace('#at/' + json[0]);
+								//location.replace('#at/'+json[0])
 								_this2.setState(_extends({}, _this2.state, {
-									isLoading: true,
+									status: 'success',
 									data: json,
-									message: 'Go right to location'
+									message: 'just-1'
 								}));
 							} else {
 								_this2.setState(_extends({}, _this2.state, {
-									isLoading: false,
+									status: 'success',
 									data: json,
-									message: 'is loading'
+									message: 'multi'
 								}));
 							}
 						}
@@ -64997,13 +64938,18 @@ var fetchFor = function fetchFor(Comp, cfg) {
 						console.log('error');
 						console.log(err);
 						_this2.setState(_extends({}, _this2.state, {
-							isLoading: true,
+							status: 'error',
 							data: [],
-							message: 'Server failed to fetch data'
+							message: 'server-failure'
 						}));
 					});
 				} else {
 					console.log('null is false');
+					this.setState(_extends({}, this.state, {
+						status: 'error',
+						data: [],
+						message: 'server-failure'
+					}));
 				}
 			}
 		}, {

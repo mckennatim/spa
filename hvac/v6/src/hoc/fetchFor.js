@@ -13,36 +13,41 @@ let fetchFor=(Comp, cfg)=>{
 			if(geta('lsh.token', lsh)){
 				var url=cfg.url+lsh['email']
 				cfg.options.headers.Authorization='Bearer ' + lsh['token']
+				this.setState({...this.state,
+					status: 'waiting',
+					data: [],
+					message: 'is-loading'
+				})
 		    fetch(url, cfg.options)
 		      .then((response)=>response.json())
 		      .then((json)=>{
 						if(json.message){
 							console.log(json.message);
 							this.setState({...this.state,
-								isLoading: true,
+								status: 'error',
 								data: [],
-								message: 'Not authorized for this app'
+								message: 'not-authorized'
 							})
 						}else{
 							console.log(json);
 							if(json.length==0){
 								this.setState({...this.state,
-									isLoading: true,
+									status: 'success',
 									data: json,
-									message: 'You are not authorized for any locations on this app'
+									message: 'no-records'
 								})
 							}else if(json.length==1){
-								location.replace('#at/'+json[0])
+								//location.replace('#at/'+json[0])
 								this.setState({...this.state,
-									isLoading: true,
+									status: 'success',
 									data: json,
-									message: 'Go right to location'
+									message: 'just-1'
 								})
 							}else{
 								this.setState({...this.state,
-									isLoading: false,
+									status: 'success',
 									data: json,
-									message: 'is loading'
+									message: 'multi'
 								})
 							}
 						}
@@ -51,13 +56,18 @@ let fetchFor=(Comp, cfg)=>{
 						console.log('error');
 						console.log(err);
 						this.setState({...this.state,
-							isLoading: true,
+							status: 'error',
 							data: [],
-							message: 'Server failed to fetch data'
+							message: 'server-failure'
 						})
 					})
 			}else{
 				console.log('null is false');
+				this.setState({...this.state,
+					status: 'error',
+					data: [],
+					message: 'server-failure'
+				})
 			}
 		}
 		render() {

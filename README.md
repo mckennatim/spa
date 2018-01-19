@@ -5,8 +5,10 @@
 Using HOC's as a way to change state asynchronously in `LocList`. `fetchFor`...
 
 * takes `fetchFor(Component, fconfig)` where fconfig has a base `url` and `options`
-* when it mounts, grabs the token and email from ls and combines it with url and options.
-* adds and object with `{isloading: true, data: data, message:, message}` to the state, which is linked to the props of the `Component`.
+* when it mounts, grabs a fresh copy of the token and email from ls and combines it with url and options.
+* adds an object with `{status: 'waiting, error, success', data: data, message:, message}` to the state, which is linked to the props of the `Component`.
+* `error` messages are `server failure` or `not-authorized`.
+* `success` messages are `no-records`, `just-1` or `multi`
 * returns a class component.
 * should be reusable as a wrapper on other components awaiting server data
 
