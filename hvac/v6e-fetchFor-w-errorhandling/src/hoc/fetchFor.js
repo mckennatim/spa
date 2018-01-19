@@ -11,14 +11,14 @@ let fetchFor=(Comp, cfg)=>{
 		componentDidMount(){
 			var lsh = ls.getItem();
 			if(geta('lsh.token', lsh)){
-				var url=cfg.url+lsh['email']
+				// var url=cfg.url+lsh['email']
 				cfg.options.headers.Authorization='Bearer ' + lsh['token']
 				this.setState({...this.state,
 					status: 'waiting',
 					data: [],
 					message: 'is-loading'
 				})
-		    fetch(url, cfg.options)
+		    fetch(cfg.url, cfg.options)
 		      .then((response)=>response.json())
 		      .then((json)=>{
 						if(json.message){

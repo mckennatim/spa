@@ -4,6 +4,8 @@
 ### 15-hvac-v6e-fetchFor-w-errorhandling
 Using HOC's as a way to change state asynchronously in `LocList`. `fetchFor`...
 
+note: prior versions using fetchFor are now broken as they call `api/dedata/localist/:appid/:usreid` instead of the preferred `api/dedata/localist/`. this is because the token already has the appid and the email encoded within it.
+
 * takes `fetchFor(Component, fconfig)` where fconfig has a base `url` and `options`
 * when it mounts, grabs a fresh copy of the token and email from ls and combines it with url and options.
 * adds an object with `{status: 'waiting, error, success', data: data, message:, message}` to the state, which is linked to the props of the `Component`.

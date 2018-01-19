@@ -23986,9 +23986,6 @@ var routing = function routing() {
 				'login': function login() {
 						(0, _actions.switchPage)({ name: 'Login', params: null });
 				},
-				'loc': function loc() {
-						(0, _actions.switchPage)({ name: 'Loc', params: null });
-				},
 				'registered': function registered(params, query) {
 						(0, _actions.switchPage)({ name: 'Registered', params: _extends({}, params, { query: query }) });
 				},
@@ -64816,7 +64813,7 @@ var LocList = function LocList(props) {
 };
 
 var fconfig = {
-	url: _getCfg.cfg.url.api + '/dedata/loclist/' + _getCfg.cfg.appid + '/',
+	url: _getCfg.cfg.url.api + '/dedata/loclist',
 	options: { headers: { 'Authorization': 'Bearer ' } }
 };
 
@@ -64894,14 +64891,14 @@ var fetchFor = function fetchFor(Comp, cfg) {
 
 				var lsh = _getCfg.ls.getItem();
 				if ((0, _utilities.geta)('lsh.token', lsh)) {
-					var url = cfg.url + lsh['email'];
+					// var url=cfg.url+lsh['email']
 					cfg.options.headers.Authorization = 'Bearer ' + lsh['token'];
 					this.setState(_extends({}, this.state, {
 						status: 'waiting',
 						data: [],
 						message: 'is-loading'
 					}));
-					fetch(url, cfg.options).then(function (response) {
+					fetch(cfg.url, cfg.options).then(function (response) {
 						return response.json();
 					}).then(function (json) {
 						if (json.message) {
@@ -65021,6 +65018,8 @@ _styles.pStyle.outer.background = '#C4A265';
 function Loc(props) {
   var name = props.test.name;
   var params = props.responsive.page.params;
+  //save current loc to ls and maybe to store
+  //get devices for theis app and loc and user using fetchFor
 
   return _react2.default.createElement(
     'div',
@@ -65037,6 +65036,11 @@ function Loc(props) {
 }
 
 exports.Loc = Loc;
+// token:"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhcHBJZCI6Imh2YWMiLCJlbWFpbCI6Im1ja2VubmEudGltQGdtYWlsLmNvbSJ9.sGOLsRpWPi9EgJmGqtrAmb3p1Bosnf_iKS7hPky_fCk"
+//
+// eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhcHBJZCI6Imh2YWMiLCJlbWFpbCI6Im1ja2VubmEudGltQGdtYWlsLmNvbSJ9.sGOLsRpWPi9EgJmGqtrAmb3p1Bosnf_iKS7hPky_fCk
+//
+// {"email":"tim@sitebuilt.net","token":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhcHBJZCI6Imh2YWMiLCJlbWFpbCI6InRpbUBzaXRlYnVpbHQubmV0In0.e8oviN49uxjbc9FgcyPWV-vQYp0YlD183FhqCWzpuT0"}
 
 /***/ }),
 /* 510 */

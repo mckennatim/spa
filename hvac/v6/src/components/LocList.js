@@ -39,7 +39,7 @@ let LocList = (props)=>{
 }
 
 const fconfig = {
-	url: cfg.url.api+'/dedata/loclist/'+cfg.appid+'/',
+	url: cfg.url.api+'/dedata/loclist',
 	options: {headers: {'Authorization': 'Bearer '}},
 }
 

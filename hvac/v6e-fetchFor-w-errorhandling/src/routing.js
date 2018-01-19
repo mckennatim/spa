@@ -10,7 +10,6 @@ const routing = ()=>{
 	  .on({
 			'loclist': ()=> {switchPage({name: 'LocList', params: null});} ,
 			'login': ()=> {switchPage({name: 'Login', params: null});} ,
-			'loc': ()=> {switchPage({name: 'Loc', params: null});} ,
 			'registered': (params, query)=> {switchPage({name: 'Registered', params: {...params, query: query}});} ,
 			'products': ()=> {switchPage({name: 'Products', params: null});} ,
 			'products/:id': (params)=>{switchPage({name: 'Products', params: params});},
