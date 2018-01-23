@@ -1,6 +1,39 @@
 # spa
 
 ## tags
+### 16g-loc-as-class
+#### changing a functional component to a class
+In prepartion for adding mqtt as state in the loc component, first change it from a function to a component. Compare loc in 6f and 6g. You will see that
+
+    function Loc(props){
+      return(h1)
+    }
+
+becomes
+
+    class Loc extends React.Componnent{
+      constructor(props) {
+        super(props);
+      }
+      render(){
+        return(h1)
+      }      
+    }
+
+and all the rest of the functional component goes in the render function
+
+      render(){
+        const { name } = this.props.test;
+        const {params} =this.props.responsive.page
+        const {status, data, message} = this.props
+        const listItems= data.map((item, i)=>{
+          let hash = '#at/'+item
+          return(
+            <li key={i}><a href={hash} data-navigo>{item}</a></li>
+          )
+        })
+        return(h1)
+
 ### 15-hvac-v6e-fetchFor-w-errorhandling
 Using HOC's as a way to change state asynchronously in `LocList`. `fetchFor`...
 
