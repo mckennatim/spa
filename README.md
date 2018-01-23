@@ -1,7 +1,7 @@
 # spa
 
 ## tags
-### 16g-loc-as-class
+### 16-hvac-v6g-loc-as-class
 #### changing a functional component to a class
 In prepartion for adding mqtt as state in the loc component, first change it from a function to a component. Compare loc in 6f and 6g. You will see that
 
