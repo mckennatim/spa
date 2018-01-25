@@ -1,7 +1,38 @@
 # spa
 
 ## tags
+### 19-aajswp-shroom-paho2-as-factory
+Rewrote with paho.js which takes some cfg stuff and then when called from app.js as as `const mq = makeMqtt(cfg.devices)` it connects. app.js expors a callback function that gets called on every message 
+
+    function onMessageArrived(message){
+      aMessageCB(message)
+    }  
+## 18-esslint-aajswp-shroom
+Errors suck so started using eslint. Spent a day on an an undefined variable causing `Connection Lost AMQJS0005E Internal error. Error Message: message is not defined, Stack trace: ...` and thinking somehow mqtt was broken when it wasn't.
+https://github.com/standard/eslint-config-standard/blob/master/eslintrc.json
+eslintrc.json is in /spa. Rewuired elslint and eslint-loader for webpack. Last loader executes first so 
+
+    module: {
+      rules: [
+        { test: /\.js$/, 
+          exclude: /node_modules/,
+          use: [
+            "babel-loader",
+            "eslint-loader"
+          ]
+        },
+        { test: /\.html$/, use:[{loader: "html-loader" }]}
+      ]
+    },
+
+
+### 17-aajswp-shroom
+What does a simple poj program look like if using import instead of `<script src="./sdf"` ? 
+#### browser vs webpack vis a vis paho
+- The browser is not fussy on declaration of variable, but webpack most certainly is. DO check that all variables are declared when using paho
+- errores like `Connection Lost AMQJS0005E Internal error. Error Message: message is not defined, Stack trace: ...` are not about Paho, they are likely about crappy javascript code.
 ### 16-hvac-v6g-loc-as-class
+frog
 #### changing a functional component to a class
 In prepartion for adding mqtt as state in the loc component, first change it from a function to a component. Compare loc in 6f and 6g. You will see that
 
@@ -415,3 +446,6 @@ We can create a function that presets one or more of the parameters of another f
 - DO try new stuff in local node_moodules then move them here and fix what needs fixing
 - DON'T run npm global stuff. To get to the binary for cli do something like `node ../node_modules/webpack/bin/webpack` to run the latest version
 - DON'T assume you have loaded enough babel presets to actually use all es6 features. DO on error first look for a babel preset before you assume some other problem
+#### browser vs webpack vis a vis paho
+- The browser is not fussy on declaration of variable, but webpack most certainly is. DO check that all variables are declared when using paho
+- errores like `Connection Lost AMQJS0005E Internal error. Error Message: message is not defined, Stack trace: ...` are not about Paho, they are likely about crappy javascript code.

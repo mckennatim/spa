@@ -64082,6 +64082,10 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.fromMqtt$ = undefined;
 
+var _pahoMqtt = __webpack_require__(514);
+
+var _pahoMqtt2 = _interopRequireDefault(_pahoMqtt);
+
 var _Observable = __webpack_require__(0);
 
 var _Subject = __webpack_require__(6);
@@ -64092,9 +64096,8 @@ var _rxjs2 = _interopRequireDefault(_rxjs);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var Paho = __webpack_require__(514);
-
 //http://www.eclipse.org/paho/files/jsdoc/symbols/Paho.MQTT.Client.html
+// var Paho = require('paho.mqtt.js')
 var url = "services.sitebuilt.net/geniot/ws";
 var port = 3333;
 var conname = "pahoSB" + Math.random() * 1000000;
@@ -64118,11 +64121,12 @@ function fromMqtt(connectObserver, url, port, devId) {
 	timr = deviceId + '/timr';
 
 	function publish(topic, payload) {
-		var message = new Paho.Message(payload);
+		var message = new _pahoMqtt2.default.MQTT.Message(payload);
 		message.destinationName = topic;
 		client.send(message);
 	}
-	client = new Paho.Client(url, port, conname);
+	client = new _pahoMqtt2.default.Client(url, port, conname);
+	console.log(url, port, conname);
 	var observable = _Observable.Observable.create(function (obs) {
 		if (connectObserver) {
 			var onConnect = function onConnect() {

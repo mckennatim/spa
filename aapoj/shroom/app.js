@@ -150,7 +150,7 @@ function publish(topic, payload){
 function onMessageArrived(message) {
 	var topic = message.destinationName
 	var pls = message.payloadString
-	console.log(topic+ pls)
+	// console.log(topic+ pls)
 	var plo = JSON.parse(pls)
 	//console.log(plo)
 	console.log('['+topic+'] '+pls)
@@ -178,7 +178,8 @@ function onMessageArrived(message) {
 		case "sched":
 			break;
 		case "flags":
-			oflags = plo;
+			// console.log('oflags dont bother me')
+			// oflags = plo;
 			//console.log(JSON.stringify(oflags))
 			break;
   }				

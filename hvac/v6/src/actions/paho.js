@@ -1,4 +1,4 @@
-import Paho = from 'paho.mqtt.js'
+import Paho from 'paho.mqtt.js'
 import {cfg, ls} from '../utilities/getCfg'
 
 

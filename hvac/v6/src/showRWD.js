@@ -1,7 +1,7 @@
 import * as compoi from './components'
 
 const responsivePage=(state)=>{
-	let elArr = []
+    let elArr = []
   const {types, sizes, browser, size, page} = state.responsive
   const pageName = page.name
   const browserTypeIdx = types.indexOf(browser)

@@ -59,7 +59,7 @@ const mqtt=(state, action) =>{
         ...state,
         flags: action.payload
       }
-    case 'SRSTATE_CHANGED':
+    case 'SRSTATE_CHANGED': 
       const ridx = action.payload.id;
       const newsr = state.srstate.slice()
       newsr[ridx]=action.payload        
@@ -68,7 +68,7 @@ const mqtt=(state, action) =>{
       }
     case 'SCHED_CHANGED':
       let devlist = state.devices.slice()
-      const devicesCopy = devlist.map((dev, i)=>{
+      const devicesCopy = devlist.map((dev)=>{
         if(dev.id == action.payload.devId){
           if(!dev.sched){
             let sched = []

@@ -9,9 +9,9 @@ module.exports={
     rules: [
       { test: /\.js$/, 
         exclude: /node_modules/,
-        use: [{
-          loader: "babel-loader" 
-        }]
+        use: [
+          "babel-loader"
+        ]
       },
       { test: /\.html$/, loader: "html-loader" }
     ],

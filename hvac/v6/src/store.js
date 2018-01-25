@@ -52,11 +52,11 @@ const initState = {
     flags: {HAStIMR: 28},
     srstate: []
   },
-	test: {
-		name: 'Harry',
-		rtpg: Home,
-		users: ['doggy', 'freddy', 'timmy', 'kelly', 'brian' , 'david', 'colleen', 'megan', 'shaun', 'erin' ]
-	}
+  test: {
+    name: 'Harry',
+    rtpg: Home,
+    users: ['doggy', 'freddy', 'timmy', 'kelly', 'brian' , 'david', 'colleen', 'megan', 'shaun', 'erin' ]
+  }
 };
 
 const initialBrowser = () => {

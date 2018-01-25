@@ -1,7 +1,7 @@
 import React from 'react'
 import {pStyle} from '../styles'
 const style = {
-	...pStyle, outer: {...pStyle.outer, background: '#C4A265'}
+ ...pStyle, outer: {...pStyle.outer, background: '#C4A265'}
 }
 pStyle.outer.background='#C4A265'
 

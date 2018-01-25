@@ -9,14 +9,14 @@ import {initState} from './store'
 import {setDeviceType, copyStore, disconnect, reconnect} from './actions'
 
 window.onblur = ()=>{
-	console.log('in app disconnect')
-	disconnect()
+    console.log('in app disconnect')
+    disconnect()
 }
 
 window.onfocus = ()=>{
-	console.log('window on focus')
-	//console.log(window.location.hash)
-	reconnect(window.location.hash)
+    console.log('window on focus')
+    //console.log(window.location.hash)
+    reconnect(window.location.hash)
 }
 
 Observable.fromEvent(window, 'resize')
@@ -27,7 +27,7 @@ const container = document.getElementById('app');
 createStore(initState)
   .do(log)
   .subscribe((state) =>{
-  	copyStore(state)
+      copyStore(state)
     return ReactDOM.render(<App {...state} />, container)
   });
 

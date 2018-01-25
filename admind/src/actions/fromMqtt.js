@@ -1,9 +1,10 @@
-var Paho = require('paho.mqtt.js')
+// var Paho = require('paho.mqtt.js')
+import Paho from 'paho.mqtt.js'
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import Rx from 'rxjs';
 //http://www.eclipse.org/paho/files/jsdoc/symbols/Paho.MQTT.Client.html
-var url="services.sitebuilt.net/geniot/ws"	
+var url="services.sitebuilt.net/geniot/ws"
 var port=3333
 var conname = "pahoSB"+Math.random()*1000000
 
@@ -26,11 +27,12 @@ function fromMqtt(connectObserver, url, port, devId){
 	timr = deviceId+'/timr'
 
 	function publish(topic, payload){
-		var message = new Paho.Message(payload);
+		var message = new Paho.MQTT.Message(payload);
 		message.destinationName = topic;
 		client.send(message)
-	} 
-	client = new Paho.Client(url, port, conname); 
+	}
+	client = new Paho.Client(url, port, conname);
+	console.log(url, port, conname);
   const observable = Observable.create (function (obs) {
 	  if (connectObserver) {
 			function onConnect() {
@@ -39,17 +41,17 @@ function fromMqtt(connectObserver, url, port, devId){
 	      	topic: 'any/ready',
 	      	payload: {ready: true}
 	      })
-				subscribe()
+	      subscribe()
 			}
 			function subscribe() {
 				client.subscribe(devtime)//device time
-				client.subscribe(srstate) 
-				client.subscribe(timr) 
+				client.subscribe(srstate)
+				client.subscribe(timr)
 				client.subscribe(sched)
 				client.subscribe(flags)
 		    connectObserver.next();
-		    connectObserver.complete();		
-			}			
+		    connectObserver.complete();
+			}
 			function onMessageArrived(message) {
 				var topic = message.destinationName
 				var pls = message.payloadString
@@ -59,8 +61,8 @@ function fromMqtt(connectObserver, url, port, devId){
 	      obs.next({
 	      	topic: topic,
 	      	payload: plo
-	      })				
-			}	
+	      })
+			}
 			function connect() {
 				client.connect({onSuccess:onConnect, useSSL:true});
 			}
@@ -73,10 +75,10 @@ function fromMqtt(connectObserver, url, port, devId){
 					if (responseObject.errorCode !== 0) {
 						console.log('Connection Lost ' + responseObject.errorMessage);
 					}
-			}	
+			}
 
 			client.onConnectionLost = onConnectionLost;
-			client.onMessageArrived = onMessageArrived;	    
+			client.onMessageArrived = onMessageArrived;
 			connect()
 	  }
 	})
@@ -90,7 +92,7 @@ function fromMqtt(connectObserver, url, port, devId){
   		}
   	}
   }
-	return Subject.create(observer, observable);  
+	return Subject.create(observer, observable);
 }
 
 const Observer = {
