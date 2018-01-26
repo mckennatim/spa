@@ -1,5 +1,5 @@
 import React from 'react'
-import {geta} from '../utilities'
+import {geta} from '../utilities/wfuncs'
 import {ls} from '../utilities/getCfg'
 
 let fetchFor=(Comp, cfg)=>{

@@ -4,8 +4,9 @@ import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/mergeMap';
 import 'rxjs/add/operator/scan';
 import 'rxjs/add/operator/startWith';
+import 'rxjs/add/observable/from';
 import {rootReducer} from './reducers';
-import { isObservable } from './utilities';
+import { isObservable } from './utilities/ofuncs';
 
 const action$ = new Subject();
 

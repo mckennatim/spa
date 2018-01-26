@@ -1,12 +1,9 @@
-import React from 'react'
+import React from 'react'// eslint-disable-line no-unused-vars
 import {router} from '../app'
 import {pStyle} from '../styles'
-const style = {
-  ...pStyle, outer: {...pStyle.outer, background: '#C4A265'}
-}
 pStyle.outer.background='#C4A265'
 
-const Home = (props) =>{
+const Home = () =>{
 
   function goAbout(){
     console.log("in home goAbout")
@@ -15,11 +12,6 @@ const Home = (props) =>{
   const style = {
     ...pStyle, outer: {...pStyle.outer, background: '#CC66CC'}
   }
-  const direct2 =()=>{
-    console.log(router);
-    return <p>ha</p>
-  }
-
   return(
     <div style={style.outer}>
       <h3> Home </h3>

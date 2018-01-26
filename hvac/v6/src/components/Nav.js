@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react'// eslint-disable-line no-unused-vars
 import {mStyle} from '../styles'
 import {cfg} from '../utilities/getCfg'
 
@@ -9,7 +9,7 @@ const style = {
   background: '#CCCCCC'
 }
 
-const Nav = (props) =>(
+const Nav = () =>(
   <div id="nav" style={style}>
     <h3>navigo-react-rxjs-responsive demo </h3>
     <div id="menu"> 

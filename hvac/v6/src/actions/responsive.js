@@ -29,17 +29,17 @@ const loadGithubFollowers = actionCreator((payload) => {
     type: 'GITHUB_FOLLOWERS_LOADING',
     payload: Observable.ajax(url)
       .map((xhr) => {
-      	console.log(xhr)
-      	return map(xhr.response, 'login')
+        console.log(xhr)
+        return map(xhr.response, 'login')
       })
       .map((followers) => {
-      	console.log(followers)
-      	return({
-	        type: 'GITHUB_FOLLOWERS_LOADED',
-	        payload: followers
-	      })
+        console.log(followers)
+        return({
+          type: 'GITHUB_FOLLOWERS_LOADED',
+          payload: followers
+        })
       })
   };
 });
 
-export{loadGithubFollowers, setDeviceType,	switchPage, setFocus}
+export{loadGithubFollowers, setDeviceType,  switchPage, setFocus}

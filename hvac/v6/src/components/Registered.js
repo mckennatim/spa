@@ -1,7 +1,7 @@
-import React from 'react'
-import ReactDOM from 'react-dom'
+import React from 'react'// eslint-disable-line no-unused-vars
+import ReactDOM from 'react-dom'// eslint-disable-line no-unused-vars
 import {pStyle} from '../styles'
-import {parseQuery} from '../utilities'
+import {parseQuery} from '../utilities/wfuncs'
 import {cfg, ls} from '../utilities/getCfg'
 import {mStyle} from '../styles'
 

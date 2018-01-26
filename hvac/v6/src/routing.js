@@ -1,5 +1,5 @@
 import Navigo from 'navigo';
-import { switchPage, changeDevInfo} from './actions';
+import { switchPage} from './actions/responsive';
 
 var router
 

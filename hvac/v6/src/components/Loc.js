@@ -1,9 +1,9 @@
-import React from 'react'
+
+import React from 'react'// eslint-disable-line no-unused-vars
 import {cfg, ls} from '../utilities/getCfg'
 import {fetchFor, mapClass2Element} from '../hoc'
 import {makeMqtt} from '../actions/paho'
 import {pStyle} from '../styles'
-import {mStyle} from '../styles'
 const style = {
   ...pStyle, outer: {...pStyle.outer, background: '#C4A265'}
 }
@@ -26,13 +26,12 @@ class Loc extends React.Component{
   componentDidUnMount() {
     console.log('component did unmount');
   }
-  activateMqtt(data){
-    //console.log(data);
+  activateMqtt(){
     this.pq =makeMqtt(this.gotDataCB, this.gotMessageCB)
     this.pq.connect()
   }
   gotDataCB(thedata){
-    let nmes=`[${thedata.destinationName}]${thedata.payloadString}`
+    let nmes=`[${thedata.destinationName}]${thedata.payloadString}`// eslint-disable-line no-unused-vars
     //console.log(nmes)
   }
 
@@ -45,7 +44,7 @@ class Loc extends React.Component{
     const {status, data, message} = this.props
     const {infocus} = this.props.responsive
     console.log('is loc infocus ',infocus)
-    const listItems= data.map((item, i)=>{
+    const listItems= data.map((item)=>{
       return(
         item+' '
       )
@@ -53,7 +52,6 @@ class Loc extends React.Component{
     const maybeLoad=()=>{
       switch(true){
         case status=='error' && message=='not-registered':
-          return (<p>no credentials for app on this machine so ... <a style={mStyle.likebutton} href={cfg.url.authqry}>register</a></p>)
         case status=='error':
           return (<p>{message}</p>)
         case status=='success'&& message=='no-records':
@@ -61,7 +59,7 @@ class Loc extends React.Component{
         case status=='success':
           ls.modItem("devs", data)
           if(infocus){
-            this.activateMqtt(data)
+            this.activateMqtt()
           }else {
             if(this.pq){
               this.pq.disconnect()

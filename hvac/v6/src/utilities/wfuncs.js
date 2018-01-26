@@ -1,29 +1,56 @@
-import * as compoi from '../components'
+import React from 'react'
+import ReactDOM from 'react-dom'
 
-const responsivePage=(state)=>{
-    let elArr = []
-  const {types, sizes, browser, size, page} = state.responsive
-  const pageName = page.name
-  const browserTypeIdx = types.indexOf(browser)
-  const panesPerType = compoi.panes[browserTypeIdx]
-  const pageList = compoi.multi.filter((amul,i)=>(amul.pri==pageName))
-  if(pageList.length==0){ //if there is no multi array for the page
-      const singleElement = compoi[pageName](state)
-      elArr.push(singleElement)
-  }else{
-    const multiList= pageList[0].mul.filter((mu)=>(mu.length==panesPerType))
-    if (multiList.length==0){ // if the multilist is empty
-      const singleElement = compoi[pageName](state)
-      elArr.push(singleElement)
-    }else{//use the array matching the panesPerType size and add all its names to the element arrray
-      const elList = multiList[0].map((pgStr, i)=>{
-        const pg = compoi[pgStr](state)
-        return pg
-      })
-      elArr = elList
-    }
-  }
-  return elArr
+const geta=(dotstr, obj)=>{
+  return dotstr.split(".")
+    .slice(1)
+    .reduce((xs,x)=>(xs && xs[x]) ? xs[x] : null , obj)
 }
 
-export {responsivePage}
+const deepObjModify=(dotstr, val, obj)=>{
+  if(geta(dotstr, obj)){
+    var keyarray = dotstr.split(".")
+    var ls = keyarray.slice(-1)[0]
+    keyarray
+      .slice(1) 
+      .reduce((xs,x)=>{
+        if(xs && xs[x]) {
+          if(x==ls){
+            xs[x]=val
+          }
+          return xs[x]
+        }
+      }, obj)
+    let newobj = {...obj}
+    return newobj
+  } else {
+    return null
+  }
+}
+
+const log = console.log.bind(console);
+
+function el(id){
+  return document.getElementById(id)
+}
+
+const dog = ()=>{
+  return 'girl'
+}
+
+const render = (pg, para)=>{
+  ReactDOM.render(React.createElement(pg, para), document.getElementById('rt')) 
+}
+
+const parseQuery = (query)=>{
+  var obj = {};
+  query.split('&')
+    .map((term)=>{
+      var ar = term.split('=')
+      obj[ar[0]]=ar[1]
+    }
+  )
+  return obj
+}
+
+export {geta, dog, render, log, parseQuery, el, deepObjModify}  

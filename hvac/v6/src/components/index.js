@@ -1,5 +1,4 @@
-import React from 'react'
-import {router} from '../app'
+import React from 'react'// eslint-disable-line no-unused-vars
 import {App} from './App'
 import {Home} from './Home'
 import {LocList} from './LocList'
@@ -9,7 +8,7 @@ import {Nav} from './Nav'
 import {Dog} from './Dog'
 import {Registered} from './Registered'
 import {pStyle} from '../styles'
-import {loadGithubFollowers} from '../actions';
+import {loadGithubFollowers} from '../actions/responsive';
 
 const About = (props) =>{
   const { isLoading, followers} = props.responsive;

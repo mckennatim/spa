@@ -1,10 +1,7 @@
-import React from 'react'
-import {cfg, ls} from '../utilities/getCfg'
+import React from 'react'// eslint-disable-line no-unused-vars
+import {cfg} from '../utilities/getCfg'
 import {fetchFor, mapClass2Element} from '../hoc'
-import {mStyle} from '../styles'
 
-
-var tops = {dog: 'Ulysses'}
 
 let LocList = (props)=>{
   console.log(props);

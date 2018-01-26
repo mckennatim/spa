@@ -54,7 +54,7 @@ const makeMqtt = (gotDataCB, gotMessageCB)=>{
       })
     })
   }
-  function subFailure(message){
+  function subFailure(){
     // console.log('subFailure: ', message)
     // gotMessageCB(message)
   }

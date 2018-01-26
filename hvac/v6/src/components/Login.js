@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react'// eslint-disable-line no-unused-vars
 import {pStyle} from '../styles'
 const style = {
   ...pStyle, outer: {...pStyle.outer, background: '#C4A265'}

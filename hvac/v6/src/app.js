@@ -1,10 +1,10 @@
-import React from 'react'
-import ReactDOM from 'react-dom';
+import React from 'react'// eslint-disable-line no-unused-vars
+import ReactDOM from 'react-dom';// eslint-disable-line no-unused-vars
 import { Observable } from 'rxjs/Observable';
 import {routing} from './routing'
-import {App, Dog} from './components'
+import {App} from './components' // eslint-disable-line no-unused-vars
 import { createStore } from './rxred';
-import { log } from './utilities';
+import { log } from './utilities/wfuncs';
 import {initState} from './store'
 import {setDeviceType, setFocus} from './actions/responsive'
 
@@ -23,7 +23,7 @@ window.onclick = ()=>{
 
 Observable.fromEvent(window, 'resize')
   .debounceTime(300)
-  .subscribe((e)=>setDeviceType(window.innerWidth));
+  .subscribe(()=>setDeviceType(window.innerWidth));
 
 const container = document.getElementById('app');
 createStore(initState)

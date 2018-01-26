@@ -9,6 +9,5 @@ const authqry = cfg.url.soauth+"/spa/"+cfg.appid+"?apiURL="+encodeURIComponent(c
 cfg.url.authqry = authqry
 
 const ls = storageLocal(cfg.appid)
-ls.deleteToken("tim2@sitebuilt.net")
 
 export{ls, cfg}

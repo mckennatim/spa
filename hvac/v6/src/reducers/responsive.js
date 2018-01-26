@@ -23,12 +23,12 @@ const responsive=(state, action) =>{
         page: action.payload
       };    
     case 'SET_DEVICE':
-      const ws = action.payload
+      // const ws = action.payload
       var idx
-      var sum = state.sizes.reduce((prev, curr, i)=>{ 
-        if(prev < ws && ws <= curr){idx = i}
-        return curr 
-      }, 0);  
+      // var sum = state.sizes.reduce((prev, curr, i)=>{ 
+      //   if(prev < ws && ws <= curr){idx = i}
+      //   return curr 
+      // }, 0);  
       const bro = state.types[idx]   
       return {
         ...state, 

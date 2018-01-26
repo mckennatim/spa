@@ -1,6 +1,7 @@
 # spa
 
 ## tags
+### 22-hvac-v6j-eslint
 ### 22-hvac-v6i-loc-rx-focus
 infocus gets set by setFocus action from window.onfocus,onblur. Every change in incoming state(props) causes a rerender. All the logic is in render. componenDid Mount doesn't react to focus so that would leave mqtt running. maybeLoad checks the props to see whats up in `{status, data, message}` which gets set by the fetchFor wrapper. If successful, `data` contains the array of devices that this app needs at this location. 
 ### 21-hvac-v6h-loc-paho
