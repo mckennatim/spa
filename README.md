@@ -1,6 +1,7 @@
 # spa
 
 ## tags
+### 21-hvac-v6h-loc-paho
 ### 20-aajswp-shroom-paho3-util-test
 Now utilities are a bit cleaned up. First write utilities and have them console.log to the browser running a test at the bottom of the page. Then put it in test once it works
 ### 19-aajswp-shroom-paho2-as-factory

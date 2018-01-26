@@ -1,9 +1,8 @@
 import PahoMQTT from'paho.mqtt.js'
 import {cfg, ls} from './util/getCfg'
-import {gotDataCB, gotMessage} from './app'
 
 
-const makeMqtt = ()=>{
+const makeMqtt = (gotDataCB, gotMessageCB)=>{
   var devices = ls.getKey('devs')
   var topicsSub = ["srstate", "devtime", "timr", "sched", "flags"]
   var client = new PahoMQTT.Client(cfg.mqtt_server, cfg.mqtt_port, cfg.appid+Math.random());
@@ -11,7 +10,7 @@ const makeMqtt = ()=>{
   client.onMessageArrived = onMessageArrived;  
   function onConnectionLost(responseObject) {
     if (responseObject.errorCode !== 0) {
-      gotMessage('Connection Lost ' + responseObject.errorMessage);
+      gotMessageCB('Connection Lost ' + responseObject.errorMessage);
     }
   }
   function onMessageArrived(message){
@@ -21,7 +20,7 @@ const makeMqtt = ()=>{
     client.connect({
       onSuccess: onConnect,
       onFailure: function (message) {
-        gotMessage("Connection failed: " + message.errorMessage);
+        gotMessageCB("Connection failed: " + message.errorMessage);
       },
       useSSL: true,
       userName: ls.getKey('email'),
@@ -30,7 +29,7 @@ const makeMqtt = ()=>{
   } 
   function onConnect() {
     var cmess = `Connected to ${cfg.mqtt_server} on port ${cfg.mqtt_port} `
-    gotMessage(cmess) 
+    gotMessageCB(cmess) 
     subscribe() 
     publish('presence', 'Web Client is alive.. Test Ping! ')
     devices.map((dev)=>{
@@ -48,7 +47,7 @@ const makeMqtt = ()=>{
     })
   }
   function subFailure(message){
-    gotMessage(message)
+    gotMessageCB(message)
   }
   function publish(topic, payload){
     let message = new PahoMQTT.Message(payload);

@@ -7,18 +7,17 @@ container.innerHTML = appHtml
 
 var dmessage = el('dmessage')
 var mdata = el('mdata')
-
-const mq = makeMqtt()
-mq.connect()
-
 const gotDataCB = (thedata)=>{
   let nmes=`[${thedata.destinationName}]${thedata.payloadString}`
   // console.log(nmes)
   mdata.innerHTML= nmes
 }
 
-const gotMessage= (message)=>{
+const gotMessageCB= (message)=>{
   dmessage.innerHTML = message
 }
+const mq = makeMqtt(gotDataCB, gotMessageCB )
+mq.connect()
 
-export{gotDataCB, gotMessage}
+
+

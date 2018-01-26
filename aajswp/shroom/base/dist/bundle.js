@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 7);
+/******/ 	return __webpack_require__(__webpack_require__.s = 14);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -565,50 +565,6 @@ module.exports = warning;
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.gotMessage = exports.gotDataCB = undefined;
-
-var _paho = __webpack_require__(15);
-
-var _app = __webpack_require__(22);
-
-var _app2 = _interopRequireDefault(_app);
-
-var _wfuncs = __webpack_require__(23);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var container = document.getElementById('app');
-container.innerHTML = _app2.default;
-
-var dmessage = (0, _wfuncs.el)('dmessage');
-var mdata = (0, _wfuncs.el)('mdata');
-
-var mq = (0, _paho.makeMqtt)();
-mq.connect();
-
-var gotDataCB = function gotDataCB(thedata) {
-  var nmes = '[' + thedata.destinationName + ']' + thedata.payloadString;
-  // console.log(nmes)
-  mdata.innerHTML = nmes;
-};
-
-var gotMessage = function gotMessage(message) {
-  dmessage.innerHTML = message;
-};
-
-exports.gotDataCB = gotDataCB;
-exports.gotMessage = gotMessage;
-
-/***/ }),
-/* 8 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
 /* WEBPACK VAR INJECTION */(function(process) {/**
  * Copyright (c) 2013-present, Facebook, Inc.
  *
@@ -672,7 +628,7 @@ module.exports = checkPropTypes;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
-/* 9 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -711,7 +667,7 @@ var ExecutionEnvironment = {
 module.exports = ExecutionEnvironment;
 
 /***/ }),
-/* 10 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -792,7 +748,7 @@ module.exports = EventListener;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
-/* 11 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -834,7 +790,7 @@ function getActiveElement(doc) /*?DOMElement*/{
 module.exports = getActiveElement;
 
 /***/ }),
-/* 12 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -905,7 +861,7 @@ function shallowEqual(objA, objB) {
 module.exports = shallowEqual;
 
 /***/ }),
-/* 13 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -948,7 +904,7 @@ function containsNode(outerNode, innerNode) {
 module.exports = containsNode;
 
 /***/ }),
-/* 14 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -978,6 +934,40 @@ function focusNode(node) {
 module.exports = focusNode;
 
 /***/ }),
+/* 14 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _paho = __webpack_require__(15);
+
+var _app = __webpack_require__(22);
+
+var _app2 = _interopRequireDefault(_app);
+
+var _wfuncs = __webpack_require__(23);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var container = document.getElementById('app');
+container.innerHTML = _app2.default;
+
+var dmessage = (0, _wfuncs.el)('dmessage');
+var mdata = (0, _wfuncs.el)('mdata');
+var gotDataCB = function gotDataCB(thedata) {
+  var nmes = '[' + thedata.destinationName + ']' + thedata.payloadString;
+  // console.log(nmes)
+  mdata.innerHTML = nmes;
+};
+
+var gotMessageCB = function gotMessageCB(message) {
+  dmessage.innerHTML = message;
+};
+var mq = (0, _paho.makeMqtt)(gotDataCB, gotMessageCB);
+mq.connect();
+
+/***/ }),
 /* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -995,11 +985,9 @@ var _pahoMqtt2 = _interopRequireDefault(_pahoMqtt);
 
 var _getCfg = __webpack_require__(18);
 
-var _app = __webpack_require__(7);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var makeMqtt = function makeMqtt() {
+var makeMqtt = function makeMqtt(gotDataCB, gotMessageCB) {
   var devices = _getCfg.ls.getKey('devs');
   var topicsSub = ["srstate", "devtime", "timr", "sched", "flags"];
   var client = new _pahoMqtt2.default.Client(_getCfg.cfg.mqtt_server, _getCfg.cfg.mqtt_port, _getCfg.cfg.appid + Math.random());
@@ -1007,17 +995,17 @@ var makeMqtt = function makeMqtt() {
   client.onMessageArrived = onMessageArrived;
   function onConnectionLost(responseObject) {
     if (responseObject.errorCode !== 0) {
-      (0, _app.gotMessage)('Connection Lost ' + responseObject.errorMessage);
+      gotMessageCB('Connection Lost ' + responseObject.errorMessage);
     }
   }
   function onMessageArrived(message) {
-    (0, _app.gotDataCB)(message);
+    gotDataCB(message);
   }
   function connect() {
     client.connect({
       onSuccess: onConnect,
       onFailure: function onFailure(message) {
-        (0, _app.gotMessage)("Connection failed: " + message.errorMessage);
+        gotMessageCB("Connection failed: " + message.errorMessage);
       },
       useSSL: true,
       userName: _getCfg.ls.getKey('email'),
@@ -1026,7 +1014,7 @@ var makeMqtt = function makeMqtt() {
   }
   function onConnect() {
     var cmess = 'Connected to ' + _getCfg.cfg.mqtt_server + ' on port ' + _getCfg.cfg.mqtt_port + ' ';
-    (0, _app.gotMessage)(cmess);
+    gotMessageCB(cmess);
     subscribe();
     publish('presence', 'Web Client is alive.. Test Ping! ');
     devices.map(function (dev) {
@@ -1044,7 +1032,7 @@ var makeMqtt = function makeMqtt() {
     });
   }
   function subFailure(message) {
-    (0, _app.gotMessage)(message);
+    gotMessageCB(message);
   }
   function publish(topic, payload) {
     var message = new _pahoMqtt2.default.Message(payload);
@@ -3455,7 +3443,7 @@ var invariant = __webpack_require__(5);
 var emptyObject = __webpack_require__(3);
 var warning = __webpack_require__(6);
 var emptyFunction = __webpack_require__(1);
-var checkPropTypes = __webpack_require__(8);
+var checkPropTypes = __webpack_require__(7);
 
 // TODO: this is special because it gets imported during build.
 
@@ -4862,7 +4850,7 @@ if (process.env.NODE_ENV === 'production') {
 /*
  Modernizr 3.0.0pre (Custom Build) | MIT
 */
-var aa=__webpack_require__(4),m=__webpack_require__(9),A=__webpack_require__(2),B=__webpack_require__(1),ca=__webpack_require__(10),da=__webpack_require__(11),ea=__webpack_require__(12),ha=__webpack_require__(13),ia=__webpack_require__(14),C=__webpack_require__(3);
+var aa=__webpack_require__(4),m=__webpack_require__(8),A=__webpack_require__(2),B=__webpack_require__(1),ca=__webpack_require__(9),da=__webpack_require__(10),ea=__webpack_require__(11),ha=__webpack_require__(12),ia=__webpack_require__(13),C=__webpack_require__(3);
 function D(a){for(var b=arguments.length-1,c="Minified React error #"+a+"; visit http://facebook.github.io/react/docs/error-decoder.html?invariant\x3d"+a,d=0;d<b;d++)c+="\x26args[]\x3d"+encodeURIComponent(arguments[d+1]);b=Error(c+" for the full message or use the non-minified dev environment for full errors and additional helpful warnings.");b.name="Invariant Violation";b.framesToPop=1;throw b;}aa?void 0:D("227");
 var la={children:!0,dangerouslySetInnerHTML:!0,defaultValue:!0,defaultChecked:!0,innerHTML:!0,suppressContentEditableWarning:!0,suppressHydrationWarning:!0,style:!0};function qa(a,b){return(a&b)===b}
 var ra={MUST_USE_PROPERTY:1,HAS_BOOLEAN_VALUE:4,HAS_NUMERIC_VALUE:8,HAS_POSITIVE_NUMERIC_VALUE:24,HAS_OVERLOADED_BOOLEAN_VALUE:32,HAS_STRING_BOOLEAN_VALUE:64,injectDOMPropertyConfig:function(a){var b=ra,c=a.Properties||{},d=a.DOMAttributeNamespaces||{},e=a.DOMAttributeNames||{};a=a.DOMMutationMethods||{};for(var f in c){sa.hasOwnProperty(f)?D("48",f):void 0;var g=f.toLowerCase(),k=c[f];g={attributeName:g,attributeNamespace:null,propertyName:f,mutationMethod:null,mustUseProperty:qa(k,b.MUST_USE_PROPERTY),
@@ -5159,16 +5147,16 @@ if (process.env.NODE_ENV !== "production") {
 var React = __webpack_require__(4);
 var invariant = __webpack_require__(5);
 var warning = __webpack_require__(6);
-var ExecutionEnvironment = __webpack_require__(9);
+var ExecutionEnvironment = __webpack_require__(8);
 var _assign = __webpack_require__(2);
 var emptyFunction$1 = __webpack_require__(1);
-var EventListener = __webpack_require__(10);
-var getActiveElement = __webpack_require__(11);
-var shallowEqual = __webpack_require__(12);
-var containsNode = __webpack_require__(13);
-var focusNode = __webpack_require__(14);
+var EventListener = __webpack_require__(9);
+var getActiveElement = __webpack_require__(10);
+var shallowEqual = __webpack_require__(11);
+var containsNode = __webpack_require__(12);
+var focusNode = __webpack_require__(13);
 var emptyObject = __webpack_require__(3);
-var checkPropTypes = __webpack_require__(8);
+var checkPropTypes = __webpack_require__(7);
 var hyphenateStyleName = __webpack_require__(32);
 var camelizeStyleName = __webpack_require__(34);
 
