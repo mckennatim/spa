@@ -1,6 +1,15 @@
 # spa
 
 ## tags
+### 24-base-vb-va+reg
+Added back `Registered` as a place for soauth to return to and store the email and token in ls. Remember token encodes the appid.
+### 23-base-va-rxrt
+Back to the basics in search or onfocus onvisible controll of mqtt connection. This base has no mqtt just rxred state store [rxasred review](# review-of-rxasred) and navigo routing. 
+
+`About` uses `Observable.ajax(url)` to change the store by the `loadGithubFollowers` action which progressively changes the test state with GITHUB_FOLLOWERS_LOADING then GITHUB_FOLLOWERS_LOADED
+
+
+
 ### 22-hvac-v6j-eslint
 ### 22-hvac-v6i-loc-rx-focus
 infocus gets set by setFocus action from window.onfocus,onblur. Every change in incoming state(props) causes a rerender. All the logic is in render. componenDid Mount doesn't react to focus so that would leave mqtt running. maybeLoad checks the props to see whats up in `{status, data, message}` which gets set by the fetchFor wrapper. If successful, `data` contains the array of devices that this app needs at this location. 

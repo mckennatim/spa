@@ -4,7 +4,6 @@ import {fetchFor, mapClass2Element} from '../hoc'
 
 
 let LocList = (props)=>{
-  console.log(props);
   const {status, data, message} = props
   const listItems= data.map((item, i)=>{
     let hash = '#at/'+item

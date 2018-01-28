@@ -9,8 +9,6 @@ const style = {
 }
 pStyle.outer.background='#C4A265'
 
-console.log(cfg);
-
 class Loc extends React.Component{
   constructor(props) {
     super(props);
@@ -20,12 +18,6 @@ class Loc extends React.Component{
       otherwise: "dogshit"
     };
   }
-  componentDidMount() {
-    console.log('component did mount');
-  }
-  componentDidUnMount() {
-    console.log('component did unmount');
-  }
   activateMqtt(){
     this.pq =makeMqtt(this.gotDataCB, this.gotMessageCB)
     this.pq.connect()
@@ -34,7 +26,6 @@ class Loc extends React.Component{
     let nmes=`[${thedata.destinationName}]${thedata.payloadString}`// eslint-disable-line no-unused-vars
     //console.log(nmes)
   }
-
   gotMessageCB(message){
     console.log(message)
   }
@@ -59,6 +50,7 @@ class Loc extends React.Component{
         case status=='success':
           ls.modItem("devs", data)
           if(infocus){
+            console.log('about to activsteMqtt')
             this.activateMqtt()
           }else {
             if(this.pq){
@@ -73,7 +65,7 @@ class Loc extends React.Component{
     const ml = maybeLoad()
     ls.modItem("cloc", params.loc)
     return(
-      <div style={style.outer} ><h4>in dd doLoc {name} {params.loc}</h4>
+      <div style={style.outer} ><h4>in Loc {name} {params.loc}</h4>
       {ml}
       </div>
       )
