@@ -6,6 +6,7 @@ import {Loc} from './Loc'
 import {Login} from './Login'
 import {Nav} from './Nav'
 import {Dog} from './Dog'
+import {Zones} from './Zones'
 import {Registered} from './Registered'
 import {pStyle} from '../styles'
 import {loadGithubFollowers} from '../actions/responsive';
@@ -48,4 +49,4 @@ const multi=[] //multi delared but empty defaults to single pane
 //['watch', 'phone', 'phoneL', 'tablet', 'tabletL', 'laptop']
 const panes= [1,1,2,2,3,3,4]
 
-export {LocList, Loc, Login, About, Home, Dog, Registered, App, Nav, multi, panes}
+export {LocList, Loc, Login, About, Home, Dog, Registered, App, Nav, Zones, multi, panes}

@@ -2,7 +2,7 @@ import PahoMQTT from'paho.mqtt.js'
 import {cfg, ls} from '../utilities/getCfg'
 
 const makeMqtt = (gotDataCB, gotMessageCB)=>{
-  var devices = ls.getKey('devs')
+  var devices = Object.keys(ls.getKey('devs'))
   var topicsSub = ["srstate", "devtime", "timr", "sched", "flags"]
   var client = new PahoMQTT.Client(cfg.mqtt_server, cfg.mqtt_port, cfg.appid+Math.random());
   client.onConnectionLost = onConnectionLost;

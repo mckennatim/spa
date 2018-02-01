@@ -9,7 +9,9 @@ function Login(props){
   // console.log(props);
   const { name } = props.test;
   return(
-    <div style={style.outer} ><h4>in doLogin {name} </h4></div>
+    <div style={style.outer} >
+      <h4>in doLogin {name} </h4>
+    </div>
     )
 }
 

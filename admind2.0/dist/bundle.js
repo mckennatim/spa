@@ -51398,7 +51398,6 @@ _styles.pStyle.outer.background = '#C4A265';
 
 var user = {
   devid: "",
-  bizid: "sbs",
   userid: "",
   appid: "main",
   role: "user"
@@ -51520,12 +51519,7 @@ var Admin = function (_React$Component) {
             _react2.default.createElement(
               'h5',
               null,
-              'yo searching'
-            ),
-            _react2.default.createElement(
-              'span',
-              null,
-              'bizid   userid   appid  role'
+              'searching from Admin.displayWhich'
             ),
             _react2.default.createElement(
               'ul',
@@ -62490,17 +62484,10 @@ function UserForm(props) {
       _react2.default.createElement('br', null),
       _react2.default.createElement(
         'label',
-        { htmlFor: 'bizid' },
-        'bizid:'
-      ),
-      _react2.default.createElement('input', { type: 'text', id: 'bizid', name: 'bizid', value: user.bizid, onChange: handleOnChange, size: '8' }),
-      _react2.default.createElement('br', null),
-      _react2.default.createElement(
-        'label',
         { htmlFor: 'userid' },
         'userid:'
       ),
-      _react2.default.createElement('input', { type: 'text', id: 'userid', name: 'userid', value: user.userid, onChange: handleOnChange, size: '30' }),
+      _react2.default.createElement('input', { type: 'text', id: 'userid', name: 'userid', value: user.userid, onChange: handleOnChange, size: '25' }),
       _react2.default.createElement('br', null),
       _react2.default.createElement(
         'label',
@@ -62514,7 +62501,7 @@ function UserForm(props) {
         { htmlFor: 'role' },
         'role:'
       ),
-      _react2.default.createElement('input', { type: 'text', id: 'role', name: 'role', value: user.role, onChange: handleOnChange, size: '48' }),
+      _react2.default.createElement('input', { type: 'text', id: 'role', name: 'role', value: user.role, onChange: handleOnChange, size: '8' }),
       _react2.default.createElement('br', null),
       _react2.default.createElement(
         'button',
@@ -62609,7 +62596,7 @@ var device = {
   bizid: 'sbs',
   locid: '12ParleyVale',
   address: '12 Parley Vale, Jamaica Plain, MA 02130',
-  location: '{"lat":42.315,"lng":-71.111}',
+  latlng: '{"lat":42.315,"lng":-71.111}',
   timezone: 'America/New_York',
   server: '{"mqtt_server":"sitebuilt.net","mqtt_port":"1884","sensor_type":""}',
   specs: '{"HAStIMER":28,"notTimerTags":["temp","onoff","hilimit","lolimit"]}',
@@ -62711,7 +62698,7 @@ var Super = function (_React$Component) {
                 'span',
                 null,
                 ' ',
-                dev.location
+                dev.latlng
               ),
               _react2.default.createElement(
                 'span',
@@ -62947,9 +62934,9 @@ function DeviceForm(props) {
       _react2.default.createElement(
         'label',
         { htmlFor: 'location' },
-        'location:'
+        'latlng:'
       ),
-      _react2.default.createElement('input', { type: 'text', id: 'location', name: 'location', value: device.location, onChange: handleOnChange, size: '48' }),
+      _react2.default.createElement('input', { type: 'text', id: 'latlng', name: 'latlng', value: device.latlng, onChange: handleOnChange, size: '48' }),
       _react2.default.createElement('br', null),
       _react2.default.createElement(
         'label',
@@ -66958,15 +66945,26 @@ var style = _extends({}, _styles.pStyle, { outer: _extends({}, _styles.pStyle.ou
 _styles.pStyle.outer.background = '#C4A265';
 
 function Registered(props) {
-  //console.log('in Registe5red')
-  // console.log(props)
-
+  var em = 'NOT';
+  var regstr = 'dog';
   var query = props.responsive.page.params.query;
   var mobj = (0, _utilities.parseQuery)(query);
   console.log(mobj);
+  if (mobj != undefined) {
+    if (Object.keys(mobj).find(function (x) {
+      return x == 'message';
+    })) {
+      console.log('ie message');
+      regstr = decodeURI(mobj.message);
+    } else {
+      em = mobj.email;
+      _getCfg.ls.addToSet(mobj);
+    }
+  } else {
+    regstr = 'so register already';
+  }
 
   console.log('RUNNING Registered');
-  _getCfg.ls.addToSet(mobj);
 
   var handleGetApps = function handleGetApps() {
     console.log('handling get apps');
@@ -66982,9 +66980,10 @@ function Registered(props) {
       'h4',
       null,
       'You Be Registered ',
-      mobj.email,
+      em,
       ' '
     ),
+    regstr,
     _react2.default.createElement(
       'button',
       { onClick: handleGetApps },

@@ -47,8 +47,8 @@ function DeviceForm(props){//one of the optioons in super component
         <input type="text" id="address" name="address" value={device.address} onChange={handleOnChange} size="54"/>
         <button onClick={verify}>verify</button>
         <br/>
-        <label htmlFor="location">location:</label>
-        <input type="text" id="location" name="location" value={device.location} onChange={handleOnChange} size="48"/><br/>
+        <label htmlFor="location">latlng:</label>
+        <input type="text" id="latlng" name="latlng" value={device.latlng} onChange={handleOnChange} size="48"/><br/>
         <label htmlFor="timezone">timezone:</label>
         <input type="text" id="timezone" name="timezone" value={device.timezone} onChange={handleOnChange} size="40"/><br/>
         <label htmlFor="server">config:</label>

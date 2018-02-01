@@ -11,7 +11,7 @@ let fetchFor=(Comp, cfg)=>{
     componentDidMount(){
       var lsh = ls.getItem();
       if(geta('lsh.token', lsh)){
-        console.log(cfg);
+        // console.log(cfg);
         let urlparams =''
         if (cfg.urlparams.length>0){
           cfg.urlparams.map((p)=>{
@@ -25,7 +25,6 @@ let fetchFor=(Comp, cfg)=>{
           message: 'is-loading'
         })
         let url = cfg.url+urlparams
-        console.log(url);
         fetch(url, cfg.options)
           .then((response)=>response.json())
           .then((json)=>{

@@ -13,7 +13,6 @@ pStyle.outer.background='#C4A265'
 
 let user ={
 	devid: "",
-	bizid: "sbs",
 	userid: "",
 	appid: "main",
 	role: "user"
@@ -113,8 +112,7 @@ class Admin extends React.Component{
         },this) 
         return(
           <div>
-          <h5>yo searching</h5>
-          <span>bizid   userid   appid  role</span>
+          <h5>searching from Admin.displayWhich</h5>
           <ul>{u}</ul>
           </div>
         )              

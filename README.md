@@ -1,6 +1,8 @@
 # spa
-
+https://cloudinary.com/console/welcome
 ## tags
+
+TODO fix Loc.js:53  `if(infocus){` to something like `if(infocus && inviewport){`
 ### 24-base-vb-va+reg
 Added back `Registered` as a place for soauth to return to and store the email and token in ls. Remember token encodes the appid.
 ### 23-base-va-rxrt

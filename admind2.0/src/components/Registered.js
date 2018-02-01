@@ -14,15 +14,25 @@ const style = {
 pStyle.outer.background='#C4A265'
 
 function Registered(props){
-  //console.log('in Registe5red')
-  // console.log(props)
-
+  var em ='NOT'
+  var regstr = 'dog'
   const query= props.responsive.page.params.query;
   var mobj = parseQuery(query)
   console.log(mobj)
+  if (mobj!=undefined) {
+    if(Object.keys(mobj).find((x)=>x=='message')){
+      console.log('ie message');
+      regstr=decodeURI(mobj.message)
+    }else{
+      em = mobj.email
+      ls.addToSet(mobj)
+    }
+  }else{
+    regstr = 'so register already'
+  }  
   
   console.log('RUNNING Registered')
-  ls.addToSet(mobj)
+  
 
   const handleGetApps=()=>{
   	console.log('handling get apps')
@@ -33,7 +43,8 @@ function Registered(props){
 
   return(
     <div style={style.outer} >
-    	<h4>You Be Registered {mobj.email} </h4>
+    	<h4>You Be Registered {em} </h4>
+      {regstr}
     	<button onClick={handleGetApps}>get your apps and devices</button>
       <span></span>
     </div>

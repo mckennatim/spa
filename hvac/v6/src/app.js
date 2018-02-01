@@ -11,15 +11,16 @@ import {setDeviceType, setFocus} from './actions/responsive'
 window.focus()
 
 window.onblur = ()=>{
+    console.log('blurred of browser')
     setFocus({infocus: false})
 }
 
 window.onfocus = ()=>{
     setFocus({infocus: true})
 }
-window.onclick = ()=>{
-    setFocus({infocus: true})
-}
+// window.onclick = ()=>{
+//     setFocus({infocus: true})
+// }
 
 Observable.fromEvent(window, 'resize')
   .debounceTime(300)

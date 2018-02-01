@@ -27,14 +27,12 @@ function UserForm(props){//one of the optioons in super component
         {/*
         
         */}    
-        <label htmlFor="bizid">bizid:</label>
-        <input type="text" id="bizid" name="bizid" value={user.bizid} onChange={handleOnChange} size="8"/><br/>
         <label htmlFor="userid">userid:</label>
-        <input type="text" id="userid" name="userid" value={user.userid} onChange={handleOnChange} size="30"/><br/>
+        <input type="text" id="userid" name="userid" value={user.userid} onChange={handleOnChange} size="25"/><br/>
         <label htmlFor="appid">appid:</label>
         <input type="text" id="appid" name="appid" value={user.appid} onChange={handleOnChange} size="8"/><br/>
         <label htmlFor="role">role:</label>
-        <input type="text" id="role" name="role" value={user.role} onChange={handleOnChange} size="48"/><br/>
+        <input type="text" id="role" name="role" value={user.role} onChange={handleOnChange} size="8"/><br/>
         <button onClick={handleOnClick}>save</button>
       </div>
     </div>

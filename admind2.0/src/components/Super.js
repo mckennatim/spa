@@ -21,7 +21,7 @@ let device  =      {
       bizid: 'sbs',
       locid: '12ParleyVale',
       address: '12 Parley Vale, Jamaica Plain, MA 02130',
-      location: '{"lat":42.315,"lng":-71.111}',
+      latlng: '{"lat":42.315,"lng":-71.111}',
       timezone: 'America/New_York',
       server:'{"mqtt_server":"sitebuilt.net","mqtt_port":"1884","sensor_type":""}', 
       specs: '{"HAStIMER":28,"notTimerTags":["temp","onoff","hilimit","lolimit"]}',
@@ -111,7 +111,7 @@ class Super extends React.Component{
           return (<li key={i} onClick={this.editDevice.bind(this,i)}>
               <span> {dev.devid}</span>
               <span> {dev.address}</span>
-              <span> {dev.location}</span>
+              <span> {dev.latlng}</span>
               <span> {dev.timezone}</span><br/>
               <span> {dev.server}</span>
               <span> {dev.apps}</span>

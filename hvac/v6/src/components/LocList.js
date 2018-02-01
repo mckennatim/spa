@@ -2,7 +2,6 @@ import React from 'react'// eslint-disable-line no-unused-vars
 import {cfg} from '../utilities/getCfg'
 import {fetchFor, mapClass2Element} from '../hoc'
 
-
 let LocList = (props)=>{
   const {status, data, message} = props
   const listItems= data.map((item, i)=>{
@@ -14,6 +13,11 @@ let LocList = (props)=>{
   const maybeLoad=()=>{
     let rval
     switch(true){
+      case status=='error'&& message=='not-registered':
+        console.log('in not registered')
+        rval = (<a href={cfg.url.authqry}>please register again</a>)
+        // rval = (<p>'in not registered' {message}</p>)
+        break
       case status=='error':
         rval = (<p>{message}</p>)
         break
