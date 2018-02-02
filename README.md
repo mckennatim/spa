@@ -1,4 +1,10 @@
-# spa
+# 
+https://medium.freecodecamp.org/react-binding-patterns-5-approaches-for-handling-this-92c651b5af56
+
+https://medium.com/@joomiguelcunha/react-performance-tips-5fa199a450b2
+
+https://blog.risingstack.com/introducing-react-easy-state/?utm_campaign=React%2BNewsletter&utm_medium=email&utm_source=React_Newsletter_104
+
 https://cloudinary.com/console/welcome
 ## tags
 
