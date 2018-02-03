@@ -15767,10 +15767,10 @@ _styles.pStyle.outer.background = '#C4A265';
 var Zones = function Zones(props) {
   var devs = props.devs,
       zones = props.zones; // eslint-disable-line no-unused-vars
-  // console.log(props)
+
+  console.log(props);
   // console.log(JSON.stringify(zones, null, '\t'))
   // console.log(JSON.stringify(devs, null, '\t'))
-
   if (zones) {
     return _react2.default.createElement(
       'div',
@@ -15786,8 +15786,6 @@ var Zones = function Zones(props) {
               'div',
               null,
               z.name,
-              ' ',
-              _react2.default.createElement('br', null),
               z.img,
               ' ',
               _react2.default.createElement('br', null),
@@ -62634,7 +62632,7 @@ var mqttFor = function mqttFor(Comp) {
 
       _this.subscribe = function () {
         _this.client.subscribe('CYURD003/srstate', { onFailure: _this.subFailure });
-        _this.client.subscribe('CYURD006/srstate', { onFailure: _this.subFailure });
+        _this.client.subscribe('CYURD001/srstate', { onFailure: _this.subFailure });
       };
 
       _this.subFailure = function (message) {
@@ -62654,7 +62652,7 @@ var mqttFor = function mqttFor(Comp) {
         _this.publish('presence', 'Web Client is alive.. Test Ping! ');
         _this.subscribe();
         _this.publish('CYURD003/req', '{"id":0,"req":"srstates"}');
-        _this.publish('CYURD006/req', '{"id":0,"req":"srstates"}');
+        _this.publish('CYURD001/req', '{"id":0,"req":"srstates"}');
       };
 
       _this.onConnectionLost = function (responseObject) {
@@ -62665,12 +62663,15 @@ var mqttFor = function mqttFor(Comp) {
 
       _this.onMessageArrived = function (message) {
         //let nmes=`[${message.destinationName}]${message.payloadString}`
-        console.log((0, _mq.processMqttMessage)(message, _this.props.devs, _this.props.zones));
-        _this.setState({ outp: message.payloadString });
+        // console.log(this.props.zones)
+        var newzones = (0, _mq.processMqttMessage)(message, _this.props.devs, _this.props.zones);
+        _this.setState({ zones: newzones });
+        // console.log(this.props.zones)
+        // this.setState({outp:message.payloadString})
         // console.log(this.state)
       };
 
-      _this.state = { isRequesting: true, mqdata: [], messge: 'no message' };
+      _this.state = { isRequesting: true, mqdata: [], messge: 'no message', zones: _this.props.zones };
       _this.client = new _pahoMqtt2.default.Client(_getCfg.cfg.mqtt_server, _getCfg.cfg.mqtt_port, _getCfg.cfg.appid + Math.random());
       _this.client.onConnectionLost = _this.onConnectionLost;
       _this.client.onMessageArrived = _this.onMessageArrived;
@@ -62681,7 +62682,11 @@ var mqttFor = function mqttFor(Comp) {
     _createClass(XP, [{
       key: 'render',
       value: function render() {
+        var infocus = this.props.infocus;
 
+        console.log(infocus);
+        console.log(this.props);
+        console.log(this.state);
         return _react2.default.createElement(Comp, _extends({}, this.props, this.state));
       }
     }]);
@@ -65060,7 +65065,7 @@ var Loc = function (_React$Component) {
           params.loc
         ),
         ml,
-        _react2.default.createElement(_Zones.Zones, _extends({ devs: this.devso, zones: this.zoneso }, this.state))
+        _react2.default.createElement(_Zones.Zones, _extends({ devs: this.devso, zones: this.zoneso }, this.state, this.props.responsive))
       );
     }
   }]);

@@ -82,7 +82,7 @@ class Loc extends React.Component{
       <div style={style.outer} >
         <h4>in Loc {name} {params.loc}</h4>
         {ml}
-        <Zones devs={this.devso} zones={this.zoneso} {...this.state}/>
+        <Zones devs={this.devso} zones={this.zoneso} {...this.state} {...this.props.responsive}/>
       </div>
       )
   }

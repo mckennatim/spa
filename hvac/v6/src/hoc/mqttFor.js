@@ -24,7 +24,7 @@ let mqttFor=(Comp)=>{// eslint-disable-line no-unused-vars
   return class XP extends React.Component {
     constructor (props){
       super(props);
-      this.state= {isRequesting: true, mqdata: [], messge:'no message'}
+      this.state= {isRequesting: true, mqdata: [], messge:'no message', zones:this.props.zones}
       this.client = new Paho.Client(cfg.mqtt_server, cfg.mqtt_port, cfg.appid+Math.random());
       this.client.onConnectionLost =this.onConnectionLost;
       this.client.onMessageArrived = this.onMessageArrived; 
@@ -54,7 +54,7 @@ let mqttFor=(Comp)=>{// eslint-disable-line no-unused-vars
 
     subscribe=()=> {
       this.client.subscribe(`CYURD003/srstate` , {onFailure: this.subFailure}) 
-      this.client.subscribe(`CYURD006/srstate` , {onFailure: this.subFailure}) 
+      this.client.subscribe(`CYURD001/srstate` , {onFailure: this.subFailure}) 
     }
 
     subFailure=(message)=>{
@@ -74,7 +74,7 @@ let mqttFor=(Comp)=>{// eslint-disable-line no-unused-vars
       this.publish('presence', 'Web Client is alive.. Test Ping! ');
       this.subscribe()
       this.publish(`CYURD003/req`,'{"id":0,"req":"srstates"}')
-      this.publish(`CYURD006/req`,'{"id":0,"req":"srstates"}')
+      this.publish(`CYURD001/req`,'{"id":0,"req":"srstates"}')
     }
 
     onConnectionLost=(responseObject)=> {
@@ -84,13 +84,19 @@ let mqttFor=(Comp)=>{// eslint-disable-line no-unused-vars
     }  
     onMessageArrived=(message)=>{
       //let nmes=`[${message.destinationName}]${message.payloadString}`
-      console.log(processMqttMessage(message, this.props.devs, this.props.zones))
-      this.setState({outp:message.payloadString})
+      // console.log(this.props.zones)
+      let newzones= processMqttMessage(message, this.props.devs, this.props.zones)
+      this.setState({zones: newzones})
+      // console.log(this.props.zones)
+      // this.setState({outp:message.payloadString})
       // console.log(this.state)
     } 
        
     render() {
-
+      const {infocus} = this.props
+      console.log(infocus)
+      console.log(this.props)
+      console.log(this.state)
       return (
         <Comp {...this.props} {...this.state} />
       )

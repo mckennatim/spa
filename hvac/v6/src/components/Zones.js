@@ -8,7 +8,7 @@ pStyle.outer.background='#C4A265'
 
 let Zones=(props)=>{
   const {devs, zones } = props;// eslint-disable-line no-unused-vars
-  // console.log(props)
+  console.log(props)
   // console.log(JSON.stringify(zones, null, '\t'))
   // console.log(JSON.stringify(devs, null, '\t'))
   if(zones){
@@ -17,7 +17,7 @@ let Zones=(props)=>{
         <ul>{zones.map((z,i)=>{
           return(
             <li key={i}><div>
-              {z.name} <br/>
+              {z.name} 
               {z.img} <br/>
               temp: {z.temp} <br/>
               relay: {z.relay} <br/>
