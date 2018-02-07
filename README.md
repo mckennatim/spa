@@ -7,6 +7,10 @@ https://blog.risingstack.com/introducing-react-easy-state/?utm_campaign=React%2B
 
 https://cloudinary.com/console/welcome
 ## tags
+### 29-hvac-v6o-SenRel
+If you click on a zone in zones it adds an `sr` parameter to locs params. After Loc succesfully loads zone and device data, it checks to see if there is an `sr`. If so it only sends Zones that one zone. If Zones sees only one zone it diplays SenRel. Meanwhile data keeps flowing from mqtt.
+param
+
 ### 28-hvac-v6n-zone
 zone as li component
 ### 27-hvac-v6m-mqttFor-infocus-mounted-connected
