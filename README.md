@@ -7,7 +7,9 @@ https://blog.risingstack.com/introducing-react-easy-state/?utm_campaign=React%2B
 
 https://cloudinary.com/console/welcome
 ## tags
-### 27
+### 27-hvac-v6m-mqttFor-infocus-mounted-connected
+infocus set from window.onfocus.onblur. mqttFor is initialized !connected and !mounted, mounted is toggled by the mount lifestyles and connected is toggled in onConnect() and onConnectionLost 
+// console.log(JSON.stringify(zones, null, '\t'))
 infocus
 ### 26-hvac-v6l-mqttFor-zones-fix
 Instead of trying to tag on to zone fields (from the database), now zdat just copies the id of each zone and becomes a template for the mqtt message data.
