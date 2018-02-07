@@ -7,7 +7,12 @@ https://blog.risingstack.com/introducing-react-easy-state/?utm_campaign=React%2B
 
 https://cloudinary.com/console/welcome
 ## tags
+### 27
+infocus
+### 26-hvac-v6l-mqttFor-zones-fix
+Instead of trying to tag on to zone fields (from the database), now zdat just copies the id of each zone and becomes a template for the mqtt message data.
 ### 25-hvac-v6k-mqttFor-zones
+https://github.com/thejameskyle/unstated
 got temps on screen, on returning doesnt update values
 TODO fix Loc.js:53  `if(infocus){` to something like `if(infocus && inviewport){`
 ### 24-base-vb-va+reg
