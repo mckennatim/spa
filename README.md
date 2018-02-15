@@ -7,6 +7,22 @@ https://blog.risingstack.com/introducing-react-easy-state/?utm_campaign=React%2B
 
 https://cloudinary.com/console/welcome
 ## tags
+### 33-hvac-v7
+Working toward rxasred for the mqtt part. SensorRelay will connect, subscribe and will listen for a piece of the state. Now working on moving from devs&zones to devid,sr,id,name,img
+### 32-base.context
+share props with aall the children.
+https://libraries.io/npm/react-dom/16.3.0-alpha.1
+https://medium.com/dailyjs/reacts-%EF%B8%8F-new-context-api-70c9fe01596b
+https://medium.com/@baphemot/whats-new-in-react-16-3-d2c9b7b6193b
+https://dev.to/wxyyxc1992/frontend-weekly-no5-react-context-api--patterns-evolution-web-optimize-with-webpack-page-generation-by-ai-39ac
+https://dev.to/sammyisa/explain-the-new-react-contect-api-like-im-five-1aho
+https://www.google.com/search?q=using+react+context&client=firefox-b-1-ab&source=lnt&tbs=qdr:m&sa=X&ved=0ahUKEwjhqv7Y6aHZAhUKwFkKHTAYDC4QpwUIIQ&biw=1057&bih=927
+https://github.com/jamiebuilds/unstated
+https://github.com/reactjs/rfcs/blob/master/text/0002-new-version-of-context.md
+### 31
+#### adjusting range input
+
+
 ### 30-hvac-v6p-mqttFor-componentWillUpdate
 TODO when moving back from 12ParleyVale/peri we need to reconstitute zdat.
 ### 29-hvac-v6o-SenRel

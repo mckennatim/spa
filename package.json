@@ -10,6 +10,7 @@
   "license": "MIT",
   "dependencies": {
     "create-react-class": "15.6.2",
+    "flow": "0.2.3",
     "history": "4.7.2",
     "immutable": "3.8.2",
     "lodash": "4.17.4",
@@ -17,11 +18,13 @@
     "paho.mqtt.js": "2.0.5",
     "query-string": "5.0.1",
     "radium": "0.21.1",
-    "react": "16.1.1",
-    "react-dom": "16.1.1",
+    "react": "16.3.0-alpha.1",
+    "react-dom": "16.3.0-alpha.1",
     "react-radio-group": "3.0.2",
     "recompose": "0.26.0",
-    "rxjs": "5.5.2"
+    "rxjs": "5.5.2",
+    "superagent": "3.8.2",
+    "unstated": "1.0.3"
   },
   "devDependencies": {
     "babel-core": "6.26.0",
