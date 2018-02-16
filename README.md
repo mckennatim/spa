@@ -7,10 +7,186 @@ https://blog.risingstack.com/introducing-react-easy-state/?utm_campaign=React%2B
 
 https://cloudinary.com/console/welcome
 ## tags
+### 34-hvac-v7-services-mqtt-actions
 ### 33-hvac-v7
+### patterns
+from: https://medium.freecodecamp.org/evolving-patterns-in-react-116140e5fe8f by Alex Moldovan
+
+HOC - withAuthentication -pulls isAuthenticated out of state and then adds a redirect
+
+    function withAuthentication(WrappedComponent) {
+      const ModifiedComponent = (props) => {
+        if (!props.isAuthenticated) {
+          return <Redirect to="/login" />;
+        }
+        return (<WrappedComponent { ...props } />);
+      };
+      const mapStateToProps = (state) => ({
+        isAuthenticated: state.session.isAuthenticated
+      });
+      return connect(mapStateToProps)(ModifiedComponent);
+    }
+
+HOC - using JSX
+
+    const withProps = ( newProps ) => ( WrappedComponent ) => {
+      const ModifiedComponent = ( ownProps ) => ( 
+        <WrappedComponent { ...ownProps } { ...newProps } /> 
+      );
+      return ModifiedComponent;
+    };
+    const Details = ( { name, title, language } ) => (
+      <div>
+        <h1>{ title }</h1>
+        <p>{ name } works with { language }</p>
+      </div>
+    );
+    const newProps = { name: "Alex" }; // this is added by the hoc
+    const ModifiedDetails = withProps( newProps )( Details ); 
+    // above is curried for readability
+    const App = () => (
+      <ModifiedDetails 
+        title="I'm here to stay"
+        language="JavaScript"
+      />
+    );
+
+props destructuring - com doesn't need but children do
+
+    const Details = ( { name, language } ) => (
+      <div>
+        <p>{ name } works with { language }</p>
+      </div>
+    );
+    const Layout = ( { title, ...props } ) => (
+      <div>
+        <h1>{ title }</h1>
+        <Details { ...props } />
+      </div>
+    );
+    const App = () => (
+      <Layout 
+        title="I'm here to stay"
+        language="JavaScript"
+        name="Alex"
+      />
+    );
+
+conditional render
+
+    const condition = true;
+    const App = () => (
+      <div>
+        <h1>This is always visible</h1>
+        {condition && (
+            <div>
+              <h2>Show me</h2>
+              <p>Description</p>
+            </div>
+          )
+        }
+      </div>
+    );
+
+fetch - promise version
+
+    componentDidMount() {
+      this.setState({ content: this.props.loading() })
+      fetch(this.props.url)
+        .then(res => res.json())
+        .then(
+          res => this.setState({ content: this.props.done(res) }),
+          res => this.setState({ content: this.props.error() })
+        )
+    }
+
+fetch - await version
+
+    componentDidMount() {
+        this.setState({ content: this.props.loading() })
+        try {
+            const res = await fetch(this.props.url);
+            this.setState({ content: this.props.done(res.json()) });
+        } catch (err) {
+            this.setState({ content: this.props.error() });
+        }
+    }
+
+fetch - App turns over rendering to Fetch. Each Fetch prop is a (render) function. As state changes so does which function is returned in fetch's render function.
+
+    import React from 'react';
+    import { render } from 'react-dom';
+    class Fetch extends React.Component {
+      constructor() {
+        super();
+        this.state = {
+          content: ""
+        }
+      }
+      componentDidMount() {
+          this.setState({ content: this.props.loading() })
+          try {
+              const res = await fetch(this.props.url);
+              this.setState({ content: this.props.done(res.json()) });
+          } catch (err) {
+              this.setState({ content: this.props.error() });
+          }
+      }
+      render() {
+        return this.state.content;
+      }
+    }
+    const App = () => (
+      <Fetch
+        url="https://www.booknomads.com/api/v0/isbn/9789029538237"
+        loading={() => (
+          <div>Loading ... </div>
+        )}
+        done={(book) => (
+          <div>You asked for: { book.Authors[0].Name } - {book.Title}</div>
+        )}
+        error={() => (
+          <div>Error fetching content</div>
+        )}
+      />
+    );
+    render(<App />, document.getElementById('root'));
+
+
+render props - here ceding control to child
+
+    class ScrollPosition extends React.Component {
+      constructor( ) {
+        super( );
+        this.state = { position: 0 };
+        this.updatePosition = this.updatePosition.bind(this);
+      }
+      componentDidMount( ) {
+        window.addEventListener( "scroll", this.updatePosition );
+      }
+      updatePosition( ) {
+        this.setState( { position: window.pageYOffset } )
+      }
+      render( ) {
+        return this.props.children( this.state.position )
+      }
+    }
+    const App = () => (
+      <div>
+        <ScrollPosition>
+          { ( position ) => (
+            <div>
+              <h1>Hello World</h1>
+              <p>You are at { position }</p>
+            </div>
+          ) }
+        </ScrollPosition>
+      </div>
+    );
+
 Working toward rxasred for the mqtt part. SensorRelay will connect, subscribe and will listen for a piece of the state. Now working on moving from devs&zones to devid,sr,id,name,img
-### 32-base.context
-share props with aall the children.
+### 32-base.context-renderprops
+share props with all the children.
 https://libraries.io/npm/react-dom/16.3.0-alpha.1
 https://medium.com/dailyjs/reacts-%EF%B8%8F-new-context-api-70c9fe01596b
 https://medium.com/@baphemot/whats-new-in-react-16-3-d2c9b7b6193b
@@ -19,6 +195,8 @@ https://dev.to/sammyisa/explain-the-new-react-contect-api-like-im-five-1aho
 https://www.google.com/search?q=using+react+context&client=firefox-b-1-ab&source=lnt&tbs=qdr:m&sa=X&ved=0ahUKEwjhqv7Y6aHZAhUKwFkKHTAYDC4QpwUIIQ&biw=1057&bih=927
 https://github.com/jamiebuilds/unstated
 https://github.com/reactjs/rfcs/blob/master/text/0002-new-version-of-context.md
+
+see renderprops/README.md
 ### 31
 #### adjusting range input
 

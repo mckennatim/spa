@@ -11,7 +11,7 @@ class Cat extends React.Component {
   }
 }
 
-class Mouse extends React.Component {
+class Mouse extends React.Component {// eslint-disable-line no-unused-vars
   constructor(props) {
     super(props);
     this.handleMouseMove = this.handleMouseMove.bind(this);
@@ -28,11 +28,7 @@ class Mouse extends React.Component {
   render() {
     return (
       <div style={{ height: '100%' }} onMouseMove={this.handleMouseMove}>
-        {/*
-          Instead of providing a static representation of what <Mouse> renders,
-          use the `render` prop to dynamically determine what to render.
-        */}
-        {this.props.render(this.state)}
+        {this.props.dogshit(this.state)}
       </div>
     );
   }
@@ -43,7 +39,7 @@ class MouseTrackC extends React.Component {
     return (
       <div>
         <h1>Move the mouse around!</h1>
-        <Mouse render={mouse => (
+        <Mouse dogshit={mouse => (
           <Cat mouse={mouse} />
         )}/>
       </div>
@@ -51,11 +47,11 @@ class MouseTrackC extends React.Component {
   }
 }
 
-function withMouse(Component) {
+function withMouse(Component) {// eslint-disable-line no-unused-vars
   return class extends React.Component {
     render() {
       return (
-        <Mouse render={mouse => (
+        <Mouse dogshit={mouse => (
           <Component {...this.props} mouse={mouse} />
         )}/>
       );

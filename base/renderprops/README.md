@@ -1,75 +1,20 @@
-# admind
-sbs cascada
-    greenhouse
-    outtemp
-    admin
-    watering
-    shrooms
-    blank
-    timer
-    tstat
-hrs user
-    admin
+#renderprops
 
-todo: race condition in devapps, fix in reducer. Whenever an action is called, state changes.
+MouseTrackP(mp) just has a render funtion that renders a mouse component that lists mouse coordinates asn you move the mouse
 
-https://github.com/Reactive-Extensions/RxJS-DOM/blob/master/doc/operators/ajax.md
+MouseTrackC(mc) As you can see in line 42, Mouse has a render prop which is a function that sends mouse.x and mouse.y to cat. MouseTrackC renders a div with a Mouse component whose render prop sends its state to Cat. Actually Mouses prop can be named anything as long as it is a function. The code has rendere renamed a dogshit.
 
-http://www.gistia.com/talk-backend-services-angular-2s-http-client/ brilliant on showing how a csrf attack would work. It also ids pretty clear on using angular's http +headers
+so...
 
-https://www.owasp.org/index.php/Cross-Site_Request_Forgery_(CSRF)
+MouseTrackC(mc) As you can see in line 42, Mouse has a dogshit prop which is a function returns a Cat component with a mouse prop that has mouse.x and mouse.y. MouseTrackC renders a div with a Mouse component whose dogshit prop sends its state to Cat. Mouse's render function renders a prop called dogshit (which is a function which is given this.state as a parameter)
 
-        createPost(post: Post) {
-            if (!post.title) return;
-            this.postService.addPost(post)
-                .subscribe(
-                    newPost => this.posts = [newPost, ...this.posts],
-                    error => this.errorMessage = error
-                )
-        }
+#render props vs HOC
 
-    addPost (post: Post): Observable {
-        let headers = new Headers({'Content-Type': 'application/json'});
-        let options = new RequestOptions({headers});
-        return this.http.post(this.postUrl, { post }, options)
-            .map(this.parseData)
-            .catch(this.handleError);
-    }
+MouseTrackC uses render props to add Mouse functionality to the Cat component. (its render prop is name dogshit)
+
+withMouse is a HOC that wraps Cat. withMouse uses Mouse and returns it in its render function. 
 
 
-    // Updated parse data method handles arrays and objects
-    private parseData(res: Response)  {
-        let body = res.json();
-        if (body instanceof Array) {
-            return body || [];
-        }
-        else return body.post || {};
-    }
+You can call withMouse with any Compponent and it will get a mouse prop with x and y driven by Mouse listening to onMouse Move
 
-
-
-inherits from
-# bl-navigo-react-rxjs-responsive
-TODO ajax error handling is non-existent
-
-Move from a working navigo react rxjs version to a version that allows for programmable responsive webpages. In the process correct the fault that has store storing the current page as a react function. In this version the switchPage action takes and object like `{name: 'Products', params: params}` or with an empty {} if there are no params. 
-
-* handle multiple reducers using `rxred/combineReducers`
-* call old reducer `test`, add `responsive` reducer
-* listen to window size
-
-
-        Observable.fromEvent(window, 'resize')
-          .debounceTime(300)
-          .subscribe((e)=>setDeviceType(window.innerWidth));
-
-
-* modify `store/initialState` 
-* * to startup based upon current browser size
-* * break state into `test` and `break`
-* change state based on debounced display size. The action `setDeviceType`  is reduced by `SET_DEVICE` which calculated the correct device for the size
-* assign background size and color to each page
-* add an optional `multi` object to the components/index page to program what will show up based on device size.
-* replace the function that renders a route with `funcs/responsivePage` that allows for multiple panes
-* add the css to display multiple pages
- 
+You can put any child under the Mouse component in MouseTrackC with the same results.

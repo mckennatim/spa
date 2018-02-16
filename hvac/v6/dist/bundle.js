@@ -15806,90 +15806,47 @@ var style = _extends({}, _styles.pStyle, { outer: _extends({}, _styles.pStyle.ou
 _styles.pStyle.outer.background = '#C4A265';
 
 var SenRel = function SenRel(props) {
-  var azone = props.azone,
-      azdat = props.azdat,
-      xmitChange = props.xmitChange,
-      hoc = props.hoc;
-
-  var handleChange = function handleChange(e) {
-    xmitChange(e.target);
-  };
+  // const{azone, azdat, xmitChange, hoc} = props
+  // console.log('azdat: ',JSON.stringify(azdat))
+  //console.log('sr: ' , props.sr, 'azdat len: ', azdat.length,  props.sr==azdat[0].id)
+  // const handleChange = (e)=>{
+  //   xmitChange(e.target)
+  // }
   return _react2.default.createElement(
     'div',
     { style: style.outer },
-    _react2.default.createElement(
-      'span',
-      null,
-      azone.name,
-      ' '
-    ),
-    _react2.default.createElement(
-      'span',
-      null,
-      'temp: ',
-      azdat[0].temp,
-      ' '
-    ),
-    _react2.default.createElement(
-      'span',
-      null,
-      'relay: ',
-      azdat[0].relay,
-      ' '
-    ),
-    _react2.default.createElement(
-      'span',
-      null,
-      'setPt: ',
-      azdat[0].setPt,
-      ' '
-    ),
-    _react2.default.createElement(
-      'span',
-      null,
-      'timestamp: ',
-      JSON.stringify(azdat[0].ts),
-      ' '
-    ),
-    _react2.default.createElement(
-      'button',
-      null,
-      'modify'
-    ),
-    _react2.default.createElement(
-      'span',
-      null,
-      'sched: ',
-      JSON.stringify(azdat[0].sched),
-      ' '
-    ),
-    _react2.default.createElement('input', { id: 'bo-rng', name: 'bohrs', type: 'range', min: '0', max: '8', step: '.25',
-      onChange: handleChange }),
-    _react2.default.createElement(
-      'span',
-      null,
-      'for ',
-      hoc.bohrs,
-      ' hrs'
-    ),
-    _react2.default.createElement(
-      'button',
-      null,
-      'boost to 68'
-    ),
-    'until ',
-    _react2.default.createElement('input', { id: 'ho-dt', name: 'hodt', type: 'date' }),
-    _react2.default.createElement('input', { type: 'time' }),
-    _react2.default.createElement(
-      'button',
-      null,
-      'hold'
-    )
+    'hi'
   );
+
+  // if(azdat.length>0 && props.sr==azdat[0].id){
+  //   return(
+  //   <div style={style.outer} >
+  //   <span>{azone.name} </span>
+  //   <span>temp: {azdat[0].temp} </span>
+  //   <span>relay: {azdat[0].relay} </span>
+  //   <span>setPt: {azdat[0].setPt} </span>
+  //   <span>timestamp: {JSON.stringify(azdat[0].ts)} </span>
+  //   <button>modify</button>
+  //   <span>sched: {JSON.stringify(azdat[0].sched)} </span>
+  //   <input id="bo-rng" name="bohrs" type="range" min="0" max="8" step=".25"
+  //     onChange={handleChange}/>
+  //   <span>for {hoc.bohrs} hrs</span>  
+  //   <button>boost to 68</button>
+  //   until <input id="ho-dt" name="hodt" type="date"/><input type="time"/>
+  //   <button>hold</button>
+  //   </div>
+  //   )
+  // }else{
+  //   return(
+  //   <div style={style.outer}>
+  //   <h5>yo refresh</h5>
+  //   </div>
+  //   )
+  // }  
 };
 
 var cfg = {};
-exports.SenRel = SenRel = (0, _senrelHOC.senrelHOC)(SenRel, cfg);
+//SenRel = senrelHOC(SenRel, cfg)
 
 exports.SenRel = SenRel;
 

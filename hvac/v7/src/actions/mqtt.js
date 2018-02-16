@@ -2,7 +2,7 @@ import { actionCreator } from '../rxred';
 import { Observable } from 'rxjs/Rx';
 import 'rxjs/add/observable/dom/ajax';
 import { map } from 'lodash';
-import { fromMqtt$ } from './fromMqtt';
+import { fromMqtt} from '../services/fromMqtt';
 import {ls,cfg} from '../utilities/getCfg'
 import {router} from '../routing'
 var baseURL=cfg.url.api
@@ -14,13 +14,14 @@ var mqtt$ = {
   complete() {}
 }
 
+
 var storeCopy = {mqtt: {currentDevId: 'instorcopy'}}
 const copyStore= (props)=>{
   storeCopy = props
 }
 const connectAndSubscribe= (devId)=>{
   //mqtt$.next('end')
-  mqtt$ = fromMqtt$(devId)
+  mqtt$ = fromMqtt()
   mqtt$.subscribe(
     function (e) {
       var sp = e.topic.split("/")

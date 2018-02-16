@@ -1,7 +1,7 @@
 import React from 'react'
 import {mapClass2Element} from '../hoc/mapClass2Element'
 
-class Mouse extends React.Component {
+class Mouse extends React.Component {// eslint-disable-line no-unused-vars
   constructor(props) {
     super(props);
     this.handleMouseMove = this.handleMouseMove.bind(this);

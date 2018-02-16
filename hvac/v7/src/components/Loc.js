@@ -36,11 +36,8 @@ class Loc extends React.Component{
           this.zoneso = JSON.parse(zones)
           ls.modItem("devs", this.devso)
           ls.modItem("zones", this.zoneso)
-          if(params.sr){
-            return(<Zones devs={this.devso} zones={this.zoneso.filter((z)=>z.id==params.sr)} {...this.props.cambio}/>)
-          }else{
-            return(<Zones devs={this.devso} zones={this.zoneso} {...this.props.cambio}/>)
-          }
+
+          return(<Zones devs={this.devso} zones={this.zoneso} {...this.props.cambio}/>)
         default:
           return (<p>{message}</p>)
       }
