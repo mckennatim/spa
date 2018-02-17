@@ -7,7 +7,50 @@ https://blog.risingstack.com/introducing-react-easy-state/?utm_campaign=React%2B
 
 https://cloudinary.com/console/welcome
 ## tags
+### 36-hvac-v7c-services-todo-2nd-store
+mqttConnect starts up mqtt and subscribes to things it publishes. The trick is to create some kind of render props that modifies state for components that need fresh mqtt data. It will create a store
+
+    const action$ = new Subject();
+    const createStore = (initState) =>
+      action$
+        .flatMap((action) => isObservable(action) ? action : Observable.from([action]))
+        .startWith(initState)
+        .scan(mqttReducer);
+
+then 
+
+    const mqttStore= createStore(initState)
+
+somehow then
+
+    props
+    mqttStore.subscribe((mqtt)=>{
+      chunk a piece of mqtt
+      return (
+          <MyComponent {...props},{...mqtt}/>
+        )
+    })
+
+or 
+
+    const addMqttStore =(mqttStore, props, mqttPiece, Component)=>{
+      mqttStore.subscribe((mqtt)=>{
+        somemqtt = mqttPiece(mqtt)
+        state = mqtt+props
+        const QComponent = Component(state)
+      }
+      return QComponent
+    } 
+    return(
+        <div className="header item-default">
+          {addMqttStore(mqttStore, props, mqttPiece, Component)}
+        </div>
+
+
+
+
 ### 35-hvac-v7b-services-worksalittle
+about to move all the functions inside fromNqtt to inside `Observable.create ((obs)=>`
 ### 34-hvac-v7a-services-mqtt-actions
 ### 33-hvac-v7
 ### patterns

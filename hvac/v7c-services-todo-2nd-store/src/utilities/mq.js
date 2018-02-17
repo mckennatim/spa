@@ -1,50 +1,4 @@
-import { fromMqtt$} from './fromMqtt';
-import{getArrObjByObjKeyVal, getIdxYobj} from '../utilities/wfuncs'
-// import{grabFlagData, grabSchedData, grabTimrData} from '../actions/mqtt'
-
-
-var mqtt$ = {
-  next() {},
-  error(err) {throw err;},
-  complete() {}
-}
-
-const mqttConnect= ()=>{
-  //mqtt$.next('end')
-  mqtt$ = fromMqtt$()
-  mqtt$.subscribe(
-    function (e) {
-      var sp = e.topic.split("/")
-      var job = sp[1];
-      switch(job){
-        case "ready":
-          if(e.payload.ready){
-            console.log(JSON.stringify(e))
-            mqtt$.next({pubsub:'subscribe', topic:'CYURD003/srstate'})
-            mqtt$.next({pubsub:'publish', topic:'CYURD003/req', message:`{\"id\":0,\"req\":\"srstates\"}`})
-          }
-          break;
-        case "srstate":
-          console.log(JSON.stringify(e))
-          //grabSrstateData(e.payload)
-          break;
-        case "timr":
-          // grabTimrData(e.payload)
-          break;
-        case "flags":
-          // grabFlagData(e.payload)
-          break;
-        case "sched":
-          // console.log('grabSchedData')
-          // grabSchedData(e)
-          break;
-      }
-  });
-}
-
-const mqttEnd = ()=>{
-  mqtt$.next('end')
-}
+import{getArrObjByObjKeyVal, getIdxYobj} from './wfuncs'
 
 const srUpdateZdat=(devid, payload, devs, zdat)=>{
   let sYl =getArrObjByObjKeyVal('sr', payload.id , devs[devid])
@@ -98,6 +52,34 @@ const processMqttMessage = (mess, devs, zdat)=>{
   } 
 }
 
+export{processMqttMessage}
 
+// const devs = ls.getKey("devs")
+// const zones = ls.getKey("zones")
 
-export{mqttConnect, mqttEnd, processMqttMessage}
+// const processMessage = (message, cb ) =>{
+//   let nmes=`[${message.destinationName}]${message.payloadString}`// eslint-disable-line no-unused-vars
+//   if(!devs || !zones){
+//     cb({message:"no devs or zones go back to locations"})
+//   }else{
+//     const devtopic = message.destinationName.split('/')
+//     const device = devtopic[0]
+//     const topic =devtopic[1]
+//     const qata = JSON.parse(message.payloadString)
+//     switch(true){
+//       case topic=='srstate':
+//         //console.log(qata.darr)
+//         //console.log(topic)
+//         let out ={}
+//         devs[device].map((x)=>{
+//           if(x.sr==qata.id){
+//             out[x.label]={temp:qata.darr[0], rstate:qata.darr[1], setpt:qata.darr[3]+1}
+//             cb(out)
+//           }
+//         })
+//         break
+//       default :
+//     }  
+//   }
+// }
+

@@ -31,7 +31,7 @@
 		"no-console": "off",
 		"no-unused-vars": [1, {"vars": "local"}],
     "no-case-declarations": "off",
-    "no-useless-escape": 1,
+    "no-useless-escape": "off",
     "no-class-assign": "off"
 	},
 	"plugins": [
