@@ -17,6 +17,7 @@
     "lodash": "4.17.4",
     "navigo": "6.0.0",
     "paho.mqtt.js": "2.0.5",
+    "prop-types": "15.6.0",
     "query-string": "5.0.1",
     "radium": "0.21.1",
     "react": "16.3.0-alpha.1",

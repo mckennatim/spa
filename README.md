@@ -7,6 +7,9 @@ https://blog.risingstack.com/introducing-react-easy-state/?utm_campaign=React%2B
 
 https://cloudinary.com/console/welcome
 ## tags
+### 38-hvac-v7e-sr-schedUpdateQdata
+TODO force update on back and forward into ZonesHOC goahead
+<s>TODO xfrmSrstate</s> instead srUpdateQdata and schedUpdateQdata
 ### 37-hvac-v7d-interface-q-maybe
 maybeConnect is called from components that need mqtt feed. It combines the original app store infocus listener with the ready state of mqtt$ to connect or not to mqtt. the mqttStore is activated in AtLoc for the particular loc and its devs and zones.
 ### 36-hvac-v7c-services-todo-2nd-store

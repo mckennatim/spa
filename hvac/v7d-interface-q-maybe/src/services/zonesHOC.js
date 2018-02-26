@@ -14,7 +14,7 @@ let zonesHOC=(Comp, cfg)=>{
       let infocus = this.props.cambio.infocus
       console.log('infocus: ', infocus)
       mqttStore
-        // .do((state)=>console.log('infocus: ', this.props.cambio.infocus, 'ready: ', state.ready))
+        .do((state)=>console.log(state))
         .subscribe((state)=>{
           if (this.goahead){
             this.setState(state)
