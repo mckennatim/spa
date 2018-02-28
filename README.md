@@ -7,6 +7,7 @@ https://blog.risingstack.com/introducing-react-easy-state/?utm_campaign=React%2B
 
 https://cloudinary.com/console/welcome
 ## tags
+### 39-hvac-v7f-redo-refresh-logic
 ### 38-hvac-v7e-sr-schedUpdateQdata
 TODO force update on back and forward into ZonesHOC goahead
 <s>TODO xfrmSrstate</s> instead srUpdateQdata and schedUpdateQdata
