@@ -15,6 +15,7 @@
     "immutable": "3.8.2",
     "lazy-ass": "1.6.0",
     "lodash": "4.17.4",
+    "moment-timezone": "0.5.14",
     "navigo": "6.0.0",
     "paho.mqtt.js": "2.0.5",
     "prop-types": "15.6.0",
