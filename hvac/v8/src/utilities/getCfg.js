@@ -25,14 +25,14 @@ const createSchedObj=(sched, tz)=>{
   let schedObj={}
   let smod = []
   let setpt = (schedcpy[0][2]+schedcpy[0][3])/2
-  const schedarr = schedcpy.slice(1).reduce((beforeMoment,afterArr,idx)=>{
+  schedcpy.slice(1).reduce((beforeMoment,afterArr,idx)=>{
     let sobj={}
     let afterMoment  = moment(`${afterArr[0]}:${afterArr[1]}`, 'h:mm')
     //let t = beforeMoment.format('h:mma')+now.isAfter(beforeMoment)+now.format('h:mma')+now.isBefore(afterMoment)+afterMoment.format('h:mma')
     sobj.time = beforeMoment.format('h:mma')
     sobj.setpt= setpt
     setpt = (afterArr[2]+afterArr[3])/2
-    if(now.isAfter(beforeMoment) && now.isBefore(afterMoment)){
+    if(now.isSameOrAfter(beforeMoment) && now.isBefore(afterMoment)){
       schedObj.timeleft=afterMoment.diff(now,'hours')+':'+afterMoment.diff(now,'minutes')%60
       schedObj.idx=idx
       schedObj.now = now.format('h:mma')
@@ -44,4 +44,70 @@ const createSchedObj=(sched, tz)=>{
   return schedObj
 }
 
-export{ls, cfg, createSchedObj}
+
+const modifySched =(sched,tz,schedObj,boostFor, delayTil)=>{
+  let sttz
+  if (delayTil){
+    sttz = moment(delayTil).tz(tz).format('h:mma')
+  }else {
+    sttz = moment().tz(tz).format('h:mma')
+  }
+  let stm = moment(sttz,'h:mma').format('H:mm')
+  /*utility funcs*/
+  const tmColon2min =(hms)=>{
+    let hma = hms.split(':')
+    return hma[0]*60 + hma[1]*1    
+  }
+  const tmArr2min = (hma)=>{
+    return hma[0]*60 + hma[1]*1 
+  }
+  const mins2arr = (mins)=>{
+    let h = Math.floor(mins/60)
+    let m = mins%60
+    return [h, m]
+  }
+  const minsYsetpt =(mins,setpt)=>{
+    return mins2arr(mins).concat(setpt)
+  }
+  /*  setup reduce  */
+  let smin =tmColon2min(stm)
+  console.log('sttz ', sttz, ' stm ', stm, ' mins ', smin, ' sminarr ', mins2arr(smin))
+  let xmin =tmColon2min(boostFor)
+  let emin = smin+xmin
+  console.log('emin ', emin, ' eminarr ', mins2arr(emin))
+  let zmin = tmColon2min('23:59')
+  if(emin>zmin)emin=zmin
+  console.log('smin ', smin, ' sminarr ', mins2arr(smin))
+  console.log('emin ', emin, ' eminarr ', mins2arr(emin))
+  console.log(JSON.stringify(sched))
+  let smod = []
+  let remainder = [50,48].slice()
+  sched.map((x,i)=>{
+    let xmin=tmArr2min(x)
+    if(xmin<smin || (smin==null && emin==null)){
+      smod.push(x)
+    }else if(smin!==null){
+      smod.push(minsYsetpt(smin,[69,67]))
+      smin=null
+    }
+    if(sched.length==1){
+      remainder = x.slice(2)
+      smod.push(minsYsetpt(smin,[69,67]))
+      smin=null
+    }
+    if(emin<xmin && emin !==null){
+      smod.push(minsYsetpt(emin,remainder))
+      emin=null
+      smod.push(x)
+    }else if(i==sched.length-1 && emin!==null){
+      smod.push(minsYsetpt(emin,remainder))
+      emin=null
+    }
+    remainder = x.slice(2)
+    return x
+  })
+  return smod
+}
+
+export{ls, cfg, createSchedObj, modifySched}
+

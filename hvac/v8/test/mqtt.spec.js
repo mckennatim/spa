@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {ls, createSchedObj} from '../src/utilities/getCfg'
+import {ls, createSchedObj, modifySched} from '../src/utilities/getCfg'
 import {createBlankQdata, qdataAsArray, createSubscriptions} from '../src/services/interface'
 
 localStorage.setItem('hvac', `{"email":"tim@sitebuilt.net","token":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhcHBJZCI6Imh2YWMiLCJlbWFpbCI6InRpbUBzaXRlYnVpbHQubmV0In0.e8oviN49uxjbc9FgcyPWV-vQYp0YlD183FhqCWzpuT0","cloc":"12ParleyVale","devs":{"CYURD003":[{"sr":0,"label":"kid"},{"sr":1,"label":"lr"}],"CYURD001":[{"sr":0,"label":"music"},{"sr":1,"label":"peri"}]},"zones":[{"id":"kid","name":"Kid's Suite","img":"kid.jpg"},{"id":"lr","name":"Living Room","img":"lr.jpg"},{"id":"music","name":"Music Room","img":"music.jpg"},{"id":"peri","name":"Peri's Study","img":"peri.jpg"}],"appid":"hvac"}`)
@@ -39,7 +39,18 @@ var qdata =  `{
   }`
 
 let sched = [[0,0,56,54],[5,30,68,66],[8,15,64,62], [17,45,69,67], [23, 0, 58,56]]
-let tz = 'America/Los_Angeles'
+let tzw = 'America/Los_Angeles'
+let tz = 'America/New_York'
+let schedobj = { 
+  timeleft: '0:4',
+  idx: 5,
+  now: '5:41pm',
+  sched:
+   [ { time: '12:00am', setpt: 55 },
+     { time: '5:30am', setpt: 67 },
+     { time: '8:15am', setpt: 63 },
+     { time: '5:45pm', setpt: 68 },
+     { time: '11:00pm', setpt: 57 } ] }
 
 
 var state = JSON.parse(statestr)
@@ -94,6 +105,13 @@ describe('mqtt', ()=>{
     expect(sarr).to.equal('dog');
     done()
   })
-                          
+  it('tries modifySched',(done)=>{
+    let res = modifySched(sched,tz,schedobj,'7:30')
+    console.log(res)
+    expect(res).to.equal('dog');
+    done()
+  })
+
+                                                      
     
 })

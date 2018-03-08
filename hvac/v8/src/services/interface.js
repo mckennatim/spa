@@ -124,6 +124,13 @@ const mqtt$nextPublishReqs=()=>{
   })
 }
 
+const mqtt$nextPublish = (topic,message)=>{
+  let o={pubsub:'publish'}
+  o.topic=topic
+  o.message=JSON.stringify(message)
+  mqtt$.next(o)  
+}
+
 const createStartupPubreqs = (devs)=>{
   let pubs=[]
   Object.keys(devs).map((dev)=>{
@@ -305,4 +312,4 @@ const grabSchedData = qactionCreator((payload)=>{
   }
 })
 
-export{ srUpdateQdata, schedUpdateQdata, qOnFocus, qdataAsArray, qOnMount, qOnPageSwitch,  setupMqttStore,lsDevsQdataRetQdata, hookupMqtt, createBlankQdata, createSubscriptions }
+export{ srUpdateQdata, schedUpdateQdata, qOnFocus, qdataAsArray, qOnMount, qOnPageSwitch,  setupMqttStore,lsDevsQdataRetQdata, hookupMqtt, createBlankQdata, createSubscriptions,mqtt$nextPublish }
