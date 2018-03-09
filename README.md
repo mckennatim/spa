@@ -7,7 +7,13 @@ https://blog.risingstack.com/introducing-react-easy-state/?utm_campaign=React%2B
 
 https://cloudinary.com/console/welcome
 ## tags
-### 42
+https://gridbyexample.com/examples/example13/
+https://www.mozilla.org/en-US/firefox/60.0a2/whatsnew/#cssgrid
+https://mozilladevelopers.github.io/playground/css-grid/
+### 44-hvac-v8c-hold
+### 43-hvac-v8b-boost-modifySched
+### 42-hvac-v8a-streq-createSchedObj
+https://jsperf.com/lo-dash-vs-underscore-vs-json-stringify-isequal/2
 TODO SaveSched maybe something to publish something
 ### 41-hvac-v7h-refactored2-setupMqttStore-hookupMqtt
 ### 40-hvac-v7g-mqtt$next-pubsub-funcs
