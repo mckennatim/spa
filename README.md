@@ -10,7 +10,13 @@ https://cloudinary.com/console/welcome
 https://gridbyexample.com/examples/example13/
 https://www.mozilla.org/en-US/firefox/60.0a2/whatsnew/#cssgrid
 https://mozilladevelopers.github.io/playground/css-grid/
+### 44-hvac-v8d-hold-worksnow-fullstack
 ### 44-hvac-v8c-hold
+Boosts and holds. 
+
+There are 2 types of boosts, a 'cmd' boost where you just replace the temps for the currently running schedule event, changing its '/srstate' darr. The other kind of boost crosses schedule event boundaries or lasts for less time than the current schedule event calls for. this is a '/prg' boost and it changes the devicees sensor '/sched' for that day, rewriting the schedule.
+
+Holds operate over more than the current day and require two steps. The first step rewrites the days schedule addng a hold at a certain temperature for the rest of that day. The second step causes an interaction with the sched database so that when the device picks up the next days schedules at midnight, it defers to any holds in place for that devices senrels. 
 ### 43-hvac-v8b-boost-modifySched
 ### 42-hvac-v8a-streq-createSchedObj
 https://jsperf.com/lo-dash-vs-underscore-vs-json-stringify-isequal/2
