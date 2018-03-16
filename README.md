@@ -10,6 +10,10 @@ https://cloudinary.com/console/welcome
 https://gridbyexample.com/examples/example13/
 https://www.mozilla.org/en-US/firefox/60.0a2/whatsnew/#cssgrid
 https://mozilladevelopers.github.io/playground/css-grid/
+
+### 45-hvac-v8e-refactor-componentDidMount
+Took a look at [qstate object](test/app-objects/qstate.json) and fon how it interacts with setState. Refactored `SensorRelay` to use `interface/reset`'s functions to change state
+
 ### 44-hvac-v8d-hold-worksnow-fullstack
 ### 44-hvac-v8c-hold
 Boosts and holds. 
