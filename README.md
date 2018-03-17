@@ -10,7 +10,9 @@ https://cloudinary.com/console/welcome
 https://gridbyexample.com/examples/example13/
 https://www.mozilla.org/en-US/firefox/60.0a2/whatsnew/#cssgrid
 https://mozilladevelopers.github.io/playground/css-grid/
-
+### 46-hvac-v8f-DaySched-WeekSched
+ready to set up WeekSched first with editor that can be used for DaySched 
+schedsObj created will create buttons for `M`, `T`  etc + `default` and `hold` that wil bring up the appropriate schedule for the editor
 ### 45-hvac-v8e-refactor-componentDidMount
 Took a look at [qstate object](test/app-objects/qstate.json) and fon how it interacts with setState. Refactored `SensorRelay` to use `interface/reset`'s functions to change state
 
