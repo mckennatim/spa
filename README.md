@@ -10,7 +10,9 @@ https://cloudinary.com/console/welcome
 https://gridbyexample.com/examples/example13/
 https://www.mozilla.org/en-US/firefox/60.0a2/whatsnew/#cssgrid
 https://mozilladevelopers.github.io/playground/css-grid/
-### 47-hvac-v8g-processNewSched
+### 49-hvac-v8i-HHmm
+### 48-hvac-v8h-Sched-modify
+### 47-hvag-v8g-processNewSched
 actuall most of the test were done in `services/IOTbroker2.0/test/atest.spec.js` for what will end up in `WeekSched`. Still have to change the database and the broker and maybe express as well
 ### 46-hvac-v8f-DaySched-WeekSched
 ready to set up WeekSched first with editor that can be used for DaySched 
