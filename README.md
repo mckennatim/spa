@@ -10,6 +10,7 @@ https://cloudinary.com/console/welcome
 https://gridbyexample.com/examples/example13/
 https://www.mozilla.org/en-US/firefox/60.0a2/whatsnew/#cssgrid
 https://mozilladevelopers.github.io/playground/css-grid/
+### 50-hvac-v8j-ready2change-broker-express-29
 ### 49-hvac-v8i-HHmm
 ### 48-hvac-v8h-Sched-modify
 ### 47-hvag-v8g-processNewSched
