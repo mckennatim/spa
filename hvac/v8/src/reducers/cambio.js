@@ -8,6 +8,12 @@ const cambio=(state, action) =>{
         ...state,
         infocus: action.payload.infocus
       };    
+    // case 'COPY_SCHEDOBJ':
+    //   // console.log('in COPY_SCHEDOBJ ')
+    //   return {
+    //     ...state,
+    //     schedobj: action.payload
+    //   };    
     case 'PAGE_SWITCHED':
       // console.log('cambio reducer PAGE_SWITCHED to ', action.payload, ' from ', state.page.name) 
       qOnPageSwitch(action.payload.name)

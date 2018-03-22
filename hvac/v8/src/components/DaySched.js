@@ -3,6 +3,7 @@ import {mapClass2Element} from '../hoc'
 import {ls} from '../utilities/getCfg'
 import {qOnMount, hookupMqtt, reset} from '../services/interface'
 import {SchedEdit} from './SchedEdit'// eslint-disable-line no-unused-vars
+import {getSchedobjCopy} from '../services/schedobj'
 
 import {pStyle} from '../styles'
 const style = {
@@ -17,6 +18,8 @@ class DaySched extends React.Component{
     this.state={}
   }
   componentDidMount(){
+    console.log('DaySched mounted')
+    // console.log('this.props: ',JSON.stringify(this.props))
     let prior = {srrec:{}, sched:[], urlsr:'', message:''}
     this.unsub = hookupMqtt(this.loc, ls, (qstate)=>{
       reset.readyMessage(prior, qstate, this)
@@ -29,6 +32,7 @@ class DaySched extends React.Component{
   }
 
   componentWillUnmount(){
+    console.log('DaySched unmounted')
     this.unsub.unsubscribe()
   }
 
@@ -37,21 +41,16 @@ class DaySched extends React.Component{
     this.setState({schedobj:ms})
   }
   render (){
-    // console.log(this.props)
-
+    const displaySchedule=()=>{
+      let schedobj = getSchedobjCopy()
+      return( 
+        <SchedEdit sched={schedobj.sched} fromSched={this.modifiedSched}/>
+      )
+    }
+    
+    let ds = displaySchedule()
     if (this.state.qdata) {
       const {name, sr} = this.state.qdata
-      const displaySchedule=()=>{
-        if(this.state.schedobj){
-          //console.log('this.state: ',JSON.stringify(this.state))
-          return( 
-            <SchedEdit sched={this.state.schedobj.sched} idx={this.state.schedobj.idx} fromSched={this.modifiedSched}/>
-          )
-        }else{
-          return (<p>no schedule</p>)
-        }
-      }      
-      const ds = displaySchedule()
       return(
         <div style={style.outer} >
           <h4>in DaySched of {name}</h4>

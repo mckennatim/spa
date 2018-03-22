@@ -6,6 +6,10 @@ class SchedEdit extends React.Component{
     super(props);
     this.state={sched: this.props.sched}
   }
+
+  componentWillMount(){
+    this.resetState()
+  }
   
   handleSetptChange=(e)=>{
     let msched = this.state.sched
@@ -21,17 +25,18 @@ class SchedEdit extends React.Component{
   handleSave=()=>{
     this.props.fromSched(this.state.sched)
   }
+  resetState=()=>{
+    this.setState({sched: this.props.sched})
+  }
 
   render(){
-    const {idx}=this.props
     return(
       <div>
         <ul>
-        {this.state.sched.map((s,i)=>{
-          let ieq = i==idx
+        {this.props.sched.map((s,i)=>{
           return(
             <li key={i}>
-              <span style={ieq ? {color:'green'}:{color:'blue'}}>
+              <span >
               <input type="time"value={s.time}
                 name={i}
                 onChange={this.handleTimeChange}/> 

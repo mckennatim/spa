@@ -1,35 +1,37 @@
-import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
-import 'rxjs/add/operator/do';
-import 'rxjs/add/operator/mergeMap';
-import 'rxjs/add/operator/scan';
-import 'rxjs/add/operator/startWith';
-import 'rxjs/add/observable/from';
+// import { Observable } from 'rxjs/Observable';
+// import { Subject } from 'rxjs/Subject';
+// import 'rxjs/add/operator/do';
+// import 'rxjs/add/operator/mergeMap';
+// import 'rxjs/add/operator/scan';
+// import 'rxjs/add/operator/startWith';
+// import 'rxjs/add/observable/from';
 import {isEqual} from 'underscore'
 import moment from 'moment-timezone'
-import { isObservable } from '../utilities/ofuncs';
+// import { isObservable } from '../utilities/ofuncs';
 import {geta} from '../utilities/wfuncs'
 import { fromMqtt$} from './fromMqtt';
 import{getArrObjByObjKeyVal} from '../utilities/wfuncs'
 import {createSchedObj} from '../utilities/getCfg'
+// import{qreducer} from './qreducer'
+import{qcreateStore} from './qrxred'
+import{grabSrstateData, grabSchedData, readyState} from './qactions'
+// import{copySchedobj2store} from '../actions/responsive'
 
-import{qreducer} from './qreducer'
+// const action$ = new Subject();
 
-const action$ = new Subject();
+// const qactionCreator = (func) => (...args) => {
+//   const action = func.call(null, ...args);
+//   action$.next(action);
+//   if (isObservable(action.payload))
+//     action$.next(action.payload);
+//   return action;
+// };
 
-const qactionCreator = (func) => (...args) => {
-  const action = func.call(null, ...args);
-  action$.next(action);
-  if (isObservable(action.payload))
-    action$.next(action.payload);
-  return action;
-};
-
-const qcreateStore = (initState) =>
-  action$
-    .flatMap((action) => isObservable(action) ? action : Observable.from([action]))
-    .startWith(initState)
-    .scan(qreducer);
+// const qcreateStore = (initState) =>
+//   action$
+//     .flatMap((action) => isObservable(action) ? action : Observable.from([action]))
+//     .startWith(initState)
+//     .scan(qreducer);
 
 
 /*----------for setting up qstore and listeners in comonentDidMount-------*/
@@ -218,9 +220,11 @@ const reset = {
     // console.log('cursched: ',JSON.stringify(cursched))
     if(cursched && that.state.qdata && !isEqual(priorsched,cursched)){
       let oldschedobj ={}
+      // console.log('cursched: ',JSON.stringify(cursched))
       const schedobj = createSchedObj(cursched, that.state.tz)
       if(!isNaN(schedobj.sched[0].setpt) && !isEqual(oldschedobj,schedobj)){
-        console.log('sched causing reset')
+        //console.log('sched causing reset')
+        //copySchedobj2store(schedobj)
         that.setState({schedobj:schedobj, dow:schedobj.dow})
         oldschedobj = schedobj
       }
@@ -232,7 +236,7 @@ const reset = {
     // console.log('priorsrrec: ',JSON.stringify(priorsrrec))
     // console.log('cursrrec: ',JSON.stringify(cursrrec))
     if(cursrrec && that.state.qdata && !isEqual(priorsrrec,cursrrec)){
-      console.log('srrec causing reset')
+      //console.log('srrec causing reset')
       that.state.qdata.sr = cursrrec
       that.setState({qdata:that.state.qdata})
     }    
@@ -318,7 +322,7 @@ const schedUpdateQdata=(state, message)=>{
 
 var qstatus=(()=>{
   let ready =false
-  const qpages = ["AtLoc", "SensorRelay", "TimerCtrl", "DaySched", "WeekSched"]
+  const qpages = ["AtLoc", "SensorRelay", "TimerCtrl", "WeekSched"]
   const setReady = (tf)=>{ready=tf}
   return{
     setReady: setReady,
@@ -365,27 +369,27 @@ const qOnFocus = (to, frum, focused)=>{
   } 
 }
 
-/*------------------actions-----------------------*/
+// /*------------------actions-----------------------*/
 
-const grabSrstateData = qactionCreator((payload)=>{
-  // console.log('grabSrstateData: ',JSON.stringify(payload))
-  return{
-    type: 'SRSTATE_CHANGED',
-    payload
-  }
-})
-const grabSchedData = qactionCreator((payload)=>{
-  // console.log('grabSchedData: ',JSON.stringify(payload))
-  return{
-    type: 'SCHED_CHANGED',
-    payload
-  }
-})
-const readyState = qactionCreator((payload)=>{
-  return{
-    type: 'READY_STATE',
-    payload
-  }
-})
+// const grabSrstateData = qactionCreator((payload)=>{
+//   // console.log('grabSrstateData: ',JSON.stringify(payload))
+//   return{
+//     type: 'SRSTATE_CHANGED',
+//     payload
+//   }
+// })
+// const grabSchedData = qactionCreator((payload)=>{
+//   // console.log('grabSchedData: ',JSON.stringify(payload))
+//   return{
+//     type: 'SCHED_CHANGED',
+//     payload
+//   }
+// })
+// const readyState = qactionCreator((payload)=>{
+//   return{
+//     type: 'READY_STATE',
+//     payload
+//   }
+// })
 
-export{ srUpdateQdata, schedUpdateQdata, qOnFocus, qdataAsArray, qOnMount, qOnPageSwitch,  setupMqttStore,lsDevsQdataRetQdata, hookupMqtt, createBlankQdata, createSubscriptions,mqtt$nextPublish, reset }
+export{ srUpdateQdata, schedUpdateQdata, qOnFocus, qdataAsArray, qOnMount, qOnPageSwitch,  setupMqttStore,lsDevsQdataRetQdata, hookupMqtt, createBlankQdata, createSubscriptions,mqtt$nextPublish, reset}

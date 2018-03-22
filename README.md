@@ -10,6 +10,8 @@ https://cloudinary.com/console/welcome
 https://gridbyexample.com/examples/example13/
 https://www.mozilla.org/en-US/firefox/60.0a2/whatsnew/#cssgrid
 https://mozilladevelopers.github.io/playground/css-grid/
+### 51-hvac-v8k-SchedEdit-childof-SensorRelay
+ready to save to db
 ### 50-hvac-v8j-ready2change-broker-express-29
 ### 49-hvac-v8i-HHmm
 ### 48-hvac-v8h-Sched-modify

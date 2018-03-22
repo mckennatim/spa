@@ -6,6 +6,8 @@ import {mapClass2Element} from '../hoc'
 import moment from 'moment-timezone'
 import {router} from '../app'
 import {Sched} from './Sched' // eslint-disable-line no-unused-vars
+import {SchedEdit} from './SchedEdit' // eslint-disable-line no-unused-vars
+// import {sendCopyOfSchedobj} from '../services/schedobj'
 
 const style = {
  ...pStyle, outer: {...pStyle.outer, background: '#D54ac6'}
@@ -16,7 +18,7 @@ class SensorRelay extends React.Component{
     super(props);
     this.sr= this.props.cambio.page.params.sr
     this.loc= this.props.cambio.page.params.loc
-    this.state={boostValue: 6, boostType:'cmd', holdTemp: 54, fornext:'00:00'}
+    this.state={boostValue: 6, boostType:'cmd', holdTemp: 54, fornext:'00:00', edit:false}
     this.timr
     this.dow
   }
@@ -127,13 +129,37 @@ class SensorRelay extends React.Component{
   }
 
   handleDaySched =()=>{
-    router.navigate(`sched/${this.loc}/${this.sr}/${this.dow}`)
+    this.setState({edit:true})
+  }
+
+  modifiedSched =(s)=>{
+    console.log('s: ',JSON.stringify(s))
+    this.setState({edit:false})
+
   }
   handleWeekSched =()=>{
-    router.navigate(`sched/${this.loc}/${this.sr}`)
+    let sr = this.props.cambio.page.params.sr
+    let loc = this.props.cambio.page.params.loc
+    router.navigate(`sched/${loc}/${sr}`)
   }
 
   render(){
+    // console.log(this.state)
+    const displaySchedule=()=>{
+      if(this.state.schedobj){
+        if(!this.state.edit){
+          return(          
+            <Sched sched={this.state.schedobj.sched} idx={this.state.schedobj.idx}/>
+          )
+        }else{
+          return(
+            <SchedEdit sched={this.state.schedobj.sched} fromSched={this.modifiedSched}/>
+          )
+        }
+      }else{
+        return (<p>no schedule</p>)
+      }
+    }    
     if (this.state.qdata) {
       // console.log('this.state.qdata: ',JSON.stringify(this.state.qdata))
       // console.log('this.state.schedobj: ',JSON.stringify(this.state.schedobj))
@@ -141,15 +167,7 @@ class SensorRelay extends React.Component{
       const{temp,relay,setpt}=sr
       const{type,diff}=spec
       let timeleft,now
-      const displaySchedule=()=>{
-        if(this.state.schedobj){
-          return(          
-            <Sched sched={this.state.schedobj.sched} idx={this.state.schedobj.idx}/>
-          )
-        }else{
-          return (<p>no schedule</p>)
-        }
-      }
+
 
       const ds = displaySchedule()
 

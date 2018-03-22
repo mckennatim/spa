@@ -18,6 +18,7 @@ class WeekSched extends React.Component{
     this.state={dow:1, cursched:dowb[1].sched}
   }
   componentDidMount(){
+    console.log('this.props.cambio.page.params: ',JSON.stringify(this.props.cambio.page.params))
     let prior = {srrec:{}, sched:[], urlsr:'', message:''}
     this.unsub = hookupMqtt(this.loc, ls, (qstate)=>{
       reset.readyMessage(prior, qstate, this)
@@ -65,46 +66,6 @@ class WeekSched extends React.Component{
         </div>
         </div>
       )
-    // }
-
-    // if (this.state.qdata) {
-    //   const {name, sr} = this.state.qdata
-    //   const displaySchedule=()=>{
-    //     if(this.state.schedobj){
-    //       return(          
-    //         <Sched sched={this.state.schedobj.sched} idx={this.state.schedobj.idx}/>
-    //       )
-    //     }else{
-    //       return (<p>no schedule</p>)
-    //     }
-    //   } 
-
-    //   const db =  displaySchedButtons()    
-    //   const ds = displaySchedule()
-    //   return(
-    //     <div style={style.outer} >
-    //       <h4>in WeekSched of {name}</h4>
-    //       <button>def   WF   Th   S   Su   MT   hld</button><button>Th</button>
-    //       <span>temp: {sr.temp}, relay: {sr.relay}, setpt: {sr.setpt}</span>
-    //       {ds}
-    //       <p>{JSON.stringify(this.props.cambio.page)}</p>
-    //       {this.state.days}
-    //       {db}
-    //       {this.state.cursched[0].time}
-    //       <Sched sched={this.state.cursched} idx={0}/>
-    //       <span><strong>{this.state.qmessage}</strong></span>
-          
-          
-    //     </div>
-    //   )
-    // }else{
-    //   return(
-    //     <div style={style.outer} >
-    //       <h4>in WeekSched for {this.loc}</h4>
-    //       <button>better call saul</button>
-    //     </div>
-    //   )
-    // }
   }
 }
 WeekSched=mapClass2Element(WeekSched)

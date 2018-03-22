@@ -9,6 +9,14 @@ const setFocus = actionCreator((payload) => {
     payload
   }
 });
+// const copySchedobj2store = actionCreator((payload) => {
+//   //console.log('copying schedobj action')
+//   // console.log('payload: ',JSON.stringify(payload))
+//   return {
+//     type: 'COPY_SCHEDOBJ',
+//     payload
+//   }
+// });
 const setDeviceType = actionCreator((payload) => {
   return {
     type: 'SET_DEVICE',
@@ -17,6 +25,7 @@ const setDeviceType = actionCreator((payload) => {
 });
 
 const switchPage = actionCreator((payload) => {
+  console.log('switchPage payload: ',JSON.stringify(payload))
   return {
     type: 'PAGE_SWITCHED',
     payload
