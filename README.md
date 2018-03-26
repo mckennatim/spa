@@ -10,6 +10,8 @@ https://cloudinary.com/console/welcome
 https://gridbyexample.com/examples/example13/
 https://www.mozilla.org/en-US/firefox/60.0a2/whatsnew/#cssgrid
 https://mozilladevelopers.github.io/playground/css-grid/
+### 52-hvac-v8l-ck4change-schedUpdateQdata
+process to schedobj as soon as the data rolls in from mqttStore. Sense page change first thing once hookup starts pushing data. Use urlsr to filter data and then further filter by ck4change
 ### 51-hvac-v8k-SchedEdit-childof-SensorRelay
 ready to save to db
 ### 50-hvac-v8j-ready2change-broker-express-29
