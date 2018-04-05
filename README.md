@@ -10,6 +10,8 @@ https://cloudinary.com/console/welcome
 https://gridbyexample.com/examples/example13/
 https://www.mozilla.org/en-US/firefox/60.0a2/whatsnew/#cssgrid
 https://mozilladevelopers.github.io/playground/css-grid/
+### 55-hvac-v8o-no-ck4change-in-cdm-and-fetchScheds
+Detecting dev and or id is in componentDidMount. fetchScheds returns a dowd like object
 ### 54-hvac-v8n-bughunt-nomo-ck4changeWeek
 ADVICE: don't be fucking too tricky. You need to detect change? console log the shit out of it until you can. Double the detection when you sare detecting dev and or id. Still a problem.
 ### 53-hvac-v8m-ck4changeWeek
