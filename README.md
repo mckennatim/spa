@@ -10,6 +10,11 @@ https://cloudinary.com/console/welcome
 https://gridbyexample.com/examples/example13/
 https://www.mozilla.org/en-US/firefox/60.0a2/whatsnew/#cssgrid
 https://mozilladevelopers.github.io/playground/css-grid/
+### 56-hvac-v8p-display-modify-sched-days
+TODO `save4selected days` will do the heavy lifting of 0) pop current sched off wsched  1) checking if all the original `days` are accounted for in `daysselected` , if not change the `days` to just include the prior days not changeing and push them onto wsched. 2) go through all the `selectedays` and pop off and delete all the existing days in wsched. 3) push currentsched `s` onto wsched. 4) resort on sched and redisplay.
+
+subroutine - compare [a wsched[i] or currentsched](existing) to [candidate`s`](proposed) and return with days only those not in proposed. or null/[].
+
 ### 55-hvac-v8o-no-ck4change-in-cdm-and-fetchScheds
 Detecting dev and or id is in componentDidMount. fetchScheds returns a dowd like object
 ### 54-hvac-v8n-bughunt-nomo-ck4changeWeek
