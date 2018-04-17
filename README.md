@@ -10,7 +10,36 @@ https://cloudinary.com/console/welcome
 https://gridbyexample.com/examples/example13/
 https://www.mozilla.org/en-US/firefox/60.0a2/whatsnew/#cssgrid
 https://mozilladevelopers.github.io/playground/css-grid/
+### 57-hvac-v8q-save4selected-alterWeek
+
+* `save4selected days` will call `alterWeek` with this.state.wsched which has the old schedule still, this.state.cursched which and the new sched but the old days, this.state.dayselected has the new days, this.state.cidx is the index of the schedule object being editied
+* `alterWeek` 
+* * combines the new sched with the new days
+* * pops off the day being changed off the week sched array
+* * goes through wscehd array and checks its days, removes the ones being changed and if there are any days left, keeps what's left
+* * checks to see if there are any of the old days being edited that didn't get included in the new days. If so it keeps them.
+* * the new wek is sorted and returned 
+
+do the heavy lifting of 0) pop current sched off wsched  1) checking if all the original `days` are accounted for in `daysselected` , if not change the `days` to just include the prior days not changeing and push them onto wsched. 2) go through all the `selectedays` and pop off and delete all the existing days in wsched. 3) push currentsched `s` onto wsched. 4) resort on sched and redisplay.
+
 ### 56-hvac-v8p-display-modify-sched-days
+
+* component mounts fetches wsched and puts it in state
+* `displayDays` runs mapping over wsched
+* `displaySched` outputs 'no schedule'
+* on daysbutton push `changeSched(i)`put a copy of cursched,days and cidx in state
+* `displaySched` outputs cursched
+* on pushing `modify days sched`,  handleDaySched runs changind state to edit which redisplays as <SchedEdit>
+* after editing, on pushing `save`fromSched={this.modifiedSched}
+* modifiedSched(s) puts the edited schedule in state.cursched, does wsched change???? YES, it shouldn't (neither Object.assign nor ... do a deep copy)
+
+At the point once saved, the original weksched is updated to the new schedule but the days field of the currec entry of wsched needs to maybe be altered and any other records with days fields in dayselected need to be modified or deleted. 
+
+- change days of currcshed
+- for every record, 
+    pull out days array
+
+
 TODO `save4selected days` will do the heavy lifting of 0) pop current sched off wsched  1) checking if all the original `days` are accounted for in `daysselected` , if not change the `days` to just include the prior days not changeing and push them onto wsched. 2) go through all the `selectedays` and pop off and delete all the existing days in wsched. 3) push currentsched `s` onto wsched. 4) resort on sched and redisplay.
 
 subroutine - compare [a wsched[i] or currentsched](existing) to [candidate`s`](proposed) and return with days only those not in proposed. or null/[].
