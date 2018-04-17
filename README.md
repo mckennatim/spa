@@ -10,15 +10,18 @@ https://cloudinary.com/console/welcome
 https://gridbyexample.com/examples/example13/
 https://www.mozilla.org/en-US/firefox/60.0a2/whatsnew/#cssgrid
 https://mozilladevelopers.github.io/playground/css-grid/
+### 57-hvac-v8r-handleSend2server-convertDbFromWsched-make2dArr
+save back to server
 ### 57-hvac-v8q-save4selected-alterWeek
+TODO save back to server
 
 * `save4selected days` will call `alterWeek` with this.state.wsched which has the old schedule still, this.state.cursched which and the new sched but the old days, this.state.dayselected has the new days, this.state.cidx is the index of the schedule object being editied
 * `alterWeek` 
-* * combines the new sched with the new days
-* * pops off the day being changed off the week sched array
-* * goes through wscehd array and checks its days, removes the ones being changed and if there are any days left, keeps what's left
-* * checks to see if there are any of the old days being edited that didn't get included in the new days. If so it keeps them.
-* * the new wek is sorted and returned 
+    * combines the new sched with the new days
+    * pops off the day being changed off the week sched array
+    * goes through wscehd array and checks its days, removes the ones being changed and if there are any days left, keeps what's left
+    * checks to see if there are any of the old days being edited that didn't get included in the new days. If so it keeps them.
+    * the new wek is sorted and returned 
 
 do the heavy lifting of 0) pop current sched off wsched  1) checking if all the original `days` are accounted for in `daysselected` , if not change the `days` to just include the prior days not changeing and push them onto wsched. 2) go through all the `selectedays` and pop off and delete all the existing days in wsched. 3) push currentsched `s` onto wsched. 4) resort on sched and redisplay.
 
