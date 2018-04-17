@@ -10,7 +10,10 @@ https://cloudinary.com/console/welcome
 https://gridbyexample.com/examples/example13/
 https://www.mozilla.org/en-US/firefox/60.0a2/whatsnew/#cssgrid
 https://mozilladevelopers.github.io/playground/css-grid/
+### 58-hvac-v8s-SchedEdit
+delete add to SchedEdit
 ### 57-hvac-v8r-handleSend2server-convertDbFromWsched-make2dArr
+TODO delete add to sched
 save back to server
 ### 57-hvac-v8q-save4selected-alterWeek
 TODO save back to server
