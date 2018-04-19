@@ -10,6 +10,225 @@ https://cloudinary.com/console/welcome
 https://gridbyexample.com/examples/example13/
 https://www.mozilla.org/en-US/firefox/60.0a2/whatsnew/#cssgrid
 https://mozilladevelopers.github.io/playground/css-grid/
+### 60-buider-v0
+When a device is built it has certain hardware based characteristics and capabilitys. They get listeb by the builder and are the `spes` in devs. There is and administrative application for the builder that allows them to define the device specs.
+
+builder
+home
+select
+  select box
+  new button
+edit
+  devid
+  specs
+  descr
+
+installer
+home
+devedit
+  server
+  loc 
+  button2locedit
+locedit
+  locid
+  address
+  latlng
+  timezone
+
+developer
+
+  
+
+
+### 59-timr-v0
+starting from nothing
+
+1. make entries in db- app_loc, user_app_loc, devs
+2. make sure there are at least default programs for each device/senrel
+
+`{"HAStIMER":28,"notTimerTags":["temp","onoff","hilimit","lolimit"],"sr":[{"id":0,"hayrelay":0,"sensor":{"senses":"temp","model":"DHT22"}},{"id":1,"hayrelay":0,"sensor":{"senses":"humid","model":"DHT22"}},{"id":2,"hayrelay":1,"sensor":{}}]}`
+
+
+When a device is built it has certain hardware based characteristics and capabilitys. They get listeb by the builder and are the `spes` in devs. There is and administrative application for the builder that allows them to define the device specs
+
+      "sr":[
+        {
+          "srid":0,
+          "hayrelay":{
+            "controlled":1, //implies hilimit lowlimit
+            "diff":2,
+            "defsched":[[0,0,78,76]] //any device with a relay needs a default schedule
+          },
+          "haysensor":{
+            "senses":"temp",
+            "model":"DHT22"
+          }
+        },
+        {
+          "srid":1,
+          "hayrelay":0,
+          "haysensor":{
+            "senses":"humid",
+            "model":"DHT22"
+          }
+        },
+        {
+          "srid":2,
+          "hayrelay":{
+            "controlled":0, //not controlled by hilimit,lowlimit
+            "defsched":[[0,0,1]]
+          },
+          "haysensor":0
+        }
+      ]
+    }
+
+An installer enters the location, server, owner and wifi information into the device and database. 
+
+    locid: 12ParleyVale
+    address: 12 Parley Vale, Jamaica Plain, MA 02130
+    latlng: {"lat":42.315,"lng":-71.111}
+    timezone: America/New_York
+    owner: tim@sitebuilt.net
+    {
+      "mqtt_server":"sitebuilt.net",
+      "mqtt_port":"1884",
+      "sensor_type":"DHT" //legacy day for the device
+    }  
+
+
+Apps access and contol devices. When an app is developed it has a definition of needed sensors and relays and where they are gonna be used and what they are called 
+
+    [
+       {
+          "label":temp-gh",
+          "name":"Greenhouse Temperature",
+          "img":"temp-gh.jpg"
+          "desc" "tepm sensor with controlled relay"
+       },
+       {
+          "label":hum-gh",
+          "name":"Greenhouse Humidity",
+          "img":"hum-gh.jpg"
+          "desc": "hum sensor"
+       },
+       {
+          "label":light-gh",
+          "name":"Greenhouse Lights",
+          "img":"light-gh.jpg"
+          "desc" "timer relay"
+       },
+       {
+          "label":temp-out",
+          "name":"Outside Temperature",
+          "img":"temp-out.jpg"
+          "desc": "temp sensor"
+       }
+    ]
+
+If an owner had the harware capabilities needed, they can install an app that allows them to access and controll their hardware. At each location an app definition gets paired to devices and relays that can supply the functionality via a common label
+
+    {
+       "CYURD004":[
+          {
+             "sr":0,
+             "label":"temp-gh"
+          },
+          {
+             "sr":1,
+             "label":"hum-gh"
+          },
+          {
+             "sr":2,
+             "label":"light-gh"
+          }
+       ],
+       "CYURD006":[
+          {
+             "sr":0,
+             "label":"temp-out"
+          }
+       ]
+    }
+
+When a particular instance of an app is instantiated, the location determines which devices are being used and the sensor relay specs that are need are grabbed from the he device specs. Everything is combined 
+
+{
+  "appid":"greenhouse",
+  "cloc":"12paleyVale",
+  "ts":"America_NewYork",
+  "static":[
+    {
+      "label":"temp-gh",
+      "name":"Greenhouse Temperature",
+      "img":"temp-gh.jpg",
+      "devid":"CYURD004",
+      "srid":0,
+      "hayrelay":{
+        "controlled":1,
+        "diff":2,
+        "defsched":[[0,0,78,72]]
+      },
+      "haysensor":{
+        "senses":"temp",
+        "model":"DHT22"
+      }
+    },
+    {
+      "label":"hum-gh",
+      "name":"Greenhouse Humidity",
+      "img":"hum-gh.jpg",
+      "devid":"CYURD004",
+      "srid":0,
+      "hayrelay":0,
+      "haysensor":{
+        "senses":"humid",
+        "model":"DHT22"
+      }
+    },
+    {
+      "label":"light-gh",
+      "name":"Greenhouse Lights",
+      "img":"light-gh.jpg",
+      "devid":"CYURD004",
+      "srid":2,
+      "hayrelay":{
+        "controlled":0,
+        "defsched":[[0,0,1]]
+      },
+      "haysensor":0
+    },
+    {
+      "label":"temp-out",
+      "name":"Outside Temperature",
+      "img":"temp-out.jpg",
+      "devid":"CYURD006",
+      "srid":0,
+      "hayrelay":0,
+      "haysensor":{
+        "senses":"temp",
+        "model":"DSP18b20"
+      }
+    }
+  ]
+}
+
+Now the app can connect to the mqqt data that it needs for whatever page it is on.
+
+qdata:[
+  {
+    devid
+    id
+    label
+    sensor: {hay:0}
+    sensor: {hay:1, reading:72, setpt:68, diff:2}
+    relay: {hay:0}
+    relay: {hay:1, state:1, sched[]}
+  }
+]
+`
+Owners grant access and assign roles to users to particular apps running on their hardware devices. Roles include owner, builder, installer, developer, user and observer. Owner can activate or unactivate any role players. 
+
 ### 58-hvac-v8s-SchedEdit
 delete add to SchedEdit
 ### 57-hvac-v8r-handleSend2server-convertDbFromWsched-make2dArr

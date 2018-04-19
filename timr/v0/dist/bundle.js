@@ -6536,14 +6536,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.reset = exports.mqtt$nextPublish = exports.createSubscriptions = exports.createBlankQdata = exports.hookupMqtt = exports.lsDevsQdataRetQdata = exports.setupMqttStore = exports.qOnPageSwitch = exports.qOnMount = exports.qdataAsArray = exports.qOnFocus = exports.schedUpdateQdata = exports.srUpdateQdata = undefined;
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; // import { Observable } from 'rxjs/Observable';
-// import { Subject } from 'rxjs/Subject';
-// import 'rxjs/add/operator/do';
-// import 'rxjs/add/operator/mergeMap';
-// import 'rxjs/add/operator/scan';
-// import 'rxjs/add/operator/startWith';
-// import 'rxjs/add/observable/from';
-
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 // import { isObservable } from '../utilities/ofuncs';
 
 // import{qreducer} from './qreducer'
@@ -6566,25 +6559,6 @@ var _qrxred = __webpack_require__(224);
 var _qactions = __webpack_require__(357);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-// import{copySchedobj2store} from '../actions/responsive'
-
-// const action$ = new Subject();
-
-// const qactionCreator = (func) => (...args) => {
-//   const action = func.call(null, ...args);
-//   action$.next(action);
-//   if (isObservable(action.payload))
-//     action$.next(action.payload);
-//   return action;
-// };
-
-// const qcreateStore = (initState) =>
-//   action$
-//     .flatMap((action) => isObservable(action) ? action : Observable.from([action]))
-//     .startWith(initState)
-//     .scan(qreducer);
-
 
 /*----------for setting up qstore and listeners in comonentDidMount-------*/
 
@@ -6615,6 +6589,7 @@ var mqttConnect = function mqttConnect() {
   mqtt$.subscribe(function (e) {
     var sp = e.topic.split("/");
     var job = sp[1];
+    console.log(JSON.stringify(e));
     switch (job) {
       case "ready":
         // console.log(JSON.stringify(e))
@@ -6643,6 +6618,7 @@ var mqttConnect = function mqttConnect() {
 };
 
 var mqttEnd = function mqttEnd() {
+  console.log('in mqttEnd');
   mqtt$.next('end');
   qstatus.setReady(false);
 };
@@ -6672,6 +6648,7 @@ var createSubscriptions = function createSubscriptions(devs) {
       subs.push(o);
     });
   });
+  // console.log(subs)
   subscriptions = subs;
   return subscriptions;
 };
@@ -6739,6 +6716,7 @@ var hookupMqtt = function hookupMqtt(loc, ls, cb) {
   }
   if (haystore) {
     unsub = mqttStore.subscribe(function (state) {
+      //console.log(state)
       cb(state);
     });
   }
@@ -6749,14 +6727,6 @@ var reset = {
   ck4change: function ck4change(qu, status) {
     // console.log('ck4change ran')
     status.ischanged = false;
-    // arr.map((s)=>{
-    //   console.log(qu[s],'!=',status.prior[s], !isEqual(qu[s],status.prior[s]) )
-    //   if(!isEqual(qu[s],status.prior[s])){
-
-    //     status.ischanged = true
-    //     status.prior[s]=qu[s]
-    //   }      
-    // })
     if (!(0, _underscore.isEqual)(qu.sr, status.prior.sr)) {
       status.ischanged = true;
       status.prior.sr = qu.sr;
@@ -6770,10 +6740,6 @@ var reset = {
     return status;
   },
   ck4changeWeek: function ck4changeWeek(qu, status) {
-    // if(urlsr!=status.prior.urlsr){
-    //   status.ischanged = true
-    //   status.prior.urlsr=urlsr
-    // }else 
     var nstatus = _extends({}, status);
     //console.log(qu.sr.dev, '=??', nstatus.prior.sr.dev)
     if (!(0, _underscore.isEqual)(qu.sr, nstatus.prior.sr)) {
@@ -6833,8 +6799,6 @@ var reset = {
     return cursched;
   },
   stateWhenSrrecChanges: function stateWhenSrrecChanges(priorsrrec, cursrrec, that) {
-    // console.log('priorsrrec: ',JSON.stringify(priorsrrec))
-    // console.log('cursrrec: ',JSON.stringify(cursrrec))
     if (cursrrec && that.state.qdata && !(0, _underscore.isEqual)(priorsrrec, cursrrec)) {
       //console.log('srrec causing reset')
       // that.state.qdata.sr = cursrrec
@@ -6976,29 +6940,6 @@ var qOnFocus = function qOnFocus(to, frum, focused) {
     mqttEnd();
   }
 };
-
-// /*------------------actions-----------------------*/
-
-// const grabSrstateData = qactionCreator((payload)=>{
-//   // console.log('grabSrstateData: ',JSON.stringify(payload))
-//   return{
-//     type: 'SRSTATE_CHANGED',
-//     payload
-//   }
-// })
-// const grabSchedData = qactionCreator((payload)=>{
-//   // console.log('grabSchedData: ',JSON.stringify(payload))
-//   return{
-//     type: 'SCHED_CHANGED',
-//     payload
-//   }
-// })
-// const readyState = qactionCreator((payload)=>{
-//   return{
-//     type: 'READY_STATE',
-//     payload
-//   }
-// })
 
 exports.srUpdateQdata = srUpdateQdata;
 exports.schedUpdateQdata = schedUpdateQdata;
@@ -34374,8 +34315,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function Zone(props) {
   var zdsc = props.zdsc,
       loc = props.loc;
-  // console.log(zdsc)
 
+  console.log(zdsc);
   var hash = '#at/' + loc + '/' + zdsc.id;
   return _react2.default.createElement(
     'li',
@@ -54837,6 +54778,7 @@ var fromMqtt = function fromMqtt() {
   });
   observer = {
     next: function next(data) {
+      console.log(data);
       if (data == 'end') {
         client.disconnect();
       } else {
@@ -54867,7 +54809,7 @@ module.exports = {"m":"https"}
 /* 351 */
 /***/ (function(module, exports) {
 
-module.exports = {"https":{"appid":"hvac","cbPath":"#registered","mqtt_server":"services.sitebuilt.net/iotb/wss","mqtt_port":4333,"url":{"soauth":"https://services.sitebuilt.net/soauth","api":"https://services.sitebuilt.net/iotex/api"}},"local":{"appid":"hvac","cbPath":"#registered","mqtt_server":"services.sitebuilt.net/iotb/wss","mqtt_port":4333,"url":{"soauth":"https://services.sitebuilt.net/soauth","api":"https://services.sitebuilt.net/iotex/api"}}}
+module.exports = {"https":{"appid":"timr","cbPath":"#registered","mqtt_server":"services.sitebuilt.net/iotb/wss","mqtt_port":4333,"url":{"soauth":"https://services.sitebuilt.net/soauth","api":"https://services.sitebuilt.net/iotex/api"}},"local":{"appid":"timr","cbPath":"#registered","mqtt_server":"services.sitebuilt.net/iotb/wss","mqtt_port":4333,"url":{"soauth":"https://services.sitebuilt.net/soauth","api":"https://services.sitebuilt.net/iotex/api"}}}
 
 /***/ }),
 /* 352 */
@@ -86357,6 +86299,7 @@ var AtLoc = function (_React$Component) {
             var zones = JSON.parse(_this2.props.data[0].zones);
             var tz = _this2.props.data[0].timezone;
             var qdata = (0, _interface.lsDevsQdataRetQdata)(devs, zones, tz, _getCfg.ls);
+            console.log(qdata);
             (0, _interface.setupMqttStore)(devs, qdata, tz);
             return _react2.default.createElement(_Zones.Zones, _extends({ devs: devs, qdatab: qdata, tz: tz }, _this2.props));
           default:

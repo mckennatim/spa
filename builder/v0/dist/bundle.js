@@ -6536,14 +6536,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.reset = exports.mqtt$nextPublish = exports.createSubscriptions = exports.createBlankQdata = exports.hookupMqtt = exports.lsDevsQdataRetQdata = exports.setupMqttStore = exports.qOnPageSwitch = exports.qOnMount = exports.qdataAsArray = exports.qOnFocus = exports.schedUpdateQdata = exports.srUpdateQdata = undefined;
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; // import { Observable } from 'rxjs/Observable';
-// import { Subject } from 'rxjs/Subject';
-// import 'rxjs/add/operator/do';
-// import 'rxjs/add/operator/mergeMap';
-// import 'rxjs/add/operator/scan';
-// import 'rxjs/add/operator/startWith';
-// import 'rxjs/add/observable/from';
-
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 // import { isObservable } from '../utilities/ofuncs';
 
 // import{qreducer} from './qreducer'
@@ -6566,25 +6559,6 @@ var _qrxred = __webpack_require__(224);
 var _qactions = __webpack_require__(357);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-// import{copySchedobj2store} from '../actions/responsive'
-
-// const action$ = new Subject();
-
-// const qactionCreator = (func) => (...args) => {
-//   const action = func.call(null, ...args);
-//   action$.next(action);
-//   if (isObservable(action.payload))
-//     action$.next(action.payload);
-//   return action;
-// };
-
-// const qcreateStore = (initState) =>
-//   action$
-//     .flatMap((action) => isObservable(action) ? action : Observable.from([action]))
-//     .startWith(initState)
-//     .scan(qreducer);
-
 
 /*----------for setting up qstore and listeners in comonentDidMount-------*/
 
@@ -6615,6 +6589,7 @@ var mqttConnect = function mqttConnect() {
   mqtt$.subscribe(function (e) {
     var sp = e.topic.split("/");
     var job = sp[1];
+    console.log(JSON.stringify(e));
     switch (job) {
       case "ready":
         // console.log(JSON.stringify(e))
@@ -6643,6 +6618,7 @@ var mqttConnect = function mqttConnect() {
 };
 
 var mqttEnd = function mqttEnd() {
+  console.log('in mqttEnd');
   mqtt$.next('end');
   qstatus.setReady(false);
 };
@@ -6672,6 +6648,7 @@ var createSubscriptions = function createSubscriptions(devs) {
       subs.push(o);
     });
   });
+  // console.log(subs)
   subscriptions = subs;
   return subscriptions;
 };
@@ -6739,6 +6716,7 @@ var hookupMqtt = function hookupMqtt(loc, ls, cb) {
   }
   if (haystore) {
     unsub = mqttStore.subscribe(function (state) {
+      //console.log(state)
       cb(state);
     });
   }
@@ -6749,14 +6727,6 @@ var reset = {
   ck4change: function ck4change(qu, status) {
     // console.log('ck4change ran')
     status.ischanged = false;
-    // arr.map((s)=>{
-    //   console.log(qu[s],'!=',status.prior[s], !isEqual(qu[s],status.prior[s]) )
-    //   if(!isEqual(qu[s],status.prior[s])){
-
-    //     status.ischanged = true
-    //     status.prior[s]=qu[s]
-    //   }      
-    // })
     if (!(0, _underscore.isEqual)(qu.sr, status.prior.sr)) {
       status.ischanged = true;
       status.prior.sr = qu.sr;
@@ -6770,10 +6740,6 @@ var reset = {
     return status;
   },
   ck4changeWeek: function ck4changeWeek(qu, status) {
-    // if(urlsr!=status.prior.urlsr){
-    //   status.ischanged = true
-    //   status.prior.urlsr=urlsr
-    // }else 
     var nstatus = _extends({}, status);
     //console.log(qu.sr.dev, '=??', nstatus.prior.sr.dev)
     if (!(0, _underscore.isEqual)(qu.sr, nstatus.prior.sr)) {
@@ -6833,8 +6799,6 @@ var reset = {
     return cursched;
   },
   stateWhenSrrecChanges: function stateWhenSrrecChanges(priorsrrec, cursrrec, that) {
-    // console.log('priorsrrec: ',JSON.stringify(priorsrrec))
-    // console.log('cursrrec: ',JSON.stringify(cursrrec))
     if (cursrrec && that.state.qdata && !(0, _underscore.isEqual)(priorsrrec, cursrrec)) {
       //console.log('srrec causing reset')
       // that.state.qdata.sr = cursrrec
@@ -6976,29 +6940,6 @@ var qOnFocus = function qOnFocus(to, frum, focused) {
     mqttEnd();
   }
 };
-
-// /*------------------actions-----------------------*/
-
-// const grabSrstateData = qactionCreator((payload)=>{
-//   // console.log('grabSrstateData: ',JSON.stringify(payload))
-//   return{
-//     type: 'SRSTATE_CHANGED',
-//     payload
-//   }
-// })
-// const grabSchedData = qactionCreator((payload)=>{
-//   // console.log('grabSchedData: ',JSON.stringify(payload))
-//   return{
-//     type: 'SCHED_CHANGED',
-//     payload
-//   }
-// })
-// const readyState = qactionCreator((payload)=>{
-//   return{
-//     type: 'READY_STATE',
-//     payload
-//   }
-// })
 
 exports.srUpdateQdata = srUpdateQdata;
 exports.schedUpdateQdata = schedUpdateQdata;
@@ -9218,7 +9159,7 @@ var ThrottleSubscriber = (function (_super) {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.panes = exports.multi = exports.AtLoc = exports.SaveSched = exports.TimerCtl = exports.WeekSched = exports.SensorRelay = exports.Zone = exports.Zones = exports.Nav = exports.App = exports.Registered = exports.Dog = exports.Home = exports.About = exports.Login = exports.LocList = undefined;
+exports.panes = exports.multi = exports.Edit = exports.Select = exports.Nav = exports.App = exports.Registered = exports.Home = exports.About = undefined;
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; // eslint-disable-line no-unused-vars
 
@@ -9231,29 +9172,13 @@ var _App = __webpack_require__(636);
 
 var _Home = __webpack_require__(638);
 
-var _LocList = __webpack_require__(639);
-
-var _Login = __webpack_require__(642);
+var _Select = __webpack_require__(652);
 
 var _Nav = __webpack_require__(80);
 
-var _Dog = __webpack_require__(643);
-
-var _Zones = __webpack_require__(318);
-
-var _Zone = __webpack_require__(319);
-
-var _SensorRelay = __webpack_require__(644);
-
-var _WeekSched = __webpack_require__(645);
-
-var _SaveSched = __webpack_require__(647);
-
-var _TimerCtl = __webpack_require__(648);
+var _Edit = __webpack_require__(653);
 
 var _Registered = __webpack_require__(649);
-
-var _AtLoc = __webpack_require__(650);
 
 var _styles = __webpack_require__(13);
 
@@ -9309,28 +9234,19 @@ var About = function About(props) {
 };
 // const multi=[] //multi delared but empty defaults to single pane
 
-var multi = [{ pri: 'AtLoc', mul: [['AtLoc', 'SensorRelay'], ['AtLoc', 'SensorRelay', 'Home'], ['AtLoc', 'SensorRelay', 'About', 'Home']]
-}, { pri: 'SensorRelay', mul: [['AtLoc', 'SensorRelay'], ['AtLoc', 'SensorRelay', 'WeekSched'], ['AtLoc', 'SensorRelay', 'LocList', 'Home']]
-}, { pri: 'WeekSched', mul: [['WeekSched', 'SensorRelay'], ['WeekSched', 'SensorRelay', 'AtLoc'], ['WeekSched', 'SensorRelay', 'AtLoc', 'Loclist']] }];
+var multi = [{ pri: 'Select', mul: [['Select', 'Home']]
+}];
 
 //['watch', 'phone', 'phoneL', 'tablet', 'tabletL', 'laptop']
 var panes = [1, 1, 2, 2, 3, 3, 4];
 
-exports.LocList = _LocList.LocList;
-exports.Login = _Login.Login;
 exports.About = About;
 exports.Home = _Home.Home;
-exports.Dog = _Dog.Dog;
 exports.Registered = _Registered.Registered;
 exports.App = _App.App;
 exports.Nav = _Nav.Nav;
-exports.Zones = _Zones.Zones;
-exports.Zone = _Zone.Zone;
-exports.SensorRelay = _SensorRelay.SensorRelay;
-exports.WeekSched = _WeekSched.WeekSched;
-exports.TimerCtl = _TimerCtl.TimerCtl;
-exports.SaveSched = _SaveSched.SaveSched;
-exports.AtLoc = _AtLoc.AtLoc;
+exports.Select = _Select.Select;
+exports.Edit = _Edit.Edit;
 exports.multi = multi;
 exports.panes = panes;
 
@@ -9391,9 +9307,9 @@ _Observable.Observable.fromEvent(window, 'resize').debounceTime(300).subscribe(f
 var container = document.getElementById('app');
 var store1 = (0, _rxred.createStore)(_store.initState);
 //console.log(store1)
-store1
-// .do((state)=>console.log('state.cambio: ',JSON.stringify(state.cambio)))
-.subscribe(function (state) {
+store1.do(function (state) {
+  return console.log('state.cambio: ', JSON.stringify(state.cambio));
+}).subscribe(function (state) {
   return _reactDom2.default.render(_react2.default.createElement(_components.App, state), container);
 });
 
@@ -11485,8 +11401,8 @@ var Nav = function Nav() {
         { style: _styles.mStyle.li },
         _react2.default.createElement(
           'a',
-          { style: _styles.mStyle.a, href: '#loclist', 'data-navigo': true },
-          'locations'
+          { style: _styles.mStyle.a, href: '#select', 'data-navigo': true },
+          'select'
         )
       )
     )
@@ -34223,392 +34139,10 @@ exports.VirtualAction = VirtualAction;
 //# sourceMappingURL=VirtualTimeScheduler.js.map
 
 /***/ }),
-/* 318 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.Zones = undefined;
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; // eslint-disable-line no-unused-vars
-// eslint-disable-line no-unused-vars
-
-
-var _react = __webpack_require__(6);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _styles = __webpack_require__(13);
-
-var _getCfg = __webpack_require__(12);
-
-var _wfuncs = __webpack_require__(25);
-
-var _Zone = __webpack_require__(319);
-
-var _interface = __webpack_require__(20);
-
-var _hoc = __webpack_require__(32);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var style = _extends({}, _styles.pStyle, { outer: _extends({}, _styles.pStyle.outer, { background: '#D54ac6' })
-});
-
-var Zones = function (_React$Component) {
-  _inherits(Zones, _React$Component);
-
-  function Zones(props) {
-    _classCallCheck(this, Zones);
-
-    var _this = _possibleConstructorReturn(this, (Zones.__proto__ || Object.getPrototypeOf(Zones)).call(this, props));
-
-    _this.sr = _this.props.cambio.page.params.sr;
-    _this.loc = _this.props.cambio.page.params.loc;
-    return _this;
-  }
-
-  _createClass(Zones, [{
-    key: 'componentDidMount',
-    value: function componentDidMount() {
-      var _this2 = this;
-
-      this.unsub = (0, _interface.hookupMqtt)(this.loc, _getCfg.ls, function (state) {
-        return _this2.setState(state);
-      });
-      (0, _interface.qOnMount)();
-    }
-  }, {
-    key: 'componentWillUnmount',
-    value: function componentWillUnmount() {
-      this.unsub.unsubscribe();
-    }
-  }, {
-    key: 'render',
-    value: function render() {
-      var _this3 = this;
-
-      if (this.state) {
-        var message = void 0;
-        var state = this.state;
-        if ((0, _wfuncs.geta)('state.readystate.message', state)) {
-          message = state.readystate.message;
-        }
-        var qdataArr = (0, _interface.qdataAsArray)(this.state.qdata);
-        var displayZ = qdataArr.map(function (z) {
-          return _react2.default.createElement(_Zone.Zone, { key: z.id, zdsc: z, loc: _this3.loc });
-        });
-        return _react2.default.createElement(
-          'div',
-          { style: style.outer },
-          _react2.default.createElement(
-            'h4',
-            null,
-            'in Zones for ',
-            this.loc,
-            ' '
-          ),
-          displayZ,
-          message
-        );
-      } else {
-        return _react2.default.createElement(
-          'div',
-          { style: style.outer },
-          _react2.default.createElement(
-            'h4',
-            null,
-            'in Zones for ',
-            this.loc
-          ),
-          _react2.default.createElement(
-            'button',
-            null,
-            'better call saul'
-          )
-        );
-      }
-    }
-  }]);
-
-  return Zones;
-}(_react2.default.Component);
-
-exports.Zones = Zones = (0, _hoc.mapClass2Element)(Zones);
-
-exports.Zones = Zones;
-
-/***/ }),
-/* 319 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.Zone = undefined;
-
-var _react = __webpack_require__(6);
-
-var _react2 = _interopRequireDefault(_react);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-// eslint-disable-line no-unused-vars
-
-
-function Zone(props) {
-  var zdsc = props.zdsc,
-      loc = props.loc;
-  // console.log(zdsc)
-
-  var hash = '#at/' + loc + '/' + zdsc.id;
-  return _react2.default.createElement(
-    'li',
-    { key: zdsc.id },
-    _react2.default.createElement(
-      'a',
-      { href: hash, 'data-navigo': true },
-      zdsc.name,
-      ' temp:',
-      zdsc.sr.temp,
-      ' relay: ',
-      zdsc.sr.relay,
-      ' setpt: ',
-      zdsc.sr.setpt
-    )
-  );
-}
-
-exports.Zone = Zone;
-
-/***/ }),
-/* 320 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.Sched = undefined;
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _react = __webpack_require__(6);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _getCfg = __webpack_require__(12);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } // eslint-disable-line no-unused-vars
-
-
-var Sched = function (_React$Component) {
-  _inherits(Sched, _React$Component);
-
-  function Sched(props) {
-    _classCallCheck(this, Sched);
-
-    return _possibleConstructorReturn(this, (Sched.__proto__ || Object.getPrototypeOf(Sched)).call(this, props));
-  }
-
-  _createClass(Sched, [{
-    key: 'render',
-    value: function render() {
-      // console.log('this.props.sched: ',JSON.stringify(this.props.sched))
-      var idx = this.props.idx;
-
-      return _react2.default.createElement(
-        'div',
-        null,
-        _react2.default.createElement(
-          'ul',
-          null,
-          this.props.sched.map(function (s, i) {
-            var ieq = i == idx;
-            return _react2.default.createElement(
-              'li',
-              { key: i },
-              _react2.default.createElement(
-                'span',
-                { style: ieq ? { color: 'green' } : { color: 'blue' } },
-                (0, _getCfg.HHmm2ampm)(s.time),
-                ' ',
-                s.setpt
-              )
-            );
-          })
-        )
-      );
-    }
-  }]);
-
-  return Sched;
-}(_react2.default.Component);
-
-exports.Sched = Sched;
-
-/***/ }),
-/* 321 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.SchedEdit = undefined;
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _react = __webpack_require__(6);
-
-var _react2 = _interopRequireDefault(_react);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-// eslint-disable-line no-unused-vars
-// import {ampm2HHmm} from '../utilities/getCfg'
-
-var SchedEdit = function (_React$Component) {
-  _inherits(SchedEdit, _React$Component);
-
-  function SchedEdit(props) {
-    _classCallCheck(this, SchedEdit);
-
-    var _this = _possibleConstructorReturn(this, (SchedEdit.__proto__ || Object.getPrototypeOf(SchedEdit)).call(this, props));
-
-    _this.handleSetptChange = function (e) {
-      var msched = _this.state.sched;
-      msched[e.target.name].setpt = e.target.value * 1;
-      _this.setState({ sched: msched });
-    };
-
-    _this.handleTimeChange = function (e) {
-      var msched = _this.state.sched;
-      msched[e.target.name].time = e.target.value;
-      _this.setState({ sched: msched });
-    };
-
-    _this.handleSave = function () {
-      _this.props.fromSched(_this.state.sched);
-    };
-
-    _this.resetState = function () {
-      _this.setState({ sched: _this.props.sched });
-    };
-
-    _this.handleDel = function (i) {
-      var msched = _this.state.sched;
-      msched.splice(i, 1);
-      _this.setState({ sched: msched });
-    };
-
-    _this.handleAdd = function () {
-      if (_this.state.sched.length > 4) {
-        window.alert('too many events, only supports up to 5');
-      } else {
-        var msched = _this.state.sched;
-        var as = { time: "23:59", setpt: 50 };
-        msched.push(as);
-        _this.setState({ sched: msched });
-      }
-    };
-
-    _this.state = { sched: _this.props.sched };
-    return _this;
-  }
-
-  _createClass(SchedEdit, [{
-    key: 'componentWillMount',
-    value: function componentWillMount() {
-      this.resetState();
-    }
-  }, {
-    key: 'render',
-    value: function render() {
-      var _this2 = this;
-
-      return _react2.default.createElement(
-        'div',
-        null,
-        _react2.default.createElement(
-          'ul',
-          null,
-          this.props.sched.map(function (s, i) {
-            return _react2.default.createElement(
-              'li',
-              { key: i },
-              _react2.default.createElement(
-                'span',
-                null,
-                _react2.default.createElement('input', { type: 'time', value: s.time,
-                  name: i,
-                  onChange: _this2.handleTimeChange }),
-                _react2.default.createElement('input', { type: 'number', style: { width: '3em' }, value: s.setpt,
-                  name: i,
-                  onChange: _this2.handleSetptChange }),
-                _react2.default.createElement(
-                  'button',
-                  { onClick: _this2.handleDel.bind(_this2, i) },
-                  '-'
-                ),
-                s.time,
-                ' ',
-                s.setpt
-              )
-            );
-          })
-        ),
-        _react2.default.createElement(
-          'button',
-          { onClick: this.handleAdd },
-          '+'
-        ),
-        _react2.default.createElement(
-          'button',
-          { onClick: this.handleSave },
-          'save'
-        )
-      );
-    }
-  }]);
-
-  return SchedEdit;
-}(_react2.default.Component);
-
-exports.SchedEdit = SchedEdit;
-
-/***/ }),
+/* 318 */,
+/* 319 */,
+/* 320 */,
+/* 321 */,
 /* 322 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -52620,8 +52154,6 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.routing = undefined;
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
 var _navigo = __webpack_require__(335);
 
 var _navigo2 = _interopRequireDefault(_navigo);
@@ -52636,44 +52168,14 @@ var routing = function routing() {
   var cfg = { root: null, useHash: true };
   router = new _navigo2.default(cfg.root, cfg.useHash);
   router.on({
-    'loclist': function loclist() {
-      (0, _responsive.switchPage)({ name: 'LocList', params: null });
+    'edit/:dev': function editDev(params) {
+      (0, _responsive.switchPage)({ name: 'Edit', params: params });
     },
-    'login': function login() {
-      (0, _responsive.switchPage)({ name: 'Login', params: null });
+    'select': function select() {
+      (0, _responsive.switchPage)({ name: 'Select', params: null });
     },
     'registered': function registered(params, query) {
-      (0, _responsive.switchPage)({ name: 'Registered', params: _extends({}, params, { query: query }) });
-    },
-    'products': function products() {
-      (0, _responsive.switchPage)({ name: 'Products', params: null });
-    },
-    'products/:id': function productsId(params) {
-      (0, _responsive.switchPage)({ name: 'Products', params: params });
-    },
-    'at/:loc': function atLoc(params) {
-      (0, _responsive.switchPage)({ name: 'AtLoc', params: params });
-    },
-    'at/:loc/:sr': function atLocSr(params) {
-      (0, _responsive.switchPage)({ name: 'SensorRelay', params: params });
-    },
-    'sched/:loc/:sr': function schedLocSr(params) {
-      (0, _responsive.switchPage)({ name: 'WeekSched', params: params });
-    },
-    'prg/:loc/:sr': function prgLocSr(params) {
-      (0, _responsive.switchPage)({ name: 'DaySched', params: params });
-    },
-    'timerctl/:loc/:sr/:day': function timerctlLocSrDay(params) {
-      (0, _responsive.switchPage)({ name: 'TimerCtl', params: params });
-    },
-    'savesched/:loc/:sr': function saveschedLocSr(params) {
-      (0, _responsive.switchPage)({ name: 'SaveSched', params: params });
-    },
-    'about': function about() {
-      (0, _responsive.switchPage)({ name: 'About', params: null });
-    },
-    'dog': function dog() {
-      (0, _responsive.switchPage)({ name: 'Dog', params: null });
+      (0, _responsive.switchPage)({ name: 'Registered', params: { query: query } });
     },
     'home': function home() {
       (0, _responsive.switchPage)({ name: 'Home', params: null });
@@ -54837,6 +54339,7 @@ var fromMqtt = function fromMqtt() {
   });
   observer = {
     next: function next(data) {
+      console.log(data);
       if (data == 'end') {
         client.disconnect();
       } else {
@@ -54867,7 +54370,7 @@ module.exports = {"m":"https"}
 /* 351 */
 /***/ (function(module, exports) {
 
-module.exports = {"https":{"appid":"hvac","cbPath":"#registered","mqtt_server":"services.sitebuilt.net/iotb/wss","mqtt_port":4333,"url":{"soauth":"https://services.sitebuilt.net/soauth","api":"https://services.sitebuilt.net/iotex/api"}},"local":{"appid":"hvac","cbPath":"#registered","mqtt_server":"services.sitebuilt.net/iotb/wss","mqtt_port":4333,"url":{"soauth":"https://services.sitebuilt.net/soauth","api":"https://services.sitebuilt.net/iotex/api"}}}
+module.exports = {"https":{"appid":"builder","cbPath":"#registered","mqtt_server":"services.sitebuilt.net/iotb/wss","mqtt_port":4333,"url":{"soauth":"https://services.sitebuilt.net/soauth","api":"https://services.sitebuilt.net/iotex/api"}},"local":{"appid":"builder","cbPath":"#registered","mqtt_server":"services.sitebuilt.net/iotb/wss","mqtt_port":4333,"url":{"soauth":"https://services.sitebuilt.net/soauth","api":"https://services.sitebuilt.net/iotex/api"}}}
 
 /***/ }),
 /* 352 */
@@ -84866,113 +84369,7 @@ var Home = function Home() {
 exports.Home = Home;
 
 /***/ }),
-/* 639 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.LocList = undefined;
-
-var _react = __webpack_require__(6);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _getCfg = __webpack_require__(12);
-
-var _hoc = __webpack_require__(32);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-// eslint-disable-line no-unused-vars
-var LocList = function LocList(props) {
-  var status = props.status,
-      data = props.data,
-      message = props.message;
-
-  var listItems = data.map(function (item, i) {
-    var hash = '#at/' + item;
-    return _react2.default.createElement(
-      'li',
-      { key: i },
-      _react2.default.createElement(
-        'a',
-        { href: hash, 'data-navigo': true },
-        item
-      )
-    );
-  });
-  var maybeLoad = function maybeLoad() {
-    var rval = void 0;
-    switch (true) {
-      case status == 'error' && message == 'not-registered':
-        console.log('in not registered');
-        rval = _react2.default.createElement(
-          'a',
-          { href: _getCfg.cfg.url.authqry },
-          'please register again'
-        );
-        break;
-      case status == 'error':
-        rval = _react2.default.createElement(
-          'p',
-          null,
-          message
-        );
-        break;
-      case status == 'success' && message == 'no-records':
-        rval = _react2.default.createElement(
-          'p',
-          null,
-          'You are not registered at any Location'
-        );
-        break;
-      case status == 'success' && message == 'just-1':
-        console.log('about to location repalce just-1');
-        location.replace('#at/' + data[0]);
-        break;
-      case status == 'success' && message == 'multi':
-        rval = _react2.default.createElement(
-          'ul',
-          null,
-          listItems
-        );
-        break;
-      default:
-        rval = _react2.default.createElement(
-          'p',
-          null,
-          message
-        );
-    }
-    return rval;
-  };
-  var ml = maybeLoad();
-  return _react2.default.createElement(
-    'div',
-    null,
-    _react2.default.createElement(
-      'h3',
-      null,
-      ' Location List '
-    ),
-    ml
-  );
-};
-
-var fconfig = {
-  url: _getCfg.cfg.url.api + '/dedata/loclist',
-  urlparams: [],
-  options: { headers: { 'Authorization': 'Bearer ' } }
-};
-
-exports.LocList = LocList = (0, _hoc.mapClass2Element)((0, _hoc.fetchFor)(LocList, fconfig));
-exports.LocList = LocList;
-
-/***/ }),
+/* 639 */,
 /* 640 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -85130,1055 +84527,13 @@ function mapClass2Element(aClassElement) {
 exports.mapClass2Element = mapClass2Element;
 
 /***/ }),
-/* 642 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.Login = undefined;
-
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; // eslint-disable-line no-unused-vars
-
-
-var _react = __webpack_require__(6);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _styles = __webpack_require__(13);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var style = _extends({}, _styles.pStyle, { outer: _extends({}, _styles.pStyle.outer, { background: '#C4A265' })
-});
-_styles.pStyle.outer.background = '#C4A265';
-
-function Login(props) {
-  // console.log(props);
-  var name = props.test.name;
-
-  return _react2.default.createElement(
-    'div',
-    { style: style.outer },
-    _react2.default.createElement(
-      'h4',
-      null,
-      'in doLogin ',
-      name,
-      ' '
-    )
-  );
-}
-
-exports.Login = Login;
-
-/***/ }),
-/* 643 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.Dog = undefined;
-
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; // eslint-disable-line no-unused-vars
-
-
-var _react = __webpack_require__(6);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _styles = __webpack_require__(13);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var style = _extends({}, _styles.pStyle, { outer: _extends({}, _styles.pStyle.outer, { background: '#C4A265' })
-});
-_styles.pStyle.outer.background = '#C4A265';
-
-function Dog(props) {
-  var name = props.name;
-
-  return _react2.default.createElement(
-    'div',
-    { style: style.outer },
-    _react2.default.createElement(
-      'h4',
-      null,
-      'in big doDog ',
-      name,
-      ' '
-    )
-  );
-}
-
-exports.Dog = Dog;
-
-/***/ }),
-/* 644 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.SensorRelay = undefined;
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; // eslint-disable-line no-unused-vars
-// eslint-disable-line no-unused-vars
-
-
-var _react = __webpack_require__(6);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _styles = __webpack_require__(13);
-
-var _getCfg = __webpack_require__(12);
-
-var _interface = __webpack_require__(20);
-
-var _hoc = __webpack_require__(32);
-
-var _momentTimezone = __webpack_require__(66);
-
-var _momentTimezone2 = _interopRequireDefault(_momentTimezone);
-
-var _app = __webpack_require__(52);
-
-var _Sched = __webpack_require__(320);
-
-var _SchedEdit = __webpack_require__(321);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-// eslint-disable-line no-unused-vars
-// import {sendCopyOfSchedobj} from '../services/schedobj'
-var style = _extends({}, _styles.pStyle, { outer: _extends({}, _styles.pStyle.outer, { background: '#D54ac6' })
-});
-
-var SensorRelay = function (_React$Component) {
-  _inherits(SensorRelay, _React$Component);
-
-  function SensorRelay(props) {
-    _classCallCheck(this, SensorRelay);
-
-    var _this = _possibleConstructorReturn(this, (SensorRelay.__proto__ || Object.getPrototypeOf(SensorRelay)).call(this, props));
-
-    _this.handleBoostChange = function (event) {
-      _this.setState({ boostValue: event.target.value, boostType: "prg" });
-    };
-
-    _this.handleBoostDelayChange = function (event) {
-      // console.log('delay event.target.value: ',JSON.stringify(event.target.value))
-      _this.setState({ boostDelay: event.target.value });
-    };
-
-    _this.handleBoRadio = function (event) {
-      _this.setState({ boostType: event.target.value });
-    };
-
-    _this.handleBoost = function () {
-      var boostFor = void 0;
-      if ("prg" === _this.state.boostType) {
-        boostFor = _this.convertBoostVal(_this.state.boostValue);
-        var schedmod = (0, _getCfg.modifySched)(_this.state.qdata.sched, _this.state.tz, boostFor, 68, _this.state.qdata.spec.diff, _this.state.boostDelay);
-        // console.log(JSON.stringify(schedmod))
-        var topic = _this.state.qdata.sr.dev + '/prg';
-        var message = { id: _this.state.qdata.sr.id, pro: schedmod };
-        (0, _interface.mqtt$nextPublish)(topic, message);
-      } else {
-        boostFor = _this.state.schedobj.timeleft;
-        var _topic = _this.state.qdata.sr.dev + '/cmd';
-        var _message = { id: _this.state.qdata.sr.id, sra: [69, 67] };
-        (0, _interface.mqtt$nextPublish)(_topic, _message);
-      }
-      // console.log('setBoost on ',this.state.boostType, ' for ', boostFor)
-    };
-
-    _this.convertBoostVal = function (v) {
-      var h = Math.floor(v);
-      var m = v % h * 60;
-      return h + ':' + m;
-    };
-
-    _this.handleHold = function () {
-      var holdTemp = _this.state.holdTemp;
-      var diff = _this.state.qdata.spec.diff;
-      var holdobj = (0, _getCfg.insertHold)(_this.state.qdata.sched, _this.state.tz, holdTemp, diff);
-      var schedmod = holdobj.schedmod,
-          temparr = holdobj.temparr;
-
-      var myuntil = _this.state.holdDate + ' ' + _this.state.holdTime;
-      var holdarr = [[0, 0].concat(temparr)];
-      // console.log(JSON.stringify(schedmod))
-      // console.log('holdarr: ', JSON.stringify(holdarr))
-      // console.log('myuntil: ', myuntil)
-      var topic = _this.state.qdata.sr.dev + '/prg';
-      var message = { id: _this.state.qdata.sr.id, pro: schedmod };
-      (0, _interface.mqtt$nextPublish)(topic, message);
-      //in order to send in a new schedule 
-      var lsh = _getCfg.ls.getItem();
-      // console.log(JSON.stringify([[0,0,holdTemp*1+diff/2, holdTemp*1-diff/2]]))
-      var pl = {
-        devid: _this.state.qdata.sr.dev,
-        dow: 8,
-        senrel: _this.state.qdata.sr.id,
-        sched: JSON.stringify(holdarr),
-        until: myuntil
-        // console.log('pl: ',JSON.stringify(pl))
-      };var url = _getCfg.cfg.url.api + '/dedata/prg';
-      var options = {
-        headers: {
-          'Authorization': 'Bearer ' + lsh['token'],
-          Accept: 'application/json',
-          'Content-Type': 'application/json'
-        },
-        method: "POST",
-        body: JSON.stringify(pl)
-      };
-      fetch(url, options).then(function () {});
-    };
-
-    _this.handleHoldDate = function (event) {
-      console.log(event.target.value);
-      _this.setState({ holdDate: event.target.value });
-    };
-
-    _this.handleHoldTime = function (event) {
-      console.log(event.target.value);
-      _this.setState({ holdTime: event.target.value });
-    };
-
-    _this.handleHoldTempChange = function (event) {
-      _this.setState({ holdTemp: event.target.value });
-    };
-
-    _this.handleDaySched = function () {
-      _this.setState({ edit: true });
-    };
-
-    _this.modifiedSched = function (s) {
-      _this.setState({ edit: false });
-      var qarr = (0, _getCfg.schedObj2Arr)(s, _this.state.qdata.spec.diff);
-      var topic = _this.state.qdata.sr.dev + '/prg';
-      var message = { id: _this.state.qdata.sr.id, pro: qarr };
-      console.log('[', JSON.stringify(topic), '] ', JSON.stringify(message));
-      (0, _interface.mqtt$nextPublish)(topic, message);
-    };
-
-    _this.handleWeekSched = function () {
-      var sr = _this.props.cambio.page.params.sr;
-      var loc = _this.props.cambio.page.params.loc;
-      _app.router.navigate('sched/' + loc + '/' + sr);
-    };
-
-    _this.displaySchedule = function (schedobj) {
-      // console.log(schedobj)
-      if (schedobj) {
-        if (!_this.state.edit) {
-          return _react2.default.createElement(_Sched.Sched, { sched: schedobj.sched, idx: schedobj.idx });
-        } else {
-          return _react2.default.createElement(_SchedEdit.SchedEdit, { sched: schedobj.sched, fromSched: _this.modifiedSched });
-        }
-      } else {
-        return _react2.default.createElement(
-          'p',
-          null,
-          'no schedule'
-        );
-      }
-    };
-
-    _this.sr = _this.props.cambio.page.params.sr;
-    _this.loc = _this.props.cambio.page.params.loc;
-    _this.state = { boostValue: 6, boostType: 'cmd', holdTemp: 54, fornext: '00:00', edit: false };
-    _this.timr;
-    _this.dow;
-    return _this;
-  }
-
-  _createClass(SensorRelay, [{
-    key: 'componentDidMount',
-    value: function componentDidMount() {
-      var _this2 = this;
-
-      var curr = (0, _momentTimezone2.default)();
-      var curhr = curr.format('H:mm');
-      var holdDate = curr.add(14, 'days').format('YYYY-MM-DD');
-      this.setState({ boostDelay: curhr, holdTime: curhr, holdDate: holdDate });
-      var urlsr = _interface.reset.urlSr(this.props);
-      var status = {};
-      status.prior = { sr: {}, schedobj: {}, urlsr: urlsr, message: '' };
-      status.ischanged = false;
-
-      this.unsub = (0, _interface.hookupMqtt)(this.loc, _getCfg.ls, function (qstate) {
-        /*qstate={
-        devs: {dev(CYURD):[label(music), sr(0)]},
-        qdata: {kid:{id, img. name,
-                    schedobj:{dow, idx, now, sched:[{time, setpt},]}
-                    spec:{type, diff}, 
-                    sr:{temp,relay,setpt,timeleft, id, dev},
-                    ts},},
-        readystate:{ready,message},
-        tz}*/
-        status.prior.message = _interface.reset.readyMessage(status.prior.message, qstate, _this2);
-        urlsr = _interface.reset.urlSr(_this2.props);
-        if (qstate.qdata[urlsr]) {
-          var qu = qstate.qdata[urlsr];
-          status = _interface.reset.ck4change(qu, status);
-          if (status.ischanged) {
-            // console.log('status.prior.sr: ',JSON.stringify(status.prior.sr))
-            // console.log('status.prior.schedobj: ',JSON.stringify(status.prior.schedobj))
-            // console.log('qstate.qdzta[urlsr]: ',JSON.stringify(qu))
-            _this2.setState({ qdata: qu });
-          }
-        }
-        _interface.reset.timer(_this2); //need this.timr and this.state.fornext:'00:00' in constructor
-      });
-      (0, _interface.qOnMount)();
-    }
-  }, {
-    key: 'componentWillUnmount',
-    value: function componentWillUnmount() {
-      this.unsub.unsubscribe();
-      clearInterval(this.tmr);
-    }
-  }, {
-    key: 'render',
-    value: function render() {
-      // console.log('RENDERING this.state: ',JSON.stringify(this.state))
-      if (this.state.qdata) {
-        var _state$qdata = this.state.qdata,
-            id = _state$qdata.id,
-            name = _state$qdata.name,
-            img = _state$qdata.img,
-            sr = _state$qdata.sr,
-            ts = _state$qdata.ts,
-            spec = _state$qdata.spec,
-            schedobj = _state$qdata.schedobj;
-        var temp = sr.temp,
-            relay = sr.relay,
-            setpt = sr.setpt;
-        var type = spec.type,
-            diff = spec.diff;
-
-        var timeleft = void 0,
-            now = void 0;
-
-        var ds = this.displaySchedule(schedobj);
-
-        return _react2.default.createElement(
-          'div',
-          { style: style.outer },
-          _react2.default.createElement(
-            'span',
-            { id: 'name' },
-            _react2.default.createElement(
-              'strong',
-              null,
-              name
-            )
-          ),
-          _react2.default.createElement(
-            'span',
-            { id: 'temp' },
-            'temp: ',
-            temp,
-            ' relay:',
-            relay
-          ),
-          _react2.default.createElement(
-            'button',
-            null,
-            'home'
-          ),
-          _react2.default.createElement(
-            'span',
-            null,
-            'setpt at ',
-            setpt,
-            ' for next ',
-            this.state.fornext
-          ),
-          _react2.default.createElement(
-            'button',
-            { onClick: this.handleWeekSched },
-            ' modify weeks sched'
-          ),
-          _react2.default.createElement(
-            'button',
-            { onClick: this.handleDaySched },
-            ' modify days sched'
-          ),
-          ds,
-          _react2.default.createElement(
-            'button',
-            { onClick: this.handleBoost },
-            'boost'
-          ),
-          _react2.default.createElement('input', { type: 'radio', name: 'boofo', value: 'cmd', checked: this.state.boostType === "cmd", onChange: this.handleBoRadio }),
-          'for ',
-          timeleft,
-          _react2.default.createElement('input', { type: 'radio', name: 'boofo', value: 'prg', checked: this.state.boostType === "prg", onChange: this.handleBoRadio }),
-          this.convertBoostVal(this.state.boostValue),
-          _react2.default.createElement('input', { type: 'range', min: '1', max: '12', step: '.25', value: this.state.boostValue, onChange: this.handleBoostChange }),
-          'delay boost til',
-          _react2.default.createElement('input', { type: 'time', value: this.state.boostDelay, onChange: this.handleBoostDelayChange }),
-          _react2.default.createElement(
-            'span',
-            { id: 'ts' },
-            Date(ts)
-          ),
-          _react2.default.createElement(
-            'button',
-            { onClick: this.handleHold },
-            'hold til'
-          ),
-          'at ',
-          this.state.holdTemp,
-          ' temp',
-          _react2.default.createElement('input', { type: 'range', min: '50', max: '70', step: '1', value: this.state.holdTemp, onChange: this.handleHoldTempChange }),
-          'until',
-          _react2.default.createElement('input', { type: 'date', value: this.state.holdDate, onChange: this.handleHoldDate }),
-          _react2.default.createElement('input', { type: 'time', value: this.state.holdTime, onChange: this.handleHoldTime }),
-          _react2.default.createElement(
-            'span',
-            { id: 'id' },
-            id,
-            ' ',
-            img
-          ),
-          _react2.default.createElement(
-            'span',
-            { id: 'spec' },
-            'type: ',
-            type,
-            ', diff: ',
-            diff,
-            ' id:',
-            sr.id,
-            ' dev:',
-            sr.dev
-          ),
-          _react2.default.createElement(
-            'span',
-            { id: 'now' },
-            now
-          ),
-          _react2.default.createElement(
-            'span',
-            null,
-            _react2.default.createElement(
-              'strong',
-              null,
-              this.state.qmessage
-            )
-          )
-        );
-      } else {
-        return _react2.default.createElement(
-          'div',
-          { style: style.outer },
-          _react2.default.createElement(
-            'h4',
-            null,
-            'in SensorRelay for ',
-            this.loc
-          ),
-          _react2.default.createElement(
-            'button',
-            null,
-            'better call saul'
-          )
-        );
-      }
-    }
-  }]);
-
-  return SensorRelay;
-}(_react2.default.Component);
-
-exports.SensorRelay = SensorRelay = (0, _hoc.mapClass2Element)(SensorRelay);
-
-exports.SensorRelay = SensorRelay;
-
-/***/ }),
-/* 645 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.WeekSched = undefined;
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; // eslint-disable-line no-unused-vars
-
-// import {dowb}from '../services/fake'
-// eslint-disable-line no-unused-vars
-// eslint-disable-line no-unused-vars
-
-
-var _react = __webpack_require__(6);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _hoc = __webpack_require__(32);
-
-var _wfuncs = __webpack_require__(25);
-
-var _getCfg = __webpack_require__(12);
-
-var _interface = __webpack_require__(20);
-
-var _Sched = __webpack_require__(320);
-
-var _SchedEdit = __webpack_require__(321);
-
-var _schedobj = __webpack_require__(646);
-
-var _styles = __webpack_require__(13);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var style = _extends({}, _styles.pStyle, { outer: _extends({}, _styles.pStyle.outer, { background: '#5295b7' })
-});
-
-var WeekSched = function (_React$Component) {
-  _inherits(WeekSched, _React$Component);
-
-  function WeekSched(props) {
-    _classCallCheck(this, WeekSched);
-
-    var _this = _possibleConstructorReturn(this, (WeekSched.__proto__ || Object.getPrototypeOf(WeekSched)).call(this, props));
-
-    _this.changeSched = function (i) {
-      var cursched = JSON.parse(JSON.stringify(_this.state.wsched[i]));
-      _this.setState({ days: cursched.days, cursched: cursched, cidx: i }, function () {
-        console.log('cursched, days and cidx set');
-      });
-    };
-
-    _this.handleDaySched = function () {
-      _this.setState({ edit: true });
-    };
-
-    _this.fetchScheds = function (dev, id) {
-      var lsh = _getCfg.ls.getItem();
-      // console.log(lsh)
-      console.log(dev, ' ', id);
-      if ((0, _wfuncs.geta)('lsh.token', lsh)) {
-        var url = _getCfg.cfg.url.api + '/dedata/scheds/' + dev + '/' + id;
-        var options = { headers: { 'Authorization': 'Bearer ' + lsh['token'] } };
-        fetch(url, options).then(function (response) {
-          return response.json();
-        }).then(function (json) {
-          if (json.message) {
-            _this.setState({ qmessage: json.message });
-          } else {
-            //console.log(JSON.stringify(json))
-            var wsched = (0, _schedobj.covertSchedFromDb)(json);
-            console.log(wsched);
-            _this.setState({ wsched: wsched, edit: false });
-          }
-        });
-      } else {
-        var mess = 'can\'t fetch data, you aren\'t authorized, maybe re-register';
-        _this.setState({ qmessage: mess });
-      }
-    };
-
-    _this.modifiedSched = function (s) {
-      console.log(s);
-      console.log('s magically changes cusrsched object');
-      console.log(_this.state.cursched);
-      var nds = _this.state.dayselected.slice();
-      _this.state.days.split(' ').map(function (d) {
-        var idx = _schedobj.dayNameArr.findIndex(function (el) {
-          return el == d;
-        });
-        console.log(d, idx);
-        nds[idx] = idx;
-      });
-      _this.setState({ dayedit: true, edit: false, dayselected: nds });
-      console.log(_this.state.wsched);
-    };
-
-    _this.save4selected = function () {
-      var newWeekSched = (0, _schedobj.alterWeek)(_this.state.wsched, _this.state.cursched, _this.state.dayselected, _this.state.cidx);
-      console.log(newWeekSched);
-      _this.setState({ wsched: newWeekSched, dayedit: false });
-    };
-
-    _this.handleSend2server = function () {
-      console.log('sending to server');
-      //console.log(this.state.qdata.spec.diff)
-      var dbSched = (0, _schedobj.convertDbFromWsched)(_this.state.wsched, _this.state.qdata.spec.diff);
-      console.log(dbSched);
-      var strdata = JSON.stringify(dbSched);
-      var lsh = _getCfg.ls.getItem();
-      var url = _getCfg.cfg.url.api + '/dedata/scheds';
-      var options = {
-        headers: {
-          'Authorization': 'Bearer ' + lsh['token'],
-          Accept: 'application/json',
-          'Content-Type': 'application/json'
-        },
-        method: "POST",
-        body: strdata
-      };
-      fetch(url, options).then(function () {});
-    };
-
-    _this.selectDay = function (i) {
-      var nds = _this.state.dayselected.slice();
-      if (nds[i] == i) {
-        nds[i] = 9;
-      } else {
-        nds[i] = i;
-      }
-      // console.log(nds)
-      _this.setState({ dayselected: nds });
-    };
-
-    _this.displaySchedule = function (schedobj) {
-      if (schedobj.sched) {
-        if (!_this.state.edit) {
-          return _react2.default.createElement(
-            'div',
-            null,
-            _react2.default.createElement(_Sched.Sched, { sched: schedobj.sched, idx: schedobj.idx }),
-            _react2.default.createElement(
-              'button',
-              { onClick: _this.handleDaySched },
-              ' modify days sched'
-            ),
-            _react2.default.createElement(
-              'button',
-              { onClick: _this.handleSend2server },
-              ' finished editing-save to server'
-            )
-          );
-        } else {
-          return _react2.default.createElement(_SchedEdit.SchedEdit, { sched: schedobj.sched, fromSched: _this.modifiedSched });
-        }
-      } else {
-        return _react2.default.createElement(
-          'p',
-          null,
-          'no schedule'
-        );
-      }
-    };
-
-    _this.displayDays = function () {
-      if (!_this.state.dayedit) {
-        return _react2.default.createElement(
-          'div',
-          null,
-          _this.state.wsched.map(function (d, i) {
-            var nd = d.days.replace(/ /gi, '');
-            var iseq = _this.state.dow == i;
-            return _react2.default.createElement(
-              'button',
-              {
-                key: i, onClick: _this.changeSched.bind(_this, i),
-                style: iseq ? { background: '#FFCDE3' } : { background: '#E1F3FC' }
-              },
-              nd
-            );
-          })
-        );
-      } else {
-        return _react2.default.createElement(
-          'div',
-          null,
-          _schedobj.dayNameArr.map(function (d, i) {
-            // console.log(this.state.dayselected)
-            var issel = _this.state.dayselected[i] == i;
-            return _react2.default.createElement(
-              'button',
-              {
-                key: i, onClick: _this.selectDay.bind(_this, i),
-                style: issel ? { background: '#FFCDE3' } : { background: '#E1F3FC' }
-              },
-              d
-            );
-          }),
-          _react2.default.createElement(
-            'button',
-            { onClick: _this.save4selected },
-            ' save for selected Days'
-          )
-        );
-      }
-    };
-
-    _this.loc = _this.props.cambio.page.params.loc;
-    _this.sr = _this.props.cambio.page.params.sr;
-    _this.state = { dayedit: false, edit: false, dow: 1, cursched: [], wsched: [], dayselected: [9, 9, 9, 9, 9, 9, 9, 9, 9] };
-    return _this;
-  }
-
-  _createClass(WeekSched, [{
-    key: 'componentDidMount',
-    value: function componentDidMount() {
-      var _this2 = this;
-
-      console.log('this.props.cambio.page.params: ', JSON.stringify(this.props.cambio.page.params));
-      var urlsr = _interface.reset.urlSr(this.props);
-      var status = {};
-      status.prior = { sr: {}, schedobj: {}, urlsr: 'dog', message: '' };
-      status.ischanged = false;
-      // let ischanged=false
-      this.unsub = (0, _interface.hookupMqtt)(this.loc, _getCfg.ls, function (qstate) {
-        // prior.message=reset.readyMessage(prior.message, qstate, this)
-        // console.log(qstate)
-        urlsr = _interface.reset.urlSr(_this2.props);
-        // if(qstate.qdata[urlsr]){
-        // console.log('status: ',status.prior.sr.dev, 'qstate: ',qstate.qdata[urlsr].sr.dev)
-        if (status.prior.sr.dev != qstate.qdata[urlsr].sr.dev || status.prior.sr.id != qstate.qdata[urlsr].sr.id) {
-          console.log('Shit ahs changed');
-          _this2.setState({ qdata: qstate.qdata[urlsr] });
-          var qu = qstate.qdata[urlsr];
-          var dev = qu.sr.dev;
-          var id = qu.sr.id;
-          status.prior.sr.dev = dev;
-          status.prior.sr.id = id;
-          if (dev.length > 5) {
-            _this2.fetchScheds(dev, id);
-          }
-        }
-      });
-      (0, _interface.qOnMount)();
-    }
-  }, {
-    key: 'componentWillUnmount',
-    value: function componentWillUnmount() {
-      this.unsub.unsubscribe();
-    }
-  }, {
-    key: 'render',
-    value: function render() {
-      var ds = this.displaySchedule(this.state.cursched);
-      var ddays = this.displayDays();
-      if (this.state.qdata) {
-        //console.log('this.state.qdata.sr: ',JSON.stringify(this.state.qdata.sr))
-        return _react2.default.createElement(
-          'div',
-          { style: style.outer },
-          _react2.default.createElement(
-            'h4',
-            null,
-            'Week Sched ',
-            this.props.cambio.page.params.loc,
-            ', ',
-            this.props.cambio.page.params.sr,
-            ' '
-          ),
-          ddays,
-          ds,
-          _react2.default.createElement(
-            'span',
-            null,
-            _react2.default.createElement(
-              'strong',
-              null,
-              this.state.qmessage
-            )
-          )
-        );
-      } else {
-        return _react2.default.createElement(
-          'h4',
-          null,
-          'dogshit'
-        );
-      }
-    }
-  }]);
-
-  return WeekSched;
-}(_react2.default.Component);
-
-exports.WeekSched = WeekSched = (0, _hoc.mapClass2Element)(WeekSched);
-exports.WeekSched = WeekSched;
-
-/***/ }),
-/* 646 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.convertDbFromWsched = exports.alterWeek = exports.dayNameArr = exports.covertSchedFromDb = exports.getSchedobjCopy = exports.sendCopyOfSchedobj = undefined;
-
-var _getCfg = __webpack_require__(12);
-
-var _underscore = __webpack_require__(100);
-
-var schedobj = { sched: [] };
-var sendCopyOfSchedobj = function sendCopyOfSchedobj(cpy) {
-  schedobj = cpy;
-  console.log('schedobj: ', JSON.stringify(schedobj));
-};
-
-var getSchedobjCopy = function getSchedobjCopy() {
-  return schedobj;
-};
-var covertSchedFromDb = function covertSchedFromDb(da) {
-  var tz = _getCfg.ls.getKey('tz');
-  ///create fitsacc from a
-  var fda = da.shift();
-  console.log(fda);
-  var fsched = (0, _getCfg.createSchedObj)(JSON.parse(fda.sched), tz).sched;
-  var firstacc = convert1Db(fda, fsched);
-  console.log(firstacc);
-  var narr = da.reduce(function (acc, a) {
-    var sched = (0, _getCfg.createSchedObj)(JSON.parse(a.sched), tz).sched;
-    var lpop = acc.pop();
-    if ((0, _underscore.isEqual)(lpop.sched, sched)) {
-      console.log('they are equal');
-      lpop.days = lpop.days + ' ' + dayNameArr[a.dow];
-      acc.push(lpop);
-      //add to lpop.days and push back on array and return acc
-    } else {
-      acc.push(lpop);
-      acc.push(convert1Db(a, sched));
-      //push lpop back on acc, noj = convert1db(a) from a, push noj return acc
-    }
-    return acc;
-  }, [firstacc]);
-  return narr;
-};
-
-var convert1Db = function convert1Db(a, sched) {
-  var noj = {};
-  noj.devid = a.devid;
-  noj.senrel = a.senrel;
-  noj.sr = _getCfg.ls.findLabel(a.devid, a.senrel);
-  noj.dow = a.dow;
-  noj.sched = sched;
-  noj.days = dayNameArr[a.dow];
-  return noj;
-};
-
-var convertDbFromWsched = function convertDbFromWsched(wsched, diff) {
-  var devid = wsched[0].devid;
-  var senrel = wsched[0].senrel;
-  var dbSched = [];
-  wsched.map(function (s) {
-    var darr = s.days.split(' ');
-    var ndarr = darr.map(function (d) {
-      return dayNameArr.indexOf(d);
-    });
-    var sched = make2dArr(s.sched, diff);
-    ndarr.map(function (n) {
-      var asched = {};
-      asched.devid = devid;
-      asched.senrel = senrel;
-      asched.dow = n;
-      asched.season = 'current';
-      asched.sched = sched;
-      dbSched.push(asched);
-    });
-  });
-  return dbSched;
-};
-
-var make2dArr = function make2dArr(sched, diff) {
-  var sched2d = sched.map(function (s) {
-    var hm = s.time.split(':');
-    return '[' + hm[0] * 1 + ',' + hm[1] * 1 + ',' + Math.round(s.setpt * 1 + diff / 2) + ',' + Math.floor(s.setpt * 1 - diff / 2) + ']';
-  });
-  return '[' + sched2d.join(',') + ']';
-};
-
-var alterWeek = function alterWeek(wschedArr, newSchedObj, dayselected, cidx) {
-  /*wschedo is[{devid,sennrel:0,sr:music, days:T TH, dow:4,sched:[{time,setpt}]},]
-    dayselected is [ 9, 9, 9, 9, 4, 5, 9, 9, 9 ]
-  */
-  var nWsched = wschedArr.slice();
-  var curSchedObj = nWsched.splice(cidx, 1)[0];
-  var newDays = readDayselected(dayselected);
-  newSchedObj.days = newDays.join(' ');
-  newSchedObj.dow = dayNameArr.indexOf(newDays[0]);
-  var oldDaysArr = curSchedObj.days.split(' ');
-
-  var newWeekSched = nWsched.map(function (arec) {
-    var days = arec.days.split(' ');
-    days.map(function (d, i) {
-      if (newDays.includes(d)) {
-        days.splice(i, 1);
-      }
-    });
-    if (days.length > 0) {
-      arec.days = days.join(' ');
-      return arec;
-    }
-  });
-  oldDaysArr.map(function (d, i) {
-    if (newDays.includes(d)) {
-      oldDaysArr.splice(i, 1);
-    }
-  });
-  if (oldDaysArr.length > 0) {
-    curSchedObj.days = oldDaysArr.join(' ');
-    curSchedObj.dow = dayNameArr.indexOf(oldDaysArr[0]);
-    newWeekSched.push(curSchedObj);
-  }
-  newWeekSched.push(newSchedObj);
-  newWeekSched.sort(function (a, b) {
-    return a.dow - b.dow;
-  });
-  return newWeekSched;
-};
-
-var readDayselected = function readDayselected(dayselected) {
-  var days = [];
-  dayselected.map(function (d) {
-    if (d < 9) {
-      days.push(dayNameArr[d]);
-    }
-  });
-  return days;
-};
-
-var dayNameArr = ['def', 'M', 'T', 'W', 'Th', 'F', 'S', 'Su', 'hld'];
-// let dayNameArr2 =['d', 'M', 'T', 'W', 'Th', 'F', 'S', 'Su', 'h']
-
-exports.sendCopyOfSchedobj = sendCopyOfSchedobj;
-exports.getSchedobjCopy = getSchedobjCopy;
-exports.covertSchedFromDb = covertSchedFromDb;
-exports.dayNameArr = dayNameArr;
-exports.alterWeek = alterWeek;
-exports.convertDbFromWsched = convertDbFromWsched;
-
-/***/ }),
-/* 647 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.SaveSched = undefined;
-
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; // eslint-disable-line no-unused-vars
-
-
-var _react = __webpack_require__(6);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _styles = __webpack_require__(13);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var style = _extends({}, _styles.pStyle, { outer: _extends({}, _styles.pStyle.outer, { background: '#C4A264' })
-});
-_styles.pStyle.outer.background = '#C4A265';
-
-function SaveSched(props) {
-  var propstr = JSON.stringify(props);
-  return _react2.default.createElement(
-    'div',
-    { style: style.outer },
-    _react2.default.createElement(
-      'h4',
-      null,
-      'in SaveSched '
-    ),
-    _react2.default.createElement(
-      'p',
-      null,
-      propstr
-    )
-  );
-}
-
-exports.SaveSched = SaveSched;
-
-/***/ }),
-/* 648 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.TimerCtl = undefined;
-
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; // eslint-disable-line no-unused-vars
-
-
-var _react = __webpack_require__(6);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _styles = __webpack_require__(13);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var style = _extends({}, _styles.pStyle, { outer: _extends({}, _styles.pStyle.outer, { background: '#C4A265' })
-});
-_styles.pStyle.outer.background = '#C4A265';
-
-function TimerCtl(props) {
-  var propstr = JSON.stringify(props);
-  return _react2.default.createElement(
-    'div',
-    { style: style.outer },
-    _react2.default.createElement(
-      'h4',
-      null,
-      'in TimerCtl '
-    ),
-    _react2.default.createElement(
-      'p',
-      null,
-      propstr
-    )
-  );
-}
-
-exports.TimerCtl = TimerCtl;
-
-/***/ }),
+/* 642 */,
+/* 643 */,
+/* 644 */,
+/* 645 */,
+/* 646 */,
+/* 647 */,
+/* 648 */,
 /* 649 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -86216,7 +84571,7 @@ _styles.pStyle.outer.background = '#C4A265';
 
 function Registered(props) {
   var getLocs = function getLocs() {
-    location.replace('#loclist');
+    location.replace('#select');
   };
   var em = 'NOT';
   var regstr = 'dog';
@@ -86226,7 +84581,7 @@ function Registered(props) {
     if (Object.keys(mobj).find(function (x) {
       return x == 'message';
     })) {
-      console.log('ie message');
+      console.log('hay message');
       regstr = decodeURI(mobj.message);
     } else {
       em = mobj.email;
@@ -86258,151 +84613,7 @@ function Registered(props) {
 exports.Registered = Registered;
 
 /***/ }),
-/* 650 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.AtLoc = undefined;
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; // eslint-disable-line no-unused-vars
-// eslint-disable-line no-unused-vars
-// eslint-disable-line no-unused-vars
-
-
-var _react = __webpack_require__(6);
-
-var _react2 = _interopRequireDefault(_react);
-
-__webpack_require__(40);
-
-var _getCfg = __webpack_require__(12);
-
-var _hoc = __webpack_require__(32);
-
-var _styles = __webpack_require__(13);
-
-var _Zones = __webpack_require__(318);
-
-var _Nav = __webpack_require__(80);
-
-var _interface = __webpack_require__(20);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var style = _extends({}, _styles.pStyle, { outer: _extends({}, _styles.pStyle.outer, { background: '#C4A265' })
-});
-_styles.pStyle.outer.background = '#C4A265';
-
-var AtLoc = function (_React$Component) {
-  _inherits(AtLoc, _React$Component);
-
-  function AtLoc(props) {
-    _classCallCheck(this, AtLoc);
-
-    var _this = _possibleConstructorReturn(this, (AtLoc.__proto__ || Object.getPrototypeOf(AtLoc)).call(this, props));
-
-    _this.zoneso = [];
-    _this.zedat = [];
-    return _this;
-  }
-
-  _createClass(AtLoc, [{
-    key: 'render',
-    value: function render() {
-      var _this2 = this;
-
-      var name = this.props.test.name;
-      var params = this.props.cambio.page.params;
-
-      _getCfg.ls.modItem("cloc", params.loc);
-      var _props = this.props,
-          status = _props.status,
-          message = _props.message;
-
-      var maybeLoad = function maybeLoad() {
-        switch (true) {
-          case status == 'error' && message == 'not-registered':
-            return _react2.default.createElement(
-              'a',
-              { style: _styles.mStyle.a, href: _getCfg.cfg.url.authqry },
-              'please register again'
-            );
-          case status == 'error':
-            return _react2.default.createElement(
-              'p',
-              null,
-              message
-            );
-          case status == 'success' && message == 'no-records':
-            return _react2.default.createElement(
-              'p',
-              null,
-              'You are not registered at any Location'
-            );
-          case status == 'success':
-            var devs = JSON.parse(_this2.props.data[0].devs);
-            var zones = JSON.parse(_this2.props.data[0].zones);
-            var tz = _this2.props.data[0].timezone;
-            var qdata = (0, _interface.lsDevsQdataRetQdata)(devs, zones, tz, _getCfg.ls);
-            (0, _interface.setupMqttStore)(devs, qdata, tz);
-            return _react2.default.createElement(_Zones.Zones, _extends({ devs: devs, qdatab: qdata, tz: tz }, _this2.props));
-          default:
-            return _react2.default.createElement(
-              'p',
-              null,
-              message
-            );
-        }
-      };
-      var ml = maybeLoad();
-      _getCfg.ls.modItem("cloc", params.loc);
-
-      return _react2.default.createElement(
-        'div',
-        { style: style.outer },
-        _react2.default.createElement(_Nav.Nav, null),
-        _react2.default.createElement(
-          'p',
-          null,
-          'in AtLoc ',
-          name,
-          ' ',
-          params.loc,
-          ' ',
-          params.sr,
-          ' '
-        ),
-        ml
-      );
-    }
-  }]);
-
-  return AtLoc;
-}(_react2.default.Component);
-
-var fconfig = {
-  url: _getCfg.cfg.url.api + '/dedata/loc',
-  urlparams: ['cloc'],
-  options: { headers: { 'Authorization': 'Bearer ' } }
-};
-
-exports.AtLoc = AtLoc = (0, _hoc.mapClass2Element)((0, _hoc.fetchFor)(AtLoc, fconfig));
-exports.AtLoc = AtLoc;
-
-/***/ }),
+/* 650 */,
 /* 651 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -86449,6 +84660,260 @@ var initialBrowser = function initialBrowser() {
 
 initState.responsive = initialBrowser();
 exports.initState = initState;
+
+/***/ }),
+/* 652 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.Select = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; // eslint-disable-line no-unused-vars
+
+
+var _react = __webpack_require__(6);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _styles = __webpack_require__(13);
+
+var _getCfg = __webpack_require__(12);
+
+var _wfuncs = __webpack_require__(25);
+
+var _hoc = __webpack_require__(32);
+
+var _app = __webpack_require__(52);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var style = _extends({}, _styles.pStyle, { outer: _extends({}, _styles.pStyle.outer, { background: '#D54ac6' })
+});
+
+var Select = function (_React$Component) {
+  _inherits(Select, _React$Component);
+
+  function Select(props) {
+    _classCallCheck(this, Select);
+
+    var _this = _possibleConstructorReturn(this, (Select.__proto__ || Object.getPrototypeOf(Select)).call(this, props));
+
+    _this.fetchDevids = function () {
+      var lsh = _getCfg.ls.getItem();
+      // console.log(lsh)
+      if ((0, _wfuncs.geta)('lsh.token', lsh)) {
+        var url = _getCfg.cfg.url.api + '/admin/devlist/';
+        var options = { headers: { 'Authorization': 'Bearer ' + lsh['token'] } };
+        fetch(url, options).then(function (response) {
+          return response.json();
+        }).then(function (json) {
+          if (json.message) {
+            _this.setState({ qmessage: json.message });
+          } else {
+            console.log(JSON.stringify(json));
+            _this.setState({ devs: json });
+          }
+        });
+      } else {
+        var mess = 'can\'t fetch data, you aren\'t authorized, maybe re-register';
+        _this.setState({ qmessage: mess });
+      }
+    };
+
+    _this.handleChange = function (e) {
+      console.log('handling change', e.target.value);
+      _this.setState({ value: e.target.value });
+    };
+
+    _this.goEdit = function () {
+      console.log('editin');
+      _app.router.navigate('edit/' + _this.state.value);
+    };
+
+    _this.state = { devs: [] };
+    return _this;
+  }
+
+  _createClass(Select, [{
+    key: 'componentDidMount',
+    value: function componentDidMount() {
+      this.fetchDevids();
+    }
+  }, {
+    key: 'componentWillUnmount',
+    value: function componentWillUnmount() {}
+  }, {
+    key: 'render',
+    value: function render() {
+      return _react2.default.createElement(
+        'div',
+        { style: style.outer },
+        _react2.default.createElement(
+          'h4',
+          null,
+          'in Select'
+        ),
+        _react2.default.createElement(
+          'div',
+          null,
+          _react2.default.createElement(
+            'select',
+            { value: this.state.value, onChange: this.handleChange },
+            this.state.devs.map(function (d, i) {
+              return _react2.default.createElement(
+                'option',
+                { key: i, value: d },
+                d
+              );
+            })
+          ),
+          _react2.default.createElement(
+            'button',
+            null,
+            '+'
+          ),
+          _react2.default.createElement(
+            'button',
+            { onClick: this.goEdit },
+            'edit'
+          ),
+          _react2.default.createElement('br', null),
+          this.state.qmessage
+        )
+      );
+    }
+  }]);
+
+  return Select;
+}(_react2.default.Component);
+
+exports.Select = Select = (0, _hoc.mapClass2Element)(Select);
+
+exports.Select = Select;
+
+/***/ }),
+/* 653 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.Edit = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; // eslint-disable-line no-unused-vars
+
+
+var _react = __webpack_require__(6);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _styles = __webpack_require__(13);
+
+var _getCfg = __webpack_require__(12);
+
+var _wfuncs = __webpack_require__(25);
+
+var _hoc = __webpack_require__(32);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var style = _extends({}, _styles.pStyle, { outer: _extends({}, _styles.pStyle.outer, { background: '#D54ac6' })
+});
+
+var Edit = function (_React$Component) {
+  _inherits(Edit, _React$Component);
+
+  function Edit(props) {
+    _classCallCheck(this, Edit);
+
+    var _this = _possibleConstructorReturn(this, (Edit.__proto__ || Object.getPrototypeOf(Edit)).call(this, props));
+
+    _this.fetchDevInfo = function () {
+      var lsh = _getCfg.ls.getItem();
+      console.log(_this.props);
+      if ((0, _wfuncs.geta)('lsh.token', lsh)) {
+        var url = _getCfg.cfg.url.api + '/admin/dev/' + _this.props.cambio.page.params.dev;
+        console.log(url);
+        var options = { headers: { 'Authorization': 'Bearer ' + lsh['token'] } };
+        fetch(url, options).then(function (response) {
+          return response.json();
+        }).then(function (json) {
+          if (json.message) {
+            _this.setState({ qmessage: json.message });
+          } else {
+            var res = json[0];
+            var specs = JSON.parse(res.specs);
+            _this.setState({ id: res.id, devid: res.devid, description: res.description, specs: specs, qmessage: '' });
+            console.log(_this.state);
+          }
+        }).catch(function (e) {
+          console.log(e.message);
+          _this.setState({ qmessage: e.message });
+        });
+      } else {
+        var mess = 'can\'t fetch data, you aren\'t authorized, maybe re-register';
+        _this.setState({ qmessage: mess });
+      }
+    };
+
+    _this.state = { qmessage: 'dogs' };
+    return _this;
+  }
+
+  _createClass(Edit, [{
+    key: 'componentDidMount',
+    value: function componentDidMount() {
+      this.fetchDevInfo();
+    }
+  }, {
+    key: 'componentWillUnmount',
+    value: function componentWillUnmount() {}
+  }, {
+    key: 'render',
+    value: function render() {
+      return _react2.default.createElement(
+        'div',
+        { style: style.outer },
+        _react2.default.createElement(
+          'h4',
+          null,
+          'in Edit'
+        ),
+        this.state.qmessage
+      );
+    }
+  }]);
+
+  return Edit;
+}(_react2.default.Component);
+
+exports.Edit = Edit = (0, _hoc.mapClass2Element)(Edit);
+
+exports.Edit = Edit;
 
 /***/ })
 /******/ ]);
