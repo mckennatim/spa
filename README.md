@@ -10,7 +10,13 @@ https://cloudinary.com/console/welcome
 https://gridbyexample.com/examples/example13/
 https://www.mozilla.org/en-US/firefox/60.0a2/whatsnew/#cssgrid
 https://mozilladevelopers.github.io/playground/css-grid/
-### 60-buider-v0
+### 61-builder-v0a
+awful bit of programming by me. why use the router once you are registered. state of confusion
+### 61-builder-v0
+If you want to edit props -waddya do- take61 Oy???
+At azoy.here thus 
+
+### 60-builder-v0
 When a device is built it has certain hardware based characteristics and capabilitys. They get listeb by the builder and are the `spes` in devs. There is and administrative application for the builder that allows them to define the device specs.
 
 builder
