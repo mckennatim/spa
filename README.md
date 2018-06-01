@@ -10,13 +10,45 @@ https://cloudinary.com/console/welcome
 https://gridbyexample.com/examples/example13/
 https://www.mozilla.org/en-US/firefox/60.0a2/whatsnew/#cssgrid
 https://mozilladevelopers.github.io/playground/css-grid/
+### 62-builder-v0b
+back to it after 6 weeks off, just fixed it to run w/o errors. TODO limit the scope of builder than on to installer and owner
+
+builder
+
+- accesses devs but can't see other devices
+- can add devices and give them ids
+- can run builder why?? because it is in builders table??
+- can sell device to (new)owner (adds email/appid:owner to auths) whenever owner is changed it changes 
+- can suggest installers to owner
+
+owner
+
+- accesses devs it owns
+- can authorize installer
+- can sell device to (new)owner (adds email/appid:owner to auths) whenever owner is changed it changes also if sells its last device is removed from owners
+- can add and install apps that use the device
+- can authorize a developer to add/install their app
+- controls users and observers of apps running on users devices
+
+users observers
+
+
+
+Owners grant access and assign roles to users to particular apps running on their hardware devices. Roles include owner, builder, installer, developer, user and observer. Owner can activate or unactivate any role players. 
+
+- builder - puts together the hardware completes 
+
+### 61-builder-v0b
+
 ### 61-builder-v0a
+
 awful bit of programming by me. why use the router once you are registered. state of confusion
 ### 61-builder-v0
 If you want to edit props -waddya do- take61 Oy???
 At azoy.here thus 
 
 ### 60-builder-v0
+
 When a device is built it has certain hardware based characteristics and capabilitys. They get listeb by the builder and are the `spes` in devs. There is and administrative application for the builder that allows them to define the device specs.
 
 builder
@@ -54,10 +86,17 @@ starting from nothing
 
 `{"HAStIMER":28,"notTimerTags":["temp","onoff","hilimit","lolimit"],"sr":[{"id":0,"hayrelay":0,"sensor":{"senses":"temp","model":"DHT22"}},{"id":1,"hayrelay":0,"sensor":{"senses":"humid","model":"DHT22"}},{"id":2,"hayrelay":1,"sensor":{}}]}`
 
-
+#### builder
 When a device is built it has certain hardware based characteristics and capabilitys. They get listeb by the builder and are the `spes` in devs. There is and administrative application for the builder that allows them to define the device specs
 
-      "sr":[
+builder only works in devs, has permission to add devs record. System checks that the device id isn't already used. Builder logs in as 
+
+     devid: CYURD002,
+     description:  
+     spec: {
+        software_version: 2.0,
+        hardware_version: wemos,
+        sr: [
         {
           "srid":0,
           "hayrelay":{
@@ -88,7 +127,9 @@ When a device is built it has certain hardware based characteristics and capabil
         }
       ]
     }
+    owner: builder@dogo.com
 
+####  installer
 An installer enters the location, server, owner and wifi information into the device and database. 
 
     locid: 12ParleyVale
@@ -102,38 +143,53 @@ An installer enters the location, server, owner and wifi information into the de
       "sensor_type":"DHT" //legacy day for the device
     }  
 
+devs gets added/updated with
 
+    owner: udpated owner
+    server: {mqtt_server, mqtt_port}
+    devpwd: 
+    locid: 12ParleyVale    
+
+
+#### developer - app spec
 Apps access and contol devices. When an app is developed it has a definition of needed sensors and relays and where they are gonna be used and what they are called 
 
-    [
-       {
-          "label":temp-gh",
-          "name":"Greenhouse Temperature",
-          "img":"temp-gh.jpg"
-          "desc" "tepm sensor with controlled relay"
-       },
-       {
-          "label":hum-gh",
-          "name":"Greenhouse Humidity",
-          "img":"hum-gh.jpg"
-          "desc": "hum sensor"
-       },
-       {
-          "label":light-gh",
-          "name":"Greenhouse Lights",
-          "img":"light-gh.jpg"
-          "desc" "timer relay"
-       },
-       {
-          "label":temp-out",
-          "name":"Outside Temperature",
-          "img":"temp-out.jpg"
-          "desc": "temp sensor"
-       }
-    ]
+        appid: hvac
+        description: 
+        sr:
+        [
+           {
+              "label":temp-gh",
+              "name":"Greenhouse Temperature",
+              "img":"temp-gh.jpg"
+              "desc" "tepm sensor with controlled relay"
+           },
+           {
+              "label":hum-gh",
+              "name":"Greenhouse Humidity",
+              "img":"hum-gh.jpg"
+              "desc": "hum sensor"
+           },
+           {
+              "label":light-gh",
+              "name":"Greenhouse Lights",
+              "img":"light-gh.jpg"
+              "desc" "timer relay"
+           },
+           {
+              "label":temp-out",
+              "name":"Outside Temperature",
+              "img":"temp-out.jpg"
+              "desc": "temp sensor"
+           }
+        ]
+
+
 
 If an owner had the harware capabilities needed, they can install an app that allows them to access and controll their hardware. At each location an app definition gets paired to devices and relays that can supply the functionality via a common label
 
+    appid: hvac,
+    sr: 
     {
        "CYURD004":[
           {
@@ -156,6 +212,23 @@ If an owner had the harware capabilities needed, they can install an app that al
           }
        ]
     }
+
+or app_devs
+
+   appid: hvac
+   sr: [
+      {
+        label:
+        devid:
+        srid:
+      },
+      {
+        label:
+        devid:
+        srid:
+      },      
+   ] 
+
 
 When a particular instance of an app is instantiated, the location determines which devices are being used and the sensor relay specs that are need are grabbed from the he device specs. Everything is combined 
 
@@ -234,6 +307,15 @@ qdata:[
 ]
 `
 Owners grant access and assign roles to users to particular apps running on their hardware devices. Roles include owner, builder, installer, developer, user and observer. Owner can activate or unactivate any role players. 
+
+owner owns devid
+      has one or more apps for owned device
+
+owner of device gives users observers permission to use app on their device
+
+Do users/observers need separate permission for every device used in an app?  
+
+A builder builds something, builder owns it, can sell to new owner     
 
 ### 58-hvac-v8s-SchedEdit
 delete add to SchedEdit
