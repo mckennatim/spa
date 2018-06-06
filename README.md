@@ -10,6 +10,11 @@ https://cloudinary.com/console/welcome
 https://gridbyexample.com/examples/example13/
 https://www.mozilla.org/en-US/firefox/60.0a2/whatsnew/#cssgrid
 https://mozilladevelopers.github.io/playground/css-grid/
+### 63-builder-v0c
+
+- builder should only see devices it owns
+- builder should only be able to edit devid, spec, descr and owner
+
 ### 62-builder-v0b
 back to it after 6 weeks off, just fixed it to run w/o errors. TODO limit the scope of builder than on to installer and owner
 
@@ -128,6 +133,37 @@ builder only works in devs, has permission to add devs record. System checks tha
       ]
     }
     owner: builder@dogo.com
+
+{
+"software_version": "2.0",
+"hardware_version": "wemos",
+sr: [
+{
+  "srid":0,
+  "hayrelay":0,
+  "haysensor":{
+    "senses":"temp",
+    "model":"DHT22"
+  }
+},
+{
+  "srid":1,
+  "hayrelay":0,
+  "haysensor":{
+    "senses":"humid",
+    "model":"DHT22"
+  }
+},
+{
+  "srid":2,
+  "hayrelay":{
+    "controlled":0,
+    "defsched":[[0,0,1]]
+  },
+  "haysensor":0
+}
+]
+}
 
 ####  installer
 An installer enters the location, server, owner and wifi information into the device and database. 
