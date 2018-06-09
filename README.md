@@ -6,14 +6,22 @@ https://medium.com/@joomiguelcunha/react-performance-tips-5fa199a450b2
 https://blog.risingstack.com/introducing-react-easy-state/?utm_campaign=React%2BNewsletter&utm_medium=email&utm_source=React_Newsletter_104
 
 https://cloudinary.com/console/welcome
+
+json2form
+https://github.com/mozilla-services/react-jsonschema-form
+
+
 ## tags
 https://gridbyexample.com/examples/example13/
 https://www.mozilla.org/en-US/firefox/60.0a2/whatsnew/#cssgrid
 https://mozilladevelopers.github.io/playground/css-grid/
-### 63-builder-v0c
+### 64-builder-v0d-mui
+https://www.muicss.com/docs/v1/react/select
+### 63-builder-v0c-rjv
 
 - builder should only see devices it owns
 - builder should only be able to edit devid, spec, descr and owner
+eidt using https://github.com/mac-s-g/react-json-view in Select.js
 
 ### 62-builder-v0b
 back to it after 6 weeks off, just fixed it to run w/o errors. TODO limit the scope of builder than on to installer and owner

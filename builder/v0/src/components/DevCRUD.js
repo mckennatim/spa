@@ -5,11 +5,17 @@ import {geta} from '../utilities/wfuncs'
 import {mapClass2Element} from '../hoc'
 // import {router} from '../app'
 import {Edit} from './Edit'// eslint-disable-line no-unused-vars
-import {fetchDevInfo} from '../services/fetches'
+import {fetchDevInfo, getLastDev} from '../services/fetches'
 import ReactJson from 'react-json-view'// eslint-disable-line no-unused-vars
+import ReactMaterialSelect from 'react-material-select'// eslint-disable-line no-unused-vars
+import '../styles/reactMaterialSelect.css'
+import Button from 'muicss/lib/react/button';// eslint-disable-line no-unused-vars
+import Option from 'muicss/lib/react/option';// eslint-disable-line no-unused-vars
+import Select from 'muicss/lib/react/select';// eslint-disable-line no-unused-vars
 
 const style = {
- ...pStyle, outer: {...pStyle.outer, background: '#D54ac6'}
+ ...pStyle, outer: {...pStyle.outer, 
+                    background: '#c1b8b8'}
 }
 
 const vstyle = {
@@ -21,11 +27,29 @@ const vstyle = {
     },
     rjv: {
       fontFamily: 'Tahoma, Geneva, sans-serif',
-      fontStretch: 'ultra-condensed'      
+      fontStretch: 'ultra-condensed',
+      padding: 60,
+      margin: 60   
+    },
+    old:{
+      padding: 60,
+      margin: 60
+    },
+    button:{
+      backgroundColor: '#7abbdb',
+      border: 'none',
+      color: 'white',
+      padding: '5px 10px',
+      textAlign: 'center',
+      textDecoration: 'none',
+      display: 'inline-block',
+      fontSize: '32px',
+      margin: '4px 2px',
+      cursor: 'pointer'
     }
 }
 
-class Select extends React.Component{
+class DevCRUD extends React.Component{
   constructor (props){
     super(props);
     let page = this.props.cambio.page
@@ -36,25 +60,42 @@ class Select extends React.Component{
     this.state={devs:[], value:dev, amediting:false, 
       devinfo: {description:'no data', qmessage: 'awaiting data', specs:{}, srarr:[], specKeys:[], specBeingEdited:[], srBeingEdited:[]}
     }
+    this.binfo={baseDevid:"CU", bizid:''}
+    this.bldev={devid:"", 
+                specs:{
+                  software_version:2.0, 
+                  hardware_version: "wemos"
+                }, 
+                sr:[{
+                      srid:0,
+                      haysensor:{
+                        senses:"humid/temp",
+                        model:"DHT22/DS18B20"
+                      },
+                      hayrelay:{
+                        controlled: 1,
+                        defsched: [0,0,55,52]
+                      }
+                    },{
+                      srid:1,
+                      haysensor:0,
+                      hayrelay:0
+                    }
+                  ]
+              }
   }
 
   defaults = {
-      theme: "monokai",
-      src: null,
-      collapsed: false,
-      collapseStringsAfter: 15,
       onAdd: true,
       onEdit: true,
       onDelete: true,
-      displayObjectSize: true,
-      enableClipboard: true,
       indentWidth: 2,
-      displayDataTypes: false,
-      iconStyle: "triangle"
+      displayDataTypes: false
     }  
 
   componentDidMount(){
     this.fetchDevids()
+    console.log(this.state)
   }
 
   componentWillUnmount(){
@@ -82,6 +123,20 @@ class Select extends React.Component{
     }
   }
 
+  handleSelect =(e)=>{
+    console.log('handling select',e.target.value)
+    fetchDevInfo(e.target.value)
+      .then((results)=>{
+        console.log(results)
+        this.binfo = results.binfo
+        console.log(this.binfo)
+        this.setState({devinfo:results.devinfo, value:results.devinfo.devid},()=>{
+          // console.log('hello', this.state)
+        })
+        
+      })    
+  }
+
   handleChange =(e)=>{
     console.log('handling change',e.target.value)
     //this.setState({value: e.target.value});
@@ -100,40 +155,54 @@ class Select extends React.Component{
     console.log('savein')
     //router.navigate(`edit/${this.state.value}`)
   }
+
+  addDev=()=>{
+    console.log(this.binfo)
+      getLastDev(this.binfo.baseDevId)
+      .then((lastdev)=>{
+        console.log(lastdev)
+      })  
+  }
+
   changeDevinfo =(m)=>{
     console.log(m)
   }
 
   render(){
     console.log('rerendering')
-    // console.log(this.state)
+    console.log(this.state.devs)
     const{devinfo}=this.state
     const{
-        theme,
-        src,
-        collapsed,
-        collapseStringsAfter,
         onAdd,
         onEdit,
         onDelete,
-        displayObjectSize,
-        enableClipboard,
         indentWidth,
         displayDataTypes,
-        iconStyle
       } = this.defaults    
     return(
       <div style={style.outer} >
-     
-        <h4>in Select</h4>
-        <div>
-        <select value={this.state.value} onChange={this.handleChange}>
+      {/*
+        <ReactMaterialSelect label="Choose device" onChange={this.handleSelect.bind(this)}>
           {this.state.devs.map((d,i)=>{
             return(
-                <option key={i}value={d}>{d}</option>
+                <option key={i} dataValue={d}>{d}</option>
               )
           })}
-        </select> 
+        </ReactMaterialSelect> 
+        */} 
+        <form action="">
+        <Select label='select2' onChange={this.handleSelect.bind(this)}>
+          {
+            this.state.devs.map(function (dev, i) {
+              return <Option key={i} value={dev} label={dev} />;
+            })
+          }
+        </Select> 
+        <button style={vstyle.button} onClick={this.addDev.bind(this)}>+</button>
+        <Button  color="accent" variant="raised" size="small" onClick={this.addDev.bind(this)}>+</Button>          
+        </form>        
+        <div style={vstyle.old}>
+
         <button>+</button><button onClick={this.goSave}>save</button>
         </div>
         <div style={vstyle.outer}>
@@ -160,6 +229,6 @@ class Select extends React.Component{
   }
 }
 
-Select=mapClass2Element(Select)
+DevCRUD=mapClass2Element(DevCRUD)
 
-export {Select}
+export {DevCRUD}
