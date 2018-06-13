@@ -15,6 +15,8 @@ https://github.com/mozilla-services/react-jsonschema-form
 https://gridbyexample.com/examples/example13/
 https://www.mozilla.org/en-US/firefox/60.0a2/whatsnew/#cssgrid
 https://mozilladevelopers.github.io/playground/css-grid/
+### 65-builder-v0e-add-save-delete
+still sloppy,maybe w broke parts, needs cleanup tobe done
 ### 64-builder-v0d-mui
 https://www.muicss.com/docs/v1/react/select
 ### 63-builder-v0c-rjv
