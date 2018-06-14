@@ -3,6 +3,7 @@ body {
   background: #fafafa;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   color: #333;
+  margin: 0;
 }
 
 td, th {
@@ -17,7 +18,7 @@ td, th {
 
 /* no container height limitation so it can vertically stretch as far as it needs to */
 .container {
-  background: yellow;
+  background: #CCCCCC;
   display: flex;
   flex-direction: row; /* generally better */
   flex-wrap: wrap;
@@ -60,6 +61,6 @@ td, th {
 }
 
 .main {
-  min-height: 500px; /*one of the content panes needs some height to force the others to stretch*/
+  min-height: 1200px; /*one of the content panes needs some height to force the others to stretch*/
 }
 

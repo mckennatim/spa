@@ -1,9 +1,7 @@
 import React from 'react'// eslint-disable-line no-unused-vars
 import {App} from './App'
-import {Home} from './Home'
 import {DevCRUD} from './DevCRUD'
 import {Nav} from './Nav'
-import {Edit} from './Edit'
 import {Rjv} from './Rjv'// eslint-disable-line no-unused-vars
 import {Mui} from './Mui'// eslint-disable-line no-unused-vars
 import {Registered} from './Registered'
@@ -50,4 +48,4 @@ const multi =[
 //['watch', 'phone', 'phoneL', 'tablet', 'tabletL', 'laptop']
 const panes= [1,1,2,2,3,3,4]
 
-export {About, Home, Registered, App, Nav, DevCRUD, Mui, Edit, Rjv, multi, panes}
+export {About, Registered, App, Nav, DevCRUD, Mui, Rjv, multi, panes}

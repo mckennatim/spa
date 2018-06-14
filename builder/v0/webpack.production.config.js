@@ -4,7 +4,7 @@ var webpack = require('webpack');
 module.exports={
 	entry: "./src/app.js",
 	output: {
-		path: path.join(__dirname, "dist2"),
+		path: path.join(__dirname, "builder"),
 		filename: 'bundle.js'
 	},
   module: {
@@ -15,7 +15,10 @@ module.exports={
           loader: "babel-loader" 
         }]
       },
-      { test: /\.html$/, loader: "html-loader" }
+      { test: /\.html$/, loader: "html-loader" },
+      { test:/\.css$/,
+        use:['style-loader','css-loader']
+      }      
     ],
   },
 	devtool: "source-map",

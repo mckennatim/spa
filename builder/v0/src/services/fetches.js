@@ -15,7 +15,7 @@ const deleteDev=(devid)=>{
         .then((response)=>response.json())
     ) 
   }else{
-    let p2 =Promise.resolve({qmessage:'you dont exist, re-register'})
+    let p2 =Promise.resolve({qmessage:'you dont exist! '})
     return p2
   }       
 }
@@ -41,7 +41,7 @@ const fetchDevids=()=>{
         })
       )         
   }else{
-    let p2 =Promise.resolve({qmessage:'you dont exist, re-register'})
+    let p2 =Promise.resolve({qmessage:'you dont exist! '})
     return p2
   }
 }
@@ -64,7 +64,7 @@ const postDev=(devinfo)=>{
         .then((response)=>response.json())
     ) 
   }else{
-    let p2 =Promise.resolve({qmessage:'you dont exist, re-register'})
+    let p2 =Promise.resolve({qmessage:'you dont exist! '})
     return p2
   }       
 }
@@ -97,7 +97,7 @@ const getLastDev=(base)=>{
           })
       )   
     }else{
-      let p2 =Promise.resolve({qmessage:'you dont exist, re-register'})
+      let p2 =Promise.resolve({qmessage:'you dont exist! '})
       return p2
     }
   }
@@ -117,10 +117,8 @@ const fetchDevInfo=(dev)=>{
               return devinfo={qmessage: json.message}
             }else{
               let res = json
-              console.log(res)
               let specs= JSON.parse(res.devinfo.specs)
               res.devinfo.specs=specs
-              console.log(res)
               return res
             }
           })
@@ -131,7 +129,7 @@ const fetchDevInfo=(dev)=>{
           })
       )   
     }else{
-      let p2 =Promise.resolve({qmessage:'you dont exist, re-register'})
+      let p2 =Promise.resolve({qmessage:'you dont exist! '})
       return p2
     }
   }

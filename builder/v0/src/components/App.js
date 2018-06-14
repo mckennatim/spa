@@ -8,15 +8,7 @@ class App extends React.Component{
   }
   componentDidMount (){
   }
-  loadNav(){
-    if(this.props.cambio.shownav){
-      return (
-        <div className="header item-default">
-          <Nav/>
-        </div>
-      )
-    }
-  }
+
 
   showRt(rtpg){
     if(typeof rtpg != 'function'){
@@ -31,7 +23,6 @@ class App extends React.Component{
   render(){
     return(
       <div className="container">
-          {this.loadNav()}
         {this.showPage().map((el,i)=>{
           return <div className="content item-default" key={i}>{el}</div>
         })}

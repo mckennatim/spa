@@ -4,7 +4,6 @@ import {ls, cfg} from '../utilities/getCfg'
 //import {geta} from '../utilities/wfuncs'
 import {mapClass2Element} from '../hoc'
 // import {router} from '../app'
-import {Edit} from './Edit'// eslint-disable-line no-unused-vars
 import {fetchDevInfo, getLastDev, postDev, deleteDev, fetchDevids} from '../services/fetches'
 import ReactJson from 'react-json-view'// eslint-disable-line no-unused-vars
 import ReactMaterialSelect from 'react-material-select'// eslint-disable-line no-unused-vars
@@ -59,16 +58,26 @@ const vstyle = {
 class DevCRUD extends React.Component{
   constructor (props){
     super(props);
-    let page = this.props.cambio.page
-    let dev = 'DEVICES'
-    if (page.name=='Edit'){
-      dev=page.params.dev
-    }
-    this.state={devs:[], value:dev, amediting:false, 
-      devinfo: {devid:'CYURD003',description:'no data', qmessage: 'awaiting data', specs:{}, srarr:[], specKeys:[], specBeingEdited:[], srBeingEdited:[]}
+    // let page = this.props.cambio.page
+    // let dev = 'DEVICES'
+    // if (page.name=='Edit'){
+    //   dev=page.params.dev
+    // }
+    this.state={
+      devs:[],  
+      qmessage: 'awaiting data', 
+      devinfo: {
+        devid:'CY',
+        description:'no data',  
+        specs:{}
+      }
     }
     this.binfo={baseDevid:"CU", bizid:''}
-    this.email = ls.getItem().email
+    if(ls.getItem()){
+      this.email = ls.getItem().email
+    }else{
+      console.log('this machine knows nothing of this app')
+    }
     this.bldev={devid:"", 
                 owner:"noneyet",
                 description: "description",
@@ -105,7 +114,6 @@ class DevCRUD extends React.Component{
 
   componentDidMount(){
     this.getDevids()
-    console.log(this.state)
   }
 
   componentWillUnmount(){
@@ -114,40 +122,27 @@ class DevCRUD extends React.Component{
   getDevids=()=>{
     fetchDevids()
       .then((json)=>{
-        if(json.message){
-          this.setState({qmessage: json.message})
+        if(json.qmessage){
+          this.setState({qmessage: json.qmessage, devs:[]})
         }else{
+          // console.log('no hay message', json.qmessage)
           this.binfo = json.binfo
-          this.setState({devs:json.devs})
+          this.setState({devs:json.devs, qmessage:'ub '})
+          this.refreshDevinfo(json.devs[0])
         }        
       })
   }
 
-  // handleSelect =(e)=>{
-  //   console.log('handling select',e.target.value)
-  //   fetchDevInfo(e.target.value)
-  //     .then((results)=>{
-  //       console.log(results)
-  //       this.binfo = results.binfo
-  //       console.log(this.binfo)
-  //       this.setState({devinfo:results.devinfo, value:results.devinfo.devid},()=>{
-  //         // console.log('hello', this.state)
-  //       })
-        
-  //     })    
-  // }
-
   refreshDevinfo=(devid)=>{
+      this.setState({qmessage:'waiting...', value:devid})
     fetchDevInfo(devid)
       .then((res)=>{
-        console.log(res.devinfo)
-        this.setState({devinfo:res.devinfo, value:res.devinfo.devid},()=>{
+        this.setState({devinfo:res.devinfo, value:res.devinfo.devid, qmessage:'ur '},()=>{
         })
       })
   }
 
   handleSelect =(e)=>{
-    console.log('handling select',e.target.value)
     this.refreshDevinfo(e.target.value)
   }
 
@@ -184,6 +179,7 @@ class DevCRUD extends React.Component{
         let ndevs = this.state.devs.slice()
         let ninfo = {...this.bldev}
         ninfo.devid=lastdev
+        ninfo.owner = this.binfo.emailId
         ndevs.push(lastdev)
         console.log(ndevs)
         console.log(ninfo)
@@ -191,13 +187,18 @@ class DevCRUD extends React.Component{
       })  
   }
 
+  logout=()=>{
+    console.log('logging out')
+    ls.setItem("")
+  }
+
   changeDevinfo =(m)=>{
     console.log(m)
   }
 
   render(){
-    console.log('rerendering')
-    console.log(this.state.devinfo)
+    // console.log('rerendering')
+    // console.log(this.state)
     const{devinfo}=this.state
     const{
         onAdd,
@@ -208,16 +209,7 @@ class DevCRUD extends React.Component{
       } = this.defaults    
     return(
       <div style={style.outer} >
-      <span style={vstyle.span} >{this.email} <a href={url}>re-login</a></span>
-      {/*
-        <ReactMaterialSelect label="Choose device" onChange={this.handleSelect.bind(this)}>
-          {this.state.devs.map((d,i)=>{
-            return(
-                <option key={i} dataValue={d}>{d}</option>
-              )
-          })}
-        </ReactMaterialSelect> 
-        */} 
+      <span style={vstyle.span} >{this.state.qmessage} {this.email} <a href={url}>re-login </a><a  onClick={this.logout}> logout</a></span>
         <form action="">
         <Select label='select' value={this.state.devinfo.devid} onChange={this.handleSelect.bind(this)} >
           {

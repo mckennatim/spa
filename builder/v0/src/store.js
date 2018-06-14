@@ -1,14 +1,14 @@
-import {Home} from './components'
+import {DevCRUD} from './components'
 
 const initState = {
   test: {
     name: 'Harry',
-    rtpg: Home,
+    rtpg: DevCRUD,
     users: ['doggy', 'freddy', 'timmy', 'kelly', 'brian' , 'david', 'colleen', 'megan', 'shaun', 'erin' ]
   },
   cambio: {
     infocus: true,
-    page: {name: 'Home', params: null}
+    page: {name: 'DevCRUD', params: null}
   } 
 };
 
