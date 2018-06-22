@@ -7489,18 +7489,13 @@ var mStyle = {
 
 var pStyle = {
   outer: {
-    display: 'flex',
-    flexDirection: 'column',
     background: '#C4A265',
-    height: 900,
-    textAlign: 'center'
+    height: 1800
   },
   inner: {
     margin: '0 auto',
-    display: 'flex',
-    flexDirection: 'column',
     background: '#FFF28E',
-    height: 840,
+    height: 1640,
     color: 'red',
     textAlign: 'center',
     fontSize: '300%'
@@ -86260,21 +86255,21 @@ var style = _extends({}, _styles.pStyle, { outer: _extends({}, _styles.pStyle.ou
 
 var vstyle = {
   outer: {
+    clear: 'both',
+    width: '70%',
     background: 'white',
-    textAlign: 'left',
-    MozTransform: 'scale(1.3)',
-    zoom: '130%'
+    textAlign: 'left'
   },
   rjv: {
     fontFamily: 'Tahoma, Geneva, sans-serif',
     fontStretch: 'ultra-condensed',
-    padding: 60,
-    margin: 60
+    fontSize: 18
   },
   old: {
     padding: 60,
     margin: 60
   },
+  frm: {},
   button: {
     backgroundColor: '#7abbdb',
     border: 'none',
@@ -86334,7 +86329,6 @@ var DevCRUD = function (_React$Component) {
     };
 
     _this.handleSelect = function (e) {
-      console.log('handling select', e.target.value);
       _this.refreshDevinfo(e.target.value);
     };
 
@@ -86436,21 +86430,6 @@ var DevCRUD = function (_React$Component) {
   }, {
     key: 'componentWillUnmount',
     value: function componentWillUnmount() {}
-
-    // handleSelect =(e)=>{
-    //   console.log('handling select',e.target.value)
-    //   fetchDevInfo(e.target.value)
-    //     .then((results)=>{
-    //       console.log(results)
-    //       this.binfo = results.binfo
-    //       console.log(this.binfo)
-    //       this.setState({devinfo:results.devinfo, value:results.devinfo.devid},()=>{
-    //         // console.log('hello', this.state)
-    //       })
-
-    //     })    
-    // }
-
   }, {
     key: 'render',
     value: function render() {
@@ -86488,40 +86467,43 @@ var DevCRUD = function (_React$Component) {
           )
         ),
         _react2.default.createElement(
-          'form',
-          { action: '' },
+          'div',
+          { style: vstyle.frm },
           _react2.default.createElement(
-            _select2.default,
-            { label: 'select', value: this.state.devinfo.devid, onChange: this.handleSelect.bind(this) },
-            this.state.devs.map(function (dev, i) {
-              return _react2.default.createElement(_option2.default, { key: i, value: dev, label: dev });
-            })
-          ),
-          _react2.default.createElement(
-            'button',
-            { style: vstyle.button, onClick: this.addDev.bind(this) },
-            '+'
-          ),
-          _react2.default.createElement(
-            'button',
-            { style: vstyle.button, onClick: this.goSave },
+            'form',
+            { action: '' },
             _react2.default.createElement(
-              'i',
-              { className: 'material-icons' },
-              'save'
-            )
-          ),
-          _react2.default.createElement(
-            'button',
-            { style: vstyle.button, onClick: this.delDev },
+              _select2.default,
+              { label: 'select', value: this.state.devinfo.devid, onChange: this.handleSelect.bind(this) },
+              this.state.devs.map(function (dev, i) {
+                return _react2.default.createElement(_option2.default, { key: i, value: dev, label: dev });
+              })
+            ),
             _react2.default.createElement(
-              'i',
-              { className: 'material-icons' },
-              'delete'
+              'button',
+              { style: vstyle.button, onClick: this.addDev.bind(this) },
+              '+'
+            ),
+            _react2.default.createElement(
+              'button',
+              { style: vstyle.button, onClick: this.goSave },
+              _react2.default.createElement(
+                'i',
+                { className: 'material-icons' },
+                'save'
+              )
+            ),
+            _react2.default.createElement(
+              'button',
+              { style: vstyle.button, onClick: this.delDev },
+              _react2.default.createElement(
+                'i',
+                { className: 'material-icons' },
+                'delete'
+              )
             )
           )
         ),
-        _react2.default.createElement('div', { style: vstyle.old }),
         _react2.default.createElement(
           'div',
           { style: vstyle.outer },

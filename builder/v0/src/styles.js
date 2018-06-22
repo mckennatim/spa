@@ -31,18 +31,13 @@ var mStyle = {
 
 const pStyle= {
   outer: {
-    display: 'flex',
-    flexDirection: 'column',
     background:'#C4A265',
-    height: 900,
-    textAlign: 'center'    
+    height: 1800   
   },
   inner: {
     margin: '0 auto',
-    display: 'flex',
-    flexDirection: 'column',
     background: '#FFF28E',
-    height: 840,
+    height: 1640,
     color: 'red',
     textAlign: 'center',
     fontSize: '300%'

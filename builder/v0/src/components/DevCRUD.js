@@ -23,20 +23,22 @@ const style = {
 
 const vstyle = {
     outer: { 
+      clear:'both',
+      width:'70%',
       background: 'white', 
-      textAlign: 'left',
-      MozTransform: 'scale(1.3)',
-      zoom: '130%'
+      textAlign: 'left'
     },
     rjv: {
       fontFamily: 'Tahoma, Geneva, sans-serif',
       fontStretch: 'ultra-condensed',
-      padding: 60,
-      margin: 60   
+      fontSize:18
     },
     old:{
       padding: 60,
       margin: 60
+    },
+    frm:{
+
     },
     button:{
       backgroundColor: '#7abbdb',
@@ -210,6 +212,7 @@ class DevCRUD extends React.Component{
     return(
       <div style={style.outer} >
       <span style={vstyle.span} >{this.state.qmessage} {this.email} <a href={url}>re-login </a><a  onClick={this.logout}> logout</a></span>
+        <div style={vstyle.frm}>
         <form action="">
         <Select label='select' value={this.state.devinfo.devid} onChange={this.handleSelect.bind(this)} >
           {
@@ -222,30 +225,27 @@ class DevCRUD extends React.Component{
         <button  style={vstyle.button} onClick={this.goSave}><i className="material-icons" >save</i></button>
         <button  style={vstyle.button} onClick={this.delDev}><i className="material-icons" >delete</i></button>
         </form>        
-        <div style={vstyle.old}>
-
-
-        </div>
-        <div style={vstyle.outer}>
-          <ReactJson src={devinfo}
-            style={vstyle.rjv}
-            displayDataTypes={displayDataTypes}
-            indentWidth={indentWidth}
-            onEdit={onEdit ? e => {
-              console.log(e.updated_src)
-              this.setState({ devinfo: e.updated_src })
-            }: false} 
-            onDelete={onDelete ? e => {
-              console.log(e.updated_src)
-              this.setState({ devinfo: e.updated_src })
-            }: false} 
-            onAdd={onAdd ? e => {
-              console.log(e.updated_src)
-              this.setState({ devinfo: e.updated_src })
-            }: false} 
-          />         
-        </div> 
       </div>
+      <div style={vstyle.outer}>
+        <ReactJson src={devinfo}
+          style={vstyle.rjv}
+          displayDataTypes={displayDataTypes}
+          indentWidth={indentWidth}
+          onEdit={onEdit ? e => {
+            console.log(e.updated_src)
+            this.setState({ devinfo: e.updated_src })
+          }: false} 
+          onDelete={onDelete ? e => {
+            console.log(e.updated_src)
+            this.setState({ devinfo: e.updated_src })
+          }: false} 
+          onAdd={onAdd ? e => {
+            console.log(e.updated_src)
+            this.setState({ devinfo: e.updated_src })
+          }: false} 
+        />         
+      </div> 
+    </div>
     )
   }
 }

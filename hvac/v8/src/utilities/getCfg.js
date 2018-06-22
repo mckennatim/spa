@@ -8,9 +8,7 @@ const cfg= env[jsenv.m||'local']
 
 const authqry = cfg.url.soauth+"/spa/"+cfg.appid+"?apiURL="+encodeURIComponent(cfg.url.api)+"&cbPath="+encodeURIComponent(cfg.cbPath)
 
-const authcb=(cbpath)=>{
-  return cfg.url.soauth+"/spa/"+cfg.appid+"?apiURL="+encodeURIComponent(cfg.url.api)+"&cbPath="+encodeURIComponent(cbPath)
-}
+
 
 cfg.url.authqry = authqry
 cfg.url.authcb = (x)=>authcb(x)

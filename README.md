@@ -15,6 +15,9 @@ https://github.com/mozilla-services/react-jsonschema-form
 https://gridbyexample.com/examples/example13/
 https://www.mozilla.org/en-US/firefox/60.0a2/whatsnew/#cssgrid
 https://mozilladevelopers.github.io/playground/css-grid/
+### 66-builder-v0f-deployed
+this is the deployed version 0. It is deployed as https://iot.sitebuilt.net/builder.
+webpack production should from here on in use a dirname that is the same as the app name `builder/v0/builder` instead of `builder/v0/dist2`. Then ./deploy.sh does this `scp -r ./builder root@sitebuilt.net:/home/iot/public_html/geniot/raw`
 ### 65-builder-v0e-add-save-delete
 still sloppy,maybe w broke parts, needs cleanup tobe done
 ### 64-builder-v0d-mui
