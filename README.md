@@ -15,6 +15,54 @@ https://github.com/mozilla-services/react-jsonschema-form
 https://gridbyexample.com/examples/example13/
 https://www.mozilla.org/en-US/firefox/60.0a2/whatsnew/#cssgrid
 https://mozilladevelopers.github.io/playground/css-grid/
+### 67-reroo-v0a-env.json
+worked connecting frontend to new api, local doesn't work since you cant callback from the internet to localhost
+
+      { 
+        "https": {
+        "appid": "jobs",
+        "cbPath": "#registered",
+        "url": {
+          "soauth": "https://services.sitebuilt.net/soauth",
+          "api": "https://services.sitebuilt.net/reroox/api"
+        }
+      },
+
+
+roroo names?
+
+* jobs
+* tcards
+
+What would a blank project look like?
+
+* It would have register and registered
+* it would navigate by navigo
+* it would use rxjs for state stream
+
+reroo/aaa has all that
+
+How does responsive work?
+
+Window resize is subscribed to in `app.js` and is set at the start in `store.js/initialBrowser`
+
+When it changes the `action/setDeviceType(ws)` is fired which gets reduced in `reducers/responsive/SET_DEVICE` which changes the state by taking the window size `ws` from the payload and the `state/sizes` array and reducing the array to the index that ws falls in in the sizes array. `state/types` is a list of browser type text strings. The size index is used as the types[index] and `state.browser` is changed to that.
+
+When `state.browser` changes `App.showPage()`re-renders calling `responsivePage` from `showRWD.js`, All the components invloved are imported in to showRwd, and, from the index of the state.browser in types we can derive the panesPerType. Now, if `compoi.multi` defines multiple elements for a view, then it proceeds to map through those elements, creating an array of react pages to display. Otherwise it just displays the page that is current in `state.cambio.page.name`
+
+How does routing work?
+
+The name of the page is in `state.cambio.page`. Whenever it changes, the page is re-rendered through `App.showPage()` as described above.
+
+The navigo router calls `actions/responsive/switchPage` in `routing` which reduces on PAGE_SWITCHED changing `state.cabio.page`
+
+To route click <a style={mStyle.a} href="about" data-navigo> or programatically import {router} from '../app' then `router.navigate('/about')`
+
+###reroo
+does registration allow for an identifier beyond just app name?
+
+a job app that 
+
 ### 66-builder-v0f-deployed
 this is the deployed version 0. It is deployed as https://iot.sitebuilt.net/builder.
 webpack production should from here on in use a dirname that is the same as the app name `builder/v0/builder` instead of `builder/v0/dist2`. Then ./deploy.sh does this `scp -r ./builder root@sitebuilt.net:/home/iot/public_html/geniot/raw`

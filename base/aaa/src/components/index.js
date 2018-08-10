@@ -50,17 +50,19 @@ const Home = () =>{
     </div>
   )
 }
-const multi=[] //multi delared but empty defaults to single pane
+//const multi=[] //multi delared but empty defaults to single panel
 
-// const multi =[{pri:'About', mul:[
-//                 ['About', 'Products'],
-//                 ['About', 'Products', 'Home'],
-//                 ['About','Products', 'About', 'Home']]
-//                },
-//               {pri:'Products', mul:[
-//                 ['Products', 'About'],
-//                 ['About', 'Products', 'Home']]
-//                },
+const multi =[
+  {pri:'About', mul:[
+    ['About', 'Products'],
+    ['About', 'Products', 'Home'],
+    ['About','Products', 'About', 'Home']
+    ]},
+  {pri:'Products', mul:[
+    ['Products', 'About'],
+    ['About', 'Products', 'Home']
+    ]}
+  ]
 
 //['watch', 'phone', 'phoneL', 'tablet', 'tabletL', 'laptop']
 const panes= [1,1,2,2,3,3,4]

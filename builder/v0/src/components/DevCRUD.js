@@ -24,7 +24,6 @@ const style = {
 const vstyle = {
     outer: { 
       clear:'both',
-      width:'70%',
       background: 'white', 
       textAlign: 'left'
     },
