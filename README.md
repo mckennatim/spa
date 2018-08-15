@@ -15,6 +15,8 @@ https://github.com/mozilla-services/react-jsonschema-form
 https://gridbyexample.com/examples/example13/
 https://www.mozilla.org/en-US/firefox/60.0a2/whatsnew/#cssgrid
 https://mozilladevelopers.github.io/playground/css-grid/
+### 68-reroo-jobs-v0b-jobs
+TODO post
 ### 67-reroo-v0a-env.json
 worked connecting frontend to new api, local doesn't work since you cant callback from the internet to localhost
 

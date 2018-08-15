@@ -17,14 +17,13 @@ td, th {
 
 /* no container height limitation so it can vertically stretch as far as it needs to */
 .container {
-  background: #CCCCCC;
+  background: yellow;
   display: flex;
   flex-direction: row; /* generally better */
   flex-wrap: wrap;
   justify-content: center;
   align-content: stretch;
   align-items: stretch;
-  
 }
 .item-default {
   margin: 10px;
