@@ -15,6 +15,28 @@ https://github.com/mozilla-services/react-jsonschema-form
 https://gridbyexample.com/examples/example13/
 https://www.mozilla.org/en-US/firefox/60.0a2/whatsnew/#cssgrid
 https://mozilladevelopers.github.io/playground/css-grid/
+### 69-reroo-jobs-v1-denv.json
+Since there is nothing private in the env on the app side, it doesn'thave to be 
+hidden from git. 
+
+`
+      {
+        "https":{
+          "coid": "reroo",
+          "appid": "jobs",
+          "url": {
+            "soauth": "https://services.sitebuilt.net/soauth",
+            "api": "https://services.sitebuilt.net/reroox/api"
+          },
+          "cbPath": "#registered"
+        },
+        "local": {
+
+        }
+      }
+
+      const authqry = cfg.url.soauth+"/spa/"+cfg.coid+"-"+cfg.appid+"?apiURL="+encodeURIComponent(cfg.url.api)+"&cbPath="+encodeURIComponent(cfg.cbPath)
+`
 ### 68-reroo-jobs-v0b-jobs
 TODO post
 ### 67-reroo-v0a-env.json
