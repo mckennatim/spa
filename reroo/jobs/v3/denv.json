@@ -1,0 +1,14 @@
+{
+  "https":{
+    "coid": "reroo",
+    "appid": "jobs",
+    "url": {
+      "soauth": "https://services.sitebuilt.net/soauth",
+      "api": "https://services.sitebuilt.net/reroox/api"
+    },
+    "cbPath": "#registered"
+  },
+  "local": {
+
+  }
+}
