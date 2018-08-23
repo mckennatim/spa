@@ -15,8 +15,12 @@ https://github.com/mozilla-services/react-jsonschema-form
 https://gridbyexample.com/examples/example13/
 https://www.mozilla.org/en-US/firefox/60.0a2/whatsnew/#cssgrid
 https://mozilladevelopers.github.io/playground/css-grid/
-### 70-reroo-jobs-v4-sortjobs
+### 72-reroo-jobs-v5-admojobs
+add update delete jobds in AddJobs
+### 71-reroo-jobs-v4-sortjobs
 uses https://github.com/atlassian/react-beautiful-dnd demo:https://codesandbox.io/s/ovlqnxvjzq
+
+addjobs uses muicss
 ### 70-reroo-jobs-v2-savegetwk
 
 ### 69-reroo-jobs-v1-denv.json
