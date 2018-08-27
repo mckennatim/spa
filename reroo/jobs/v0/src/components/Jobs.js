@@ -24,6 +24,17 @@ const myli ={
     overflow: 'hidden',
     border: 'solid 1px black'
   },
+  idx:{
+    padding: '10px',
+    fontSize:'14px',
+  },
+  ck:{
+    transform: 'scale(1.5)',
+    msTransform: 'scale(1.5)',
+    webkitTransform: 'scale(1.5)',
+    padding: '10px',
+    border: '2px solid black'
+  },
   job:{
     width: '70%',
     float: 'left',
@@ -164,11 +175,11 @@ class Jobs extends React.Component{
               <li  key={ajob.id} style={myli.li}>
                 <div style={myli.job}> 
                   
-                  <span onClick={this.editJob.bind(null, ajob)}>{ajob.idx}</span>. {ajob.job} </div>
+                  <span style={myli.idx} onClick={this.editJob.bind(null, ajob)}>{ajob.idx}</span>. {ajob.job} </div>
                 <div style={myli.cat}>
                   {ajob.category}</div>
                 <div style={myli.act}>
-                  <input type="checkbox" checked= {ajob.active} onChange={this.onChecked.bind(null, ajob)}></input>
+                  <input style={myli.ck} type="checkbox" checked= {ajob.active} onChange={this.onChecked.bind(null, ajob)}></input>
                   </div>
               </li >)
             })}
