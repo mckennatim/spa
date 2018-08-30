@@ -4,8 +4,10 @@ import {geta} from '../utilities/wfuncs'
 
 const fetchTcard=(wk)=>{
   var lsh = ls.getItem();
+  console.log(lsh)
   if(geta('lsh.token', lsh)){
     let url= cfg.url.api+'/tcard/week/'+wk
+    console.log(url);
     
     let options= {headers: {'Authorization': 'Bearer '+ lsh['token']}}
     return(
@@ -27,30 +29,6 @@ const fetchTcard=(wk)=>{
     return p2
   }
 }
-
-const putTcard=(tday)=>{
-  var lsh = ls.getItem();
-  console.log(tday)
-  if(geta('lsh.token', lsh)){
-    let url= cfg.url.api+'/tcard/update'
-    let options= {
-      headers: {'Authorization': 'Bearer '+ lsh['token'],
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      method: 'PUT',
-      body: JSON.stringify({tday:tday})
-    }  
-    return(
-      fetch(url, options)
-        .then((response)=>response.json())
-    )        
-  }else{
-    let p2 =Promise.resolve({qmessage:'you dont exist! '})
-    return p2
-  }
-}
-
 const postJobs=(jobs,wk)=>{
   var lsh = ls.getItem();
   console.log(jobs)
@@ -120,4 +98,4 @@ const deleteJob=(job)=>{
   }
 }
 
-export{fetchTcard, postJobs, putJob, deleteJob, putTcard}
+export{fetchTcard, postJobs, putJob, deleteJob}

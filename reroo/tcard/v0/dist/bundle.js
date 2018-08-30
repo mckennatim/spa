@@ -51393,6 +51393,8 @@ var _Day = __webpack_require__(343);
 
 var _getCfg = __webpack_require__(56);
 
+var _fetches = __webpack_require__(631);
+
 var _mapClass2Element = __webpack_require__(220);
 
 var _styles = __webpack_require__(23);
@@ -51426,72 +51428,163 @@ var TimeCard = function (_React$Component) {
       args[_key] = arguments[_key];
     }
 
-    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = TimeCard.__proto__ || Object.getPrototypeOf(TimeCard)).call.apply(_ref, [this].concat(args))), _this), _this.active = 'mabibi', _this.state = { week: moment().week(), emailId: _getCfg.ls.getKey('email'), wkhrs: 0, tdata: { days: [] } }, _this.yr = moment().format('YYYY'), _this.chwk = function (e) {
-      _this.setState({ week: e.target.value });
-    }, _this.updat = function () {
-      var wdprt = _this.yr + '-W' + _this.state.week.toString().padStart(2, '0') + '-1';
-      var da = [];
-      da.push(moment(wdprt).subtract(3, 'days').format("YYYY-[W]WW-E"));
-      da.push(wdprt);
-      da.push(moment(wdprt).add(1, 'days').format("YYYY-[W]WW-E"));
-      da.push(moment(wdprt).add(2, 'days').format("YYYY-[W]WW-E"));
-      da.push(moment(wdprt).add(3, 'days').format("YYYY-[W]WW-E"));
-      return da;
-    }, _this.recData = function (d) {
-      console.log(d);
-      console.log(_this.state.tdata);
-      var ntd = _extends({}, _this.state.tdata);
-      console.log(ntd);
-      var days = ntd.days;
-      var found = false;
-      var ndays = days.map(function (day) {
-        if (day.wdprt == d.wdprt) {
-          found = true;
-          day.hrs = d.hrs;
-        }
-        return day;
-      });
-      if (!found) {
-        ndays.push(d);
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = TimeCard.__proto__ || Object.getPrototypeOf(TimeCard)).call.apply(_ref, [this].concat(args))), _this), _this.active = 'mabibi', _this.state = { week: moment().week(), emailId: _getCfg.ls.getKey('email'), wkhrs: 0, wkarr: [] }, _this.yr = moment().format('YYYY'), _this.createBlWk = function (wk) {
+      var blwk = [];
+      var wdprt = _this.yr + '-W' + wk.toString().padStart(2, "0") + '-';
+      for (var i = 1; i <= 7; i++) {
+        var obj = { wdprt: wdprt + i, hrs: 0, inout: [], jcost: [] };
+        blwk.push(obj);
       }
-      ntd.days = ndays;
-      console.log(ntd);
-      _this.setState({ tdata: ntd }, function () {
-        console.log(_this.state.tdata);
-        _this.sumData();
+      return blwk;
+    }, _this.processRes = function (res, wkarr) {
+      var nwka = wkarr.map(function (da) {
+        var pu = res.punch.filter(function (pu) {
+          return da.wdprt == pu.wdprt;
+        });
+        if (pu.length > 0) {
+          var inout = JSON.parse(pu[0].inout);
+          da.inout = inout;
+          da.hrs = pu[0].hrs;
+        }
+        var joc = res.jcost.filter(function (jc) {
+          return da.wdprt == jc.wdprt;
+        }).map(function (cj) {
+          return { job: cj.job, cat: cj.cat, hrs: cj.hrs };
+        });
+        da.jcost = joc;
+        return da;
       });
+      return _this.sortWk(nwka);
+    }, _this.sortWk = function (nwka) {
+      var swk = nwka.map(function (da) {
+        if (_getCfg.cfg.firstday != 1 && da.wdprt.slice(-1) >= _getCfg.cfg.firstday) {
+          da.wdprt = moment(da.wdprt).subtract(7, "days").format("YYYY-[W]WW-E");
+        }
+        return da;
+      }).sort(function (a, b) {
+        return a.wdprt > b.wdprt;
+      });
+      return swk;
+    }, _this.chwk = function (e) {
+      _this.getTimeCard(e.target.value);
+    }, _this.recData = function (d, idx) {
+      if (_getCfg.cfg.firstday != 1 && d.wdprt.slice(-1) >= _getCfg.cfg.firstday) {
+        d.wdprt = moment(d.wdprt).add(7, 'days').format("YYYY-[W]WW-E");
+      }
+      console.log('idx: ', idx);
+      console.log(d.inout);
+      console.log(JSON.stringify(d));
+      var wkarr = _this.state.wkarr;
+      wkarr[idx].inout = d.inout;
+      _this.setState({ wkarr: wkarr }, function () {
+        return console.log('this.state.wkarr: ', _this.state.wkarr[idx]);
+      });
+      console.log('d: ', d);
+      (0, _fetches.putTcard)(d);
+
+      //console.log(this.state.tdata);
+      // let ntd = {...this.state.tdata}
+      // console.log(ntd);
+      // let days = ntd.days
+      // let found=false
+      // let ndays = days.map((day)=>{
+      //   if(day.wdprt==d.wdprt){
+      //     found=true
+      //     day.hrs=d.hrs
+      //   }
+      //   return day
+      // })
+      // if(!found){
+      //   ndays.push(d)
+      // }
+      // ntd.days=ndays
+      // console.log(ntd);
+      // this.setState({tdata: ntd}, ()=>{
+      //   console.log(this.state.tdata)
+      //   this.sumData()
+      // })
     }, _this.sumData = function () {
-      var daysa = _this.state.tdata.days;
+      var daysa = _this.state.wkarr;
       var thrs = daysa.reduce(function (tot, aday) {
         return tot + aday.hrs * 1;
       }, 0);
-      _this.setState({ wkhrs: thrs });
+      return thrs;
+    }, _this.prepareDayData = function (d) {
+      var inout = d.inout;
+      // console.log('in createList: ', d.inout)
+
+      var pin = void 0,
+          pout = void 0,
+          phrs = void 0,
+          thrs = 0,
+          ioperiods = [],
+          ioper = [],
+          punchclock = 'out';
+      inout.map(function (io, i) {
+        if (i % 2 == 1) {
+          punchclock = 'in';
+          pout = io;
+          phrs = io2hrs(pin, pout);
+          thrs += phrs * 1;
+          ioper.push(pout);
+          ioper.push(phrs * 1);
+          ioperiods.splice(-1, 1);
+          ioperiods.push(ioper);
+        }
+        if (i % 2 == 0) {
+          pin = io;
+          ioper = [pin];
+          ioperiods.push(ioper);
+        }
+      });
+      if (inout.length == 0) {
+        punchclock = 'in';
+      }
+      return { hrs: thrs, ioperiods: ioperiods, punchclock: punchclock };
+    }, _this.renderDays = function () {
+      var _this$state = _this.state,
+          week = _this$state.week,
+          wkarr = _this$state.wkarr;
+
+      var rd = wkarr.map(function (d, i) {
+        var ihp = _this.prepareDayData(d);
+        d.hrs = ihp.hrs;
+        d.punchclock = ihp.punchclock;
+        return _react2.default.createElement(
+          'div',
+          { key: d.wdprt.slice(-1) },
+          _react2.default.createElement(_Day.Day, { akey: d.wdprt.slice(-1), da: d.wdprt, data: d, week: week, ioperiods: ihp.ioperiods, idx: i, sendData: _this.recData })
+        );
+      });
+      return rd;
     }, _temp), _possibleConstructorReturn(_this, _ret);
   }
 
   _createClass(TimeCard, [{
     key: 'componentDidMount',
     value: function componentDidMount() {
-      this.getTimeCard();
+      this.getTimeCard(this.state.week);
     }
   }, {
     key: 'getTimeCard',
-    value: function getTimeCard() {
-      console.log('doggy');
+    value: function getTimeCard(wk) {
+      var _this2 = this;
+
+      var wkarr = this.createBlWk(wk);
+      (0, _fetches.fetchTcard)(wk).then(function (res) {
+        var nwkarr = _this2.processRes(res, wkarr);
+        _this2.setState({ week: wk, punch: res.punch, jcost: res.jcost, wkarr: nwkarr }, function () {});
+      });
     }
   }, {
     key: 'render',
     value: function render() {
-      var _this2 = this;
-
-      var wdprtArr = this.updat();
       var _state = this.state,
           emailId = _state.emailId,
-          week = _state.week,
-          wkhrs = _state.wkhrs;
+          week = _state.week;
 
       if (emailId) {
-
+        var renderedDays = this.renderDays();
         return _react2.default.createElement(
           'div',
           { style: style.outer },
@@ -51499,22 +51592,18 @@ var TimeCard = function (_React$Component) {
             'h4',
             null,
             ' TimeCard for ',
-            emailId
+            emailId,
+            ' ',
+            week
           ),
           _react2.default.createElement(
             'span',
             null,
             'week ',
-            _react2.default.createElement('input', { type: 'number', value: week, onChange: this.chwk, style: { width: '35px' } }),
-            wkhrs
+            _react2.default.createElement('input', { type: 'number', value: week, onChange: this.chwk, style: { width: "35px" } }),
+            this.sumData()
           ),
-          wdprtArr.map(function (wdprt) {
-            return _react2.default.createElement(
-              'div',
-              { key: wdprt.slice(-1) },
-              _react2.default.createElement(_Day.Day, { akey: wdprt.slice(-1), da: wdprt, sendData: _this2.recData })
-            );
-          })
+          renderedDays
         );
       } else {
         return _react2.default.createElement(
@@ -51532,6 +51621,13 @@ var TimeCard = function (_React$Component) {
 exports.TimeCard = TimeCard = (0, _mapClass2Element.mapClass2Element)(TimeCard);
 
 exports.TimeCard = TimeCard;
+
+
+var io2hrs = function io2hrs(pin, pout) {
+  var ti = moment.duration(moment(pout, "HH:mm").diff(moment(pin, "HH:mm")));
+  var hrs = (ti._data.hours + ti._data.minutes / 60).toFixed(2);
+  return hrs;
+};
 
 /***/ }),
 /* 343 */
@@ -51576,7 +51672,37 @@ var Day = function (_React$Component) {
       args[_key] = arguments[_key];
     }
 
-    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = Day.__proto__ || Object.getPrototypeOf(Day)).call.apply(_ref, [this].concat(args))), _this), _this.state = { punch: 'in', inout: [], ros: [[]], th: 0 }, _this.tin = null, _this.recTime = function () {
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = Day.__proto__ || Object.getPrototypeOf(Day)).call.apply(_ref, [this].concat(args))), _this), _this.state = { punch: 'in', inout: [], ros: [[]], thrs: 0, ioperiods: [] }, _this.tin = null, _this.setPunch = function () {
+      if (_this.props.data.inout.length % 2 == 0) {
+        _this.setState({ punch: 'in' });
+      } else {
+        _this.setState({ punch: 'out' });
+      }
+    }, _this.appendTime = function () {
+      var io = _this.state.inout;
+      var data = _this.props.data;
+      data.inout.push(_this.tin.value);
+      io.push(_this.tin.value);
+      _this.setPunch();
+      _this.setState({ inout: io }, function () {
+        // this.createIoList()
+        console.log('data: ', data);
+        _this.props.sendData(data, _this.props.idx);
+      });
+    }, _this.renderIoList = function () {
+      var rl = _this.props.ioperiods.map(function (per, i) {
+        return _react2.default.createElement(
+          'div',
+          { key: i },
+          per[0],
+          ' -> ',
+          per[1],
+          '  = ',
+          per[2]
+        );
+      });
+      return rl;
+    }, _this.recTime = function () {
       console.log(_this.tin.value);
       var io = _this.state.inout;
       io.push(_this.tin.value);
@@ -51602,7 +51728,7 @@ var Day = function (_React$Component) {
           var hh = tot + key[2] * 1;
           var ro = { wdprt: _this.props.da, hrs: hh.toFixed(2), io: _this.state.inout };
           console.log(ro);
-          _this.props.sendData(ro);
+          //this.props.sendData(ro)
           return hh;
         } else {
           return tot;
@@ -51617,52 +51743,72 @@ var Day = function (_React$Component) {
   _createClass(Day, [{
     key: 'componentDidMount',
     value: function componentDidMount() {
+      var _this2 = this;
+
+      //console.log('Day component ' +this.props.da+ ' mounting: ')
       var tin = 'tin' + this.props.akey;
       this.tin = document.getElementById(tin);
+      this.setState({ inout: this.props.data.inout }, function () {
+        _this2.setPunch();
+        // this.createIoList()
+      });
     }
+
+    // createIoList = ()=>{
+    //   let pin, pout, phrs, thrs=0, ioperiods=[], ioper=[]
+    //   this.state.inout.map((io,i)=>{
+    //     if(i % 2 == 1){
+    //       pout = io
+    //       phrs = io2hrs(pin,pout)
+    //       thrs += phrs*1
+    //       ioper.push(pout)
+    //       ioper.push(phrs*1)
+    //       ioperiods.splice(-1,1)
+    //       ioperiods.push(ioper)
+    //     }
+    //     if(i % 2 == 0){
+    //       pin = io
+    //       ioper = [pin]
+    //       ioperiods.push(ioper)
+    //     }
+    //   })
+    //   this.setState({thrs:thrs, ioperiods:ioperiods})
+    // }
+
   }, {
     key: 'render',
     value: function render() {
       var _props = this.props,
           da = _props.da,
-          akey = _props.akey;
+          akey = _props.akey,
+          week = _props.week,
+          data = _props.data;
+      var hrs = data.hrs,
+          punchclock = data.punchclock;
 
       var tin = 'tin' + akey;
-      //const {inout} = this.state;
-      //const lio = this.listIo()
+      //console.log('Day data: ', data)
+      var inoutList = this.renderIoList();
       return _react2.default.createElement(
         'div',
         null,
         _react2.default.createElement(
           'span',
           null,
+          week,
+          ' ',
           moment(da).format('ddd MM/DD/YY E')
         ),
         _react2.default.createElement('br', null),
         _react2.default.createElement(
           'button',
-          { onClick: this.recTime },
-          this.state.punch
+          { onClick: this.appendTime },
+          punchclock
         ),
         _react2.default.createElement('input', { id: tin, type: 'time' }),
         _react2.default.createElement('br', null),
-        this.state.ros.map(function (r, i) {
-          return _react2.default.createElement(
-            'div',
-            { key: i },
-            _react2.default.createElement(
-              'span',
-              null,
-              r[0],
-              ' -->  ',
-              r[1],
-              '   =  ',
-              r[2],
-              ' hrs'
-            )
-          );
-        }),
-        this.state.th.toFixed(2)
+        inoutList,
+        hrs
       );
     }
   }]);
@@ -51671,6 +51817,12 @@ var Day = function (_React$Component) {
 }(_react2.default.Component);
 
 exports.Day = Day;
+
+// const io2hrs = (pin, pout)=>{
+//   const ti = moment.duration(moment(pout, "HH:mm").diff(moment(pin, "HH:mm")));
+//   const hrs = (ti._data.hours + ti._data.minutes/60).toFixed(2);  
+//   return hrs
+// }
 
 /***/ }),
 /* 344 */
@@ -51948,7 +52100,7 @@ module.exports = {"m":"https"}
 /* 346 */
 /***/ (function(module, exports) {
 
-module.exports = {"https":{"coid":"reroo","appid":"tcard","wkstmo":-3,"url":{"soauth":"https://services.sitebuilt.net/soauth","api":"https://services.sitebuilt.net/reroox/api"},"cbPath":"#registered"},"local":{}}
+module.exports = {"https":{"coid":"reroo","appid":"tcard","firstday":5,"url":{"soauth":"https://services.sitebuilt.net/soauth","api":"https://services.sitebuilt.net/reroox/api"},"cbPath":"#registered"},"local":{}}
 
 /***/ }),
 /* 347 */
@@ -79785,6 +79937,139 @@ var initialBrowser = function initialBrowser() {
 
 initState.responsive = initialBrowser();
 exports.initState = initState;
+
+/***/ }),
+/* 631 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.putTcard = exports.deleteJob = exports.putJob = exports.postJobs = exports.fetchTcard = undefined;
+
+var _getCfg = __webpack_require__(56);
+
+var _wfuncs = __webpack_require__(221);
+
+var fetchTcard = function fetchTcard(wk) {
+  var lsh = _getCfg.ls.getItem();
+  if ((0, _wfuncs.geta)('lsh.token', lsh)) {
+    var url = _getCfg.cfg.url.api + '/tcard/week/' + wk;
+
+    var options = { headers: { 'Authorization': 'Bearer ' + lsh['token'] } };
+    return fetch(url, options).then(function (response) {
+      return response.json();
+    }).then(function (json) {
+      if (json.message) {
+        return { qmessage: json.message };
+      } else {
+        return json;
+      }
+    }).catch(function (e) {
+      return { qmessage: e.message };
+    });
+  } else {
+    var p2 = Promise.resolve({ qmessage: 'you dont exist! ' });
+    return p2;
+  }
+};
+
+var putTcard = function putTcard(tday) {
+  var lsh = _getCfg.ls.getItem();
+  console.log(tday);
+  if ((0, _wfuncs.geta)('lsh.token', lsh)) {
+    var url = _getCfg.cfg.url.api + '/tcard/update';
+    var options = {
+      headers: { 'Authorization': 'Bearer ' + lsh['token'],
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
+      },
+      method: 'PUT',
+      body: JSON.stringify({ tday: tday })
+    };
+    return fetch(url, options).then(function (response) {
+      return response.json();
+    });
+  } else {
+    var p2 = Promise.resolve({ qmessage: 'you dont exist! ' });
+    return p2;
+  }
+};
+
+var postJobs = function postJobs(jobs, wk) {
+  var lsh = _getCfg.ls.getItem();
+  console.log(jobs);
+  if ((0, _wfuncs.geta)('lsh.token', lsh)) {
+    var url = _getCfg.cfg.url.api + '/jobs/post/' + wk;
+    var options = {
+      headers: { 'Authorization': 'Bearer ' + lsh['token'],
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
+      },
+      method: 'POST',
+      body: JSON.stringify({ jobs: jobs })
+    };
+    return fetch(url, options).then(function (response) {
+      return response.json();
+    });
+  } else {
+    var p2 = Promise.resolve({ qmessage: 'you dont exist! ' });
+    return p2;
+  }
+};
+
+var putJob = function putJob(job) {
+  var lsh = _getCfg.ls.getItem();
+  console.log(job);
+  if ((0, _wfuncs.geta)('lsh.token', lsh)) {
+    var url = _getCfg.cfg.url.api + '/jobs/update';
+    var options = {
+      headers: { 'Authorization': 'Bearer ' + lsh['token'],
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
+      },
+      method: 'PUT',
+      body: JSON.stringify({ jobs: job })
+    };
+    return fetch(url, options).then(function (response) {
+      return response.json();
+    });
+  } else {
+    var p2 = Promise.resolve({ qmessage: 'you dont exist! ' });
+    return p2;
+  }
+};
+
+var deleteJob = function deleteJob(job) {
+  var lsh = _getCfg.ls.getItem();
+  console.log(job);
+  if ((0, _wfuncs.geta)('lsh.token', lsh)) {
+    var url = _getCfg.cfg.url.api + '/jobs/del';
+    var options = {
+      headers: { 'Authorization': 'Bearer ' + lsh['token'],
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
+      },
+      method: 'DELETE',
+      body: JSON.stringify({ job: job })
+    };
+    return fetch(url, options).then(function (response) {
+      return response.json();
+    });
+  } else {
+    var p2 = Promise.resolve({ qmessage: 'you dont exist! ' });
+    return p2;
+  }
+};
+
+exports.fetchTcard = fetchTcard;
+exports.postJobs = postJobs;
+exports.putJob = putJob;
+exports.deleteJob = deleteJob;
+exports.putTcard = putTcard;
 
 /***/ })
 /******/ ]);

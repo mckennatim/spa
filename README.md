@@ -15,6 +15,8 @@ https://github.com/mozilla-services/react-jsonschema-form
 https://gridbyexample.com/examples/example13/
 https://www.mozilla.org/en-US/firefox/60.0a2/whatsnew/#cssgrid
 https://mozilladevelopers.github.io/playground/css-grid/
+### 76-reroo-tcards-src.3-prepareDayData
+instead of Day.creatIoList. Saves data, updates on load, on week change or punch the clock data is rediplayed. Save happens anytime you punch the clock
 ### 76-reroo-tcards-src.2-sumData
 sendData sends hrs for the day and also and array of inout
 
@@ -454,7 +456,7 @@ Do users/observers need separate permission for every device used in an app?
 A builder builds something, builder owns it, can sell to new owner     
 
 ### 58-hvac-v8s-SchedEdit
-delete add to SchedEdit
+delete add to SchedEdit 
 ### 57-hvac-v8r-handleSend2server-convertDbFromWsched-make2dArr
 TODO delete add to sched
 save back to server
