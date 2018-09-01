@@ -118,7 +118,7 @@ class TimeCard extends React.Component{
 
   prepareDayData = (d)=>{
     const{inout}=d
-    // console.log('in createList: ', d.inout)
+    console.log('in prepareDayData: ', d)
     let pin, pout, phrs, thrs=0, ioperiods=[], ioper=[], punchclock='out'
     inout.map((io,i)=>{
       if(i % 2 == 1){

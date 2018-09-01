@@ -15,6 +15,81 @@ https://github.com/mozilla-services/react-jsonschema-form
 https://gridbyexample.com/examples/example13/
 https://www.mozilla.org/en-US/firefox/60.0a2/whatsnew/#cssgrid
 https://mozilladevelopers.github.io/playground/css-grid/
+### 77-reroo-tcards-src.4-refactor
+
+This is now what comes from the database, The server combines the results of tcardpu and tcardjsc into records for each day of the week that there is tcardpu data. If there is no tcardpu data but there is tcardjc data then it will leave that data on the server and return [].
+
+
+
+    parr:  
+    { wkarr:
+      [ { wdprt: '2018-W34-5',
+          hrs: 0,
+          inout: [],
+          jcost: [],
+          jchrs: 0,
+          idx: 0 },
+        { wdprt: '2018-W35-1',
+          hrs: 8.25,
+          inout: '["7:30", "15:45"]',
+          jcost: [Array],
+          jchrs: 8.25,
+          idx: 1 },
+        { wdprt: '2018-W35-2',
+          hrs: 8.5,
+          inout: '["7:15", "15:45"]',
+          jcost: [Array],
+          jchrs: 8.5,
+          idx: 2 },
+        { wdprt: '2018-W35-3',
+          hrs: 0,
+          inout: [],
+          jcost: [],
+          jchrs: 0,
+          idx: 3 },
+        { wdprt: '2018-W35-4',
+          hrs: 7.25,
+          inout: '["8:30", "15:45"]',
+          jcost: [Array],
+          jchrs: 7.25,
+          idx: 4 },
+        { wdprt: '2018-W34-6',
+          hrs: 0,
+          inout: [],
+          jcost: [],
+          jchrs: 0,
+          idx: 5 },
+        { wdprt: '2018-W34-7',
+          hrs: 0,
+          inout: [],
+          jcost: [],
+          jchrs: 0,
+          idx: 6 } ],
+      hrs: [ 8.25, 8.5, 7.25, 9.5 ],
+      jchrs: [ 8.25, 8.5, 7.25, 9.5 ] }
+
+On the app side, F
+
+Fetches is responsible for padding the data with a blank week, adjusting the week so friday saturday and sunday are displayed as the week before, ordering the records so Sa and Su are at the bottom of the list and creating arrays of hours for pu and jchrs for the week.
+
+TimeCard.js
+copies the data into state so the app refreshes on week selection. Day sends data to Timecard any time the timeclock is punched so then Timecard can rattle the state so it rerenders.
+
+Day 
+TODO Day is responsible for creating the ioperiods rows. Day also does a database save of a day record whenever the timeclock is punched.
+
+    const processDb4app =(res)=>{
+      const wkarr = wkendLast(adjWk4app(cfg.firstday, padWkData(res.wk, res.wkarr)))
+      const hrs= sumThing(res.wkarr, 'hrs')
+      const jchrs= sumThing(res.wkarr, 'jchrs')
+      console.log('wkarr: ', wkarr)
+      console.log('hrs: ', hrs)
+      console.log('jchrs: ', jchrs)
+      return {wkarr, hrs, jchrs, emailid:lsh.email}
+    }
+
+
+
 ### 76-reroo-tcards-src.3-prepareDayData
 instead of Day.creatIoList. Saves data, updates on load, on week change or punch the clock data is rediplayed. Save happens anytime you punch the clock
 ### 76-reroo-tcards-src.2-sumData
