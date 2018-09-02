@@ -51428,17 +51428,44 @@ var TimeCard = function (_React$Component) {
 
     return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = TimeCard.__proto__ || Object.getPrototypeOf(TimeCard)).call.apply(_ref, [this].concat(args))), _this), _this.active = 'mabibi', _this.state = { week: moment().week(), wkarr: [], hrs: [], jchrs: [] }, _this.yr = moment().format('YYYY'), _this.chwk = function (e) {
       _this.getTimeCard(e.target.value);
-    }, _this.handleDayChanges = function (newdata) {
-      var ndata = _extends({}, newdata);
-      var idx = ndata.idx;
-      var wkarr = _this.state.wkarr;
-      wkarr[idx] = newdata;
-      _this.setState({ wkarr: wkarr });
+    }, _this.handleDayChanges = function (cmd, newdata) {
+      if (cmd == 'punch') {
+        var inout = newdata.inout.slice();
+        var ndata = _extends({}, newdata);
+        ndata.inout = inout;
+        var idx = ndata.idx;
+        var hrs = ndata.hrs;
+        var hrarr = _this.state.hrs;
+        hrarr[idx] = hrs;
+        var wkarr = _this.state.wkarr.slice();
+        wkarr[idx] = ndata;
+        _this.setState({ wkarr: wkarr, hrs: hrarr });
+        console.log('this.state: ', _this.state);
+      }
+      if (cmd == 'delpu') {
+        console.log('newdata: ', newdata);
+        var _wkarr = _this.state.wkarr.slice();
+        var _idx = _wkarr.findIndex(function (d) {
+          return d.wdprt == newdata;
+        });
+        var da = _wkarr[_idx];
+        var nda = _extends({}, da);
+        nda.hrs = 0;
+        nda.inout = [];
+        _wkarr[_idx] = nda;
+        var _hrarr = _this.state.hrs;
+        console.log('hrarr: ', _hrarr);
+        _hrarr[_idx] = 0;
+        console.log('hrarr: ', _hrarr);
+        console.log('wkarr: ', _wkarr);
+        _this.setState({ wkarr: _wkarr, hrs: _hrarr });
+      }
     }, _this.renderDays = function () {
       var _this$state = _this.state,
           week = _this$state.week,
           wkarr = _this$state.wkarr;
 
+      console.log('this.state.wkarr: ', _this.state.wkarr);
       var rd = wkarr.map(function (d) {
         return _react2.default.createElement(
           'div',
@@ -51469,6 +51496,7 @@ var TimeCard = function (_React$Component) {
   }, {
     key: 'render',
     value: function render() {
+      console.log('RENDERING: ');
       var week = this.state.week;
 
       if (this.emailId) {
@@ -51529,6 +51557,8 @@ var _react = __webpack_require__(11);
 
 var _react2 = _interopRequireDefault(_react);
 
+var _fetches = __webpack_require__(348);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -51539,6 +51569,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 // eslint-disable-line no-unused-vars
 var moment = __webpack_require__(1);
+
 
 var style = {
   tcardDiv: {
@@ -51560,19 +51591,46 @@ var Day = function (_React$Component) {
       args[_key] = arguments[_key];
     }
 
-    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = Day.__proto__ || Object.getPrototypeOf(Day)).call.apply(_ref, [this].concat(args))), _this), _this.state = { punch: 'in' }, _this.setPunch = function () {
-      if (_this.props.data.inout.length % 2 == 0) {
-        _this.setState({ punch: 'in' });
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = Day.__proto__ || Object.getPrototypeOf(Day)).call.apply(_ref, [this].concat(args))), _this), _this.state = { punch: 'in' }, _this.tinel = null, _this.hrs = 0, _this.setPunch = function () {
+      if (_this.props.data.inout.length % 2 == 0 || _this.props.data.inout.length == 0) {
+        return 'in';
       } else {
-        _this.setState({ punch: 'out' });
+        return 'out';
       }
     }, _this.appendTime = function () {
-      var newdata = _extends({}, _this.props.data);
-      newdata.inout.push(_this.tin.value);
-      _this.props.dayChanges(newdata);
+      console.log('this.tin.value: ', _this.tinel.value);
+      var ndata = _extends({}, _this.props.data);
+      ndata.inout.push(_this.tinel.value);
+      ndata.hrs = resumHrs(ndata.inout);
+      console.log('ndata: ', ndata);
+      console.log('resumHrs(ndata.inout): ', resumHrs(ndata.inout));
+      _this.setPunch();
+      _this.props.dayChanges('punch', ndata);
+      (0, _fetches.putTcard)(ndata);
+    }, _this.delDayPu = function (e) {
+      var wdprt = e.target.getAttribute("wdprt");
+      console.log('in delDayPu: ', wdprt);
+      _this.props.dayChanges('delpu', wdprt);
+      (0, _fetches.delTcardPu)(wdprt);
     }, _this.renderIoList = function (data) {
-      var rl = data.inout;
-      return rl;
+      var perarr = createPeriodArray(data.inout);
+      console.log('perarr: ', perarr);
+      // const rl = data.inout
+      return _react2.default.createElement(
+        'div',
+        null,
+        perarr.map(function (per, i) {
+          return _react2.default.createElement(
+            'div',
+            { key: i },
+            per[0],
+            ' -> ',
+            per[1],
+            '  = ',
+            per[2]
+          );
+        })
+      );
     }, _temp), _possibleConstructorReturn(_this, _ret);
   } // eslint-disable-line no-unused-vars
 
@@ -51580,19 +51638,22 @@ var Day = function (_React$Component) {
   _createClass(Day, [{
     key: 'componentDidMount',
     value: function componentDidMount() {
-      var tin = 'tin' + this.props.data.idx;
-      this.tin = document.getElementById(tin);
+      this.tinel = document.getElementById('tin' + this.props.data.idx);
       this.setPunch();
     }
   }, {
     key: 'render',
     value: function render() {
+      var tin = 'tin' + this.props.data.idx;
       var _props = this.props,
           week = _props.week,
           data = _props.data;
-      var punch = this.state.punch;
+      var hrs = data.hrs,
+          wdprt = data.wdprt;
 
+      var punch = this.setPunch();
       var inoutList = this.renderIoList(data);
+      //const hrs = this.renderHrs(data)
       return _react2.default.createElement(
         'div',
         { style: style.tcardDiv },
@@ -51603,13 +51664,19 @@ var Day = function (_React$Component) {
           ' ',
           moment(data.wdprt).format('ddd MM/DD/YY E')
         ),
+        _react2.default.createElement(
+          'span',
+          { wdprt: wdprt, onClick: this.delDayPu },
+          'X'
+        ),
         _react2.default.createElement('br', null),
         _react2.default.createElement(
           'button',
           { onClick: this.appendTime },
           punch
         ),
-        _react2.default.createElement('input', { id: this.tin, type: 'time' }),
+        _react2.default.createElement('input', { id: tin, type: 'time' }),
+        hrs,
         _react2.default.createElement('br', null),
         inoutList
       );
@@ -51621,11 +51688,54 @@ var Day = function (_React$Component) {
 
 exports.Day = Day;
 
-// const io2hrs = (pin, pout)=>{
-//   const ti = moment.duration(moment(pout, "HH:mm").diff(moment(pin, "HH:mm")));
-//   const hrs = (ti._data.hours + ti._data.minutes/60).toFixed(2);  
-//   return hrs
-// }
+
+var io2hrs = function io2hrs(pin, pout) {
+  var ti = moment.duration(moment(pout, "HH:mm").diff(moment(pin, "HH:mm")));
+  var hrs = (ti._data.hours + ti._data.minutes / 60).toFixed(2);
+  return hrs;
+};
+
+var createPeriodArray = function createPeriodArray(inout) {
+  var pin = void 0,
+      pout = void 0,
+      phrs = void 0,
+      ioperiods = [],
+      ioper = [];
+  inout.map(function (io, i) {
+    if (i % 2 == 1) {
+      pout = io;
+      phrs = io2hrs(pin, pout);
+      ioper.push(pout);
+      ioper.push(phrs * 1);
+      ioperiods.splice(-1, 1);
+      ioperiods.push(ioper);
+    }
+    if (i % 2 == 0) {
+      pin = io;
+      ioper = [pin];
+      ioperiods.push(ioper);
+    }
+  });
+  return ioperiods;
+};
+
+var resumHrs = function resumHrs(inout) {
+  var pin = void 0,
+      pout = void 0,
+      phrs = void 0,
+      thrs = 0;
+  inout.map(function (io, i) {
+    if (i % 2 == 1) {
+      pout = io;
+      phrs = io2hrs(pin, pout);
+      thrs += phrs * 1;
+    }
+    if (i % 2 == 0) {
+      pin = io;
+    }
+  });
+  return thrs;
+};
 
 /***/ }),
 /* 344 */
@@ -51966,7 +52076,7 @@ exports.storageLocal = storageLocal;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.putTcard = exports.fetchTcard = undefined;
+exports.delTcardPu = exports.putTcard = exports.fetchTcard = undefined;
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
@@ -52002,6 +52112,7 @@ var fetchTcard = function fetchTcard(wk) {
 };
 
 var putTcard = function putTcard(aday) {
+  console.log('aday: ', aday);
   var tday = adjDay4db(_getCfg.cfg.firstday, aday);
   var lsh = _getCfg.ls.getItem();
   console.log(tday);
@@ -52024,8 +52135,31 @@ var putTcard = function putTcard(aday) {
   }
 };
 
+var delTcardPu = function delTcardPu(wdprt) {
+  var adjwdprt = moment(wdprt).add(7, "days").format("YYYY-[W]WW-E");
+  var lsh = _getCfg.ls.getItem();
+  if ((0, _wfuncs.geta)('lsh.token', lsh)) {
+    var url = _getCfg.cfg.url.api + '/tcard/del';
+    var options = {
+      headers: { 'Authorization': 'Bearer ' + lsh['token'],
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
+      },
+      method: 'DELETE',
+      body: JSON.stringify({ wdprt: adjwdprt })
+    };
+    return fetch(url, options).then(function (response) {
+      return response.json();
+    });
+  } else {
+    var p2 = Promise.resolve({ qmessage: 'you dont exist! ' });
+    return p2;
+  }
+};
+
 exports.fetchTcard = fetchTcard;
 exports.putTcard = putTcard;
+exports.delTcardPu = delTcardPu;
 
 
 var createBlWk = function createBlWk(wk) {
@@ -52077,8 +52211,8 @@ var sumThing = function sumThing(arr, fld) {
 
 var processDb4app = function processDb4app(res) {
   var wkarr = wkendLast(adjWk4app(_getCfg.cfg.firstday, padWkData(res.wk, res.wkarr)));
-  var hrs = sumThing(res.wkarr, 'hrs');
-  var jchrs = sumThing(res.wkarr, 'jchrs');
+  var hrs = sumThing(wkarr, 'hrs');
+  var jchrs = sumThing(wkarr, 'jchrs');
   console.log('wkarr: ', wkarr);
   console.log('hrs: ', hrs);
   console.log('jchrs: ', jchrs);

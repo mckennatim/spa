@@ -15,6 +15,24 @@ https://github.com/mozilla-services/react-jsonschema-form
 https://gridbyexample.com/examples/example13/
 https://www.mozilla.org/en-US/firefox/60.0a2/whatsnew/#cssgrid
 https://mozilladevelopers.github.io/playground/css-grid/
+
+### 79-reroo-tcard-src.5-punchdone
+hooray on to jobcost
+### 78-reroo-tcard-handleDayChanges
+
+In order to diplay inout you need a new copy of newdata.inout, a new copy of newdata and a new copy of this state.wkarr. Don't be shallow.
+
+    handleDayChanges = (newdata)=>{
+      const inout = newdata.inout.slice()
+      const ndata= {...newdata}
+      ndata.inout=inout
+      const idx = ndata.idx
+      let wkarr = this.state.wkarr.slice()
+      wkarr[idx]=ndata
+      this.setState({wkarr, ctime:newdata.inout.slice(-1)})
+      console.log('this.state: ', this.state)
+    }
+
 ### 77-reroo-tcards-src.4-refactor
 
 This is now what comes from the database, The server combines the results of tcardpu and tcardjsc into records for each day of the week that there is tcardpu data. If there is no tcardpu data but there is tcardjc data then it will leave that data on the server and return [].
