@@ -51465,7 +51465,6 @@ var TimeCard = function (_React$Component) {
           week = _this$state.week,
           wkarr = _this$state.wkarr;
 
-      console.log('this.state.wkarr: ', _this.state.wkarr);
       var rd = wkarr.map(function (d) {
         return _react2.default.createElement(
           'div',
@@ -51488,17 +51487,19 @@ var TimeCard = function (_React$Component) {
       var _this2 = this;
 
       (0, _fetches.fetchTcard)(wk).then(function (res) {
-        console.log('Timecard res: ', res);
         _this2.emailId = res.emailid;
+        console.log('res: ', res);
         _this2.setState({ week: wk, wkarr: res.wkarr, hrs: res.hrs, jchrs: res.jchrs });
       });
     }
   }, {
     key: 'render',
     value: function render() {
-      console.log('RENDERING: ');
       var week = this.state.week;
 
+      var thrs = this.state.hrs.reduce(function (t, h) {
+        return t + h;
+      }, 0);
       if (this.emailId) {
         var renderedDays = this.renderDays();
         return _react2.default.createElement(
@@ -51516,7 +51517,8 @@ var TimeCard = function (_React$Component) {
             'span',
             null,
             'week ',
-            _react2.default.createElement('input', { type: 'number', value: week, onChange: this.chwk, style: { width: "35px" } })
+            _react2.default.createElement('input', { type: 'number', value: week, onChange: this.chwk, style: { width: "35px" } }),
+            thrs
           ),
           renderedDays
         );
@@ -51559,6 +51561,8 @@ var _react2 = _interopRequireDefault(_react);
 
 var _fetches = __webpack_require__(348);
 
+var _JobCost = __webpack_require__(632);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -51569,7 +51573,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 // eslint-disable-line no-unused-vars
 var moment = __webpack_require__(1);
-
+// eslint-disable-line no-unused-vars
 
 var style = {
   tcardDiv: {
@@ -51614,8 +51618,6 @@ var Day = function (_React$Component) {
       (0, _fetches.delTcardPu)(wdprt);
     }, _this.renderIoList = function (data) {
       var perarr = createPeriodArray(data.inout);
-      console.log('perarr: ', perarr);
-      // const rl = data.inout
       return _react2.default.createElement(
         'div',
         null,
@@ -51631,6 +51633,8 @@ var Day = function (_React$Component) {
           );
         })
       );
+    }, _this.handleJcChanges = function (ch) {
+      console.log('ch: ', ch);
     }, _temp), _possibleConstructorReturn(_this, _ret);
   } // eslint-disable-line no-unused-vars
 
@@ -51649,7 +51653,9 @@ var Day = function (_React$Component) {
           week = _props.week,
           data = _props.data;
       var hrs = data.hrs,
-          wdprt = data.wdprt;
+          wdprt = data.wdprt,
+          jcost = data.jcost,
+          jchrs = data.jchrs;
 
       var punch = this.setPunch();
       var inoutList = this.renderIoList(data);
@@ -51678,7 +51684,8 @@ var Day = function (_React$Component) {
         _react2.default.createElement('input', { id: tin, type: 'time' }),
         hrs,
         _react2.default.createElement('br', null),
-        inoutList
+        inoutList,
+        _react2.default.createElement(_JobCost.JobCost, { jcost: jcost, jchrs: jchrs, jcChanges: this.handleJcChanges })
       );
     }
   }]);
@@ -52136,7 +52143,9 @@ var putTcard = function putTcard(aday) {
 };
 
 var delTcardPu = function delTcardPu(wdprt) {
-  var adjwdprt = moment(wdprt).add(7, "days").format("YYYY-[W]WW-E");
+  if (_getCfg.cfg.firstday != 1 && wdprt.slice(-1) >= _getCfg.cfg.firstday) {
+    wdprt = moment(wdprt).add(7, "days").format("YYYY-[W]WW-E");
+  }
   var lsh = _getCfg.ls.getItem();
   if ((0, _wfuncs.geta)('lsh.token', lsh)) {
     var url = _getCfg.cfg.url.api + '/tcard/del';
@@ -52146,7 +52155,7 @@ var delTcardPu = function delTcardPu(wdprt) {
         'Content-Type': 'application/json'
       },
       method: 'DELETE',
-      body: JSON.stringify({ wdprt: adjwdprt })
+      body: JSON.stringify({ wdprt: wdprt })
     };
     return fetch(url, options).then(function (response) {
       return response.json();
@@ -52213,9 +52222,6 @@ var processDb4app = function processDb4app(res) {
   var wkarr = wkendLast(adjWk4app(_getCfg.cfg.firstday, padWkData(res.wk, res.wkarr)));
   var hrs = sumThing(wkarr, 'hrs');
   var jchrs = sumThing(wkarr, 'jchrs');
-  console.log('wkarr: ', wkarr);
-  console.log('hrs: ', hrs);
-  console.log('jchrs: ', jchrs);
   return { wkarr: wkarr, hrs: hrs, jchrs: jchrs, emailid: lsh.email };
 };
 
@@ -80024,6 +80030,102 @@ var initialBrowser = function initialBrowser() {
 
 initState.responsive = initialBrowser();
 exports.initState = initState;
+
+/***/ }),
+/* 632 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.JobCost = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(11);
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var JobCost = function (_React$Component) {
+  _inherits(JobCost, _React$Component);
+
+  function JobCost() {
+    var _ref;
+
+    var _temp, _this, _ret;
+
+    _classCallCheck(this, JobCost);
+
+    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = JobCost.__proto__ || Object.getPrototypeOf(JobCost)).call.apply(_ref, [this].concat(args))), _this), _this.state = {}, _this.renderJcost = function (jcost) {
+      var jca = jcost.map(function (jc, i) {
+        return _react2.default.createElement(
+          'div',
+          { key: i },
+          _react2.default.createElement(
+            'span',
+            null,
+            jc.job,
+            ' ',
+            jc.cat,
+            ' ',
+            jc.hrs
+          ),
+          _react2.default.createElement('br', null)
+        );
+      });
+      return jca;
+    }, _temp), _possibleConstructorReturn(_this, _ret);
+  }
+
+  _createClass(JobCost, [{
+    key: 'render',
+    value: function render() {
+      var _props = this.props,
+          jchrs = _props.jchrs,
+          jcost = _props.jcost;
+
+      var jcosts = this.renderJcost(jcost);
+      return _react2.default.createElement(
+        'div',
+        { style: style.jcbox },
+        _react2.default.createElement(
+          'span',
+          null,
+          'job costs ',
+          jchrs
+        ),
+        _react2.default.createElement('br', null),
+        jcosts
+      );
+    }
+  }]);
+
+  return JobCost;
+}(_react2.default.Component);
+
+exports.JobCost = JobCost;
+
+
+var style = {
+  jcbox: {
+    border: '1px solid green'
+  }
+};
 
 /***/ })
 /******/ ]);

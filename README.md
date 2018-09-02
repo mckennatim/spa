@@ -16,6 +16,8 @@ https://gridbyexample.com/examples/example13/
 https://www.mozilla.org/en-US/firefox/60.0a2/whatsnew/#cssgrid
 https://mozilladevelopers.github.io/playground/css-grid/
 
+### 80-reroo-tcard-src.6-JobCost
+basic setup
 ### 79-reroo-tcard-src.5-punchdone
 hooray on to jobcost
 ### 78-reroo-tcard-handleDayChanges
