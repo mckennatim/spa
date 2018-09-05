@@ -51627,7 +51627,8 @@ var style = {
   },
   hrs: {
     div: {
-      float: 'right'
+      float: 'right',
+      width: '120px'
     },
     span: {
       fontSize: '18px'
@@ -52301,7 +52302,7 @@ var sumThing = function sumThing(arr, fld) {
 };
 
 var processDb4app = function processDb4app(res) {
-  var wkarr = wkendLast(adjWk4app(_getCfg.cfg.firstday, padWkData(res.wk, res.wkarr)));
+  var wkarr = wkendLast(adjWk4app(_getCfg.cfg.firstday, res.wkarr));
   var hrs = sumThing(wkarr, 'hrs');
   var jchrs = sumThing(wkarr, 'jchrs');
   return { wkarr: wkarr, hrs: hrs, jchrs: jchrs, emailid: lsh.email, jobs: res.jobs, wstat: res.wstat };
