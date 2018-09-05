@@ -15,7 +15,10 @@ https://github.com/mozilla-services/react-jsonschema-form
 https://gridbyexample.com/examples/example13/
 https://www.mozilla.org/en-US/firefox/60.0a2/whatsnew/#cssgrid
 https://mozilladevelopers.github.io/playground/css-grid/
-
+### 82-reroo-tcard-src.8-tcardwk-status-css
+TODO display tcardjc w/o punch, tcardwk 
+### 81-reroo-tcard-src.7-jobcost-functions
+need to save jcost record
 ### 80-reroo-tcard-src.6-JobCost
 basic setup
 ### 79-reroo-tcard-src.5-punchdone

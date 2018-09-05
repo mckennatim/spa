@@ -51426,7 +51426,7 @@ var TimeCard = function (_React$Component) {
       args[_key] = arguments[_key];
     }
 
-    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = TimeCard.__proto__ || Object.getPrototypeOf(TimeCard)).call.apply(_ref, [this].concat(args))), _this), _this.active = 'mabibi', _this.state = { week: moment().week(), wkarr: [], hrs: [], jchrs: [] }, _this.yr = moment().format('YYYY'), _this.chwk = function (e) {
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = TimeCard.__proto__ || Object.getPrototypeOf(TimeCard)).call.apply(_ref, [this].concat(args))), _this), _this.active = 'mabibi', _this.state = { week: moment().week(), wkarr: [], hrs: [], jchrs: [], wstat: undefined }, _this.yr = moment().format('YYYY'), _this.chwk = function (e) {
       _this.getTimeCard(e.target.value);
     }, _this.handleDayChanges = function (cmd, newdata) {
       if (cmd == 'punch') {
@@ -51504,14 +51504,18 @@ var TimeCard = function (_React$Component) {
       (0, _fetches.fetchTcard)(wk).then(function (res) {
         _this2.emailId = res.emailid;
         console.log('res: ', res);
-        _this2.setState({ week: wk, wkarr: res.wkarr, hrs: res.hrs, jchrs: res.jchrs, jobs: res.jobs });
+        _this2.setState({ week: wk, wkarr: res.wkarr, hrs: res.hrs, jchrs: res.jchrs, jobs: res.jobs, wstat: res.wstat });
       });
     }
   }, {
     key: 'render',
     value: function render() {
-      var week = this.state.week;
+      var _state = this.state,
+          week = _state.week,
+          wstat = _state.wstat;
 
+      var status = wstat ? wstat.status : "unsaved";
+      // unsaved, inprocess, ready, submitted, approved, paid
       var thrs = this.state.hrs.reduce(function (t, h) {
         return t + h;
       }, 0);
@@ -51523,6 +51527,8 @@ var TimeCard = function (_React$Component) {
           _react2.default.createElement(
             'h4',
             null,
+            ' ',
+            status,
             ' TimeCard for ',
             this.emailId,
             ' ',
@@ -51593,6 +51599,39 @@ var moment = __webpack_require__(1);
 var style = {
   tcardDiv: {
     border: '2px solid black'
+  },
+  punchclock: {
+    container: {
+      padding: '2px',
+      border: '2px green solid',
+      borderRadius: '12px',
+      float: 'left',
+      background: 'white'
+    },
+    input: {
+      borderRadius: '0px 0px 12px 12px'
+    },
+    button: {
+      borderRadius: '12px 12px 0px 0px',
+      width: '100px',
+      background: 'white'
+    }
+  },
+  daydate: {
+    container: {
+      float: 'left'
+    },
+    day: {
+      fontSize: '25px'
+    }
+  },
+  hrs: {
+    div: {
+      float: 'right'
+    },
+    span: {
+      fontSize: '18px'
+    }
   }
 };
 
@@ -51617,15 +51656,18 @@ var Day = function (_React$Component) {
         return 'out';
       }
     }, _this.appendTime = function () {
-      console.log('this.tin.value: ', _this.tinel.value);
-      var ndata = _extends({}, _this.props.data);
-      ndata.inout.push(_this.tinel.value);
-      ndata.hrs = resumHrs(ndata.inout);
-      console.log('ndata: ', ndata);
-      console.log('resumHrs(ndata.inout): ', resumHrs(ndata.inout));
-      _this.setPunch();
-      _this.props.dayChanges('punch', ndata);
-      (0, _fetches.putTcard)(ndata);
+      if (_this.tinel.value.length != 5) {
+        window.alert('could you check that you entered a time before hitting the punch clock');
+      } else {
+        var ndata = _extends({}, _this.props.data);
+        ndata.inout.push(_this.tinel.value);
+        ndata.hrs = resumHrs(ndata.inout);
+        console.log('ndata: ', ndata);
+        console.log('resumHrs(ndata.inout): ', resumHrs(ndata.inout));
+        _this.setPunch();
+        _this.props.dayChanges('punch', ndata);
+        (0, _fetches.putTcard)(ndata);
+      }
     }, _this.delDayPu = function (e) {
       var wdprt = e.target.getAttribute("wdprt");
       console.log('in delDayPu: ', wdprt);
@@ -51651,7 +51693,10 @@ var Day = function (_React$Component) {
     }, _this.handleJcChanges = function (ch) {
       console.log('ch: ', ch);
       console.log('this.props.data.idx: ', _this.props.data.idx);
+      console.log('this.props.data.wdprt: ', _this.props.data.wdprt);
       _this.props.dayChanges('jcost', { idx: _this.props.data.idx, jcost: ch });
+      var rec = { wdprt: _this.props.data.wdprt, jcosts: ch };
+      console.log('rec: ', JSON.stringify(rec));
     }, _temp), _possibleConstructorReturn(_this, _ret);
   } // eslint-disable-line no-unused-vars
 
@@ -51666,11 +51711,9 @@ var Day = function (_React$Component) {
     value: function render() {
       var tin = 'tin' + this.props.data.idx;
       var _props = this.props,
-          week = _props.week,
           data = _props.data,
           jobs = _props.jobs;
       var hrs = data.hrs,
-          wdprt = data.wdprt,
           jcost = data.jcost,
           jchrs = data.jchrs;
 
@@ -51680,26 +51723,48 @@ var Day = function (_React$Component) {
         'div',
         { style: style.tcardDiv },
         _react2.default.createElement(
-          'span',
-          null,
-          week,
+          'div',
+          { style: style.daydate.container },
+          _react2.default.createElement(
+            'span',
+            { style: style.daydate.day },
+            ' ',
+            moment(data.wdprt).format('ddd'),
+            ' '
+          ),
+          _react2.default.createElement('br', null),
+          _react2.default.createElement(
+            'span',
+            null,
+            '  ',
+            moment(data.wdprt).format('MM/DD/YY')
+          )
+        ),
+        _react2.default.createElement(
+          'div',
+          { style: style.hrs.div, onClick: this.delDayPu },
           ' ',
-          moment(data.wdprt).format('ddd MM/DD/YY E')
+          _react2.default.createElement(
+            'span',
+            { style: style.hrs.span },
+            hrs
+          ),
+          '  X '
         ),
         _react2.default.createElement(
-          'span',
-          { wdprt: wdprt, onClick: this.delDayPu },
-          'X'
+          'div',
+          { style: style.punchclock.container },
+          _react2.default.createElement(
+            'button',
+            { style: style.punchclock.button, onClick: this.appendTime },
+            'punch ',
+            punch
+          ),
+          _react2.default.createElement('br', null),
+          _react2.default.createElement('input', { style: style.punchclock.input, id: tin, type: 'time' }),
+          _react2.default.createElement('br', null)
         ),
-        _react2.default.createElement('br', null),
-        _react2.default.createElement(
-          'button',
-          { onClick: this.appendTime },
-          punch
-        ),
-        _react2.default.createElement('input', { id: tin, type: 'time' }),
-        hrs,
-        _react2.default.createElement('br', null),
+        'in out hrs x',
         inoutList,
         _react2.default.createElement(_JobCost.JobCost, { jcost: jcost, jchrs: jchrs, puhrs: hrs, jobs: jobs, jcChanges: this.handleJcChanges })
       );
@@ -52119,6 +52184,7 @@ var fetchTcard = function fetchTcard(wk) {
     return fetch(url, options).then(function (response) {
       return response.json();
     }).then(function (json) {
+
       if (json.message) {
         return { qmessage: json.message };
       } else {
@@ -52238,7 +52304,7 @@ var processDb4app = function processDb4app(res) {
   var wkarr = wkendLast(adjWk4app(_getCfg.cfg.firstday, padWkData(res.wk, res.wkarr)));
   var hrs = sumThing(wkarr, 'hrs');
   var jchrs = sumThing(wkarr, 'jchrs');
-  return { wkarr: wkarr, hrs: hrs, jchrs: jchrs, emailid: lsh.email, jobs: res.jobs };
+  return { wkarr: wkarr, hrs: hrs, jchrs: jchrs, emailid: lsh.email, jobs: res.jobs, wstat: res.wstat };
 };
 
 var adjWk4app = function adjWk4app(firstday, wkarr) {
@@ -80125,6 +80191,9 @@ var JobCost = function (_React$Component) {
         njcost.push({ job: nj.job, cat: nj.category, hrs: nj.hrs });
       }
       return njcost;
+    }, _this.deleteJcost = function () {
+      var njcost = [];
+      _this.props.jcChanges(njcost);
     }, _this.renderInput = function () {
       return _react2.default.createElement('input', { style: style.jchr, type: 'number', value: _this.state.hrsleft, onChange: _this.add4day, step: '.25', max: '4.1', onKeyUp: _this.inpKey });
     }, _this.renderList = function () {
@@ -80186,7 +80255,7 @@ var JobCost = function (_React$Component) {
       var nstyle = _extends({}, style);
       var njcbox = _extends({}, nstyle.jcbox);
       nstyle.jcbox = njcbox;
-      if (_this.props.puhrs - _this.props.jchrs <= 0) {
+      if (_this.props.puhrs - _this.props.jchrs == 0) {
         nstyle.jcbox.background = 'green';
       }
       return nstyle.jcbox;
@@ -80212,6 +80281,11 @@ var JobCost = function (_React$Component) {
         { style: jcbox },
         _react2.default.createElement(
           'span',
+          { onClick: this.deleteJcost },
+          ' del '
+        ),
+        _react2.default.createElement(
+          'span',
           { onClick: this.showJobs },
           ' + '
         ),
@@ -80226,8 +80300,8 @@ var JobCost = function (_React$Component) {
           Math.round((puhrs - jchrs) * 100) / 100
         ),
         _react2.default.createElement('br', null),
-        jlist,
-        jcosts
+        jcosts,
+        jlist
       );
     }
   }]);
