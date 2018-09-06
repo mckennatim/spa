@@ -51481,11 +51481,7 @@ var TimeCard = function (_React$Component) {
           jobs = _this$state.jobs;
 
       var rd = wkarr.map(function (d) {
-        return _react2.default.createElement(
-          'div',
-          { key: d.idx },
-          _react2.default.createElement(_Day.Day, { data: d, week: week, jobs: jobs, dayChanges: _this.handleDayChanges })
-        );
+        return _react2.default.createElement(_Day.Day, { key: d.idx, data: d, week: week, jobs: jobs, dayChanges: _this.handleDayChanges });
       });
       return rd;
     }, _temp), _possibleConstructorReturn(_this, _ret);
@@ -51504,22 +51500,26 @@ var TimeCard = function (_React$Component) {
       (0, _fetches.fetchTcard)(wk).then(function (res) {
         _this2.emailId = res.emailid;
         console.log('res: ', res);
-        _this2.setState({ week: wk, wkarr: res.wkarr, hrs: res.hrs, jchrs: res.jchrs, jobs: res.jobs, wstat: res.wstat });
+        if (res.message) {
+          window.alert(res.message);
+        } else {
+          _this2.setState({ week: wk, wkarr: res.wkarr, hrs: res.hrs, jchrs: res.jchrs, jobs: res.jobs, wstat: res.wstat });
+        }
       });
     }
   }, {
     key: 'render',
     value: function render() {
-      var _state = this.state,
-          week = _state.week,
-          wstat = _state.wstat;
-
-      var status = wstat ? wstat.status : "unsaved";
-      // unsaved, inprocess, ready, submitted, approved, paid
-      var thrs = this.state.hrs.reduce(function (t, h) {
-        return t + h;
-      }, 0);
       if (this.emailId) {
+        var _state = this.state,
+            week = _state.week,
+            wstat = _state.wstat;
+
+        var status = wstat ? wstat.status : "unsaved";
+        // unsaved, inprocess, ready, submitted, approved, paid
+        var thrs = this.state.hrs.reduce(function (t, h) {
+          return t + h;
+        }, 0);
         var renderedDays = this.renderDays();
         return _react2.default.createElement(
           'div',
@@ -51594,47 +51594,9 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 // eslint-disable-line no-unused-vars
 var moment = __webpack_require__(1);
+
 // eslint-disable-line no-unused-vars
 
-var style = {
-  tcardDiv: {
-    border: '2px solid black'
-  },
-  punchclock: {
-    container: {
-      padding: '2px',
-      border: '2px green solid',
-      borderRadius: '12px',
-      float: 'left',
-      background: 'white'
-    },
-    input: {
-      borderRadius: '0px 0px 12px 12px'
-    },
-    button: {
-      borderRadius: '12px 12px 0px 0px',
-      width: '100px',
-      background: 'white'
-    }
-  },
-  daydate: {
-    container: {
-      float: 'left'
-    },
-    day: {
-      fontSize: '25px'
-    }
-  },
-  hrs: {
-    div: {
-      float: 'right',
-      width: '120px'
-    },
-    span: {
-      fontSize: '18px'
-    }
-  }
-};
 
 var Day = function (_React$Component) {
   _inherits(Day, _React$Component);
@@ -51669,35 +51631,78 @@ var Day = function (_React$Component) {
         _this.props.dayChanges('punch', ndata);
         (0, _fetches.putTcard)(ndata);
       }
-    }, _this.delDayPu = function (e) {
-      var wdprt = e.target.getAttribute("wdprt");
+    }, _this.delDayPu = function (wdprt) {
       console.log('in delDayPu: ', wdprt);
       _this.props.dayChanges('delpu', wdprt);
       (0, _fetches.delTcardPu)(wdprt);
+    }, _this.handleJcChanges = function (ch) {
+      if (ch.cmd == 'jcost') {
+        var wdprt = _this.props.data.wdprt;
+        console.log('ch: ', ch);
+        console.log('this.props.data: ', _this.props.data);
+        console.log('this.props.data.wdprt: ', _this.props.data.wdprt);
+        _this.props.dayChanges('jcost', { idx: _this.props.data.idx, jcost: ch.jcost });
+        var rec = { wdprt: wdprt, jcost: ch.jcost };
+        console.log('rec: ', JSON.stringify(rec));
+        (0, _fetches.putTcardJc)(rec);
+      }
+      if (ch.cmd == 'punch') {
+        _this.delDayPu(ch.wdprt);
+      }
     }, _this.renderIoList = function (data) {
       var perarr = createPeriodArray(data.inout);
       return _react2.default.createElement(
         'div',
-        null,
-        perarr.map(function (per, i) {
-          return _react2.default.createElement(
-            'div',
-            { key: i },
-            per[0],
-            ' -> ',
-            per[1],
-            '  = ',
-            per[2]
-          );
-        })
+        { style: style.table.div },
+        _react2.default.createElement(
+          'table',
+          { style: style.table.table },
+          _react2.default.createElement(
+            'tbody',
+            null,
+            _react2.default.createElement(
+              'tr',
+              { style: style.table.tr },
+              _react2.default.createElement(
+                'th',
+                { style: style.table.thtd },
+                'in'
+              ),
+              _react2.default.createElement(
+                'th',
+                { style: style.table.thtd },
+                'out'
+              ),
+              _react2.default.createElement(
+                'th',
+                { style: style.table.thtd },
+                'hrs'
+              )
+            ),
+            perarr.map(function (per, i) {
+              return _react2.default.createElement(
+                'tr',
+                { key: i, style: style.table.tr },
+                _react2.default.createElement(
+                  'td',
+                  { style: style.table.thtd },
+                  per[0]
+                ),
+                _react2.default.createElement(
+                  'td',
+                  { style: style.table.thtd },
+                  per[1]
+                ),
+                _react2.default.createElement(
+                  'td',
+                  { style: style.table.thtd },
+                  per[2]
+                )
+              );
+            })
+          )
+        )
       );
-    }, _this.handleJcChanges = function (ch) {
-      console.log('ch: ', ch);
-      console.log('this.props.data.idx: ', _this.props.data.idx);
-      console.log('this.props.data.wdprt: ', _this.props.data.wdprt);
-      _this.props.dayChanges('jcost', { idx: _this.props.data.idx, jcost: ch });
-      var rec = { wdprt: _this.props.data.wdprt, jcosts: ch };
-      console.log('rec: ', JSON.stringify(rec));
     }, _temp), _possibleConstructorReturn(_this, _ret);
   } // eslint-disable-line no-unused-vars
 
@@ -51716,7 +51721,8 @@ var Day = function (_React$Component) {
           jobs = _props.jobs;
       var hrs = data.hrs,
           jcost = data.jcost,
-          jchrs = data.jchrs;
+          jchrs = data.jchrs,
+          wdprt = data.wdprt;
 
       var punch = this.setPunch();
       var inoutList = this.renderIoList(data);
@@ -51743,14 +51749,12 @@ var Day = function (_React$Component) {
         ),
         _react2.default.createElement(
           'div',
-          { style: style.hrs.div, onClick: this.delDayPu },
-          ' ',
+          { style: style.hrs.div },
           _react2.default.createElement(
             'span',
             { style: style.hrs.span },
             hrs
-          ),
-          '  X '
+          )
         ),
         _react2.default.createElement(
           'div',
@@ -51765,9 +51769,8 @@ var Day = function (_React$Component) {
           _react2.default.createElement('input', { style: style.punchclock.input, id: tin, type: 'time' }),
           _react2.default.createElement('br', null)
         ),
-        'in out hrs x',
         inoutList,
-        _react2.default.createElement(_JobCost.JobCost, { jcost: jcost, jchrs: jchrs, puhrs: hrs, jobs: jobs, jcChanges: this.handleJcChanges })
+        _react2.default.createElement(_JobCost.JobCost, { jcost: jcost, jchrs: jchrs, puhrs: hrs, jobs: jobs, wdprt: wdprt, jcChanges: this.handleJcChanges })
       );
     }
   }]);
@@ -51777,6 +51780,68 @@ var Day = function (_React$Component) {
 
 exports.Day = Day;
 
+
+var style = {
+  tcardDiv: {
+    border: '2px solid black',
+    background: 'white'
+  },
+  punchclock: {
+    container: {
+      padding: '2px',
+      border: '2px green solid',
+      borderRadius: '12px',
+      float: 'left',
+      background: 'white'
+    },
+    input: {
+      borderRadius: '0px 0px 12px 12px'
+    },
+    button: {
+      borderRadius: '12px 12px 0px 0px',
+      width: '100px',
+      background: 'white'
+    }
+  },
+  daydate: {
+    container: {
+      float: 'left',
+      width: '70px',
+      background: 'silver'
+    },
+    day: {
+      fontSize: '25px'
+    }
+  },
+  hrs: {
+    div: {
+      float: 'right',
+      width: '80px',
+      fontSize: '18px',
+      textAlign: 'right'
+    },
+    span: {}
+  },
+  table: {
+    div: {
+      float: 'right',
+      background: 'white',
+      width: '130px'
+    },
+    table: {
+      borderCollapse: 'collapse',
+      width: '100%'
+    },
+    tr: {
+      padding: '0px',
+      margin: '0px'
+    },
+    thtd: {
+      padding: '0px',
+      margin: '0px'
+    }
+  }
+};
 
 var io2hrs = function io2hrs(pin, pout) {
   var ti = moment.duration(moment(pout, "HH:mm").diff(moment(pin, "HH:mm")));
@@ -52165,7 +52230,7 @@ exports.storageLocal = storageLocal;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.delTcardPu = exports.putTcard = exports.fetchTcard = undefined;
+exports.delTcardPu = exports.putTcardJc = exports.putTcardPu = exports.putTcard = exports.fetchTcard = undefined;
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
@@ -52200,8 +52265,61 @@ var fetchTcard = function fetchTcard(wk) {
     return p2;
   }
 };
+//updpu {wdprt, hrs, inout}= req.body.tday
+//updjc {wdprt, jcost}= req.body.tday
+//update {wdprt, hrs, inout, jcost}= req.body.tday
+
+var putTcardJc = function putTcardJc(aday) {
+  //updjc {wdprt, jcost}= req.body.tday
+  console.log('aday: ', aday);
+  var tday = adjDay4db(_getCfg.cfg.firstday, aday);
+  var lsh = _getCfg.ls.getItem();
+  console.log(tday);
+  if ((0, _wfuncs.geta)('lsh.token', lsh)) {
+    var url = _getCfg.cfg.url.api + '/tcard/updjc';
+    var options = {
+      headers: { 'Authorization': 'Bearer ' + lsh['token'],
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
+      },
+      method: 'PUT',
+      body: JSON.stringify({ tday: tday })
+    };
+    return fetch(url, options).then(function (response) {
+      return response.json();
+    });
+  } else {
+    var p2 = Promise.resolve({ qmessage: 'you dont exist! ' });
+    return p2;
+  }
+};
+var putTcardPu = function putTcardPu(aday) {
+  //updpu {wdprt, hrs, inout}= req.body.tday
+  console.log('aday: ', aday);
+  var tday = adjDay4db(_getCfg.cfg.firstday, aday);
+  var lsh = _getCfg.ls.getItem();
+  console.log(tday);
+  if ((0, _wfuncs.geta)('lsh.token', lsh)) {
+    var url = _getCfg.cfg.url.api + '/tcard/updpu';
+    var options = {
+      headers: { 'Authorization': 'Bearer ' + lsh['token'],
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
+      },
+      method: 'PUT',
+      body: JSON.stringify({ tday: tday })
+    };
+    return fetch(url, options).then(function (response) {
+      return response.json();
+    });
+  } else {
+    var p2 = Promise.resolve({ qmessage: 'you dont exist! ' });
+    return p2;
+  }
+};
 
 var putTcard = function putTcard(aday) {
+  //update {wdprt, hrs, inout, jcost}= req.body.tday
   console.log('aday: ', aday);
   var tday = adjDay4db(_getCfg.cfg.firstday, aday);
   var lsh = _getCfg.ls.getItem();
@@ -52251,32 +52369,10 @@ var delTcardPu = function delTcardPu(wdprt) {
 
 exports.fetchTcard = fetchTcard;
 exports.putTcard = putTcard;
+exports.putTcardPu = putTcardPu;
+exports.putTcardJc = putTcardJc;
 exports.delTcardPu = delTcardPu;
 
-
-var createBlWk = function createBlWk(wk) {
-  var blwk = [];
-  var wdprt = moment().format('YYYY') + '-W' + wk.toString().padStart(2, "0") + '-';
-  for (var i = 1; i <= 7; i++) {
-    var obj = { wdprt: wdprt + i, hrs: 0, inout: [], jcost: [], jchrs: 0 };
-    blwk.push(obj);
-  }
-  return blwk;
-};
-
-var padWkData = function padWkData(wk, wkarr) {
-  var blwk = createBlWk(wk);
-  var paddedwk = blwk.map(function (d) {
-    var fwk = wkarr.filter(function (wd) {
-      return wd.wdprt == d.wdprt;
-    });
-    if (fwk.length > 0) {
-      d = fwk[0];
-    }
-    return d;
-  });
-  return paddedwk;
-};
 
 var wkendLast = function wkendLast(apwa) {
   for (var i = 6; i <= 7; i++) {
@@ -80159,10 +80255,6 @@ var JobCost = function (_React$Component) {
       console.log('showing jobs: ');
       console.log('this.props.jobs: ', _this.props.jobs);
       _this.setState({ showjobs: true });
-    }, _this.addSome = function (e) {
-      _this.setState({ hrsleft: _this.props.puhrs - _this.props.jchrs });
-      console.log('adding: ', e.target.getAttribute('ix'));
-      _this.setState({ showon: e.target.getAttribute('ix') });
     }, _this.add4day = function (e) {
       _this.setState({ hrsleft: e.target.value });
     }, _this.inpKey = function (e) {
@@ -80175,7 +80267,7 @@ var JobCost = function (_React$Component) {
         console.log('this.props.jcost: ', JSON.stringify(_this.props.jcost));
         console.log('this.props.jcost: ', _this.props.jcost);
         var njcost = _this.modifyJcost(nj);
-        _this.props.jcChanges(njcost);
+        _this.props.jcChanges({ cmd: 'jcost', jcost: njcost });
         console.log('njcost: ', JSON.stringify(njcost));
         _this.setState({ showjobs: false, showon: null });
       }
@@ -80192,9 +80284,17 @@ var JobCost = function (_React$Component) {
         njcost.push({ job: nj.job, cat: nj.category, hrs: nj.hrs });
       }
       return njcost;
+    }, _this.addSome = function (e) {
+      _this.setState({ hrsleft: _this.props.puhrs - _this.props.jchrs });
+      console.log('adding: ', e.target.getAttribute('ix'));
+      _this.setState({ showon: e.target.getAttribute('ix') });
     }, _this.deleteJcost = function () {
-      var njcost = [];
-      _this.props.jcChanges(njcost);
+      _this.props.jcChanges({ cmd: 'jcost', jcost: [] });
+    }, _this.clearPunch = function (e) {
+      console.log('clearPu');
+      console.log('e.target.getAttribute("wdprt"): ', e.target.getAttribute('wdprt'));
+      var wdprt = e.target.getAttribute('wdprt');
+      _this.props.jcChanges({ cmd: 'punch', wdprt: wdprt });
     }, _this.renderInput = function () {
       return _react2.default.createElement('input', { style: style.jchr, type: 'number', value: _this.state.hrsleft, onChange: _this.add4day, step: '.25', max: '4.1', onKeyUp: _this.inpKey });
     }, _this.renderList = function () {
@@ -80230,7 +80330,7 @@ var JobCost = function (_React$Component) {
         });
         return _react2.default.createElement(
           'ul',
-          null,
+          { style: style.jlist.div },
           jl
         );
       }
@@ -80257,7 +80357,10 @@ var JobCost = function (_React$Component) {
       var njcbox = _extends({}, nstyle.jcbox);
       nstyle.jcbox = njcbox;
       if (_this.props.puhrs - _this.props.jchrs == 0) {
-        nstyle.jcbox.background = 'green';
+        nstyle.jcbox.background = 'aqua';
+      }
+      if (_this.props.puhrs == 0 && _this.props.jchrs == 0) {
+        nstyle.jcbox.background = 'white';
       }
       return nstyle.jcbox;
     }, _temp), _possibleConstructorReturn(_this, _ret);
@@ -80266,13 +80369,13 @@ var JobCost = function (_React$Component) {
   _createClass(JobCost, [{
     key: 'render',
     value: function render() {
-      console.log('rendering JobCost');
       var showjobs = this.state.showjobs; // eslint-disable-line no-unused-vars
 
       var _props = this.props,
           jchrs = _props.jchrs,
           jcost = _props.jcost,
-          puhrs = _props.puhrs;
+          puhrs = _props.puhrs,
+          wdprt = _props.wdprt;
 
       var jcosts = this.renderJcost(jcost);
       var jlist = this.renderList();
@@ -80280,28 +80383,40 @@ var JobCost = function (_React$Component) {
       return _react2.default.createElement(
         'div',
         { style: jcbox },
-        _react2.default.createElement(
-          'span',
-          { onClick: this.deleteJcost },
-          ' del '
-        ),
-        _react2.default.createElement(
-          'span',
-          { onClick: this.showJobs },
-          ' + '
-        ),
-        _react2.default.createElement(
-          'span',
-          null,
-          'job costs  ',
-          puhrs,
-          ' - ',
-          jchrs,
-          ' = ',
-          Math.round((puhrs - jchrs) * 100) / 100
-        ),
-        _react2.default.createElement('br', null),
         jcosts,
+        _react2.default.createElement(
+          'div',
+          { style: style.clear.div },
+          _react2.default.createElement(
+            'button',
+            { onClick: this.showJobs },
+            'add job'
+          ),
+          _react2.default.createElement(
+            'button',
+            { wdprt: wdprt, onClick: this.clearPunch },
+            'clear punchlist'
+          ),
+          _react2.default.createElement(
+            'button',
+            { onClick: this.deleteJcost },
+            'clear jobcosts'
+          )
+        ),
+        _react2.default.createElement(
+          'div',
+          { style: style.calc.div },
+          _react2.default.createElement(
+            'span',
+            null,
+            'Unallocated Hours: ',
+            drnd(puhrs),
+            ' - ',
+            drnd(jchrs),
+            ' = ',
+            drnd(puhrs - jchrs)
+          )
+        ),
         jlist
       );
     }
@@ -80315,12 +80430,42 @@ exports.JobCost = JobCost;
 
 var style = {
   jcbox: {
+    float: 'left',
     border: '1px solid green',
     background: 'yellow'
   },
+  jc: {
+    float: 'right',
+    width: '300px',
+    background: 'silver'
+  },
   jchr: {
     width: '50px'
+  },
+  clear: {
+    div: {
+      background: 'grey',
+      float: 'left'
+    }
+  },
+  jlist: {
+    div: {
+      float: 'left',
+      background: 'grey'
+
+    }
+  },
+  calc: {
+    div: {
+      background: 'white',
+      float: 'right'
+    },
+    span: {}
   }
+};
+
+var drnd = function drnd(n) {
+  return Math.round(n * 100.1) / 100;
 };
 
 /***/ })
