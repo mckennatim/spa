@@ -16,7 +16,6 @@ class TimeCard extends React.Component{
   getTimeCard(wk){
     fetchTcard(wk)
       .then((res)=>{
-        console.log('res: ', res)
         this.emailId=res.emailid
         if (res.message){
           window.alert(res.message)
@@ -27,7 +26,11 @@ class TimeCard extends React.Component{
   }
 
   chwk=(e)=>{
-    this.getTimeCard(e.target.value)
+    let val =e.target.value
+    console.log('val: ', val)
+    if(val>0 && val<=52){
+      this.getTimeCard(e.target.value)
+    }
   }
 
   handleDayChanges = (cmd, newdata)=>{
@@ -107,7 +110,6 @@ class TimeCard extends React.Component{
       background: '#efe869',
       width: '70px'
     }
-    console.log('this.state.wstat: ', this.state.wstat)
     if(this.state.showsub || 
       (this.state.wstat &&(this.state.wstat.status=='submitted' 
       || this.state.wstat.status=='approved' 
@@ -131,9 +133,7 @@ class TimeCard extends React.Component{
     if(this.emailId){  
 
       const {week, wstat, showsub}=this.state;
-      console.log('wstat: ', wstat)
       const status= wstat ? wstat.status : "unsaved" 
-      console.log('status: ', status)
       const statstyle = this.setStatStyle()
       // unsaved, inprocess, ready, submitted, approved, paid
       const thrs=drnd(this.state.hrs.reduce((t,h)=>t+h,0))

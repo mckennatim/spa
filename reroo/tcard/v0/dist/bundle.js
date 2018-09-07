@@ -71,7 +71,7 @@
 
 var root_1 = __webpack_require__(10);
 var toSubscriber_1 = __webpack_require__(324);
-var observable_1 = __webpack_require__(34);
+var observable_1 = __webpack_require__(33);
 var pipe_1 = __webpack_require__(50);
 /**
  * A representation of any set of values over any amount of time. This is the most basic building block
@@ -4898,10 +4898,10 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-var isFunction_1 = __webpack_require__(32);
+var isFunction_1 = __webpack_require__(31);
 var Subscription_1 = __webpack_require__(6);
 var Observer_1 = __webpack_require__(79);
-var rxSubscriber_1 = __webpack_require__(33);
+var rxSubscriber_1 = __webpack_require__(32);
 /**
  * Implements the {@link Observer} interface and extends the
  * {@link Subscription} class. While the {@link Observer} is the public API for
@@ -5170,7 +5170,7 @@ var isObject_1 = __webpack_require__(77);
 var Observable_1 = __webpack_require__(0);
 var iterator_1 = __webpack_require__(20);
 var InnerSubscriber_1 = __webpack_require__(329);
-var observable_1 = __webpack_require__(34);
+var observable_1 = __webpack_require__(33);
 function subscribeToResult(outerSubscriber, result, outerValue, outerIndex) {
     var destination = new InnerSubscriber_1.InnerSubscriber(outerSubscriber, outerValue, outerIndex);
     if (destination.closed) {
@@ -5284,8 +5284,8 @@ exports.OuterSubscriber = OuterSubscriber;
 
 "use strict";
 
-var AsyncAction_1 = __webpack_require__(26);
-var AsyncScheduler_1 = __webpack_require__(27);
+var AsyncAction_1 = __webpack_require__(25);
+var AsyncScheduler_1 = __webpack_require__(26);
 /**
  *
  * Async Scheduler
@@ -5339,7 +5339,7 @@ exports.async = new AsyncScheduler_1.AsyncScheduler(AsyncAction_1.AsyncAction);
 
 var isArray_1 = __webpack_require__(13);
 var isObject_1 = __webpack_require__(77);
-var isFunction_1 = __webpack_require__(32);
+var isFunction_1 = __webpack_require__(31);
 var tryCatch_1 = __webpack_require__(9);
 var errorObject_1 = __webpack_require__(8);
 var UnsubscriptionError_1 = __webpack_require__(78);
@@ -5544,9 +5544,9 @@ var __extends = (this && this.__extends) || function (d, b) {
 var Observable_1 = __webpack_require__(0);
 var Subscriber_1 = __webpack_require__(2);
 var Subscription_1 = __webpack_require__(6);
-var ObjectUnsubscribedError_1 = __webpack_require__(36);
+var ObjectUnsubscribedError_1 = __webpack_require__(35);
 var SubjectSubscription_1 = __webpack_require__(81);
-var rxSubscriber_1 = __webpack_require__(33);
+var rxSubscriber_1 = __webpack_require__(32);
 /**
  * @class SubjectSubscriber<T>
  */
@@ -6774,41 +6774,6 @@ var MapSubscriber = (function (_super) {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.cfg = exports.ls = undefined;
-
-var _envmy = __webpack_require__(342);
-
-var _envmy2 = _interopRequireDefault(_envmy);
-
-var _denv = __webpack_require__(343);
-
-var _denv2 = _interopRequireDefault(_denv);
-
-var _storageLocal = __webpack_require__(344);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var cfg = _denv2.default[_envmy2.default.m || 'local'];
-
-var authqry = cfg.url.soauth + "/spa/" + cfg.coid + "-" + cfg.appid + "?apiURL=" + encodeURIComponent(cfg.url.api) + "&cbPath=" + encodeURIComponent(cfg.cbPath);
-
-cfg.url.authqry = authqry;
-
-var ls = (0, _storageLocal.storageLocal)(cfg.appid);
-
-exports.ls = ls;
-exports.cfg = cfg;
-
-/***/ }),
-/* 24 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
 var mStyle = {
   li: {
     display: 'inline',
@@ -6852,7 +6817,7 @@ exports.mStyle = mStyle;
 exports.pStyle = pStyle;
 
 /***/ }),
-/* 25 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6870,7 +6835,7 @@ exports.isNumeric = isNumeric;
 //# sourceMappingURL=isNumeric.js.map
 
 /***/ }),
-/* 26 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7018,7 +6983,7 @@ exports.AsyncAction = AsyncAction;
 //# sourceMappingURL=AsyncAction.js.map
 
 /***/ }),
-/* 27 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7075,7 +7040,7 @@ exports.AsyncScheduler = AsyncScheduler;
 //# sourceMappingURL=AsyncScheduler.js.map
 
 /***/ }),
-/* 28 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7109,7 +7074,7 @@ exports.ArgumentOutOfRangeError = ArgumentOutOfRangeError;
 //# sourceMappingURL=ArgumentOutOfRangeError.js.map
 
 /***/ }),
-/* 29 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7184,7 +7149,7 @@ exports.reduce = reduce;
 //# sourceMappingURL=reduce.js.map
 
 /***/ }),
-/* 30 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7281,7 +7246,7 @@ module.exports = shouldUseNative() ? Object.assign : function (target, source) {
 
 
 /***/ }),
-/* 31 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7305,7 +7270,7 @@ module.exports = emptyObject;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(14)))
 
 /***/ }),
-/* 32 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7317,7 +7282,7 @@ exports.isFunction = isFunction;
 //# sourceMappingURL=isFunction.js.map
 
 /***/ }),
-/* 33 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7333,7 +7298,7 @@ exports.$$rxSubscriber = exports.rxSubscriber;
 //# sourceMappingURL=rxSubscriber.js.map
 
 /***/ }),
-/* 34 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7365,7 +7330,7 @@ exports.$$observable = exports.observable;
 //# sourceMappingURL=observable.js.map
 
 /***/ }),
-/* 35 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7417,7 +7382,7 @@ exports.actionCreator = actionCreator;
 exports.createStore = createStore;
 
 /***/ }),
-/* 36 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7450,7 +7415,7 @@ exports.ObjectUnsubscribedError = ObjectUnsubscribedError;
 //# sourceMappingURL=ObjectUnsubscribedError.js.map
 
 /***/ }),
-/* 37 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7571,7 +7536,7 @@ exports.ObserveOnMessage = ObserveOnMessage;
 //# sourceMappingURL=observeOn.js.map
 
 /***/ }),
-/* 38 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7630,7 +7595,7 @@ exports.mergeAll = mergeAll;
 //# sourceMappingURL=mergeAll.js.map
 
 /***/ }),
-/* 39 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7656,7 +7621,7 @@ var _app = __webpack_require__(70);
 
 var _App = __webpack_require__(341);
 
-var _TimeCard = __webpack_require__(346);
+var _TimeCard = __webpack_require__(343);
 
 var _Nav = __webpack_require__(350);
 
@@ -7664,7 +7629,7 @@ var _Dog = __webpack_require__(351);
 
 var _Registered = __webpack_require__(352);
 
-var _styles = __webpack_require__(24);
+var _styles = __webpack_require__(23);
 
 var _test = __webpack_require__(354);
 
@@ -7804,6 +7769,41 @@ exports.Nav = _Nav.Nav;
 exports.Registered = _Registered.Registered;
 exports.multi = multi;
 exports.panes = panes;
+
+/***/ }),
+/* 39 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.cfg = exports.ls = undefined;
+
+var _envmy = __webpack_require__(345);
+
+var _envmy2 = _interopRequireDefault(_envmy);
+
+var _denv = __webpack_require__(346);
+
+var _denv2 = _interopRequireDefault(_denv);
+
+var _storageLocal = __webpack_require__(347);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var cfg = _denv2.default[_envmy2.default.m || 'local'];
+
+var authqry = cfg.url.soauth + "/spa/" + cfg.coid + "-" + cfg.appid + "?apiURL=" + encodeURIComponent(cfg.url.api) + "&cbPath=" + encodeURIComponent(cfg.cbPath);
+
+cfg.url.authqry = authqry;
+
+var ls = (0, _storageLocal.storageLocal)(cfg.appid);
+
+exports.ls = ls;
+exports.cfg = cfg;
 
 /***/ }),
 /* 40 */
@@ -8334,8 +8334,8 @@ var __extends = (this && this.__extends) || function (d, b) {
 var Subject_1 = __webpack_require__(7);
 var queue_1 = __webpack_require__(227);
 var Subscription_1 = __webpack_require__(6);
-var observeOn_1 = __webpack_require__(37);
-var ObjectUnsubscribedError_1 = __webpack_require__(36);
+var observeOn_1 = __webpack_require__(36);
+var ObjectUnsubscribedError_1 = __webpack_require__(35);
 var SubjectSubscription_1 = __webpack_require__(81);
 /**
  * @class ReplaySubject<T>
@@ -9122,7 +9122,7 @@ exports.concat = concat;
 
 "use strict";
 
-var mergeAll_1 = __webpack_require__(38);
+var mergeAll_1 = __webpack_require__(37);
 /**
  * Converts a higher-order Observable into a first-order Observable by
  * concatenating the inner Observables in order.
@@ -9365,7 +9365,7 @@ exports.deepObjModify = deepObjModify;
 
 var Observable_1 = __webpack_require__(0);
 var ArrayObservable_1 = __webpack_require__(15);
-var mergeAll_1 = __webpack_require__(38);
+var mergeAll_1 = __webpack_require__(37);
 var isScheduler_1 = __webpack_require__(12);
 /* tslint:enable:max-line-length */
 function merge() {
@@ -10212,7 +10212,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var Subscriber_1 = __webpack_require__(2);
-var ArgumentOutOfRangeError_1 = __webpack_require__(28);
+var ArgumentOutOfRangeError_1 = __webpack_require__(27);
 var EmptyObservable_1 = __webpack_require__(16);
 /**
  * Emits only the last `count` values emitted by the source Observable.
@@ -10609,9 +10609,9 @@ var _Observable = __webpack_require__(0);
 
 var _routing = __webpack_require__(325);
 
-var _components = __webpack_require__(39);
+var _components = __webpack_require__(38);
 
-var _rxred = __webpack_require__(35);
+var _rxred = __webpack_require__(34);
 
 var _wfuncs = __webpack_require__(57);
 
@@ -11019,7 +11019,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.setFocus = exports.switchPage = exports.setDeviceType = undefined;
 
-var _rxred = __webpack_require__(35);
+var _rxred = __webpack_require__(34);
 
 var setFocus = (0, _rxred.actionCreator)(function (payload) {
   return {
@@ -11371,8 +11371,8 @@ var ArrayObservable_1 = __webpack_require__(15);
 var ArrayLikeObservable_1 = __webpack_require__(333);
 var iterator_1 = __webpack_require__(20);
 var Observable_1 = __webpack_require__(0);
-var observeOn_1 = __webpack_require__(37);
-var observable_1 = __webpack_require__(34);
+var observeOn_1 = __webpack_require__(36);
+var observable_1 = __webpack_require__(33);
 /**
  * We need this JSDoc comment for affecting ESDoc.
  * @extends {Ignored}
@@ -11665,7 +11665,7 @@ exports.delTcardPu = exports.putTcardWk = exports.putTcardJc = exports.putTcardP
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-var _getCfg = __webpack_require__(23);
+var _getCfg = __webpack_require__(39);
 
 var _wfuncs = __webpack_require__(57);
 
@@ -11676,19 +11676,16 @@ var moment = __webpack_require__(1);
 
 var fetchTcard = function fetchTcard(wk) {
   var lsh = _getCfg.ls.getItem();
-  console.log('lsh: ', lsh);
   if ((0, _wfuncs.geta)('lsh.token', lsh)) {
     var url = _getCfg.cfg.url.api + '/tcard/week/' + wk;
     var options = { headers: { 'Authorization': 'Bearer ' + lsh['token'] } };
     return fetch(url, options).then(function (response) {
       return response.json();
     }).then(function (json) {
-      console.log('json: ', json);
       if (json.message) {
         return { qmessage: json.message };
       } else {
         var processed = processDb4app(json);
-        console.log('processed: ', processed);
         return processed;
       }
     }).catch(function (e) {
@@ -26595,7 +26592,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var Subscriber_1 = __webpack_require__(2);
-var ArgumentOutOfRangeError_1 = __webpack_require__(28);
+var ArgumentOutOfRangeError_1 = __webpack_require__(27);
 /**
  * Emits the single value at the specified `index` in a sequence of emissions
  * from the source Observable.
@@ -27764,7 +27761,7 @@ var MaterializeSubscriber = (function (_super) {
 
 "use strict";
 
-var reduce_1 = __webpack_require__(29);
+var reduce_1 = __webpack_require__(28);
 /**
  * The Max operator operates on an Observable that emits numbers (or items that can be compared with a provided function),
  * and when source Observable completes it emits a single item: the item with the largest value.
@@ -28107,7 +28104,7 @@ exports.MergeScanSubscriber = MergeScanSubscriber;
 
 "use strict";
 
-var reduce_1 = __webpack_require__(29);
+var reduce_1 = __webpack_require__(28);
 /**
  * The Min operator operates on an Observable that emits numbers (or items that can be compared with a provided function),
  * and when source Observable completes it emits a single item: the item with the smallest value.
@@ -28590,7 +28587,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var Subject_1 = __webpack_require__(7);
-var ObjectUnsubscribedError_1 = __webpack_require__(36);
+var ObjectUnsubscribedError_1 = __webpack_require__(35);
 /**
  * @class BehaviorSubject<T>
  */
@@ -29682,7 +29679,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var Subscriber_1 = __webpack_require__(2);
-var ArgumentOutOfRangeError_1 = __webpack_require__(28);
+var ArgumentOutOfRangeError_1 = __webpack_require__(27);
 /**
  * Skip the last `count` values emitted by the source Observable.
  *
@@ -30179,7 +30176,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var Subscriber_1 = __webpack_require__(2);
-var ArgumentOutOfRangeError_1 = __webpack_require__(28);
+var ArgumentOutOfRangeError_1 = __webpack_require__(27);
 var EmptyObservable_1 = __webpack_require__(16);
 /**
  * Emits only the first `count` values emitted by the source Observable.
@@ -30964,7 +30961,7 @@ var TimeoutWithSubscriber = (function (_super) {
 
 "use strict";
 
-var reduce_1 = __webpack_require__(29);
+var reduce_1 = __webpack_require__(28);
 function toArrayReducer(arr, item, index) {
     arr.push(item);
     return arr;
@@ -31246,7 +31243,7 @@ var __extends = (this && this.__extends) || function (d, b) {
 var Subject_1 = __webpack_require__(7);
 var async_1 = __webpack_require__(5);
 var Subscriber_1 = __webpack_require__(2);
-var isNumeric_1 = __webpack_require__(25);
+var isNumeric_1 = __webpack_require__(24);
 var isScheduler_1 = __webpack_require__(12);
 function windowTime(windowTimeSpan) {
     var scheduler = async_1.async;
@@ -31945,8 +31942,8 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-var AsyncAction_1 = __webpack_require__(26);
-var AsyncScheduler_1 = __webpack_require__(27);
+var AsyncAction_1 = __webpack_require__(25);
+var AsyncScheduler_1 = __webpack_require__(26);
 var VirtualTimeScheduler = (function (_super) {
     __extends(VirtualTimeScheduler, _super);
     function VirtualTimeScheduler(SchedulerAction, maxFrames) {
@@ -32067,7 +32064,7 @@ exports.VirtualAction = VirtualAction;
  * LICENSE file in the root directory of this source tree.
  */
 
-var m=__webpack_require__(30),n=__webpack_require__(31),p=__webpack_require__(18),q="function"===typeof Symbol&&Symbol["for"],r=q?Symbol["for"]("react.element"):60103,t=q?Symbol["for"]("react.portal"):60106,u=q?Symbol["for"]("react.fragment"):60107,v=q?Symbol["for"]("react.strict_mode"):60108,w=q?Symbol["for"]("react.provider"):60109,x=q?Symbol["for"]("react.context"):60110,y=q?Symbol["for"]("react.async_mode"):60111,z="function"===typeof Symbol&&Symbol.iterator;
+var m=__webpack_require__(29),n=__webpack_require__(30),p=__webpack_require__(18),q="function"===typeof Symbol&&Symbol["for"],r=q?Symbol["for"]("react.element"):60103,t=q?Symbol["for"]("react.portal"):60106,u=q?Symbol["for"]("react.fragment"):60107,v=q?Symbol["for"]("react.strict_mode"):60108,w=q?Symbol["for"]("react.provider"):60109,x=q?Symbol["for"]("react.context"):60110,y=q?Symbol["for"]("react.async_mode"):60111,z="function"===typeof Symbol&&Symbol.iterator;
 function A(a){for(var b=arguments.length-1,e="Minified React error #"+a+"; visit http://facebook.github.io/react/docs/error-decoder.html?invariant\x3d"+a,c=0;c<b;c++)e+="\x26args[]\x3d"+encodeURIComponent(arguments[c+1]);b=Error(e+" for the full message or use the non-minified dev environment for full errors and additional helpful warnings.");b.name="Invariant Violation";b.framesToPop=1;throw b;}
 var B={isMounted:function(){return!1},enqueueForceUpdate:function(){},enqueueReplaceState:function(){},enqueueSetState:function(){}};function C(a,b,e){this.props=a;this.context=b;this.refs=n;this.updater=e||B}C.prototype.isReactComponent={};C.prototype.setState=function(a,b){"object"!==typeof a&&"function"!==typeof a&&null!=a?A("85"):void 0;this.updater.enqueueSetState(this,a,b,"setState")};C.prototype.forceUpdate=function(a){this.updater.enqueueForceUpdate(this,a,"forceUpdate")};function D(){}
 D.prototype=C.prototype;function E(a,b,e){this.props=a;this.context=b;this.refs=n;this.updater=e||B}var F=E.prototype=new D;F.constructor=E;m(F,C.prototype);F.isPureReactComponent=!0;var G={current:null},H=Object.prototype.hasOwnProperty,I={key:!0,ref:!0,__self:!0,__source:!0};
@@ -32103,8 +32100,8 @@ if (process.env.NODE_ENV !== "production") {
   (function() {
 'use strict';
 
-var _assign = __webpack_require__(30);
-var emptyObject = __webpack_require__(31);
+var _assign = __webpack_require__(29);
+var emptyObject = __webpack_require__(30);
 var invariant = __webpack_require__(47);
 var warning = __webpack_require__(48);
 var emptyFunction = __webpack_require__(18);
@@ -33521,7 +33518,7 @@ module.exports = ReactPropTypesSecret;
 /*
  Modernizr 3.0.0pre (Custom Build) | MIT
 */
-var ba=__webpack_require__(11),ca=__webpack_require__(73),m=__webpack_require__(30),C=__webpack_require__(18),da=__webpack_require__(74),ea=__webpack_require__(75),fa=__webpack_require__(76),ia=__webpack_require__(31);
+var ba=__webpack_require__(11),ca=__webpack_require__(73),m=__webpack_require__(29),C=__webpack_require__(18),da=__webpack_require__(74),ea=__webpack_require__(75),fa=__webpack_require__(76),ia=__webpack_require__(30);
 function G(a){for(var b=arguments.length-1,c="Minified React error #"+a+"; visit http://facebook.github.io/react/docs/error-decoder.html?invariant\x3d"+a,d=0;d<b;d++)c+="\x26args[]\x3d"+encodeURIComponent(arguments[d+1]);b=Error(c+" for the full message or use the non-minified dev environment for full errors and additional helpful warnings.");b.name="Invariant Violation";b.framesToPop=1;throw b;}ba?void 0:G("227");
 function ja(a,b,c,d,e,f,h,g,k){this._hasCaughtError=!1;this._caughtError=null;var r=Array.prototype.slice.call(arguments,3);try{b.apply(c,r)}catch(t){this._caughtError=t,this._hasCaughtError=!0}}
 var H={_caughtError:null,_hasCaughtError:!1,_rethrowError:null,_hasRethrowError:!1,invokeGuardedCallback:function(a,b,c,d,e,f,h,g,k){ja.apply(H,arguments)},invokeGuardedCallbackAndCatchFirstError:function(a,b,c,d,e,f,h,g,k){H.invokeGuardedCallback.apply(this,arguments);if(H.hasCaughtError()){var r=H.clearCaughtError();H._hasRethrowError||(H._hasRethrowError=!0,H._rethrowError=r)}},rethrowCaughtError:function(){return ka.apply(H,arguments)},hasCaughtError:function(){return H._hasCaughtError},clearCaughtError:function(){if(H._hasCaughtError){var a=
@@ -33829,13 +33826,13 @@ var React = __webpack_require__(11);
 var invariant = __webpack_require__(47);
 var warning = __webpack_require__(48);
 var ExecutionEnvironment = __webpack_require__(73);
-var _assign = __webpack_require__(30);
+var _assign = __webpack_require__(29);
 var emptyFunction = __webpack_require__(18);
 var checkPropTypes = __webpack_require__(71);
 var getActiveElement = __webpack_require__(74);
 var shallowEqual = __webpack_require__(75);
 var containsNode = __webpack_require__(76);
-var emptyObject = __webpack_require__(31);
+var emptyObject = __webpack_require__(30);
 var hyphenateStyleName = __webpack_require__(320);
 var camelizeStyleName = __webpack_require__(322);
 
@@ -50034,7 +50031,7 @@ module.exports = camelize;
 "use strict";
 
 var Subscriber_1 = __webpack_require__(2);
-var rxSubscriber_1 = __webpack_require__(33);
+var rxSubscriber_1 = __webpack_require__(32);
 var Observer_1 = __webpack_require__(79);
 function toSubscriber(nextOrObserver, error, complete) {
     if (nextOrObserver) {
@@ -51455,9 +51452,9 @@ var _react = __webpack_require__(11);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _components = __webpack_require__(39);
+var _components = __webpack_require__(38);
 
-var _showRWD = __webpack_require__(345);
+var _showRWD = __webpack_require__(342);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -51547,69 +51544,6 @@ exports.App = App;
 
 /***/ }),
 /* 342 */
-/***/ (function(module, exports) {
-
-module.exports = {"m":"https"}
-
-/***/ }),
-/* 343 */
-/***/ (function(module, exports) {
-
-module.exports = {"https":{"coid":"reroo","appid":"tcard","firstday":5,"url":{"soauth":"https://services.sitebuilt.net/soauth","api":"https://services.sitebuilt.net/reroox/api"},"cbPath":"#registered"},"local":{}}
-
-/***/ }),
-/* 344 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-
-var storageLocal = function storageLocal(itemName) {
-  var itemStr = localStorage.getItem(itemName);
-  var getItem = function getItem() {
-    // console.log('in getItem')
-    if (!localStorage.getItem(itemName)) {
-      return null;
-    }
-    return JSON.parse(localStorage.getItem(itemName));
-  };
-  var setItem = function setItem(obj) {
-    localStorage.setItem(itemName, JSON.stringify(obj));
-  };
-  return {
-    itemName: itemName,
-    itemStr: itemStr,
-    getItem: getItem,
-    setItem: setItem,
-    modItem: function modItem(key, val) {
-      var ni = getItem();
-      if (ni) {
-        ni[key] = val;
-        setItem(ni);
-      }
-    },
-    getToken: function getToken() {
-      return getItem().token;
-    },
-    getKey: function getKey(key) {
-      if (getItem()) {
-        return getItem()[key];
-      } else {
-        return null;
-      }
-    }
-  };
-};
-
-exports.storageLocal = storageLocal;
-
-/***/ }),
-/* 345 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -51620,7 +51554,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.responsivePage = undefined;
 
-var _components = __webpack_require__(39);
+var _components = __webpack_require__(38);
 
 var compoi = _interopRequireWildcard(_components);
 
@@ -51666,7 +51600,7 @@ var responsivePage = function responsivePage(state) {
 exports.responsivePage = responsivePage;
 
 /***/ }),
-/* 346 */
+/* 343 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -51685,13 +51619,13 @@ var _react = __webpack_require__(11);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _Day = __webpack_require__(347);
+var _Day = __webpack_require__(344);
 
 var _fetches = __webpack_require__(98);
 
 var _mapClass2Element = __webpack_require__(222);
 
-var _styles = __webpack_require__(24);
+var _styles = __webpack_require__(23);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -51719,7 +51653,11 @@ var TimeCard = function (_React$Component) {
     }
 
     return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = TimeCard.__proto__ || Object.getPrototypeOf(TimeCard)).call.apply(_ref, [this].concat(args))), _this), _this.active = 'mabibi', _this.state = { week: moment().week(), wkarr: [], hrs: [], jchrs: [], wstat: undefined, showsub: false }, _this.yr = moment().format('YYYY'), _this.chwk = function (e) {
-      _this.getTimeCard(e.target.value);
+      var val = e.target.value;
+      console.log('val: ', val);
+      if (val > 0 && val <= 52) {
+        _this.getTimeCard(e.target.value);
+      }
     }, _this.handleDayChanges = function (cmd, newdata) {
       if (cmd == 'punch') {
         var inout = newdata.inout.slice();
@@ -51806,7 +51744,6 @@ var TimeCard = function (_React$Component) {
         background: '#efe869',
         width: '70px'
       };
-      console.log('this.state.wstat: ', _this.state.wstat);
       if (_this.state.showsub || _this.state.wstat && (_this.state.wstat.status == 'submitted' || _this.state.wstat.status == 'approved' || _this.state.wstat.status == 'paid')) {
         sta.background = '#9eea9d';
       }
@@ -51835,7 +51772,6 @@ var TimeCard = function (_React$Component) {
       var _this2 = this;
 
       (0, _fetches.fetchTcard)(wk).then(function (res) {
-        console.log('res: ', res);
         _this2.emailId = res.emailid;
         if (res.message) {
           window.alert(res.message);
@@ -51853,9 +51789,7 @@ var TimeCard = function (_React$Component) {
             wstat = _state.wstat,
             showsub = _state.showsub;
 
-        console.log('wstat: ', wstat);
         var status = wstat ? wstat.status : "unsaved";
-        console.log('status: ', status);
         var statstyle = this.setStatStyle();
         // unsaved, inprocess, ready, submitted, approved, paid
         var thrs = drnd(this.state.hrs.reduce(function (t, h) {
@@ -51951,7 +51885,7 @@ var style = _extends({
 });
 
 /***/ }),
-/* 347 */
+/* 344 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -52111,6 +52045,7 @@ var Day = function (_React$Component) {
 
       var punch = this.setPunch();
       var inoutList = this.renderIoList(data);
+      var now = moment().format("HH:mm");
       return _react2.default.createElement(
         'div',
         { style: style.tcardDiv },
@@ -52151,7 +52086,7 @@ var Day = function (_React$Component) {
             punch
           ),
           _react2.default.createElement('br', null),
-          _react2.default.createElement('input', { style: style.punchclock.input, id: tin, type: 'time' }),
+          _react2.default.createElement('input', { style: style.punchclock.input, id: tin, type: 'time', defaultValue: now }),
           _react2.default.createElement('br', null)
         ),
         inoutList,
@@ -52173,19 +52108,21 @@ var style = {
   },
   punchclock: {
     container: {
-      padding: '2px',
       border: '2px green solid',
+      boxShadow: '2px 2px green',
       borderRadius: '12px',
       float: 'left',
       background: 'white'
     },
     input: {
-      borderRadius: '0px 0px 12px 12px'
+      borderRadius: '0px 0px 12px 12px',
+      backgroundImage: 'linear-gradient(-90deg, silver, white, silver)'
     },
     button: {
       borderRadius: '12px 12px 0px 0px',
       width: '100px',
-      background: 'white'
+      background: 'white',
+      backgroundImage: 'linear-gradient(-90deg, grey, silver)'
     }
   },
   daydate: {
@@ -52276,6 +52213,69 @@ var resumHrs = function resumHrs(inout) {
   });
   return thrs;
 };
+
+/***/ }),
+/* 345 */
+/***/ (function(module, exports) {
+
+module.exports = {"m":"https"}
+
+/***/ }),
+/* 346 */
+/***/ (function(module, exports) {
+
+module.exports = {"https":{"coid":"reroo","appid":"tcard","firstday":5,"url":{"soauth":"https://services.sitebuilt.net/soauth","api":"https://services.sitebuilt.net/reroox/api"},"cbPath":"#registered"},"local":{}}
+
+/***/ }),
+/* 347 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+
+var storageLocal = function storageLocal(itemName) {
+  var itemStr = localStorage.getItem(itemName);
+  var getItem = function getItem() {
+    // console.log('in getItem')
+    if (!localStorage.getItem(itemName)) {
+      return null;
+    }
+    return JSON.parse(localStorage.getItem(itemName));
+  };
+  var setItem = function setItem(obj) {
+    localStorage.setItem(itemName, JSON.stringify(obj));
+  };
+  return {
+    itemName: itemName,
+    itemStr: itemStr,
+    getItem: getItem,
+    setItem: setItem,
+    modItem: function modItem(key, val) {
+      var ni = getItem();
+      if (ni) {
+        ni[key] = val;
+        setItem(ni);
+      }
+    },
+    getToken: function getToken() {
+      return getItem().token;
+    },
+    getKey: function getKey(key) {
+      if (getItem()) {
+        return getItem()[key];
+      } else {
+        return null;
+      }
+    }
+  };
+};
+
+exports.storageLocal = storageLocal;
 
 /***/ }),
 /* 348 */
@@ -52927,9 +52927,9 @@ var _react = __webpack_require__(11);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _styles = __webpack_require__(24);
+var _styles = __webpack_require__(23);
 
-var _getCfg = __webpack_require__(23);
+var _getCfg = __webpack_require__(39);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -53012,7 +53012,7 @@ var _react = __webpack_require__(11);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _styles = __webpack_require__(24);
+var _styles = __webpack_require__(23);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -53057,11 +53057,11 @@ var _react = __webpack_require__(11);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _styles = __webpack_require__(24);
+var _styles = __webpack_require__(23);
 
 var _wfuncs = __webpack_require__(57);
 
-var _getCfg = __webpack_require__(23);
+var _getCfg = __webpack_require__(39);
 
 var _jobacts = __webpack_require__(353);
 
@@ -53149,7 +53149,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.setTcEmail = exports.setEdit = undefined;
 
-var _rxred = __webpack_require__(35);
+var _rxred = __webpack_require__(34);
 
 var setEdit = (0, _rxred.actionCreator)(function (payload) {
   return {
@@ -53180,7 +53180,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.loadGithubFollowers = undefined;
 
-var _rxred = __webpack_require__(35);
+var _rxred = __webpack_require__(34);
 
 var _Rx = __webpack_require__(355);
 
@@ -53373,9 +53373,9 @@ var Notification_1 = __webpack_require__(21);
 exports.Notification = Notification_1.Notification;
 var EmptyError_1 = __webpack_require__(45);
 exports.EmptyError = EmptyError_1.EmptyError;
-var ArgumentOutOfRangeError_1 = __webpack_require__(28);
+var ArgumentOutOfRangeError_1 = __webpack_require__(27);
 exports.ArgumentOutOfRangeError = ArgumentOutOfRangeError_1.ArgumentOutOfRangeError;
-var ObjectUnsubscribedError_1 = __webpack_require__(36);
+var ObjectUnsubscribedError_1 = __webpack_require__(35);
 exports.ObjectUnsubscribedError = ObjectUnsubscribedError_1.ObjectUnsubscribedError;
 var TimeoutError_1 = __webpack_require__(299);
 exports.TimeoutError = TimeoutError_1.TimeoutError;
@@ -53399,9 +53399,9 @@ var asap_1 = __webpack_require__(288);
 var async_1 = __webpack_require__(5);
 var queue_1 = __webpack_require__(227);
 var animationFrame_1 = __webpack_require__(627);
-var rxSubscriber_1 = __webpack_require__(33);
+var rxSubscriber_1 = __webpack_require__(32);
 var iterator_1 = __webpack_require__(20);
-var observable_1 = __webpack_require__(34);
+var observable_1 = __webpack_require__(33);
 var _operators = __webpack_require__(631);
 exports.operators = _operators;
 /* tslint:enable:no-unused-variable */
@@ -54605,7 +54605,7 @@ var __extends = (this && this.__extends) || function (d, b) {
 };
 var Observable_1 = __webpack_require__(0);
 var tryCatch_1 = __webpack_require__(9);
-var isFunction_1 = __webpack_require__(32);
+var isFunction_1 = __webpack_require__(31);
 var errorObject_1 = __webpack_require__(8);
 var Subscription_1 = __webpack_require__(6);
 var toString = Object.prototype.toString;
@@ -54846,7 +54846,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-var isFunction_1 = __webpack_require__(32);
+var isFunction_1 = __webpack_require__(31);
 var Observable_1 = __webpack_require__(0);
 var Subscription_1 = __webpack_require__(6);
 /**
@@ -55257,7 +55257,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-var isNumeric_1 = __webpack_require__(25);
+var isNumeric_1 = __webpack_require__(24);
 var Observable_1 = __webpack_require__(0);
 var async_1 = __webpack_require__(5);
 /**
@@ -56050,7 +56050,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-var isNumeric_1 = __webpack_require__(25);
+var isNumeric_1 = __webpack_require__(24);
 var Observable_1 = __webpack_require__(0);
 var async_1 = __webpack_require__(5);
 var isScheduler_1 = __webpack_require__(12);
@@ -56471,7 +56471,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-var AsyncAction_1 = __webpack_require__(26);
+var AsyncAction_1 = __webpack_require__(25);
 /**
  * We need this JSDoc comment for affecting ESDoc.
  * @ignore
@@ -56526,7 +56526,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-var AsyncScheduler_1 = __webpack_require__(27);
+var AsyncScheduler_1 = __webpack_require__(26);
 var QueueScheduler = (function (_super) {
     __extends(QueueScheduler, _super);
     function QueueScheduler() {
@@ -59343,7 +59343,7 @@ Observable_1.Observable.prototype.mergeAll = mergeAll_1.mergeAll;
 
 "use strict";
 
-var mergeAll_1 = __webpack_require__(38);
+var mergeAll_1 = __webpack_require__(37);
 /**
  * Converts a higher-order Observable into a first-order Observable which
  * concurrently delivers all values that are emitted on the inner Observables.
@@ -59712,7 +59712,7 @@ Observable_1.Observable.prototype.observeOn = observeOn_1.observeOn;
 
 "use strict";
 
-var observeOn_1 = __webpack_require__(37);
+var observeOn_1 = __webpack_require__(36);
 /**
  *
  * Re-emits all notifications from source Observable with specified scheduler.
@@ -60240,7 +60240,7 @@ Observable_1.Observable.prototype.reduce = reduce_1.reduce;
 
 "use strict";
 
-var reduce_1 = __webpack_require__(29);
+var reduce_1 = __webpack_require__(28);
 /* tslint:enable:max-line-length */
 /**
  * Applies an accumulator function over the source Observable, and returns the
@@ -61009,7 +61009,7 @@ var __extends = (this && this.__extends) || function (d, b) {
 };
 var Observable_1 = __webpack_require__(0);
 var asap_1 = __webpack_require__(288);
-var isNumeric_1 = __webpack_require__(25);
+var isNumeric_1 = __webpack_require__(24);
 /**
  * We need this JSDoc comment for affecting ESDoc.
  * @extends {Ignored}
@@ -61065,7 +61065,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var Immediate_1 = __webpack_require__(577);
-var AsyncAction_1 = __webpack_require__(26);
+var AsyncAction_1 = __webpack_require__(25);
 /**
  * We need this JSDoc comment for affecting ESDoc.
  * @ignore
@@ -61534,7 +61534,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-var AsyncScheduler_1 = __webpack_require__(27);
+var AsyncScheduler_1 = __webpack_require__(26);
 var AsapScheduler = (function (_super) {
     __extends(AsapScheduler, _super);
     function AsapScheduler() {
@@ -62552,7 +62552,7 @@ Observable_1.Observable.prototype.windowTime = windowTime_1.windowTime;
 "use strict";
 
 var async_1 = __webpack_require__(5);
-var isNumeric_1 = __webpack_require__(25);
+var isNumeric_1 = __webpack_require__(24);
 var isScheduler_1 = __webpack_require__(12);
 var windowTime_1 = __webpack_require__(304);
 function windowTime(windowTimeSpan) {
@@ -63225,7 +63225,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-var AsyncAction_1 = __webpack_require__(26);
+var AsyncAction_1 = __webpack_require__(25);
 var AnimationFrame_1 = __webpack_require__(629);
 /**
  * We need this JSDoc comment for affecting ESDoc.
@@ -63326,7 +63326,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-var AsyncScheduler_1 = __webpack_require__(27);
+var AsyncScheduler_1 = __webpack_require__(26);
 var AnimationFrameScheduler = (function (_super) {
     __extends(AnimationFrameScheduler, _super);
     function AnimationFrameScheduler() {
@@ -63450,7 +63450,7 @@ var max_1 = __webpack_require__(260);
 exports.max = max_1.max;
 var merge_1 = __webpack_require__(58);
 exports.merge = merge_1.merge;
-var mergeAll_1 = __webpack_require__(38);
+var mergeAll_1 = __webpack_require__(37);
 exports.mergeAll = mergeAll_1.mergeAll;
 var mergeMap_1 = __webpack_require__(19);
 exports.mergeMap = mergeMap_1.mergeMap;
@@ -63464,7 +63464,7 @@ var min_1 = __webpack_require__(263);
 exports.min = min_1.min;
 var multicast_1 = __webpack_require__(17);
 exports.multicast = multicast_1.multicast;
-var observeOn_1 = __webpack_require__(37);
+var observeOn_1 = __webpack_require__(36);
 exports.observeOn = observeOn_1.observeOn;
 var onErrorResumeNext_1 = __webpack_require__(60);
 exports.onErrorResumeNext = onErrorResumeNext_1.onErrorResumeNext;
@@ -63484,7 +63484,7 @@ var publishReplay_1 = __webpack_require__(271);
 exports.publishReplay = publishReplay_1.publishReplay;
 var race_1 = __webpack_require__(273);
 exports.race = race_1.race;
-var reduce_1 = __webpack_require__(29);
+var reduce_1 = __webpack_require__(28);
 exports.reduce = reduce_1.reduce;
 var repeat_1 = __webpack_require__(274);
 exports.repeat = repeat_1.repeat;
@@ -80700,9 +80700,9 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.initState = undefined;
 
-var _components = __webpack_require__(39);
+var _components = __webpack_require__(38);
 
-var _getCfg = __webpack_require__(23);
+var _getCfg = __webpack_require__(39);
 
 var lsh = _getCfg.ls.getItem();
 var lsemail = "nobody@nowhere.com";

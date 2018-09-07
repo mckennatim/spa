@@ -6,7 +6,6 @@ import {geta} from '../utilities/wfuncs'
 
 const fetchTcard=(wk)=>{
   const lsh = ls.getItem();
-  console.log('lsh: ', lsh)
   if(geta('lsh.token', lsh)){
     let url= cfg.url.api+'/tcard/week/'+wk
     let options= {headers: {'Authorization': 'Bearer '+ lsh['token']}}
@@ -14,12 +13,10 @@ const fetchTcard=(wk)=>{
       fetch(url, options)
         .then((response)=>response.json())
         .then((json)=>{
-          console.log('json: ', json)
           if(json.message){
             return {qmessage: json.message}
           }else{
             const processed= processDb4app(json)
-            console.log('processed: ', processed)
             return processed
           }
         })

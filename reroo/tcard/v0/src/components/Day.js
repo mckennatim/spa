@@ -85,6 +85,7 @@ class Day extends React.Component {// eslint-disable-line no-unused-vars
     const {hrs, jcost, jchrs, wdprt}=data
     const punch = this.setPunch()
     const inoutList = this.renderIoList(data)
+    const now = moment().format("HH:mm")
     return ( 
       <div style={style.tcardDiv}>
         <div style={style.daydate.container}>
@@ -97,7 +98,7 @@ class Day extends React.Component {// eslint-disable-line no-unused-vars
         </div>
         <div style={style.punchclock.container}>
           <button style={style.punchclock.button} onClick={this.appendTime}>punch {punch}</button><br/>
-          <input style={style.punchclock.input} id={tin} type="time" /><br/>
+          <input style={style.punchclock.input} id={tin} type="time" defaultValue={now} /><br/>
         </div>
         {inoutList}
         <JobCost jcost={jcost} jchrs={jchrs} puhrs={hrs} jobs={jobs} wdprt={wdprt} jcChanges={this.handleJcChanges}/>
@@ -115,19 +116,21 @@ const style={
   },
   punchclock:{
     container:{
-      padding:'2px',
       border: '2px green solid',
+      boxShadow: '2px 2px green',
       borderRadius: '12px',
       float: 'left',
       background: 'white'
     },
     input:{
-      borderRadius: '0px 0px 12px 12px'
+      borderRadius: '0px 0px 12px 12px',
+      backgroundImage: 'linear-gradient(-90deg, silver, white, silver)'
     },
     button:{
       borderRadius: '12px 12px 0px 0px',
       width: '100px',
-      background: 'white'
+      background: 'white',
+      backgroundImage: 'linear-gradient(-90deg, grey, silver)'
     }
   },
   daydate:{
