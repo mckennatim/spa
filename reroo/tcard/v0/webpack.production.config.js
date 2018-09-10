@@ -15,7 +15,14 @@ module.exports={
           loader: "babel-loader" 
         }]
       },
-      { test: /\.html$/, loader: "html-loader" }
+      { test: /\.html$/, loader: "html-loader" },     
+      {
+        test: /\.md$/,
+        use: [
+          {loader:"html-loader"},
+          {loader:"markdown-loader"}
+        ]
+      } 
     ],
   },
 	devtool: "source-map",
