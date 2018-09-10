@@ -16,6 +16,28 @@ https://gridbyexample.com/examples/example13/
 https://www.mozilla.org/en-US/firefox/60.0a2/whatsnew/#cssgrid
 https://mozilladevelopers.github.io/playground/css-grid/
 
+### 86-reroo-tcard-src.14-beta0.3
+Changed the css so each component panel has independent css. 
+So took away and class content, item-default or inner, outer from the tcard component. Tcard has a header `he` and a blank div for `renderDays`. In `Day` each days card has a tcardDiv with `overflow:hidden` which is the magic sauce that streches the subsequent divs to fit their content
+
+Otherwise added 
+
+    checkFetchStatus=()=>{
+      if(this.state.wstat){
+        let newstat = this.state.wstat.status
+        let showsub
+        if(newstat=='ready'){
+          showsub=true
+        }else{
+          showsub=false
+        }
+        this.setState({showsub})  
+      }
+    }
+
+to be called after the `getTimeCard` fetch
+
+### 85-reroo-tcard-src.13-beta0.2
 ### 85-reroo-tcard-src.12-beta0.1
 ### 85-reroo-tcard-src.11-beta0
 ### 84-reroo-tcard-src.10-css-savedel-jcpu

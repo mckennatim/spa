@@ -3,10 +3,13 @@ var moment = require('moment');
 import {Day} from './Day'// eslint-disable-line no-unused-vars
 import {fetchTcard, putTcardWk} from '../services/fetches'
 import {mapClass2Element} from '../hoc/mapClass2Element'
-import {pStyle} from '../styles'
-
+//import { stat } from 'fs';
+// import {pStyle} from '../styles'
 
 class TimeCard extends React.Component{
+  constructor(props){
+    super(props)
+  }
   active='mabibi'
   state = {week:moment().week(), wkarr:[], hrs:[], jchrs:[], wstat:undefined, showsub:false}
   yr= moment().format('YYYY')
@@ -20,7 +23,9 @@ class TimeCard extends React.Component{
         if (res.message){
           window.alert(res.message)
         }else{
-          this.setState({week:wk, wkarr:res.wkarr, hrs:res.hrs, jchrs:res.jchrs, jobs:res.jobs, wstat:res.wstat})
+          this.setState({week:wk, wkarr:res.wkarr, hrs:res.hrs, jchrs:res.jchrs, jobs:res.jobs, wstat:res.wstat},()=>{
+            this.checkFetchStatus()
+          })
         }
       })
   }
@@ -72,7 +77,21 @@ class TimeCard extends React.Component{
     }
   }
 
+  checkFetchStatus=()=>{
+    if(this.state.wstat){
+      let newstat = this.state.wstat.status
+      let showsub
+      if(newstat=='ready'){
+        showsub=true
+      }else{
+        showsub=false
+      }
+      this.setState({showsub})  
+    }
+  }
+
   checkStatus =()=>{
+    console.log('this.state.wstat: ', this.state.wstat)
     console.log('this.state.hrs: ', this.state.hrs)
     console.log('this.state.jchrs: ', this.state.jchrs)
     const {hrs, jchrs}=this.state
@@ -104,12 +123,8 @@ class TimeCard extends React.Component{
     putTcardWk(nwstat)
     this.setState({wstat:nwstat, showsub:showsub},()=>console.log('this.state.wstat: ', this.state.wstat))
   }
-  setStatStyle=()=>{
-    let sta= {
-      float: 'left',
-      background: '#efe869',
-      width: '70px'
-    }
+  setStatBkg=()=>{
+    let sta ={...style.he.st.txtsp}
     if(this.state.showsub || 
       (this.state.wstat &&(this.state.wstat.status=='submitted' 
       || this.state.wstat.status=='approved' 
@@ -123,7 +138,7 @@ class TimeCard extends React.Component{
     const {week, wkarr, jobs}=this.state;
     const rd = wkarr.map((d)=>{
       return(
-        <Day key={d.idx} data={d} week={week} jobs={jobs} dayChanges={this.handleDayChanges}/>
+        <Day key={d.idx} data={d} ismobile={this.props.responsive.ismobile} week={week} jobs={jobs} dayChanges={this.handleDayChanges}/>
       )
     })
     return rd
@@ -134,30 +149,32 @@ class TimeCard extends React.Component{
 
       const {week, wstat, showsub}=this.state;
       const status= wstat ? wstat.status : "unsaved" 
-      const statstyle = this.setStatStyle()
+      const statstyle = this.setStatBkg()
       // unsaved, inprocess, ready, submitted, approved, paid
       const thrs=drnd(this.state.hrs.reduce((t,h)=>t+h,0))
       const renderedDays = this.renderDays()
       return(
-        
-          <div style={style.outer}>
-          <div style={style.inner}>
-          <div style={statstyle}> {status} </div>
-          <span style={style.but}>
-            {showsub && <button onClick={this.clSubmit}>submit</button> }
-          </span>
-          <span style={style.inp}>
-          <span>week 
+      <div >
+        <div style={style.he}>
+          <div style={style.he.st}>
+            <span style={statstyle}> {status} </span><br/>
+            <span style={style.he.st.but}>
+              {showsub && <button onClick={this.clSubmit}>submit</button> }
+            </span>
+          </div>
+          <div style={style.inp}>
+            <span>week 
             <input type="number" value={week} onChange={this.chwk} style={{width:"35px"}}/>
-          </span>
-          </span>
+            </span>
+          </div>
           <div style={style.thrs}>
             {drnd(thrs)}
           </div>
+        </div>
+        <div>
           {renderedDays}
-          </div>
-          </div>
-          
+        </div>
+      </div> 
       )
     }else{
     return(
@@ -175,27 +192,27 @@ const drnd=(n)=>{
   return Math.round(n*100)/100
 }
 
-// const style = {
-//   outer:{
-//     background: 'silver'
-//   }
-// }
-
-const style = {
-  inn:{
-    height:'80px',
-    background: 'aqua'
-  },
-  but:{
-    width: '70px'
+let style = {
+  he:{
+    height:'50px', 
+    background:'silver',
+    st:{
+      float:'left',
+      but: {
+        width:'70px'
+      },
+      txtsp: {
+        width:'70px',
+        background: '#efe869',
+      }
+    }
   },
   inp:{
-    float:'right'
+    margin:'auto',
+    width: '33%'
   },
   thrs:{
     fontSize: '20px',
     float:'right'
-  },
-  ...pStyle, outer: {...pStyle.outer, background: 'silver'}
+  }
 }
-//pStyle.outer.background='#C4A265'

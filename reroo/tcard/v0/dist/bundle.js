@@ -7609,8 +7609,8 @@ exports.panes = exports.multi = exports.Registered = exports.Nav = exports.App =
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; // eslint-disable-line no-unused-vars
-
-//import { render } from '../utilities/wfuncs';
+// eslint-disable-line no-unused-vars
+// import { render } from '../utilities/wfuncs';
 
 
 var _react = __webpack_require__(11);
@@ -7643,50 +7643,17 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var About = function About(props) {
-  var _props$responsive = props.responsive,
-      isLoading = _props$responsive.isLoading,
-      followers = _props$responsive.followers;
-
+var About = function About() {
   var style = _extends({}, _styles.pStyle, { outer: _extends({}, _styles.pStyle.outer, { background: '#99CCCC' })
   });
-  function handleGetFollowers() {
-    console.log("in get github followers");
-    (0, _test.loadGithubFollowers)('mckennatim');
-  }
-  function renderFollowers(followers) {
-    if (!followers) return;
-    return _react2.default.createElement(
-      'ul',
-      null,
-      followers.map(function (follower, index) {
-        return _react2.default.createElement(
-          'li',
-          { key: index },
-          follower
-        );
-      })
-    );
-  }
   return _react2.default.createElement(
     'div',
     { style: style.outer },
     _react2.default.createElement(
       'h3',
       null,
-      ' About'
-    ),
-    _react2.default.createElement(
-      'button',
-      { id: 'but', onClick: handleGetFollowers },
-      'get github followers'
-    ),
-    isLoading ? _react2.default.createElement(
-      'p',
-      null,
-      'Loading...'
-    ) : "dog",
-    renderFollowers(followers)
+      ' ReRoo Help'
+    )
   );
 };
 
@@ -10593,7 +10560,7 @@ exports.Timestamp = Timestamp;
 
 
 Object.defineProperty(exports, "__esModule", {
-  value: true
+    value: true
 });
 exports.router = undefined;
 
@@ -10624,23 +10591,61 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 // eslint-disable-line no-unused-vars
 // eslint-disable-line no-unused-vars
 window.onblur = function () {
-  //setFocus({infocus: false})
+    //setFocus({infocus: false})
 };
 //import {setDeviceType, setFocus} from './actions/responsive'
 
 
 _Observable.Observable.fromEvent(window, 'resize').debounceTime(300).subscribe(function () {
-  return (0, _responsive.setDeviceType)(window.innerWidth);
+    return (0, _responsive.setDeviceType)(window.innerWidth);
 });
 
 var container = document.getElementById('app');
 (0, _rxred.createStore)(_store.initState).do(_wfuncs.log).subscribe(function (state) {
-  return _reactDom2.default.render(_react2.default.createElement(_components.App, state), container);
+    return _reactDom2.default.render(_react2.default.createElement(_components.App, state), container);
 });
+ckIsMobile();
 
 var router = (0, _routing.routing)();
 
 exports.router = router;
+
+
+function ckIsMobile() {
+
+    var os = getMobileOperatingSystem();
+    var mobile = false;
+    if (os == 'Android') {
+        mobile = true;
+    }
+    (0, _responsive.setIsMobile)(mobile);
+}
+
+/**
+ * Determine the mobile operating system.
+ * This function returns one of 'iOS', 'Android', 'Windows Phone', or 'unknown'.
+ *
+ * @returns {String}
+ */
+function getMobileOperatingSystem() {
+    var userAgent = window.navigator.userAgent || window.navigator.vendor || window.opera;
+
+    // Windows Phone must come first because its UA also contains "Android"
+    if (/windows phone/i.test(userAgent)) {
+        return "Windows Phone";
+    }
+
+    if (/android/i.test(userAgent)) {
+        return "Android";
+    }
+
+    // iOS detection from: http://stackoverflow.com/a/9039885/177710
+    if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
+        return "iOS";
+    }
+
+    return "unknown";
+}
 
 /***/ }),
 /* 71 */
@@ -11017,7 +11022,7 @@ exports.empty = {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.setFocus = exports.switchPage = exports.setDeviceType = undefined;
+exports.setIsMobile = exports.setFocus = exports.switchPage = exports.setDeviceType = undefined;
 
 var _rxred = __webpack_require__(34);
 
@@ -11034,6 +11039,13 @@ var setDeviceType = (0, _rxred.actionCreator)(function (payload) {
   };
 });
 
+var setIsMobile = (0, _rxred.actionCreator)(function (payload) {
+  return {
+    type: 'SET_IS_MOBILE',
+    payload: payload
+  };
+});
+
 var switchPage = (0, _rxred.actionCreator)(function (payload) {
   return {
     type: 'PAGE_SWITCHED',
@@ -11044,6 +11056,7 @@ var switchPage = (0, _rxred.actionCreator)(function (payload) {
 exports.setDeviceType = setDeviceType;
 exports.switchPage = switchPage;
 exports.setFocus = setFocus;
+exports.setIsMobile = setIsMobile;
 
 /***/ }),
 /* 81 */
@@ -11675,6 +11688,7 @@ var moment = __webpack_require__(1);
 // const lsh = ls.getItem();
 
 var fetchTcard = function fetchTcard(wk) {
+  // console.log('lsh: ', lsh)
   var lsh = _getCfg.ls.getItem();
   if ((0, _wfuncs.geta)('lsh.token', lsh)) {
     var url = _getCfg.cfg.url.api + '/tcard/week/' + wk;
@@ -11685,6 +11699,7 @@ var fetchTcard = function fetchTcard(wk) {
       if (json.message) {
         return { qmessage: json.message };
       } else {
+        console.log('json: ', json);
         var processed = processDb4app(json);
         return processed;
       }
@@ -50094,7 +50109,7 @@ var routing = function routing() {
       (0, _responsive.switchPage)({ name: 'Registered', params: _extends({}, params, { query: query }) });
     },
     '*': function _() {
-      (0, _responsive.switchPage)({ name: 'Home', params: null });
+      (0, _responsive.switchPage)({ name: 'TimeCard', params: null });
     }
   }).resolve();
   return router;
@@ -51230,6 +51245,10 @@ var responsive = function responsive(state, action) {
         size: action.payload,
         browser: bro
       });
+    case 'SET_IS_MOBILE':
+      return _extends({}, state, {
+        ismobile: action.payload
+      });
     default:
       return state;
   }
@@ -51514,7 +51533,7 @@ var App = function (_React$Component) {
           'div',
           { className: 'header' },
           _react2.default.createElement(
-            'h4',
+            'span',
             null,
             'ReRoo tcard for ',
             ejob.tcemail,
@@ -51528,7 +51547,7 @@ var App = function (_React$Component) {
           this.showPage().map(function (el, i) {
             return _react2.default.createElement(
               'div',
-              { className: 'content  item-default', key: i },
+              { className: 'content', key: i },
               el
             );
           })
@@ -51625,8 +51644,6 @@ var _fetches = __webpack_require__(98);
 
 var _mapClass2Element = __webpack_require__(222);
 
-var _styles = __webpack_require__(23);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -51638,27 +51655,30 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 // eslint-disable-line no-unused-vars
 var moment = __webpack_require__(1); // eslint-disable-line no-unused-vars
 
+//import { stat } from 'fs';
+// import {pStyle} from '../styles'
+
 var TimeCard = function (_React$Component) {
   _inherits(TimeCard, _React$Component);
 
-  function TimeCard() {
-    var _ref;
-
-    var _temp, _this, _ret;
-
+  function TimeCard(props) {
     _classCallCheck(this, TimeCard);
 
-    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-      args[_key] = arguments[_key];
-    }
+    var _this = _possibleConstructorReturn(this, (TimeCard.__proto__ || Object.getPrototypeOf(TimeCard)).call(this, props));
 
-    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = TimeCard.__proto__ || Object.getPrototypeOf(TimeCard)).call.apply(_ref, [this].concat(args))), _this), _this.active = 'mabibi', _this.state = { week: moment().week(), wkarr: [], hrs: [], jchrs: [], wstat: undefined, showsub: false }, _this.yr = moment().format('YYYY'), _this.chwk = function (e) {
+    _this.active = 'mabibi';
+    _this.state = { week: moment().week(), wkarr: [], hrs: [], jchrs: [], wstat: undefined, showsub: false };
+    _this.yr = moment().format('YYYY');
+
+    _this.chwk = function (e) {
       var val = e.target.value;
       console.log('val: ', val);
       if (val > 0 && val <= 52) {
         _this.getTimeCard(e.target.value);
       }
-    }, _this.handleDayChanges = function (cmd, newdata) {
+    };
+
+    _this.handleDayChanges = function (cmd, newdata) {
       if (cmd == 'punch') {
         var inout = newdata.inout.slice();
         var ndata = _extends({}, newdata);
@@ -51699,7 +51719,23 @@ var TimeCard = function (_React$Component) {
         _wkarr2[_idx2].jchrs = sumhrs;
         _this.setState({ wkarr: _wkarr2, jchrs: jchrarr }, _this.checkStatus());
       }
-    }, _this.checkStatus = function () {
+    };
+
+    _this.checkFetchStatus = function () {
+      if (_this.state.wstat) {
+        var newstat = _this.state.wstat.status;
+        var showsub = void 0;
+        if (newstat == 'ready') {
+          showsub = true;
+        } else {
+          showsub = false;
+        }
+        _this.setState({ showsub: showsub });
+      }
+    };
+
+    _this.checkStatus = function () {
+      console.log('this.state.wstat: ', _this.state.wstat);
       console.log('this.state.hrs: ', _this.state.hrs);
       console.log('this.state.jchrs: ', _this.state.jchrs);
       var _this$state = _this.state,
@@ -51725,9 +51761,13 @@ var TimeCard = function (_React$Component) {
         showsub = true;
       }
       _this.changeStatus(newstat, showsub);
-    }, _this.clSubmit = function () {
+    };
+
+    _this.clSubmit = function () {
       _this.changeStatus('submitted', false);
-    }, _this.changeStatus = function (status, showsub) {
+    };
+
+    _this.changeStatus = function (status, showsub) {
       var nwstat = _extends({}, _this.state.wstat);
       nwstat.status = status;
       nwstat.hrs = drnd(_this.state.hrs.reduce(function (t, h) {
@@ -51738,27 +51778,29 @@ var TimeCard = function (_React$Component) {
       _this.setState({ wstat: nwstat, showsub: showsub }, function () {
         return console.log('this.state.wstat: ', _this.state.wstat);
       });
-    }, _this.setStatStyle = function () {
-      var sta = {
-        float: 'left',
-        background: '#efe869',
-        width: '70px'
-      };
+    };
+
+    _this.setStatBkg = function () {
+      var sta = _extends({}, style.he.st.txtsp);
       if (_this.state.showsub || _this.state.wstat && (_this.state.wstat.status == 'submitted' || _this.state.wstat.status == 'approved' || _this.state.wstat.status == 'paid')) {
         sta.background = '#9eea9d';
       }
       return sta;
-    }, _this.renderDays = function () {
+    };
+
+    _this.renderDays = function () {
       var _this$state2 = _this.state,
           week = _this$state2.week,
           wkarr = _this$state2.wkarr,
           jobs = _this$state2.jobs;
 
       var rd = wkarr.map(function (d) {
-        return _react2.default.createElement(_Day.Day, { key: d.idx, data: d, week: week, jobs: jobs, dayChanges: _this.handleDayChanges });
+        return _react2.default.createElement(_Day.Day, { key: d.idx, data: d, ismobile: _this.props.responsive.ismobile, week: week, jobs: jobs, dayChanges: _this.handleDayChanges });
       });
       return rd;
-    }, _temp), _possibleConstructorReturn(_this, _ret);
+    };
+
+    return _this;
   }
 
   _createClass(TimeCard, [{
@@ -51776,7 +51818,9 @@ var TimeCard = function (_React$Component) {
         if (res.message) {
           window.alert(res.message);
         } else {
-          _this2.setState({ week: wk, wkarr: res.wkarr, hrs: res.hrs, jchrs: res.jchrs, jobs: res.jobs, wstat: res.wstat });
+          _this2.setState({ week: wk, wkarr: res.wkarr, hrs: res.hrs, jchrs: res.jchrs, jobs: res.jobs, wstat: res.wstat }, function () {
+            _this2.checkFetchStatus();
+          });
         }
       });
     }
@@ -51790,7 +51834,7 @@ var TimeCard = function (_React$Component) {
             showsub = _state.showsub;
 
         var status = wstat ? wstat.status : "unsaved";
-        var statstyle = this.setStatStyle();
+        var statstyle = this.setStatBkg();
         // unsaved, inprocess, ready, submitted, approved, paid
         var thrs = drnd(this.state.hrs.reduce(function (t, h) {
           return t + h;
@@ -51798,28 +51842,33 @@ var TimeCard = function (_React$Component) {
         var renderedDays = this.renderDays();
         return _react2.default.createElement(
           'div',
-          { style: style.outer },
+          null,
           _react2.default.createElement(
             'div',
-            { style: style.inner },
+            { style: style.he },
             _react2.default.createElement(
               'div',
-              { style: statstyle },
-              ' ',
-              status,
-              ' '
-            ),
-            _react2.default.createElement(
-              'span',
-              { style: style.but },
-              showsub && _react2.default.createElement(
-                'button',
-                { onClick: this.clSubmit },
-                'submit'
+              { style: style.he.st },
+              _react2.default.createElement(
+                'span',
+                { style: statstyle },
+                ' ',
+                status,
+                ' '
+              ),
+              _react2.default.createElement('br', null),
+              _react2.default.createElement(
+                'span',
+                { style: style.he.st.but },
+                showsub && _react2.default.createElement(
+                  'button',
+                  { onClick: this.clSubmit },
+                  'submit'
+                )
               )
             ),
             _react2.default.createElement(
-              'span',
+              'div',
               { style: style.inp },
               _react2.default.createElement(
                 'span',
@@ -51832,7 +51881,11 @@ var TimeCard = function (_React$Component) {
               'div',
               { style: style.thrs },
               drnd(thrs)
-            ),
+            )
+          ),
+          _react2.default.createElement(
+            'div',
+            null,
             renderedDays
           )
         );
@@ -51858,31 +51911,30 @@ var drnd = function drnd(n) {
   return Math.round(n * 100) / 100;
 };
 
-// const style = {
-//   outer:{
-//     background: 'silver'
-//   }
-// }
-
-var style = _extends({
-  inn: {
-    height: '80px',
-    background: 'aqua'
-  },
-  but: {
-    width: '70px'
+var style = {
+  he: {
+    height: '50px',
+    background: 'silver',
+    st: {
+      float: 'left',
+      but: {
+        width: '70px'
+      },
+      txtsp: {
+        width: '70px',
+        background: '#efe869'
+      }
+    }
   },
   inp: {
-    float: 'right'
+    margin: 'auto',
+    width: '33%'
   },
   thrs: {
     fontSize: '20px',
     float: 'right'
   }
-}, _styles.pStyle, { outer: _extends({}, _styles.pStyle.outer, { background: 'silver' })
-  //pStyle.outer.background='#C4A265'
-
-});
+};
 
 /***/ }),
 /* 344 */
@@ -51941,6 +51993,14 @@ var Day = function (_React$Component) {
         return 'in';
       } else {
         return 'out';
+      }
+    }, _this.ifNotMobileAppend = function () {
+      if (!_this.props.ismobile) {
+        _this.appendTime();
+      }
+    }, _this.ifMobileAppend = function () {
+      if (_this.props.ismobile) {
+        _this.appendTime();
       }
     }, _this.appendTime = function () {
       if (_this.tinel.value.length != 5) {
@@ -52081,12 +52141,12 @@ var Day = function (_React$Component) {
           { style: style.punchclock.container },
           _react2.default.createElement(
             'button',
-            { style: style.punchclock.button, onClick: this.appendTime },
+            { style: style.punchclock.button, onClick: this.ifNotMobileAppend },
             'punch ',
             punch
           ),
           _react2.default.createElement('br', null),
-          _react2.default.createElement('input', { style: style.punchclock.input, id: tin, type: 'time', defaultValue: now }),
+          _react2.default.createElement('input', { style: style.punchclock.input, id: tin, type: 'time', defaultValue: now, onChange: this.ifMobileAppend }),
           _react2.default.createElement('br', null)
         ),
         inoutList,
@@ -52103,6 +52163,7 @@ exports.Day = Day;
 
 var style = {
   tcardDiv: {
+    overflow: 'hidden',
     border: '2px solid black',
     background: 'white'
   },
@@ -52115,11 +52176,13 @@ var style = {
       background: 'white'
     },
     input: {
+      margin: '6px 0 0 0',
       borderRadius: '0px 0px 12px 12px',
       backgroundImage: 'linear-gradient(-90deg, silver, white, silver)'
     },
     button: {
-      borderRadius: '12px 12px 0px 0px',
+      margin: '0 0 6px 0',
+      borderRadius: '12px 12px 5px 5px',
       width: '100px',
       background: 'white',
       backgroundImage: 'linear-gradient(-90deg, grey, silver)'
@@ -52172,6 +52235,10 @@ var io2hrs = function io2hrs(pin, pout) {
   return hrs;
 };
 
+var drnd = function drnd(n) {
+  return Math.round(n * 100) / 100;
+};
+
 var createPeriodArray = function createPeriodArray(inout) {
   var pin = void 0,
       pout = void 0,
@@ -52211,7 +52278,7 @@ var resumHrs = function resumHrs(inout) {
       pin = io;
     }
   });
-  return thrs;
+  return drnd(thrs);
 };
 
 /***/ }),
@@ -52241,7 +52308,6 @@ Object.defineProperty(exports, "__esModule", {
 var storageLocal = function storageLocal(itemName) {
   var itemStr = localStorage.getItem(itemName);
   var getItem = function getItem() {
-    // console.log('in getItem')
     if (!localStorage.getItem(itemName)) {
       return null;
     }
@@ -52261,6 +52327,9 @@ var storageLocal = function storageLocal(itemName) {
         ni[key] = val;
         setItem(ni);
       }
+    },
+    removeItem: function removeItem() {
+      return localStorage.removeItem(itemName);
     },
     getToken: function getToken() {
       return getItem().token;
@@ -52867,9 +52936,7 @@ var style = {
       background: 'grey',
       float: 'left'
     },
-    add: {
-      width: '86px'
-    },
+    add: {},
     unal: {
       padding: '2px',
       border: '1px solid'
@@ -52934,61 +53001,42 @@ var _getCfg = __webpack_require__(39);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 // eslint-disable-line no-unused-vars
-var style = {
-  background: 'silver'
-};
-
 var Nav = function Nav() {
   return _react2.default.createElement(
     'div',
-    { id: 'nav', style: style },
+    { id: 'menu' },
+    ' ',
     _react2.default.createElement(
-      'div',
-      { id: 'menu' },
-      ' ',
+      'ul',
+      null,
       _react2.default.createElement(
-        'ul',
-        null,
+        'li',
+        { style: _styles.mStyle.li },
         _react2.default.createElement(
-          'li',
-          { style: _styles.mStyle.li },
-          _react2.default.createElement(
-            'a',
-            { style: _styles.mStyle.a, href: _getCfg.cfg.url.authqry },
-            'register'
-          )
-        ),
+          'a',
+          { style: _styles.mStyle.a, href: _getCfg.cfg.url.authqry },
+          'register'
+        )
+      ),
+      _react2.default.createElement(
+        'li',
+        { style: _styles.mStyle.li },
         _react2.default.createElement(
-          'li',
-          { style: _styles.mStyle.li },
-          _react2.default.createElement(
-            'a',
-            { style: _styles.mStyle.a, href: 'home', 'data-navigo': true },
-            'home'
-          )
-        ),
+          'a',
+          { style: _styles.mStyle.a, href: 'about', 'data-navigo': true },
+          'about'
+        )
+      ),
+      _react2.default.createElement(
+        'li',
+        { style: _styles.mStyle.li },
         _react2.default.createElement(
-          'li',
-          { style: _styles.mStyle.li },
-          _react2.default.createElement(
-            'a',
-            { style: _styles.mStyle.a, href: 'about', 'data-navigo': true },
-            'about'
-          )
-        ),
-        _react2.default.createElement(
-          'li',
-          { style: _styles.mStyle.li },
-          _react2.default.createElement(
-            'a',
-            { style: _styles.mStyle.a, href: 'tcard', 'data-navigo': true },
-            'tcard'
-          )
+          'a',
+          { style: _styles.mStyle.a, href: 'tcard', 'data-navigo': true },
+          'tcard'
         )
       )
-    ),
-    _react2.default.createElement('br', null),
-    _react2.default.createElement('hr', null)
+    )
   );
 };
 exports.Nav = Nav;
@@ -53072,8 +53120,18 @@ var style = _extends({}, _styles.pStyle, { outer: _extends({}, _styles.pStyle.ou
 _styles.pStyle.outer.background = '#C4A265';
 
 function Registered(props) {
+  var showbutton = '';
+
+  var renderHitButton = function renderHitButton() {
+    return _react2.default.createElement(
+      'button',
+      { onClick: hitButton },
+      'go to tcard'
+    );
+  };
   var onSuccess = function onSuccess() {
     console.log('registered success: ');
+    showbutton = renderHitButton();
   };
   var hitButton = function hitButton() {
     console.log('in hitButton');
@@ -53093,6 +53151,7 @@ function Registered(props) {
       return x == 'message';
     })) {
       console.log('ie message');
+      _getCfg.ls.removeItem();
       regstr = decodeURI(mobj.message);
     } else {
       if (mobj.email) {
@@ -53111,6 +53170,7 @@ function Registered(props) {
   } else {
     regstr = 'so register already';
   }
+
   return _react2.default.createElement(
     'div',
     { style: style.outer },
@@ -53127,11 +53187,7 @@ function Registered(props) {
       regstr
     ),
     _react2.default.createElement('span', null),
-    _react2.default.createElement(
-      'button',
-      { onClick: hitButton },
-      'go to tcard'
-    )
+    showbutton
   );
 }
 
@@ -80734,7 +80790,8 @@ var initialBrowser = function initialBrowser() {
     types: ['watch', 'phone', 'phoneL', 'tablet', 'tabletL', 'laptop', 'monitor'],
     sizes: [300, 500, 600, 800, 900, 1800, 3000],
     browser: '',
-    size: ws
+    size: ws,
+    ismobile: false
   };
   var typeIdx;
   devInfo.sizes.reduce(function (t, n, i) {
