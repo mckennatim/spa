@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 71);
+/******/ 	return __webpack_require__(__webpack_require__.s = 72);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -4900,7 +4900,7 @@ var __extends = (this && this.__extends) || function (d, b) {
 };
 var isFunction_1 = __webpack_require__(31);
 var Subscription_1 = __webpack_require__(6);
-var Observer_1 = __webpack_require__(80);
+var Observer_1 = __webpack_require__(81);
 var rxSubscriber_1 = __webpack_require__(32);
 /**
  * Implements the {@link Observer} interface and extends the
@@ -5164,9 +5164,9 @@ var SafeSubscriber = (function (_super) {
 "use strict";
 
 var root_1 = __webpack_require__(10);
-var isArrayLike_1 = __webpack_require__(86);
-var isPromise_1 = __webpack_require__(87);
-var isObject_1 = __webpack_require__(78);
+var isArrayLike_1 = __webpack_require__(87);
+var isPromise_1 = __webpack_require__(88);
+var isObject_1 = __webpack_require__(79);
 var Observable_1 = __webpack_require__(0);
 var iterator_1 = __webpack_require__(20);
 var InnerSubscriber_1 = __webpack_require__(329);
@@ -5338,11 +5338,11 @@ exports.async = new AsyncScheduler_1.AsyncScheduler(AsyncAction_1.AsyncAction);
 "use strict";
 
 var isArray_1 = __webpack_require__(13);
-var isObject_1 = __webpack_require__(78);
+var isObject_1 = __webpack_require__(79);
 var isFunction_1 = __webpack_require__(31);
 var tryCatch_1 = __webpack_require__(9);
 var errorObject_1 = __webpack_require__(8);
-var UnsubscriptionError_1 = __webpack_require__(79);
+var UnsubscriptionError_1 = __webpack_require__(80);
 /**
  * Represents a disposable resource, such as the execution of an Observable. A
  * Subscription has one important method, `unsubscribe`, that takes no argument
@@ -5545,7 +5545,7 @@ var Observable_1 = __webpack_require__(0);
 var Subscriber_1 = __webpack_require__(2);
 var Subscription_1 = __webpack_require__(6);
 var ObjectUnsubscribedError_1 = __webpack_require__(35);
-var SubjectSubscription_1 = __webpack_require__(82);
+var SubjectSubscription_1 = __webpack_require__(83);
 var rxSubscriber_1 = __webpack_require__(32);
 /**
  * @class SubjectSubscriber<T>
@@ -7080,8 +7080,8 @@ exports.ArgumentOutOfRangeError = ArgumentOutOfRangeError;
 "use strict";
 
 var scan_1 = __webpack_require__(52);
-var takeLast_1 = __webpack_require__(67);
-var defaultIfEmpty_1 = __webpack_require__(63);
+var takeLast_1 = __webpack_require__(68);
+var defaultIfEmpty_1 = __webpack_require__(64);
 var pipe_1 = __webpack_require__(50);
 /* tslint:enable:max-line-length */
 /**
@@ -7345,13 +7345,13 @@ var _Observable = __webpack_require__(0);
 
 var _Subject = __webpack_require__(7);
 
-__webpack_require__(83);
+__webpack_require__(84);
 
-__webpack_require__(85);
-
-__webpack_require__(88);
+__webpack_require__(86);
 
 __webpack_require__(89);
+
+__webpack_require__(90);
 
 var _reducers = __webpack_require__(334);
 
@@ -7542,7 +7542,7 @@ exports.ObserveOnMessage = ObserveOnMessage;
 "use strict";
 
 var mergeMap_1 = __webpack_require__(19);
-var identity_1 = __webpack_require__(95);
+var identity_1 = __webpack_require__(96);
 /**
  * Converts a higher-order Observable into a first-order Observable which
  * concurrently delivers all values that are emitted on the inner Observables.
@@ -7617,7 +7617,7 @@ var _react = __webpack_require__(11);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _app = __webpack_require__(71);
+var _app = __webpack_require__(72);
 
 var _App = __webpack_require__(341);
 
@@ -7635,7 +7635,7 @@ var _styles = __webpack_require__(23);
 
 var _test = __webpack_require__(355);
 
-var _mapClass2Element = __webpack_require__(58);
+var _mapClass2Element = __webpack_require__(59);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -8306,7 +8306,7 @@ var queue_1 = __webpack_require__(227);
 var Subscription_1 = __webpack_require__(6);
 var observeOn_1 = __webpack_require__(36);
 var ObjectUnsubscribedError_1 = __webpack_require__(35);
-var SubjectSubscription_1 = __webpack_require__(82);
+var SubjectSubscription_1 = __webpack_require__(83);
 /**
  * @class ReplaySubject<T>
  */
@@ -8976,8 +8976,8 @@ exports.ScalarObservable = ScalarObservable;
 "use strict";
 
 var isScheduler_1 = __webpack_require__(12);
-var of_1 = __webpack_require__(91);
-var from_1 = __webpack_require__(92);
+var of_1 = __webpack_require__(92);
+var from_1 = __webpack_require__(93);
 var concatAll_1 = __webpack_require__(55);
 /* tslint:enable:max-line-length */
 /**
@@ -9257,6 +9257,275 @@ var FilterSubscriber = (function (_super) {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.delTcardPu = exports.putTcardWk = exports.putTcardJc = exports.putTcardPu = exports.putTcard = exports.fetchTcard = exports.fetchSubmitted = exports.fetchWhoTcard = undefined;
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _getCfg = __webpack_require__(39);
+
+var _wfuncs = __webpack_require__(58);
+
+var moment = __webpack_require__(1);
+
+
+// const lsh = ls.getItem();
+
+var fetchSubmitted = function fetchSubmitted() {
+  var lsh = _getCfg.ls.getItem();
+  if ((0, _wfuncs.geta)('lsh.token', lsh)) {
+    var url = _getCfg.cfg.url.api + '/payroll/submitted';
+    var options = { headers: { 'Authorization': 'Bearer ' + lsh['token'] } };
+    return fetch(url, options).then(function (response) {
+      return response.json();
+    }).then(function (json) {
+      if (json.message) {
+        return { qmessage: json.message };
+      } else {
+        return json;
+      }
+    }).catch(function (e) {
+      return { qmessage: e.message };
+    });
+  } else {
+    var p2 = Promise.resolve({ qmessage: 'you dont exist! ' });
+    return p2;
+  }
+};
+var fetchWhoTcard = function fetchWhoTcard(wkstat) {
+  console.log('wkstat: ', wkstat);
+  var lsh = _getCfg.ls.getItem();
+  if ((0, _wfuncs.geta)('lsh.token', lsh)) {
+    var url = _getCfg.cfg.url.api + '/payroll/tcard/' + wkstat.wprt + '/' + wkstat.emailid;
+    var options = {
+      headers: { 'Authorization': 'Bearer ' + lsh['token'] }
+    };
+    return fetch(url, options).then(function (response) {
+      return response.json();
+    }).then(function (json) {
+      if (json.message) {
+        return { qmessage: json.message };
+      } else {
+        var processed = processDb4app(json);
+        processed.emailid = wkstat.emailid;
+        return processed;
+      }
+    }).catch(function (e) {
+      return { qmessage: e.message };
+    });
+  } else {
+    var p2 = Promise.resolve({ qmessage: 'you dont exist! ' });
+    return p2;
+  }
+};
+var fetchTcard = function fetchTcard(wk) {
+  var lsh = _getCfg.ls.getItem();
+  if ((0, _wfuncs.geta)('lsh.token', lsh)) {
+    var url = _getCfg.cfg.url.api + '/tcard/week/' + wk;
+    var options = { headers: { 'Authorization': 'Bearer ' + lsh['token'] } };
+    return fetch(url, options).then(function (response) {
+      return response.json();
+    }).then(function (json) {
+      if (json.message) {
+        return { qmessage: json.message };
+      } else {
+        var processed = processDb4app(json);
+        return processed;
+      }
+    }).catch(function (e) {
+      return { qmessage: e.message };
+    });
+  } else {
+    var p2 = Promise.resolve({ qmessage: 'you dont exist! ' });
+    return p2;
+  }
+};
+var putTcardWk = function putTcardWk(wkstat) {
+  //updwk {wprt, hrs, status}=req.body.wkstat
+  var lsh = _getCfg.ls.getItem();
+  if ((0, _wfuncs.geta)('lsh.token', lsh)) {
+    var url = _getCfg.cfg.url.api + '/tcard/updstat';
+    var options = {
+      headers: { 'Authorization': 'Bearer ' + lsh['token'],
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
+      },
+      method: 'PUT',
+      body: JSON.stringify({ wkstat: wkstat })
+    };
+    return fetch(url, options).then(function (response) {
+      return response.json();
+    });
+  } else {
+    var p2 = Promise.resolve({ qmessage: 'you dont exist! ' });
+    return p2;
+  }
+};
+var putTcardJc = function putTcardJc(aday) {
+  //updjc {wdprt, jcost}= req.body.tday
+  var tday = adjDay4db(_getCfg.cfg.firstday, aday);
+  var lsh = _getCfg.ls.getItem();
+  if ((0, _wfuncs.geta)('lsh.token', lsh)) {
+    var url = _getCfg.cfg.url.api + '/tcard/updjc';
+    var options = {
+      headers: { 'Authorization': 'Bearer ' + lsh['token'],
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
+      },
+      method: 'PUT',
+      body: JSON.stringify({ tday: tday })
+    };
+    return fetch(url, options).then(function (response) {
+      return response.json();
+    });
+  } else {
+    var p2 = Promise.resolve({ qmessage: 'you dont exist! ' });
+    return p2;
+  }
+};
+var putTcardPu = function putTcardPu(aday) {
+  //updpu {wdprt, hrs, inout}= req.body.tday
+  var tday = adjDay4db(_getCfg.cfg.firstday, aday);
+  var lsh = _getCfg.ls.getItem();
+  if ((0, _wfuncs.geta)('lsh.token', lsh)) {
+    var url = _getCfg.cfg.url.api + '/tcard/updpu';
+    var options = {
+      headers: { 'Authorization': 'Bearer ' + lsh['token'],
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
+      },
+      method: 'PUT',
+      body: JSON.stringify({ tday: tday })
+    };
+    return fetch(url, options).then(function (response) {
+      return response.json();
+    });
+  } else {
+    var p2 = Promise.resolve({ qmessage: 'you dont exist! ' });
+    return p2;
+  }
+};
+
+var putTcard = function putTcard(aday) {
+  //update {wdprt, hrs, inout, jcost}= req.body.tday
+  console.log('aday: ', aday);
+  var tday = adjDay4db(_getCfg.cfg.firstday, aday);
+  var lsh = _getCfg.ls.getItem();
+  console.log(tday);
+  if ((0, _wfuncs.geta)('lsh.token', lsh)) {
+    var url = _getCfg.cfg.url.api + '/tcard/update';
+    var options = {
+      headers: { 'Authorization': 'Bearer ' + lsh['token'],
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
+      },
+      method: 'PUT',
+      body: JSON.stringify({ tday: tday })
+    };
+    return fetch(url, options).then(function (response) {
+      return response.json();
+    });
+  } else {
+    var p2 = Promise.resolve({ qmessage: 'you dont exist! ' });
+    return p2;
+  }
+};
+
+var delTcardPu = function delTcardPu(wdprt) {
+  if (_getCfg.cfg.firstday != 1 && wdprt.slice(-1) >= _getCfg.cfg.firstday) {
+    wdprt = moment(wdprt).add(7, "days").format("YYYY-[W]WW-E");
+  }
+  var lsh = _getCfg.ls.getItem();
+  if ((0, _wfuncs.geta)('lsh.token', lsh)) {
+    var url = _getCfg.cfg.url.api + '/tcard/del';
+    var options = {
+      headers: { 'Authorization': 'Bearer ' + lsh['token'],
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
+      },
+      method: 'DELETE',
+      body: JSON.stringify({ wdprt: wdprt })
+    };
+    return fetch(url, options).then(function (response) {
+      return response.json();
+    });
+  } else {
+    var p2 = Promise.resolve({ qmessage: 'you dont exist! ' });
+    return p2;
+  }
+};
+
+exports.fetchWhoTcard = fetchWhoTcard;
+exports.fetchSubmitted = fetchSubmitted;
+exports.fetchTcard = fetchTcard;
+exports.putTcard = putTcard;
+exports.putTcardPu = putTcardPu;
+exports.putTcardJc = putTcardJc;
+exports.putTcardWk = putTcardWk;
+exports.delTcardPu = delTcardPu;
+
+
+var wkendLast = function wkendLast(apwa) {
+  for (var i = 6; i <= 7; i++) {
+    var fi = apwa.findIndex(function (a) {
+      return a.wdprt.slice(-1) == i;
+    });
+    var rec = apwa[fi];
+    apwa.splice(fi, 1);
+    apwa.push(rec);
+  }
+  var napwa = apwa.map(function (wa, i) {
+    wa.idx = i;
+    return wa;
+  });
+  return napwa;
+};
+
+var sumThing = function sumThing(arr, fld) {
+  var narr = arr.map(function (a) {
+    return a[fld];
+  });
+  return narr;
+};
+
+var processDb4app = function processDb4app(res) {
+  var lsh = _getCfg.ls.getItem();
+  var wkarr = wkendLast(adjWk4app(_getCfg.cfg.firstday, res.wkarr));
+  var hrs = sumThing(wkarr, 'hrs');
+  var jchrs = sumThing(wkarr, 'jchrs');
+  return { wkarr: wkarr, hrs: hrs, jchrs: jchrs, emailid: lsh.email, jobs: res.jobs, wstat: res.wstat };
+};
+
+var adjWk4app = function adjWk4app(firstday, wkarr) {
+  var appwkarr = wkarr.map(function (d) {
+    if (firstday != 1 && d.wdprt.slice(-1) >= firstday) {
+      d.wdprt = moment(d.wdprt).subtract(7, "days").format("YYYY-[W]WW-E");
+    }
+    return d;
+  }).sort(function (a, b) {
+    return a.wdprt > b.wdprt;
+  });
+  return appwkarr;
+};
+
+var adjDay4db = function adjDay4db(firstday, rec) {
+  var d = _extends({}, rec);
+  if (firstday != 1 && d.wdprt.slice(-1) >= firstday) {
+    console.log('it is greater: ');
+    d.wdprt = moment(d.wdprt).add(7, "days").format("YYYY-[W]WW-E");
+  }
+  return d;
+};
+
+/***/ }),
+/* 58 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 exports.deepObjModify = exports.el = exports.parseQuery = exports.log = exports.render = exports.dog = exports.geta = undefined;
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
@@ -9265,7 +9534,7 @@ var _react = __webpack_require__(11);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactDom = __webpack_require__(73);
+var _reactDom = __webpack_require__(74);
 
 var _reactDom2 = _interopRequireDefault(_reactDom);
 
@@ -9328,7 +9597,7 @@ exports.el = el;
 exports.deepObjModify = deepObjModify;
 
 /***/ }),
-/* 58 */
+/* 59 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9355,7 +9624,7 @@ function mapClass2Element(aClassElement) {
 exports.mapClass2Element = mapClass2Element;
 
 /***/ }),
-/* 59 */
+/* 60 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9460,7 +9729,7 @@ exports.mergeStatic = mergeStatic;
 //# sourceMappingURL=merge.js.map
 
 /***/ }),
-/* 60 */
+/* 61 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9555,7 +9824,7 @@ exports.RaceSubscriber = RaceSubscriber;
 //# sourceMappingURL=race.js.map
 
 /***/ }),
-/* 61 */
+/* 62 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9565,7 +9834,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-var FromObservable_1 = __webpack_require__(93);
+var FromObservable_1 = __webpack_require__(94);
 var isArray_1 = __webpack_require__(13);
 var OuterSubscriber_1 = __webpack_require__(4);
 var subscribeToResult_1 = __webpack_require__(3);
@@ -9698,7 +9967,7 @@ var OnErrorResumeNextSubscriber = (function (_super) {
 //# sourceMappingURL=onErrorResumeNext.js.map
 
 /***/ }),
-/* 62 */
+/* 63 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9771,7 +10040,7 @@ exports.concatMap = concatMap;
 //# sourceMappingURL=concatMap.js.map
 
 /***/ }),
-/* 63 */
+/* 64 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9854,7 +10123,7 @@ var DefaultIfEmptySubscriber = (function (_super) {
 //# sourceMappingURL=defaultIfEmpty.js.map
 
 /***/ }),
-/* 64 */
+/* 65 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9968,7 +10237,7 @@ var DistinctUntilChangedSubscriber = (function (_super) {
 //# sourceMappingURL=distinctUntilChanged.js.map
 
 /***/ }),
-/* 65 */
+/* 66 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10074,7 +10343,7 @@ exports.FindValueSubscriber = FindValueSubscriber;
 //# sourceMappingURL=find.js.map
 
 /***/ }),
-/* 66 */
+/* 67 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10198,7 +10467,7 @@ var AuditSubscriber = (function (_super) {
 //# sourceMappingURL=audit.js.map
 
 /***/ }),
-/* 67 */
+/* 68 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10313,7 +10582,7 @@ var TakeLastSubscriber = (function (_super) {
 //# sourceMappingURL=takeLast.js.map
 
 /***/ }),
-/* 68 */
+/* 69 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10404,7 +10673,7 @@ var RefCountSubscriber = (function (_super) {
 //# sourceMappingURL=refCount.js.map
 
 /***/ }),
-/* 69 */
+/* 70 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10552,7 +10821,7 @@ var SwitchMapSubscriber = (function (_super) {
 //# sourceMappingURL=switchMap.js.map
 
 /***/ }),
-/* 70 */
+/* 71 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10583,7 +10852,7 @@ exports.Timestamp = Timestamp;
 //# sourceMappingURL=timestamp.js.map
 
 /***/ }),
-/* 71 */
+/* 72 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10598,7 +10867,7 @@ var _react = __webpack_require__(11);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactDom = __webpack_require__(73);
+var _reactDom = __webpack_require__(74);
 
 var _reactDom2 = _interopRequireDefault(_reactDom);
 
@@ -10610,11 +10879,11 @@ var _components = __webpack_require__(38);
 
 var _rxred = __webpack_require__(34);
 
-var _wfuncs = __webpack_require__(57);
+var _wfuncs = __webpack_require__(58);
 
 var _store = __webpack_require__(634);
 
-var _responsive = __webpack_require__(81);
+var _responsive = __webpack_require__(82);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -10678,7 +10947,7 @@ function getMobileOperatingSystem() {
 }
 
 /***/ }),
-/* 72 */
+/* 73 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10745,7 +11014,7 @@ module.exports = checkPropTypes;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(14)))
 
 /***/ }),
-/* 73 */
+/* 74 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10791,7 +11060,7 @@ if (process.env.NODE_ENV === 'production') {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(14)))
 
 /***/ }),
-/* 74 */
+/* 75 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10830,7 +11099,7 @@ var ExecutionEnvironment = {
 module.exports = ExecutionEnvironment;
 
 /***/ }),
-/* 75 */
+/* 76 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10872,7 +11141,7 @@ function getActiveElement(doc) /*?DOMElement*/{
 module.exports = getActiveElement;
 
 /***/ }),
-/* 76 */
+/* 77 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10943,7 +11212,7 @@ function shallowEqual(objA, objB) {
 module.exports = shallowEqual;
 
 /***/ }),
-/* 77 */
+/* 78 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10986,7 +11255,7 @@ function containsNode(outerNode, innerNode) {
 module.exports = containsNode;
 
 /***/ }),
-/* 78 */
+/* 79 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10998,7 +11267,7 @@ exports.isObject = isObject;
 //# sourceMappingURL=isObject.js.map
 
 /***/ }),
-/* 79 */
+/* 80 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11029,7 +11298,7 @@ exports.UnsubscriptionError = UnsubscriptionError;
 //# sourceMappingURL=UnsubscriptionError.js.map
 
 /***/ }),
-/* 80 */
+/* 81 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11043,7 +11312,7 @@ exports.empty = {
 //# sourceMappingURL=Observer.js.map
 
 /***/ }),
-/* 81 */
+/* 82 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11089,7 +11358,7 @@ exports.setFocus = setFocus;
 exports.setIsMobile = setIsMobile;
 
 /***/ }),
-/* 82 */
+/* 83 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11135,7 +11404,7 @@ exports.SubjectSubscription = SubjectSubscription;
 //# sourceMappingURL=SubjectSubscription.js.map
 
 /***/ }),
-/* 83 */
+/* 84 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11147,7 +11416,7 @@ Observable_1.Observable.prototype._do = do_1._do;
 //# sourceMappingURL=do.js.map
 
 /***/ }),
-/* 84 */
+/* 85 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11266,7 +11535,7 @@ var DoSubscriber = (function (_super) {
 //# sourceMappingURL=tap.js.map
 
 /***/ }),
-/* 85 */
+/* 86 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11278,7 +11547,7 @@ Observable_1.Observable.prototype.flatMap = mergeMap_1.mergeMap;
 //# sourceMappingURL=mergeMap.js.map
 
 /***/ }),
-/* 86 */
+/* 87 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11287,7 +11556,7 @@ exports.isArrayLike = (function (x) { return x && typeof x.length === 'number'; 
 //# sourceMappingURL=isArrayLike.js.map
 
 /***/ }),
-/* 87 */
+/* 88 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11299,7 +11568,7 @@ exports.isPromise = isPromise;
 //# sourceMappingURL=isPromise.js.map
 
 /***/ }),
-/* 88 */
+/* 89 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11310,7 +11579,7 @@ Observable_1.Observable.prototype.scan = scan_1.scan;
 //# sourceMappingURL=scan.js.map
 
 /***/ }),
-/* 89 */
+/* 90 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11321,7 +11590,7 @@ Observable_1.Observable.prototype.startWith = startWith_1.startWith;
 //# sourceMappingURL=startWith.js.map
 
 /***/ }),
-/* 90 */
+/* 91 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11375,7 +11644,7 @@ exports.startWith = startWith;
 //# sourceMappingURL=startWith.js.map
 
 /***/ }),
-/* 91 */
+/* 92 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11385,17 +11654,17 @@ exports.of = ArrayObservable_1.ArrayObservable.of;
 //# sourceMappingURL=of.js.map
 
 /***/ }),
-/* 92 */
+/* 93 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var FromObservable_1 = __webpack_require__(93);
+var FromObservable_1 = __webpack_require__(94);
 exports.from = FromObservable_1.FromObservable.create;
 //# sourceMappingURL=from.js.map
 
 /***/ }),
-/* 93 */
+/* 94 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11406,9 +11675,9 @@ var __extends = (this && this.__extends) || function (d, b) {
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var isArray_1 = __webpack_require__(13);
-var isArrayLike_1 = __webpack_require__(86);
-var isPromise_1 = __webpack_require__(87);
-var PromiseObservable_1 = __webpack_require__(94);
+var isArrayLike_1 = __webpack_require__(87);
+var isPromise_1 = __webpack_require__(88);
+var PromiseObservable_1 = __webpack_require__(95);
 var IteratorObservable_1 = __webpack_require__(332);
 var ArrayObservable_1 = __webpack_require__(15);
 var ArrayLikeObservable_1 = __webpack_require__(333);
@@ -11523,7 +11792,7 @@ exports.FromObservable = FromObservable;
 //# sourceMappingURL=FromObservable.js.map
 
 /***/ }),
-/* 94 */
+/* 95 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11650,7 +11919,7 @@ function dispatchError(arg) {
 //# sourceMappingURL=PromiseObservable.js.map
 
 /***/ }),
-/* 95 */
+/* 96 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11662,18 +11931,18 @@ exports.identity = identity;
 //# sourceMappingURL=identity.js.map
 
 /***/ }),
-/* 96 */
+/* 97 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 var Observable_1 = __webpack_require__(0);
-var from_1 = __webpack_require__(92);
+var from_1 = __webpack_require__(93);
 Observable_1.Observable.from = from_1.from;
 //# sourceMappingURL=from.js.map
 
 /***/ }),
-/* 97 */
+/* 98 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11684,7 +11953,7 @@ Observable_1.Observable.prototype.filter = filter_1.filter;
 //# sourceMappingURL=filter.js.map
 
 /***/ }),
-/* 98 */
+/* 99 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11693,230 +11962,6 @@ var Observable_1 = __webpack_require__(0);
 var map_1 = __webpack_require__(340);
 Observable_1.Observable.prototype.map = map_1.map;
 //# sourceMappingURL=map.js.map
-
-/***/ }),
-/* 99 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.delTcardPu = exports.putTcardWk = exports.putTcardJc = exports.putTcardPu = exports.putTcard = exports.fetchTcard = undefined;
-
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-var _getCfg = __webpack_require__(39);
-
-var _wfuncs = __webpack_require__(57);
-
-var moment = __webpack_require__(1);
-
-
-// const lsh = ls.getItem();
-
-var fetchTcard = function fetchTcard(wk) {
-  var lsh = _getCfg.ls.getItem();
-  if ((0, _wfuncs.geta)('lsh.token', lsh)) {
-    var url = _getCfg.cfg.url.api + '/tcard/week/' + wk;
-    var options = { headers: { 'Authorization': 'Bearer ' + lsh['token'] } };
-    return fetch(url, options).then(function (response) {
-      return response.json();
-    }).then(function (json) {
-      if (json.message) {
-        return { qmessage: json.message };
-      } else {
-        var processed = processDb4app(json);
-        return processed;
-      }
-    }).catch(function (e) {
-      return { qmessage: e.message };
-    });
-  } else {
-    var p2 = Promise.resolve({ qmessage: 'you dont exist! ' });
-    return p2;
-  }
-};
-//updstat {wprt, hrs, status}=req.body.wkstat
-//updpu {wdprt, hrs, inout}= req.body.tday
-//updjc {wdprt, jcost}= req.body.tday
-//update {wdprt, hrs, inout, jcost}= req.body.tday
-var putTcardWk = function putTcardWk(wkstat) {
-  //updwk {wprt, hrs, status}=req.body.wkstat
-  var lsh = _getCfg.ls.getItem();
-  if ((0, _wfuncs.geta)('lsh.token', lsh)) {
-    var url = _getCfg.cfg.url.api + '/tcard/updstat';
-    var options = {
-      headers: { 'Authorization': 'Bearer ' + lsh['token'],
-        Accept: 'application/json',
-        'Content-Type': 'application/json'
-      },
-      method: 'PUT',
-      body: JSON.stringify({ wkstat: wkstat })
-    };
-    return fetch(url, options).then(function (response) {
-      return response.json();
-    });
-  } else {
-    var p2 = Promise.resolve({ qmessage: 'you dont exist! ' });
-    return p2;
-  }
-};
-var putTcardJc = function putTcardJc(aday) {
-  //updjc {wdprt, jcost}= req.body.tday
-  var tday = adjDay4db(_getCfg.cfg.firstday, aday);
-  var lsh = _getCfg.ls.getItem();
-  if ((0, _wfuncs.geta)('lsh.token', lsh)) {
-    var url = _getCfg.cfg.url.api + '/tcard/updjc';
-    var options = {
-      headers: { 'Authorization': 'Bearer ' + lsh['token'],
-        Accept: 'application/json',
-        'Content-Type': 'application/json'
-      },
-      method: 'PUT',
-      body: JSON.stringify({ tday: tday })
-    };
-    return fetch(url, options).then(function (response) {
-      return response.json();
-    });
-  } else {
-    var p2 = Promise.resolve({ qmessage: 'you dont exist! ' });
-    return p2;
-  }
-};
-var putTcardPu = function putTcardPu(aday) {
-  //updpu {wdprt, hrs, inout}= req.body.tday
-  var tday = adjDay4db(_getCfg.cfg.firstday, aday);
-  var lsh = _getCfg.ls.getItem();
-  if ((0, _wfuncs.geta)('lsh.token', lsh)) {
-    var url = _getCfg.cfg.url.api + '/tcard/updpu';
-    var options = {
-      headers: { 'Authorization': 'Bearer ' + lsh['token'],
-        Accept: 'application/json',
-        'Content-Type': 'application/json'
-      },
-      method: 'PUT',
-      body: JSON.stringify({ tday: tday })
-    };
-    return fetch(url, options).then(function (response) {
-      return response.json();
-    });
-  } else {
-    var p2 = Promise.resolve({ qmessage: 'you dont exist! ' });
-    return p2;
-  }
-};
-
-var putTcard = function putTcard(aday) {
-  //update {wdprt, hrs, inout, jcost}= req.body.tday
-  console.log('aday: ', aday);
-  var tday = adjDay4db(_getCfg.cfg.firstday, aday);
-  var lsh = _getCfg.ls.getItem();
-  console.log(tday);
-  if ((0, _wfuncs.geta)('lsh.token', lsh)) {
-    var url = _getCfg.cfg.url.api + '/tcard/update';
-    var options = {
-      headers: { 'Authorization': 'Bearer ' + lsh['token'],
-        Accept: 'application/json',
-        'Content-Type': 'application/json'
-      },
-      method: 'PUT',
-      body: JSON.stringify({ tday: tday })
-    };
-    return fetch(url, options).then(function (response) {
-      return response.json();
-    });
-  } else {
-    var p2 = Promise.resolve({ qmessage: 'you dont exist! ' });
-    return p2;
-  }
-};
-
-var delTcardPu = function delTcardPu(wdprt) {
-  if (_getCfg.cfg.firstday != 1 && wdprt.slice(-1) >= _getCfg.cfg.firstday) {
-    wdprt = moment(wdprt).add(7, "days").format("YYYY-[W]WW-E");
-  }
-  var lsh = _getCfg.ls.getItem();
-  if ((0, _wfuncs.geta)('lsh.token', lsh)) {
-    var url = _getCfg.cfg.url.api + '/tcard/del';
-    var options = {
-      headers: { 'Authorization': 'Bearer ' + lsh['token'],
-        Accept: 'application/json',
-        'Content-Type': 'application/json'
-      },
-      method: 'DELETE',
-      body: JSON.stringify({ wdprt: wdprt })
-    };
-    return fetch(url, options).then(function (response) {
-      return response.json();
-    });
-  } else {
-    var p2 = Promise.resolve({ qmessage: 'you dont exist! ' });
-    return p2;
-  }
-};
-
-exports.fetchTcard = fetchTcard;
-exports.putTcard = putTcard;
-exports.putTcardPu = putTcardPu;
-exports.putTcardJc = putTcardJc;
-exports.putTcardWk = putTcardWk;
-exports.delTcardPu = delTcardPu;
-
-
-var wkendLast = function wkendLast(apwa) {
-  for (var i = 6; i <= 7; i++) {
-    var fi = apwa.findIndex(function (a) {
-      return a.wdprt.slice(-1) == i;
-    });
-    var rec = apwa[fi];
-    apwa.splice(fi, 1);
-    apwa.push(rec);
-  }
-  var napwa = apwa.map(function (wa, i) {
-    wa.idx = i;
-    return wa;
-  });
-  return napwa;
-};
-
-var sumThing = function sumThing(arr, fld) {
-  var narr = arr.map(function (a) {
-    return a[fld];
-  });
-  return narr;
-};
-
-var processDb4app = function processDb4app(res) {
-  var lsh = _getCfg.ls.getItem();
-  var wkarr = wkendLast(adjWk4app(_getCfg.cfg.firstday, res.wkarr));
-  var hrs = sumThing(wkarr, 'hrs');
-  var jchrs = sumThing(wkarr, 'jchrs');
-  return { wkarr: wkarr, hrs: hrs, jchrs: jchrs, emailid: lsh.email, jobs: res.jobs, wstat: res.wstat };
-};
-
-var adjWk4app = function adjWk4app(firstday, wkarr) {
-  var appwkarr = wkarr.map(function (d) {
-    if (firstday != 1 && d.wdprt.slice(-1) >= firstday) {
-      d.wdprt = moment(d.wdprt).subtract(7, "days").format("YYYY-[W]WW-E");
-    }
-    return d;
-  }).sort(function (a, b) {
-    return a.wdprt > b.wdprt;
-  });
-  return appwkarr;
-};
-
-var adjDay4db = function adjDay4db(firstday, rec) {
-  var d = _extends({}, rec);
-  if (firstday != 1 && d.wdprt.slice(-1) >= firstday) {
-    console.log('it is greater: ');
-    d.wdprt = moment(d.wdprt).add(7, "days").format("YYYY-[W]WW-E");
-  }
-  return d;
-};
 
 /***/ }),
 /* 100 */
@@ -23625,8 +23670,8 @@ return zhTw;
 
 "use strict";
 
-var merge_1 = __webpack_require__(59);
-var merge_2 = __webpack_require__(59);
+var merge_1 = __webpack_require__(60);
+var merge_2 = __webpack_require__(60);
 exports.mergeStatic = merge_2.mergeStatic;
 /* tslint:enable:max-line-length */
 /**
@@ -25143,7 +25188,7 @@ exports.concat = concat;
 
 "use strict";
 
-var concatMap_1 = __webpack_require__(62);
+var concatMap_1 = __webpack_require__(63);
 /* tslint:enable:max-line-length */
 /**
  * Projects each source value to the same Observable which is merged multiple
@@ -26135,7 +26180,7 @@ exports.DistinctSubscriber = DistinctSubscriber;
 
 "use strict";
 
-var distinctUntilChanged_1 = __webpack_require__(64);
+var distinctUntilChanged_1 = __webpack_require__(65);
 /* tslint:enable:max-line-length */
 /**
  * Returns an Observable that emits all items emitted by the source Observable that are distinct by comparison from the previous item,
@@ -26757,7 +26802,7 @@ var FinallySubscriber = (function (_super) {
 
 "use strict";
 
-var find_1 = __webpack_require__(65);
+var find_1 = __webpack_require__(66);
 /**
  * Emits only the index of the first value emitted by the source Observable that
  * meets some condition.
@@ -27348,7 +27393,7 @@ var IsEmptySubscriber = (function (_super) {
 "use strict";
 
 var async_1 = __webpack_require__(5);
-var audit_1 = __webpack_require__(66);
+var audit_1 = __webpack_require__(67);
 var timer_1 = __webpack_require__(224);
 /**
  * Ignores source values for `duration` milliseconds, then emits the most recent
@@ -28176,7 +28221,7 @@ var Subject_1 = __webpack_require__(7);
 var Observable_1 = __webpack_require__(0);
 var Subscriber_1 = __webpack_require__(2);
 var Subscription_1 = __webpack_require__(6);
-var refCount_1 = __webpack_require__(68);
+var refCount_1 = __webpack_require__(69);
 /**
  * @class ConnectableObservable<T>
  */
@@ -28687,7 +28732,7 @@ exports.publishLast = publishLast;
 "use strict";
 
 var isArray_1 = __webpack_require__(13);
-var race_1 = __webpack_require__(60);
+var race_1 = __webpack_require__(61);
 /* tslint:enable:max-line-length */
 /**
  * Returns an Observable that mirrors the first source Observable to emit an item
@@ -29452,7 +29497,7 @@ var SequenceEqualCompareToSubscriber = (function (_super) {
 "use strict";
 
 var multicast_1 = __webpack_require__(17);
-var refCount_1 = __webpack_require__(68);
+var refCount_1 = __webpack_require__(69);
 var Subject_1 = __webpack_require__(7);
 function shareSubjectFactory() {
     return new Subject_1.Subject();
@@ -30041,8 +30086,8 @@ exports.clearImmediate = clearImmediate;
 
 "use strict";
 
-var switchMap_1 = __webpack_require__(69);
-var identity_1 = __webpack_require__(95);
+var switchMap_1 = __webpack_require__(70);
+var identity_1 = __webpack_require__(96);
 function switchAll() {
     return switchMap_1.switchMap(identity_1.identity);
 }
@@ -32121,7 +32166,7 @@ var emptyObject = __webpack_require__(30);
 var invariant = __webpack_require__(47);
 var warning = __webpack_require__(48);
 var emptyFunction = __webpack_require__(18);
-var checkPropTypes = __webpack_require__(72);
+var checkPropTypes = __webpack_require__(73);
 
 // TODO: this is special because it gets imported during build.
 
@@ -33534,7 +33579,7 @@ module.exports = ReactPropTypesSecret;
 /*
  Modernizr 3.0.0pre (Custom Build) | MIT
 */
-var ba=__webpack_require__(11),ca=__webpack_require__(74),m=__webpack_require__(29),C=__webpack_require__(18),da=__webpack_require__(75),ea=__webpack_require__(76),fa=__webpack_require__(77),ia=__webpack_require__(30);
+var ba=__webpack_require__(11),ca=__webpack_require__(75),m=__webpack_require__(29),C=__webpack_require__(18),da=__webpack_require__(76),ea=__webpack_require__(77),fa=__webpack_require__(78),ia=__webpack_require__(30);
 function G(a){for(var b=arguments.length-1,c="Minified React error #"+a+"; visit http://facebook.github.io/react/docs/error-decoder.html?invariant\x3d"+a,d=0;d<b;d++)c+="\x26args[]\x3d"+encodeURIComponent(arguments[d+1]);b=Error(c+" for the full message or use the non-minified dev environment for full errors and additional helpful warnings.");b.name="Invariant Violation";b.framesToPop=1;throw b;}ba?void 0:G("227");
 function ja(a,b,c,d,e,f,h,g,k){this._hasCaughtError=!1;this._caughtError=null;var r=Array.prototype.slice.call(arguments,3);try{b.apply(c,r)}catch(t){this._caughtError=t,this._hasCaughtError=!0}}
 var H={_caughtError:null,_hasCaughtError:!1,_rethrowError:null,_hasRethrowError:!1,invokeGuardedCallback:function(a,b,c,d,e,f,h,g,k){ja.apply(H,arguments)},invokeGuardedCallbackAndCatchFirstError:function(a,b,c,d,e,f,h,g,k){H.invokeGuardedCallback.apply(this,arguments);if(H.hasCaughtError()){var r=H.clearCaughtError();H._hasRethrowError||(H._hasRethrowError=!0,H._rethrowError=r)}},rethrowCaughtError:function(){return ka.apply(H,arguments)},hasCaughtError:function(){return H._hasCaughtError},clearCaughtError:function(){if(H._hasCaughtError){var a=
@@ -33841,13 +33886,13 @@ if (process.env.NODE_ENV !== "production") {
 var React = __webpack_require__(11);
 var invariant = __webpack_require__(47);
 var warning = __webpack_require__(48);
-var ExecutionEnvironment = __webpack_require__(74);
+var ExecutionEnvironment = __webpack_require__(75);
 var _assign = __webpack_require__(29);
 var emptyFunction = __webpack_require__(18);
-var checkPropTypes = __webpack_require__(72);
-var getActiveElement = __webpack_require__(75);
-var shallowEqual = __webpack_require__(76);
-var containsNode = __webpack_require__(77);
+var checkPropTypes = __webpack_require__(73);
+var getActiveElement = __webpack_require__(76);
+var shallowEqual = __webpack_require__(77);
+var containsNode = __webpack_require__(78);
 var emptyObject = __webpack_require__(30);
 var hyphenateStyleName = __webpack_require__(320);
 var camelizeStyleName = __webpack_require__(322);
@@ -50048,7 +50093,7 @@ module.exports = camelize;
 
 var Subscriber_1 = __webpack_require__(2);
 var rxSubscriber_1 = __webpack_require__(32);
-var Observer_1 = __webpack_require__(80);
+var Observer_1 = __webpack_require__(81);
 function toSubscriber(nextOrObserver, error, complete) {
     if (nextOrObserver) {
         if (nextOrObserver instanceof Subscriber_1.Subscriber) {
@@ -50084,7 +50129,7 @@ var _navigo = __webpack_require__(326);
 
 var _navigo2 = _interopRequireDefault(_navigo);
 
-var _responsive = __webpack_require__(81);
+var _responsive = __webpack_require__(82);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -50663,7 +50708,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 "use strict";
 
-var tap_1 = __webpack_require__(84);
+var tap_1 = __webpack_require__(85);
 /* tslint:enable:max-line-length */
 /**
  * Perform a side effect for every emission on the source Observable, but return
@@ -50889,7 +50934,7 @@ exports.scan = scan;
 
 "use strict";
 
-var startWith_1 = __webpack_require__(90);
+var startWith_1 = __webpack_require__(91);
 /* tslint:enable:max-line-length */
 /**
  * Returns an Observable that emits the items you specify as arguments before it begins to emit
@@ -51335,11 +51380,11 @@ exports.evenNumbers = exports.isObservable = undefined;
 
 var _Observable = __webpack_require__(0);
 
-__webpack_require__(96);
+__webpack_require__(97);
 
-var _filter = __webpack_require__(97);
+var _filter = __webpack_require__(98);
 
-var _map = __webpack_require__(98);
+var _map = __webpack_require__(99);
 
 // eslint-disable-line no-unused-vars
 
@@ -51528,8 +51573,7 @@ var App = function (_React$Component) {
   }, {
     key: 'render',
     value: function render() {
-      var ejob = this.props.ejob;
-
+      //const {ejob}= this.props
       return _react2.default.createElement(
         'div',
         null,
@@ -51539,9 +51583,7 @@ var App = function (_React$Component) {
           _react2.default.createElement(
             'span',
             null,
-            'ReRoo tcard for ',
-            ejob.tcemail,
-            ' '
+            'ReRoo Payroll  '
           ),
           this.loadNav()
         ),
@@ -51644,9 +51686,9 @@ var _react2 = _interopRequireDefault(_react);
 
 var _Day = __webpack_require__(344);
 
-var _fetches = __webpack_require__(99);
+var _fetches = __webpack_require__(57);
 
-var _mapClass2Element = __webpack_require__(58);
+var _mapClass2Element = __webpack_require__(59);
 
 var _styles = __webpack_require__(23);
 
@@ -51949,7 +51991,7 @@ var _react = __webpack_require__(11);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _fetches = __webpack_require__(99);
+var _fetches = __webpack_require__(57);
 
 var _JobCost = __webpack_require__(349);
 
@@ -52988,7 +53030,9 @@ var _react = __webpack_require__(11);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _mapClass2Element = __webpack_require__(58);
+var _mapClass2Element = __webpack_require__(59);
+
+var _fetches = __webpack_require__(57);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -53006,34 +53050,97 @@ var Payroll = function (_React$Component) {
 
     var _this = _possibleConstructorReturn(this, (Payroll.__proto__ || Object.getPrototypeOf(Payroll)).call(this, props));
 
-    _this.state = {};
+    _this.state = { submitted: [] };
+
+    _this.getSubmitted = function () {
+      (0, _fetches.fetchSubmitted)().then(function (res) {
+        if (res.message) {
+          window.alert(res.message);
+        } else {
+          _this.setState({ submitted: res });
+        }
+      });
+    };
+
+    _this.getWhosTcard = function (e) {
+      //getsAttribute of whatever is touched in li, not just li bank space
+      var idx = e.target.getAttribute('ix');
+      console.log('idx: ', _this.state.submitted[idx]);
+      (0, _fetches.fetchWhoTcard)(_this.state.submitted[idx]).then(function (res) {
+        if (res.message) {
+          window.alert(res.message);
+        } else {
+          _this.setState({ tcard: res });
+        }
+      });
+    };
+
+    _this.renderSubmitted = function (subm) {
+      if (subm.length > 0) return _react2.default.createElement(
+        'ul',
+        { style: style.subm.ul },
+        subm.map(function (s, i) {
+          return _react2.default.createElement(
+            'li',
+            { key: i, style: style.subm.li, ix: i, onClick: _this.getWhosTcard },
+            _react2.default.createElement(
+              'div',
+              { ix: i, style: style.subm.li.id },
+              s.wprt,
+              ': '
+            ),
+            _react2.default.createElement(
+              'div',
+              { ix: i, style: style.subm.li.id },
+              s.emailid
+            ),
+            _react2.default.createElement(
+              'div',
+              { ix: i, style: style.subm.li.stat },
+              s.status
+            )
+          );
+        })
+      );
+    };
+
     return _this;
   }
 
   _createClass(Payroll, [{
+    key: 'componentDidMount',
+    value: function componentDidMount() {
+      this.getSubmitted(this.state.week);
+    }
+  }, {
     key: 'render',
     value: function render() {
       console.log('this.props: ', this.props);
+      console.log('this.state: ', this.state);
+      var submitted = this.state.submitted;
+
+      var submrend = this.renderSubmitted(submitted);
       return _react2.default.createElement(
         'div',
         null,
         _react2.default.createElement(
           'div',
-          { style: { height: '60px', background: 'yellow' } },
+          { style: style.he },
           _react2.default.createElement(
             'div',
-            { style: { float: 'right' } },
+            { style: style.he.title },
             'payroll'
           )
         ),
         _react2.default.createElement(
           'div',
-          null,
+          { style: style.subm.div },
           _react2.default.createElement(
-            'p',
+            'span',
             null,
-            'Leslie Moonves, the longtime chief executive of the CBS Corporation, stepped down on Sunday night from the company he led for 15 years. His fall from Hollywood\u2019s highest echelon was all but sealed after the publication earlier in the day of new sexual harassment allegations against him. The CBS board announced his departure, effective immediately. As part of the agreement, the network said it would donate $20 million to one or more organizations that support equality for women in the workplace. The donation will be deducted from a potential severance benefit to Mr. Moonves, although he could still walk away with more than $120 million, according to two people familiar with the settlement agreement. Mr. Moonves, however, will not receive any severance payment, until the completion of an independent investigation into the allegations, the board said. He could also receive nothing, based on the investigation\u2019s results. Joseph Ianniello, the chief operating officer of CBS and one of Mr. Moonves\u2019s closest advisers, was named the interim chief executive.'
-          )
+            'outstanding submitted timecards'
+          ),
+          submrend
         )
       );
     }
@@ -53045,6 +53152,40 @@ var Payroll = function (_React$Component) {
 exports.Payroll = Payroll = (0, _mapClass2Element.mapClass2Element)(Payroll);
 
 exports.Payroll = Payroll;
+
+
+var style = {
+  he: {
+    height: '60px',
+    background: 'grey',
+    title: {
+      float: 'right'
+    }
+  },
+  subm: {
+    div: {
+      overflow: 'hidden',
+      background: 'silver'
+    },
+    ul: {
+      width: '98%',
+      padding: '5px',
+      listStyle: 'none',
+      float: 'left'
+    },
+    li: {
+      overflow: 'hidden',
+      padding: '6px',
+      border: '1px solid',
+      id: {
+        float: 'left'
+      },
+      stat: {
+        float: 'right'
+      }
+    }
+  }
+};
 
 /***/ }),
 /* 351 */
@@ -53194,7 +53335,7 @@ var _react2 = _interopRequireDefault(_react);
 
 var _styles = __webpack_require__(23);
 
-var _wfuncs = __webpack_require__(57);
+var _wfuncs = __webpack_require__(58);
 
 var _getCfg = __webpack_require__(39);
 
@@ -53367,7 +53508,7 @@ __webpack_require__(365);
 __webpack_require__(366);
 __webpack_require__(369);
 __webpack_require__(371);
-__webpack_require__(96);
+__webpack_require__(97);
 __webpack_require__(374);
 __webpack_require__(377);
 __webpack_require__(380);
@@ -53411,12 +53552,12 @@ __webpack_require__(461);
 __webpack_require__(463);
 __webpack_require__(466);
 __webpack_require__(468);
-__webpack_require__(83);
+__webpack_require__(84);
 __webpack_require__(470);
 __webpack_require__(472);
 __webpack_require__(474);
 __webpack_require__(476);
-__webpack_require__(97);
+__webpack_require__(98);
 __webpack_require__(478);
 __webpack_require__(480);
 __webpack_require__(482);
@@ -53429,13 +53570,13 @@ __webpack_require__(497);
 __webpack_require__(499);
 __webpack_require__(501);
 __webpack_require__(503);
-__webpack_require__(98);
+__webpack_require__(99);
 __webpack_require__(505);
 __webpack_require__(507);
 __webpack_require__(509);
 __webpack_require__(511);
 __webpack_require__(512);
-__webpack_require__(85);
+__webpack_require__(86);
 __webpack_require__(514);
 __webpack_require__(516);
 __webpack_require__(518);
@@ -53457,7 +53598,7 @@ __webpack_require__(549);
 __webpack_require__(551);
 __webpack_require__(553);
 __webpack_require__(555);
-__webpack_require__(88);
+__webpack_require__(89);
 __webpack_require__(557);
 __webpack_require__(559);
 __webpack_require__(561);
@@ -53466,7 +53607,7 @@ __webpack_require__(565);
 __webpack_require__(567);
 __webpack_require__(569);
 __webpack_require__(571);
-__webpack_require__(89);
+__webpack_require__(90);
 __webpack_require__(573);
 __webpack_require__(581);
 __webpack_require__(583);
@@ -53514,11 +53655,11 @@ var ObjectUnsubscribedError_1 = __webpack_require__(35);
 exports.ObjectUnsubscribedError = ObjectUnsubscribedError_1.ObjectUnsubscribedError;
 var TimeoutError_1 = __webpack_require__(299);
 exports.TimeoutError = TimeoutError_1.TimeoutError;
-var UnsubscriptionError_1 = __webpack_require__(79);
+var UnsubscriptionError_1 = __webpack_require__(80);
 exports.UnsubscriptionError = UnsubscriptionError_1.UnsubscriptionError;
 var timeInterval_1 = __webpack_require__(296);
 exports.TimeInterval = timeInterval_1.TimeInterval;
-var timestamp_1 = __webpack_require__(70);
+var timestamp_1 = __webpack_require__(71);
 exports.Timestamp = timestamp_1.Timestamp;
 var TestScheduler_1 = __webpack_require__(625);
 exports.TestScheduler = TestScheduler_1.TestScheduler;
@@ -55106,7 +55247,7 @@ Observable_1.Observable.fromPromise = fromPromise_1.fromPromise;
 
 "use strict";
 
-var PromiseObservable_1 = __webpack_require__(94);
+var PromiseObservable_1 = __webpack_require__(95);
 exports.fromPromise = PromiseObservable_1.PromiseObservable.create;
 //# sourceMappingURL=fromPromise.js.map
 
@@ -55608,7 +55749,7 @@ exports.merge = merge_1.mergeStatic;
 "use strict";
 
 var Observable_1 = __webpack_require__(0);
-var race_1 = __webpack_require__(60);
+var race_1 = __webpack_require__(61);
 Observable_1.Observable.race = race_1.race;
 //# sourceMappingURL=race.js.map
 
@@ -55705,7 +55846,7 @@ exports.NeverObservable = NeverObservable;
 "use strict";
 
 var Observable_1 = __webpack_require__(0);
-var of_1 = __webpack_require__(91);
+var of_1 = __webpack_require__(92);
 Observable_1.Observable.of = of_1.of;
 //# sourceMappingURL=of.js.map
 
@@ -55726,7 +55867,7 @@ Observable_1.Observable.onErrorResumeNext = onErrorResumeNext_1.onErrorResumeNex
 
 "use strict";
 
-var onErrorResumeNext_1 = __webpack_require__(61);
+var onErrorResumeNext_1 = __webpack_require__(62);
 exports.onErrorResumeNext = onErrorResumeNext_1.onErrorResumeNextStatic;
 //# sourceMappingURL=onErrorResumeNext.js.map
 
@@ -57417,7 +57558,7 @@ Observable_1.Observable.prototype.concatMap = concatMap_1.concatMap;
 
 "use strict";
 
-var concatMap_1 = __webpack_require__(62);
+var concatMap_1 = __webpack_require__(63);
 /* tslint:enable:max-line-length */
 /**
  * Projects each source value to an Observable which is merged in the output
@@ -57856,7 +57997,7 @@ Observable_1.Observable.prototype.defaultIfEmpty = defaultIfEmpty_1.defaultIfEmp
 
 "use strict";
 
-var defaultIfEmpty_1 = __webpack_require__(63);
+var defaultIfEmpty_1 = __webpack_require__(64);
 /* tslint:enable:max-line-length */
 /**
  * Emits a given value if the source Observable completes without emitting any
@@ -58154,7 +58295,7 @@ Observable_1.Observable.prototype.distinctUntilChanged = distinctUntilChanged_1.
 
 "use strict";
 
-var distinctUntilChanged_1 = __webpack_require__(64);
+var distinctUntilChanged_1 = __webpack_require__(65);
 /* tslint:enable:max-line-length */
 /**
  * Returns an Observable that emits all items emitted by the source Observable that are distinct by comparison from the previous item.
@@ -58601,7 +58742,7 @@ Observable_1.Observable.prototype.find = find_1.find;
 
 "use strict";
 
-var find_1 = __webpack_require__(65);
+var find_1 = __webpack_require__(66);
 /* tslint:enable:max-line-length */
 /**
  * Emits only the first value emitted by the source Observable that meets some
@@ -59052,7 +59193,7 @@ Observable_1.Observable.prototype.audit = audit_1.audit;
 
 "use strict";
 
-var audit_1 = __webpack_require__(66);
+var audit_1 = __webpack_require__(67);
 /**
  * Ignores source values for a duration determined by another Observable, then
  * emits the most recent value from the source Observable, then repeats this
@@ -59918,7 +60059,7 @@ Observable_1.Observable.prototype.onErrorResumeNext = onErrorResumeNext_1.onErro
 
 "use strict";
 
-var onErrorResumeNext_1 = __webpack_require__(61);
+var onErrorResumeNext_1 = __webpack_require__(62);
 /* tslint:enable:max-line-length */
 /**
  * When any of the provided Observable emits an complete or error notification, it immediately subscribes to the next one
@@ -60337,7 +60478,7 @@ Observable_1.Observable.prototype.race = race_1.race;
 
 var race_1 = __webpack_require__(273);
 // NOTE: to support backwards compatability with 5.4.* and lower
-var race_2 = __webpack_require__(60);
+var race_2 = __webpack_require__(61);
 exports.raceStatic = race_2.race;
 /* tslint:enable:max-line-length */
 /**
@@ -61785,7 +61926,7 @@ Observable_1.Observable.prototype.switchMap = switchMap_1.switchMap;
 
 "use strict";
 
-var switchMap_1 = __webpack_require__(69);
+var switchMap_1 = __webpack_require__(70);
 /* tslint:enable:max-line-length */
 /**
  * Projects each source value to an Observable which is merged in the output
@@ -61981,7 +62122,7 @@ Observable_1.Observable.prototype.takeLast = takeLast_1.takeLast;
 
 "use strict";
 
-var takeLast_1 = __webpack_require__(67);
+var takeLast_1 = __webpack_require__(68);
 /**
  * Emits only the last `count` values emitted by the source Observable.
  *
@@ -62467,7 +62608,7 @@ Observable_1.Observable.prototype.timestamp = timestamp_1.timestamp;
 "use strict";
 
 var async_1 = __webpack_require__(5);
-var timestamp_1 = __webpack_require__(70);
+var timestamp_1 = __webpack_require__(71);
 /**
  * @param scheduler
  * @return {Observable<Timestamp<any>>|WebSocketSubject<T>|Observable<T>}
@@ -63499,7 +63640,7 @@ exports.AnimationFrameScheduler = AnimationFrameScheduler;
 
 "use strict";
 
-var audit_1 = __webpack_require__(66);
+var audit_1 = __webpack_require__(67);
 exports.audit = audit_1.audit;
 var auditTime_1 = __webpack_require__(255);
 exports.auditTime = auditTime_1.auditTime;
@@ -63523,7 +63664,7 @@ var concat_1 = __webpack_require__(235);
 exports.concat = concat_1.concat;
 var concatAll_1 = __webpack_require__(55);
 exports.concatAll = concatAll_1.concatAll;
-var concatMap_1 = __webpack_require__(62);
+var concatMap_1 = __webpack_require__(63);
 exports.concatMap = concatMap_1.concatMap;
 var concatMapTo_1 = __webpack_require__(236);
 exports.concatMapTo = concatMapTo_1.concatMapTo;
@@ -63533,7 +63674,7 @@ var debounce_1 = __webpack_require__(239);
 exports.debounce = debounce_1.debounce;
 var debounceTime_1 = __webpack_require__(240);
 exports.debounceTime = debounceTime_1.debounceTime;
-var defaultIfEmpty_1 = __webpack_require__(63);
+var defaultIfEmpty_1 = __webpack_require__(64);
 exports.defaultIfEmpty = defaultIfEmpty_1.defaultIfEmpty;
 var delay_1 = __webpack_require__(241);
 exports.delay = delay_1.delay;
@@ -63543,7 +63684,7 @@ var dematerialize_1 = __webpack_require__(238);
 exports.dematerialize = dematerialize_1.dematerialize;
 var distinct_1 = __webpack_require__(243);
 exports.distinct = distinct_1.distinct;
-var distinctUntilChanged_1 = __webpack_require__(64);
+var distinctUntilChanged_1 = __webpack_require__(65);
 exports.distinctUntilChanged = distinctUntilChanged_1.distinctUntilChanged;
 var distinctUntilKeyChanged_1 = __webpack_require__(244);
 exports.distinctUntilKeyChanged = distinctUntilKeyChanged_1.distinctUntilKeyChanged;
@@ -63561,7 +63702,7 @@ var filter_1 = __webpack_require__(56);
 exports.filter = filter_1.filter;
 var finalize_1 = __webpack_require__(249);
 exports.finalize = finalize_1.finalize;
-var find_1 = __webpack_require__(65);
+var find_1 = __webpack_require__(66);
 exports.find = find_1.find;
 var findIndex_1 = __webpack_require__(250);
 exports.findIndex = findIndex_1.findIndex;
@@ -63583,7 +63724,7 @@ var materialize_1 = __webpack_require__(259);
 exports.materialize = materialize_1.materialize;
 var max_1 = __webpack_require__(260);
 exports.max = max_1.max;
-var merge_1 = __webpack_require__(59);
+var merge_1 = __webpack_require__(60);
 exports.merge = merge_1.merge;
 var mergeAll_1 = __webpack_require__(37);
 exports.mergeAll = mergeAll_1.mergeAll;
@@ -63601,7 +63742,7 @@ var multicast_1 = __webpack_require__(17);
 exports.multicast = multicast_1.multicast;
 var observeOn_1 = __webpack_require__(36);
 exports.observeOn = observeOn_1.observeOn;
-var onErrorResumeNext_1 = __webpack_require__(61);
+var onErrorResumeNext_1 = __webpack_require__(62);
 exports.onErrorResumeNext = onErrorResumeNext_1.onErrorResumeNext;
 var pairwise_1 = __webpack_require__(265);
 exports.pairwise = pairwise_1.pairwise;
@@ -63629,7 +63770,7 @@ var retry_1 = __webpack_require__(276);
 exports.retry = retry_1.retry;
 var retryWhen_1 = __webpack_require__(277);
 exports.retryWhen = retryWhen_1.retryWhen;
-var refCount_1 = __webpack_require__(68);
+var refCount_1 = __webpack_require__(69);
 exports.refCount = refCount_1.refCount;
 var sample_1 = __webpack_require__(278);
 exports.sample = sample_1.sample;
@@ -63653,7 +63794,7 @@ var skipUntil_1 = __webpack_require__(286);
 exports.skipUntil = skipUntil_1.skipUntil;
 var skipWhile_1 = __webpack_require__(287);
 exports.skipWhile = skipWhile_1.skipWhile;
-var startWith_1 = __webpack_require__(90);
+var startWith_1 = __webpack_require__(91);
 exports.startWith = startWith_1.startWith;
 /**
  * TODO(https://github.com/ReactiveX/rxjs/issues/2900): Add back subscribeOn once it can be
@@ -63664,19 +63805,19 @@ exports.startWith = startWith_1.startWith;
 // export { subscribeOn } from './subscribeOn';
 var switchAll_1 = __webpack_require__(290);
 exports.switchAll = switchAll_1.switchAll;
-var switchMap_1 = __webpack_require__(69);
+var switchMap_1 = __webpack_require__(70);
 exports.switchMap = switchMap_1.switchMap;
 var switchMapTo_1 = __webpack_require__(291);
 exports.switchMapTo = switchMapTo_1.switchMapTo;
 var take_1 = __webpack_require__(292);
 exports.take = take_1.take;
-var takeLast_1 = __webpack_require__(67);
+var takeLast_1 = __webpack_require__(68);
 exports.takeLast = takeLast_1.takeLast;
 var takeUntil_1 = __webpack_require__(293);
 exports.takeUntil = takeUntil_1.takeUntil;
 var takeWhile_1 = __webpack_require__(294);
 exports.takeWhile = takeWhile_1.takeWhile;
-var tap_1 = __webpack_require__(84);
+var tap_1 = __webpack_require__(85);
 exports.tap = tap_1.tap;
 var throttle_1 = __webpack_require__(46);
 exports.throttle = throttle_1.throttle;
@@ -63688,7 +63829,7 @@ var timeout_1 = __webpack_require__(298);
 exports.timeout = timeout_1.timeout;
 var timeoutWith_1 = __webpack_require__(300);
 exports.timeoutWith = timeoutWith_1.timeoutWith;
-var timestamp_1 = __webpack_require__(70);
+var timestamp_1 = __webpack_require__(71);
 exports.timestamp = timestamp_1.timestamp;
 var toArray_1 = __webpack_require__(301);
 exports.toArray = toArray_1.toArray;

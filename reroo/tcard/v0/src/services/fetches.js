@@ -17,7 +17,6 @@ const fetchTcard=(wk)=>{
           if(json.message){
             return {qmessage: json.message}
           }else{
-            console.log('json: ', json)
             const processed= processDb4app(json)
             return processed
           }

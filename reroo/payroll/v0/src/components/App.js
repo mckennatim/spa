@@ -28,11 +28,11 @@ class App extends React.Component{
   }
 
   render(){
-    const {ejob}= this.props
+    //const {ejob}= this.props
     return(
       <div>
         <div className="header">
-        <span>ReRoo tcard for {ejob.tcemail} </span>
+        <span>ReRoo Payroll  </span>
           {this.loadNav()}
         </div>
         <div className="container">

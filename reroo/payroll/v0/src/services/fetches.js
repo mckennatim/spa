@@ -4,6 +4,59 @@ import {geta} from '../utilities/wfuncs'
 
 // const lsh = ls.getItem();
 
+const fetchSubmitted =()=>{
+  const lsh = ls.getItem();
+  if(geta('lsh.token', lsh)){
+    let url= cfg.url.api+'/payroll/submitted'
+    let options= {headers: {'Authorization': 'Bearer '+ lsh['token']}}
+    return(
+      fetch(url, options)
+        .then((response)=>response.json())
+        .then((json)=>{
+          if(json.message){
+            return {qmessage: json.message}
+          }else{
+            return json
+          }
+        })
+        .catch((e)=>{
+          return {qmessage: e.message}
+        })
+      )         
+  }else{
+    let p2 =Promise.resolve({qmessage:'you dont exist! '})
+    return p2
+  }  
+}
+const fetchWhoTcard=(wkstat)=>{
+  console.log('wkstat: ', wkstat)
+  const lsh = ls.getItem();
+  if(geta('lsh.token', lsh)){
+    let url= cfg.url.api+'/payroll/tcard/'+wkstat.wprt+'/'+wkstat.emailid
+    let options= {
+      headers: {'Authorization': 'Bearer '+ lsh['token']}
+    }
+    return(
+      fetch(url, options)
+        .then((response)=>response.json())
+        .then((json)=>{
+          if(json.message){
+            return {qmessage: json.message}
+          }else{
+            const processed= processDb4app(json)
+            processed.emailid=wkstat.emailid
+            return processed
+          }
+        })
+        .catch((e)=>{
+          return {qmessage: e.message}
+        })
+      )         
+  }else{
+    let p2 =Promise.resolve({qmessage:'you dont exist! '})
+    return p2
+  }
+}
 const fetchTcard=(wk)=>{
   const lsh = ls.getItem();
   if(geta('lsh.token', lsh)){
@@ -29,10 +82,6 @@ const fetchTcard=(wk)=>{
     return p2
   }
 }
-//updstat {wprt, hrs, status}=req.body.wkstat
-//updpu {wdprt, hrs, inout}= req.body.tday
-//updjc {wdprt, jcost}= req.body.tday
-//update {wdprt, hrs, inout, jcost}= req.body.tday
 const putTcardWk=(wkstat)=>{
   //updwk {wprt, hrs, status}=req.body.wkstat
   var lsh = ls.getItem();
@@ -153,7 +202,7 @@ const delTcardPu=(wdprt)=>{
   }
 }
 
-export{fetchTcard, putTcard, putTcardPu, putTcardJc, putTcardWk, delTcardPu}
+export{fetchWhoTcard, fetchSubmitted, fetchTcard, putTcard, putTcardPu, putTcardJc, putTcardWk, delTcardPu}
 
 const wkendLast = (apwa)=>{
   for(var i = 6; i<=7;i++ ){

@@ -1,26 +1,71 @@
 import React from 'react';
 import {mapClass2Element} from '../hoc/mapClass2Element'
+import {fetchSubmitted, fetchWhoTcard} from '../services/fetches'
 
 class Payroll extends React.Component {
   constructor(props){
     super(props)
   }
-  state = {  }
+  state = {submitted:[]  }
 
+  componentDidMount(){
+    this.getSubmitted(this.state.week)
+  }
+
+  getSubmitted=()=>{
+    fetchSubmitted()
+      .then((res)=>{
+        if (res.message){
+          window.alert(res.message)
+        }else{
+          this.setState({submitted:res})
+        }
+      })
+  }
+
+  getWhosTcard=(e)=>{
+    //getsAttribute of whatever is touched in li, not just li bank space
+    const idx = e.target.getAttribute('ix')
+    console.log('idx: ', this.state.submitted[idx])
+    fetchWhoTcard(this.state.submitted[idx])
+    .then((res)=>{
+      if (res.message){
+        window.alert(res.message)
+      }else{
+        this.setState({tcard:res})
+      }
+    })
+  }
+
+  renderSubmitted=(subm)=>{
+    if(subm.length>0)
+    return(
+      <ul style={style.subm.ul}>
+        {subm.map((s,i)=>{
+          return(
+            <li key={i} style={style.subm.li} ix={i} onClick={this.getWhosTcard}>
+              <div ix={i} style={style.subm.li.id}>{s.wprt}: </div>
+              <div ix={i} style={style.subm.li.id}>{s.emailid}</div>
+              <div ix={i} style={style.subm.li.stat}>{s.status}</div>
+            </li>
+          )
+        })}
+      </ul>
+    )
+  }  
   render() {
     console.log('this.props: ', this.props) 
+    console.log('this.state: ', this.state)
+    const{submitted }=this.state
+    const submrend = this.renderSubmitted(submitted)
     return ( 
-      <div>
-        <div style={{height:'60px',background:'yellow'}}>
-          <div style={{float:'right'}}>payroll</div>
+      <div >
+        <div style={style.he}>
+          <div style={style.he.title}>payroll</div>
         </div>
-        <div>
-          <p>
-        Leslie Moonves, the longtime chief executive of the CBS Corporation, stepped down on Sunday night from the company he led for 15 years. His fall from Hollywood’s highest echelon was all but sealed after the publication earlier in the day of new sexual harassment allegations against him.
-The CBS board announced his departure, effective immediately. As part of the agreement, the network said it would donate $20 million to one or more organizations that support equality for women in the workplace. The donation will be deducted from a potential severance benefit to Mr. Moonves, although he could still walk away with more than $120 million, according to two people familiar with the settlement agreement.
-Mr. Moonves, however, will not receive any severance payment, until the completion of an independent investigation into the allegations, the board said. He could also receive nothing, based on the investigation’s results.
-Joseph Ianniello, the chief operating officer of CBS and one of Mr. Moonves’s closest advisers, was named the interim chief executive.          
-          </p>
+        <div style={style.subm.div} >
+          <span>outstanding submitted timecards</span>
+          {submrend}
         </div> 
       </div>
     );
@@ -30,3 +75,36 @@ Joseph Ianniello, the chief operating officer of CBS and one of Mr. Moonves’s 
 Payroll=mapClass2Element(Payroll)
  
 export {Payroll} ;
+
+let style={
+  he:{
+    height:'60px',
+    background:'grey',
+    title:{
+      float: 'right'
+    }
+  },
+  subm:{
+    div:{
+      overflow:'hidden',
+      background: 'silver'
+    },
+    ul:{
+      width: '98%',
+      padding: '5px',
+      listStyle: 'none',
+      float: 'left'
+    },
+    li:{
+      overflow:'hidden',
+      padding: '6px',
+      border:'1px solid',
+      id:{
+        float: 'left'
+      },
+      stat: {
+        float: 'right'
+      }
+    }
+  }
+}
