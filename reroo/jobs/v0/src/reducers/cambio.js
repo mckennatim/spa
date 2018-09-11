@@ -6,8 +6,6 @@ const cambio=(state, action) =>{
         infocus: action.payload.infocus
       };    
     case 'PAGE_SWITCHED':
-      console.log(state)
-      console.log(action.payload)
       return {
         ...state,
         page: action.payload

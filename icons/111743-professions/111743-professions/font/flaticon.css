@@ -1,0 +1,81 @@
+	/*
+  	Flaticon icon font: Flaticon
+  	Creation date: 22/06/2016 15:23
+  	*/
+
+@font-face {
+  font-family: "Flaticon";
+  src: url("./Flaticon.eot");
+  src: url("./Flaticon.eot?#iefix") format("embedded-opentype"),
+       url("./Flaticon.woff") format("woff"),
+       url("./Flaticon.ttf") format("truetype"),
+       url("./Flaticon.svg#Flaticon") format("svg");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+  @font-face {
+    font-family: "Flaticon";
+    src: url("./Flaticon.svg#Flaticon") format("svg");
+  }
+}
+
+[class^="flaticon-"]:before, [class*=" flaticon-"]:before,
+[class^="flaticon-"]:after, [class*=" flaticon-"]:after {   
+  font-family: Flaticon;
+        font-size: 20px;
+font-style: normal;
+margin-left: 20px;
+}
+
+.flaticon-baker:before { content: "\f100"; }
+.flaticon-basketball-player:before { content: "\f101"; }
+.flaticon-bellhop:before { content: "\f102"; }
+.flaticon-bodyguard:before { content: "\f103"; }
+.flaticon-builder:before { content: "\f104"; }
+.flaticon-businessman:before { content: "\f105"; }
+.flaticon-call-center:before { content: "\f106"; }
+.flaticon-captain:before { content: "\f107"; }
+.flaticon-carpenter:before { content: "\f108"; }
+.flaticon-cleaner:before { content: "\f109"; }
+.flaticon-construction-worker:before { content: "\f10a"; }
+.flaticon-cook:before { content: "\f10b"; }
+.flaticon-curier:before { content: "\f10c"; }
+.flaticon-demostration:before { content: "\f10d"; }
+.flaticon-demostration-1:before { content: "\f10e"; }
+.flaticon-demostration-2:before { content: "\f10f"; }
+.flaticon-dentist:before { content: "\f110"; }
+.flaticon-designer:before { content: "\f111"; }
+.flaticon-diver:before { content: "\f112"; }
+.flaticon-doctor:before { content: "\f113"; }
+.flaticon-dressmaker:before { content: "\f114"; }
+.flaticon-driver:before { content: "\f115"; }
+.flaticon-fireman:before { content: "\f116"; }
+.flaticon-gardener:before { content: "\f117"; }
+.flaticon-garderner:before { content: "\f118"; }
+.flaticon-hairdresser:before { content: "\f119"; }
+.flaticon-housekeeper:before { content: "\f11a"; }
+.flaticon-human-resources:before { content: "\f11b"; }
+.flaticon-landkeeper:before { content: "\f11c"; }
+.flaticon-miner:before { content: "\f11d"; }
+.flaticon-mover:before { content: "\f11e"; }
+.flaticon-musician:before { content: "\f11f"; }
+.flaticon-photographer:before { content: "\f120"; }
+.flaticon-pilot:before { content: "\f121"; }
+.flaticon-police:before { content: "\f122"; }
+.flaticon-priest:before { content: "\f123"; }
+.flaticon-programmer:before { content: "\f124"; }
+.flaticon-receptionist:before { content: "\f125"; }
+.flaticon-sailor:before { content: "\f126"; }
+.flaticon-sesei:before { content: "\f127"; }
+.flaticon-shopping:before { content: "\f128"; }
+.flaticon-singer:before { content: "\f129"; }
+.flaticon-stewardess:before { content: "\f12a"; }
+.flaticon-student:before { content: "\f12b"; }
+.flaticon-surgery:before { content: "\f12c"; }
+.flaticon-teacher:before { content: "\f12d"; }
+.flaticon-traffic-police:before { content: "\f12e"; }
+.flaticon-waiter:before { content: "\f12f"; }
+.flaticon-waiter-1:before { content: "\f130"; }
+.flaticon-welder:before { content: "\f131"; }
