@@ -57,7 +57,6 @@ const putTcardWk=(wkstat)=>{
   }
 }
 const putTcardJc=(aday)=>{
-  //updjc {wdprt, jcost}= req.body.tday
   const tday = adjDay4db(cfg.firstday, aday)
   var lsh = ls.getItem();
   if(geta('lsh.token', lsh)){
@@ -129,10 +128,8 @@ const putTcard=(aday)=>{
   }
 }
 
-const delTcardPu=(wdprt)=>{
-  if (cfg.firstday!=1 && wdprt.slice(-1)>=cfg.firstday){
-    wdprt= moment(wdprt).add(7, "days").format("YYYY-[W]WW-E")
-  }
+const delTcardPu=(aday)=>{
+  const tday = adjDay4db(cfg.firstday, aday)
   var lsh = ls.getItem();
   if(geta('lsh.token', lsh)){
     let url= cfg.url.api+'/tcard/del'
@@ -142,7 +139,7 @@ const delTcardPu=(wdprt)=>{
         'Content-Type': 'application/json',
       },
       method: 'DELETE',
-      body: JSON.stringify({wdprt:wdprt})
+      body: JSON.stringify({tday:tday})
     }  
     return(
       fetch(url, options)

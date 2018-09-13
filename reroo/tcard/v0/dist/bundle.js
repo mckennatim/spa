@@ -11712,7 +11712,6 @@ var fetchTcard = function fetchTcard(wk) {
       if (json.message) {
         return { qmessage: json.message };
       } else {
-        console.log('json: ', json);
         var processed = processDb4app(json);
         return processed;
       }
@@ -11750,7 +11749,6 @@ var putTcardWk = function putTcardWk(wkstat) {
   }
 };
 var putTcardJc = function putTcardJc(aday) {
-  //updjc {wdprt, jcost}= req.body.tday
   var tday = adjDay4db(_getCfg.cfg.firstday, aday);
   var lsh = _getCfg.ls.getItem();
   if ((0, _wfuncs.geta)('lsh.token', lsh)) {
@@ -11819,10 +11817,8 @@ var putTcard = function putTcard(aday) {
   }
 };
 
-var delTcardPu = function delTcardPu(wdprt) {
-  if (_getCfg.cfg.firstday != 1 && wdprt.slice(-1) >= _getCfg.cfg.firstday) {
-    wdprt = moment(wdprt).add(7, "days").format("YYYY-[W]WW-E");
-  }
+var delTcardPu = function delTcardPu(aday) {
+  var tday = adjDay4db(_getCfg.cfg.firstday, aday);
   var lsh = _getCfg.ls.getItem();
   if ((0, _wfuncs.geta)('lsh.token', lsh)) {
     var url = _getCfg.cfg.url.api + '/tcard/del';
@@ -11832,7 +11828,7 @@ var delTcardPu = function delTcardPu(wdprt) {
         'Content-Type': 'application/json'
       },
       method: 'DELETE',
-      body: JSON.stringify({ wdprt: wdprt })
+      body: JSON.stringify({ tday: tday })
     };
     return fetch(url, options).then(function (response) {
       return response.json();
@@ -51692,6 +51688,9 @@ var TimeCard = function (_React$Component) {
     };
 
     _this.handleDayChanges = function (cmd, newdata) {
+      if (cmd == 'iopu') {
+        console.log('newdata: ', newdata);
+      }
       if (cmd == 'punch') {
         var inout = newdata.inout.slice();
         var ndata = _extends({}, newdata);
@@ -51719,6 +51718,7 @@ var TimeCard = function (_React$Component) {
         _this.setState({ wkarr: _wkarr, hrs: _hrarr }, _this.checkStatus());
       }
       if (cmd == 'jcost') {
+        console.log('newdata: ', newdata);
         var _idx2 = newdata.idx;
         var njcost = newdata.jcost.slice();
         var sumhrs = drnd(njcost.reduce(function (t, j) {
@@ -51898,7 +51898,7 @@ var TimeCard = function (_React$Component) {
           ),
           _react2.default.createElement(
             'div',
-            null,
+            { style: style.daydiv },
             renderedDays
           )
         );
@@ -51946,6 +51946,10 @@ var style = {
   thrs: {
     fontSize: '20px',
     float: 'right'
+  },
+  daydiv: {
+    overflow: 'hidden',
+    width: '100%'
   }
 };
 
@@ -52026,13 +52030,18 @@ var Day = function (_React$Component) {
         console.log('resumHrs(ndata.inout): ', resumHrs(ndata.inout));
         _this.setPunch();
         _this.props.dayChanges('punch', ndata);
+        //this.props.dayChanges('iopu',ndata)
         (0, _fetches.putTcard)(ndata);
       }
-    }, _this.delDayPu = function (wdprt) {
-      _this.props.dayChanges('delpu', wdprt);
-      (0, _fetches.delTcardPu)(wdprt);
+    }, _this.delDayPu = function (ndata) {
+      (0, _fetches.delTcardPu)({ ndata: ndata });
+      _this.props.dayChanges('delpu', ndata);
+      //this.props.dayChanges('iopu',ndata)
+      ndata.inout = [];
+      ndata.hrs = 0;
     }, _this.handleJcChanges = function (ch) {
       if (ch.cmd == 'jcost') {
+
         var wdprt = _this.props.data.wdprt;
         _this.props.dayChanges('jcost', { idx: _this.props.data.idx, jcost: ch.jcost });
         var rec = { wdprt: wdprt, jcost: ch.jcost };

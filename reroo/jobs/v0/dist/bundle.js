@@ -54521,7 +54521,7 @@ var Jobs = function (_React$Component) {
       wdprt = (0, _reroo.adjWdprtDn)(_this.state.firstday, wdprt);
       return moment(wdprt).format('ddd MM/DD');
     }, _this.sav2wk = function () {
-      var wk = _this.dwk.value.split('W')[1];
+      var wk = _this.state.wk;
       if (wk === undefined) {
         window.alert('please select a week');
         return;
@@ -54592,6 +54592,8 @@ var Jobs = function (_React$Component) {
       sta.ia = ia;
       sta.al = al;
       return sta;
+    }, _this.handleOnFocus = function () {
+      console.log('got focus');
     }, _temp), _possibleConstructorReturn(_this, _ret);
   }
 
@@ -54644,7 +54646,7 @@ var Jobs = function (_React$Component) {
                 ),
                 _react2.default.createElement(
                   'button',
-                  { onClick: this.sav2wk },
+                  { onClick: this.sav2wk, onFocus: this.handleOnFocus() },
                   'sav2wk'
                 )
               ),

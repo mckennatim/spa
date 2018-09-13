@@ -71,7 +71,7 @@
 
 var root_1 = __webpack_require__(10);
 var toSubscriber_1 = __webpack_require__(324);
-var observable_1 = __webpack_require__(33);
+var observable_1 = __webpack_require__(32);
 var pipe_1 = __webpack_require__(50);
 /**
  * A representation of any set of values over any amount of time. This is the most basic building block
@@ -2213,7 +2213,7 @@ function loadLocale(name) {
         try {
             oldLocale = globalLocale._abbr;
             var aliasedRequire = require;
-            __webpack_require__(348)("./" + name);
+            __webpack_require__(349)("./" + name);
             getSetGlobalLocale(oldLocale);
         } catch (e) {}
     }
@@ -4898,10 +4898,10 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-var isFunction_1 = __webpack_require__(31);
+var isFunction_1 = __webpack_require__(30);
 var Subscription_1 = __webpack_require__(6);
 var Observer_1 = __webpack_require__(81);
-var rxSubscriber_1 = __webpack_require__(32);
+var rxSubscriber_1 = __webpack_require__(31);
 /**
  * Implements the {@link Observer} interface and extends the
  * {@link Subscription} class. While the {@link Observer} is the public API for
@@ -5170,7 +5170,7 @@ var isObject_1 = __webpack_require__(79);
 var Observable_1 = __webpack_require__(0);
 var iterator_1 = __webpack_require__(20);
 var InnerSubscriber_1 = __webpack_require__(329);
-var observable_1 = __webpack_require__(33);
+var observable_1 = __webpack_require__(32);
 function subscribeToResult(outerSubscriber, result, outerValue, outerIndex) {
     var destination = new InnerSubscriber_1.InnerSubscriber(outerSubscriber, outerValue, outerIndex);
     if (destination.closed) {
@@ -5284,8 +5284,8 @@ exports.OuterSubscriber = OuterSubscriber;
 
 "use strict";
 
-var AsyncAction_1 = __webpack_require__(25);
-var AsyncScheduler_1 = __webpack_require__(26);
+var AsyncAction_1 = __webpack_require__(24);
+var AsyncScheduler_1 = __webpack_require__(25);
 /**
  *
  * Async Scheduler
@@ -5339,7 +5339,7 @@ exports.async = new AsyncScheduler_1.AsyncScheduler(AsyncAction_1.AsyncAction);
 
 var isArray_1 = __webpack_require__(13);
 var isObject_1 = __webpack_require__(79);
-var isFunction_1 = __webpack_require__(31);
+var isFunction_1 = __webpack_require__(30);
 var tryCatch_1 = __webpack_require__(9);
 var errorObject_1 = __webpack_require__(8);
 var UnsubscriptionError_1 = __webpack_require__(80);
@@ -5544,9 +5544,9 @@ var __extends = (this && this.__extends) || function (d, b) {
 var Observable_1 = __webpack_require__(0);
 var Subscriber_1 = __webpack_require__(2);
 var Subscription_1 = __webpack_require__(6);
-var ObjectUnsubscribedError_1 = __webpack_require__(35);
+var ObjectUnsubscribedError_1 = __webpack_require__(34);
 var SubjectSubscription_1 = __webpack_require__(83);
-var rxSubscriber_1 = __webpack_require__(32);
+var rxSubscriber_1 = __webpack_require__(31);
 /**
  * @class SubjectSubscriber<T>
  */
@@ -6770,58 +6770,6 @@ var MapSubscriber = (function (_super) {
 
 "use strict";
 
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-var mStyle = {
-  li: {
-    display: 'inline',
-    padding: '2px',
-    paddingRight: '4px',
-    backgroundColor: 'silver'
-  },
-  ul: {},
-  span: {
-    color: 'yellow'
-  },
-  div: {
-    height: '900',
-    background: 'green'
-  },
-  a: {
-    textDecoration: 'none',
-    color: 'green'
-  }
-};
-
-var pStyle = {
-  outer: {
-    display: 'flex',
-    flexDirection: 'column',
-    background: '#C4A265',
-    height: 400,
-    textAlign: 'center'
-  },
-  inner: {
-    margin: '0 auto',
-    display: 'flex',
-    flexDirection: 'column',
-    background: 'silver',
-    height: '340px',
-    textAlign: 'center'
-  }
-};
-
-exports.mStyle = mStyle;
-exports.pStyle = pStyle;
-
-/***/ }),
-/* 24 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
 var isArray_1 = __webpack_require__(13);
 function isNumeric(val) {
     // parseFloat NaNs numeric-cast false positives (null|true|false|"")
@@ -6835,7 +6783,7 @@ exports.isNumeric = isNumeric;
 //# sourceMappingURL=isNumeric.js.map
 
 /***/ }),
-/* 25 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6983,7 +6931,7 @@ exports.AsyncAction = AsyncAction;
 //# sourceMappingURL=AsyncAction.js.map
 
 /***/ }),
-/* 26 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7040,7 +6988,7 @@ exports.AsyncScheduler = AsyncScheduler;
 //# sourceMappingURL=AsyncScheduler.js.map
 
 /***/ }),
-/* 27 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7074,7 +7022,7 @@ exports.ArgumentOutOfRangeError = ArgumentOutOfRangeError;
 //# sourceMappingURL=ArgumentOutOfRangeError.js.map
 
 /***/ }),
-/* 28 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7149,7 +7097,7 @@ exports.reduce = reduce;
 //# sourceMappingURL=reduce.js.map
 
 /***/ }),
-/* 29 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7246,7 +7194,7 @@ module.exports = shouldUseNative() ? Object.assign : function (target, source) {
 
 
 /***/ }),
-/* 30 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7270,7 +7218,7 @@ module.exports = emptyObject;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(14)))
 
 /***/ }),
-/* 31 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7282,7 +7230,7 @@ exports.isFunction = isFunction;
 //# sourceMappingURL=isFunction.js.map
 
 /***/ }),
-/* 32 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7298,7 +7246,7 @@ exports.$$rxSubscriber = exports.rxSubscriber;
 //# sourceMappingURL=rxSubscriber.js.map
 
 /***/ }),
-/* 33 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7330,7 +7278,7 @@ exports.$$observable = exports.observable;
 //# sourceMappingURL=observable.js.map
 
 /***/ }),
-/* 34 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7382,7 +7330,7 @@ exports.actionCreator = actionCreator;
 exports.createStore = createStore;
 
 /***/ }),
-/* 35 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7415,7 +7363,7 @@ exports.ObjectUnsubscribedError = ObjectUnsubscribedError;
 //# sourceMappingURL=ObjectUnsubscribedError.js.map
 
 /***/ }),
-/* 36 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7536,7 +7484,7 @@ exports.ObserveOnMessage = ObserveOnMessage;
 //# sourceMappingURL=observeOn.js.map
 
 /***/ }),
-/* 37 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7595,7 +7543,7 @@ exports.mergeAll = mergeAll;
 //# sourceMappingURL=mergeAll.js.map
 
 /***/ }),
-/* 38 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7604,7 +7552,7 @@ exports.mergeAll = mergeAll;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.panes = exports.multi = exports.Registered = exports.Nav = exports.App = exports.Dog = exports.Home = exports.About = exports.Cat = exports.TimeCard = exports.Payroll = undefined;
+exports.panes = exports.multi = exports.Registered = exports.Nav = exports.App = exports.Dog = exports.Home = exports.About = exports.Cat = exports.Payroll = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -7621,9 +7569,7 @@ var _app = __webpack_require__(72);
 
 var _App = __webpack_require__(341);
 
-var _TimeCard = __webpack_require__(343);
-
-var _Payroll = __webpack_require__(350);
+var _Payroll = __webpack_require__(343);
 
 var _Nav = __webpack_require__(351);
 
@@ -7631,7 +7577,7 @@ var _Dog = __webpack_require__(352);
 
 var _Registered = __webpack_require__(353);
 
-var _styles = __webpack_require__(23);
+var _styles = __webpack_require__(39);
 
 var _test = __webpack_require__(355);
 
@@ -7729,7 +7675,6 @@ var multi = [{
 var panes = [1, 1, 2, 2, 3, 3, 4];
 
 exports.Payroll = _Payroll.Payroll;
-exports.TimeCard = _TimeCard.TimeCard;
 exports.Cat = Cat;
 exports.About = About;
 exports.Home = Home;
@@ -7741,7 +7686,7 @@ exports.multi = multi;
 exports.panes = panes;
 
 /***/ }),
-/* 39 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7752,15 +7697,15 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.cfg = exports.ls = undefined;
 
-var _envmy = __webpack_require__(345);
+var _envmy = __webpack_require__(346);
 
 var _envmy2 = _interopRequireDefault(_envmy);
 
-var _denv = __webpack_require__(346);
+var _denv = __webpack_require__(347);
 
 var _denv2 = _interopRequireDefault(_denv);
 
-var _storageLocal = __webpack_require__(347);
+var _storageLocal = __webpack_require__(348);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -7774,6 +7719,58 @@ var ls = (0, _storageLocal.storageLocal)(cfg.appid);
 
 exports.ls = ls;
 exports.cfg = cfg;
+
+/***/ }),
+/* 39 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+var mStyle = {
+  li: {
+    display: 'inline',
+    padding: '2px',
+    paddingRight: '4px',
+    backgroundColor: 'silver'
+  },
+  ul: {},
+  span: {
+    color: 'yellow'
+  },
+  div: {
+    height: '900',
+    background: 'green'
+  },
+  a: {
+    textDecoration: 'none',
+    color: 'green'
+  }
+};
+
+var pStyle = {
+  outer: {
+    display: 'flex',
+    flexDirection: 'column',
+    background: '#C4A265',
+    height: 400,
+    textAlign: 'center'
+  },
+  inner: {
+    margin: '0 auto',
+    display: 'flex',
+    flexDirection: 'column',
+    background: 'silver',
+    height: '340px',
+    textAlign: 'center'
+  }
+};
+
+exports.mStyle = mStyle;
+exports.pStyle = pStyle;
 
 /***/ }),
 /* 40 */
@@ -8304,8 +8301,8 @@ var __extends = (this && this.__extends) || function (d, b) {
 var Subject_1 = __webpack_require__(7);
 var queue_1 = __webpack_require__(227);
 var Subscription_1 = __webpack_require__(6);
-var observeOn_1 = __webpack_require__(36);
-var ObjectUnsubscribedError_1 = __webpack_require__(35);
+var observeOn_1 = __webpack_require__(35);
+var ObjectUnsubscribedError_1 = __webpack_require__(34);
 var SubjectSubscription_1 = __webpack_require__(83);
 /**
  * @class ReplaySubject<T>
@@ -9092,7 +9089,7 @@ exports.concat = concat;
 
 "use strict";
 
-var mergeAll_1 = __webpack_require__(37);
+var mergeAll_1 = __webpack_require__(36);
 /**
  * Converts a higher-order Observable into a first-order Observable by
  * concatenating the inner Observables in order.
@@ -9261,14 +9258,12 @@ exports.delTcardPu = exports.putTcardWk = exports.putTcardJc = exports.putTcardP
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-var _getCfg = __webpack_require__(39);
+var _getCfg = __webpack_require__(38);
 
 var _wfuncs = __webpack_require__(58);
 
 var moment = __webpack_require__(1);
 
-
-// const lsh = ls.getItem();
 
 var fetchSubmitted = function fetchSubmitted() {
   var lsh = _getCfg.ls.getItem();
@@ -9292,7 +9287,6 @@ var fetchSubmitted = function fetchSubmitted() {
   }
 };
 var fetchWhoTcard = function fetchWhoTcard(wkstat) {
-  console.log('wkstat: ', wkstat);
   var lsh = _getCfg.ls.getItem();
   if ((0, _wfuncs.geta)('lsh.token', lsh)) {
     var url = _getCfg.cfg.url.api + '/payroll/tcard/' + wkstat.wprt + '/' + wkstat.emailid;
@@ -9340,7 +9334,6 @@ var fetchTcard = function fetchTcard(wk) {
   }
 };
 var putTcardWk = function putTcardWk(wkstat) {
-  //updwk {wprt, hrs, status}=req.body.wkstat
   var lsh = _getCfg.ls.getItem();
   if ((0, _wfuncs.geta)('lsh.token', lsh)) {
     var url = _getCfg.cfg.url.api + '/tcard/updstat';
@@ -9361,7 +9354,6 @@ var putTcardWk = function putTcardWk(wkstat) {
   }
 };
 var putTcardJc = function putTcardJc(aday) {
-  //updjc {wdprt, jcost}= req.body.tday
   var tday = adjDay4db(_getCfg.cfg.firstday, aday);
   var lsh = _getCfg.ls.getItem();
   if ((0, _wfuncs.geta)('lsh.token', lsh)) {
@@ -9383,7 +9375,6 @@ var putTcardJc = function putTcardJc(aday) {
   }
 };
 var putTcardPu = function putTcardPu(aday) {
-  //updpu {wdprt, hrs, inout}= req.body.tday
   var tday = adjDay4db(_getCfg.cfg.firstday, aday);
   var lsh = _getCfg.ls.getItem();
   if ((0, _wfuncs.geta)('lsh.token', lsh)) {
@@ -9406,11 +9397,8 @@ var putTcardPu = function putTcardPu(aday) {
 };
 
 var putTcard = function putTcard(aday) {
-  //update {wdprt, hrs, inout, jcost}= req.body.tday
-  console.log('aday: ', aday);
   var tday = adjDay4db(_getCfg.cfg.firstday, aday);
   var lsh = _getCfg.ls.getItem();
-  console.log(tday);
   if ((0, _wfuncs.geta)('lsh.token', lsh)) {
     var url = _getCfg.cfg.url.api + '/tcard/update';
     var options = {
@@ -9430,10 +9418,8 @@ var putTcard = function putTcard(aday) {
   }
 };
 
-var delTcardPu = function delTcardPu(wdprt) {
-  if (_getCfg.cfg.firstday != 1 && wdprt.slice(-1) >= _getCfg.cfg.firstday) {
-    wdprt = moment(wdprt).add(7, "days").format("YYYY-[W]WW-E");
-  }
+var delTcardPu = function delTcardPu(aday) {
+  var tday = adjDay4db(_getCfg.cfg.firstday, aday);
   var lsh = _getCfg.ls.getItem();
   if ((0, _wfuncs.geta)('lsh.token', lsh)) {
     var url = _getCfg.cfg.url.api + '/tcard/del';
@@ -9443,7 +9429,7 @@ var delTcardPu = function delTcardPu(wdprt) {
         'Content-Type': 'application/json'
       },
       method: 'DELETE',
-      body: JSON.stringify({ wdprt: wdprt })
+      body: JSON.stringify({ tday: tday })
     };
     return fetch(url, options).then(function (response) {
       return response.json();
@@ -9631,7 +9617,7 @@ exports.mapClass2Element = mapClass2Element;
 
 var Observable_1 = __webpack_require__(0);
 var ArrayObservable_1 = __webpack_require__(15);
-var mergeAll_1 = __webpack_require__(37);
+var mergeAll_1 = __webpack_require__(36);
 var isScheduler_1 = __webpack_require__(12);
 /* tslint:enable:max-line-length */
 function merge() {
@@ -10478,7 +10464,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var Subscriber_1 = __webpack_require__(2);
-var ArgumentOutOfRangeError_1 = __webpack_require__(27);
+var ArgumentOutOfRangeError_1 = __webpack_require__(26);
 var EmptyObservable_1 = __webpack_require__(16);
 /**
  * Emits only the last `count` values emitted by the source Observable.
@@ -10875,9 +10861,9 @@ var _Observable = __webpack_require__(0);
 
 var _routing = __webpack_require__(325);
 
-var _components = __webpack_require__(38);
+var _components = __webpack_require__(37);
 
-var _rxred = __webpack_require__(34);
+var _rxred = __webpack_require__(33);
 
 var _wfuncs = __webpack_require__(58);
 
@@ -11323,7 +11309,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.setIsMobile = exports.setFocus = exports.switchPage = exports.setDeviceType = undefined;
 
-var _rxred = __webpack_require__(34);
+var _rxred = __webpack_require__(33);
 
 var setFocus = (0, _rxred.actionCreator)(function (payload) {
   return {
@@ -11683,8 +11669,8 @@ var ArrayObservable_1 = __webpack_require__(15);
 var ArrayLikeObservable_1 = __webpack_require__(333);
 var iterator_1 = __webpack_require__(20);
 var Observable_1 = __webpack_require__(0);
-var observeOn_1 = __webpack_require__(36);
-var observable_1 = __webpack_require__(33);
+var observeOn_1 = __webpack_require__(35);
+var observable_1 = __webpack_require__(32);
 /**
  * We need this JSDoc comment for affecting ESDoc.
  * @extends {Ignored}
@@ -26653,7 +26639,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var Subscriber_1 = __webpack_require__(2);
-var ArgumentOutOfRangeError_1 = __webpack_require__(27);
+var ArgumentOutOfRangeError_1 = __webpack_require__(26);
 /**
  * Emits the single value at the specified `index` in a sequence of emissions
  * from the source Observable.
@@ -27822,7 +27808,7 @@ var MaterializeSubscriber = (function (_super) {
 
 "use strict";
 
-var reduce_1 = __webpack_require__(28);
+var reduce_1 = __webpack_require__(27);
 /**
  * The Max operator operates on an Observable that emits numbers (or items that can be compared with a provided function),
  * and when source Observable completes it emits a single item: the item with the largest value.
@@ -28165,7 +28151,7 @@ exports.MergeScanSubscriber = MergeScanSubscriber;
 
 "use strict";
 
-var reduce_1 = __webpack_require__(28);
+var reduce_1 = __webpack_require__(27);
 /**
  * The Min operator operates on an Observable that emits numbers (or items that can be compared with a provided function),
  * and when source Observable completes it emits a single item: the item with the smallest value.
@@ -28648,7 +28634,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var Subject_1 = __webpack_require__(7);
-var ObjectUnsubscribedError_1 = __webpack_require__(35);
+var ObjectUnsubscribedError_1 = __webpack_require__(34);
 /**
  * @class BehaviorSubject<T>
  */
@@ -29740,7 +29726,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var Subscriber_1 = __webpack_require__(2);
-var ArgumentOutOfRangeError_1 = __webpack_require__(27);
+var ArgumentOutOfRangeError_1 = __webpack_require__(26);
 /**
  * Skip the last `count` values emitted by the source Observable.
  *
@@ -30237,7 +30223,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var Subscriber_1 = __webpack_require__(2);
-var ArgumentOutOfRangeError_1 = __webpack_require__(27);
+var ArgumentOutOfRangeError_1 = __webpack_require__(26);
 var EmptyObservable_1 = __webpack_require__(16);
 /**
  * Emits only the first `count` values emitted by the source Observable.
@@ -31022,7 +31008,7 @@ var TimeoutWithSubscriber = (function (_super) {
 
 "use strict";
 
-var reduce_1 = __webpack_require__(28);
+var reduce_1 = __webpack_require__(27);
 function toArrayReducer(arr, item, index) {
     arr.push(item);
     return arr;
@@ -31304,7 +31290,7 @@ var __extends = (this && this.__extends) || function (d, b) {
 var Subject_1 = __webpack_require__(7);
 var async_1 = __webpack_require__(5);
 var Subscriber_1 = __webpack_require__(2);
-var isNumeric_1 = __webpack_require__(24);
+var isNumeric_1 = __webpack_require__(23);
 var isScheduler_1 = __webpack_require__(12);
 function windowTime(windowTimeSpan) {
     var scheduler = async_1.async;
@@ -32003,8 +31989,8 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-var AsyncAction_1 = __webpack_require__(25);
-var AsyncScheduler_1 = __webpack_require__(26);
+var AsyncAction_1 = __webpack_require__(24);
+var AsyncScheduler_1 = __webpack_require__(25);
 var VirtualTimeScheduler = (function (_super) {
     __extends(VirtualTimeScheduler, _super);
     function VirtualTimeScheduler(SchedulerAction, maxFrames) {
@@ -32125,7 +32111,7 @@ exports.VirtualAction = VirtualAction;
  * LICENSE file in the root directory of this source tree.
  */
 
-var m=__webpack_require__(29),n=__webpack_require__(30),p=__webpack_require__(18),q="function"===typeof Symbol&&Symbol["for"],r=q?Symbol["for"]("react.element"):60103,t=q?Symbol["for"]("react.portal"):60106,u=q?Symbol["for"]("react.fragment"):60107,v=q?Symbol["for"]("react.strict_mode"):60108,w=q?Symbol["for"]("react.provider"):60109,x=q?Symbol["for"]("react.context"):60110,y=q?Symbol["for"]("react.async_mode"):60111,z="function"===typeof Symbol&&Symbol.iterator;
+var m=__webpack_require__(28),n=__webpack_require__(29),p=__webpack_require__(18),q="function"===typeof Symbol&&Symbol["for"],r=q?Symbol["for"]("react.element"):60103,t=q?Symbol["for"]("react.portal"):60106,u=q?Symbol["for"]("react.fragment"):60107,v=q?Symbol["for"]("react.strict_mode"):60108,w=q?Symbol["for"]("react.provider"):60109,x=q?Symbol["for"]("react.context"):60110,y=q?Symbol["for"]("react.async_mode"):60111,z="function"===typeof Symbol&&Symbol.iterator;
 function A(a){for(var b=arguments.length-1,e="Minified React error #"+a+"; visit http://facebook.github.io/react/docs/error-decoder.html?invariant\x3d"+a,c=0;c<b;c++)e+="\x26args[]\x3d"+encodeURIComponent(arguments[c+1]);b=Error(e+" for the full message or use the non-minified dev environment for full errors and additional helpful warnings.");b.name="Invariant Violation";b.framesToPop=1;throw b;}
 var B={isMounted:function(){return!1},enqueueForceUpdate:function(){},enqueueReplaceState:function(){},enqueueSetState:function(){}};function C(a,b,e){this.props=a;this.context=b;this.refs=n;this.updater=e||B}C.prototype.isReactComponent={};C.prototype.setState=function(a,b){"object"!==typeof a&&"function"!==typeof a&&null!=a?A("85"):void 0;this.updater.enqueueSetState(this,a,b,"setState")};C.prototype.forceUpdate=function(a){this.updater.enqueueForceUpdate(this,a,"forceUpdate")};function D(){}
 D.prototype=C.prototype;function E(a,b,e){this.props=a;this.context=b;this.refs=n;this.updater=e||B}var F=E.prototype=new D;F.constructor=E;m(F,C.prototype);F.isPureReactComponent=!0;var G={current:null},H=Object.prototype.hasOwnProperty,I={key:!0,ref:!0,__self:!0,__source:!0};
@@ -32161,8 +32147,8 @@ if (process.env.NODE_ENV !== "production") {
   (function() {
 'use strict';
 
-var _assign = __webpack_require__(29);
-var emptyObject = __webpack_require__(30);
+var _assign = __webpack_require__(28);
+var emptyObject = __webpack_require__(29);
 var invariant = __webpack_require__(47);
 var warning = __webpack_require__(48);
 var emptyFunction = __webpack_require__(18);
@@ -33579,7 +33565,7 @@ module.exports = ReactPropTypesSecret;
 /*
  Modernizr 3.0.0pre (Custom Build) | MIT
 */
-var ba=__webpack_require__(11),ca=__webpack_require__(75),m=__webpack_require__(29),C=__webpack_require__(18),da=__webpack_require__(76),ea=__webpack_require__(77),fa=__webpack_require__(78),ia=__webpack_require__(30);
+var ba=__webpack_require__(11),ca=__webpack_require__(75),m=__webpack_require__(28),C=__webpack_require__(18),da=__webpack_require__(76),ea=__webpack_require__(77),fa=__webpack_require__(78),ia=__webpack_require__(29);
 function G(a){for(var b=arguments.length-1,c="Minified React error #"+a+"; visit http://facebook.github.io/react/docs/error-decoder.html?invariant\x3d"+a,d=0;d<b;d++)c+="\x26args[]\x3d"+encodeURIComponent(arguments[d+1]);b=Error(c+" for the full message or use the non-minified dev environment for full errors and additional helpful warnings.");b.name="Invariant Violation";b.framesToPop=1;throw b;}ba?void 0:G("227");
 function ja(a,b,c,d,e,f,h,g,k){this._hasCaughtError=!1;this._caughtError=null;var r=Array.prototype.slice.call(arguments,3);try{b.apply(c,r)}catch(t){this._caughtError=t,this._hasCaughtError=!0}}
 var H={_caughtError:null,_hasCaughtError:!1,_rethrowError:null,_hasRethrowError:!1,invokeGuardedCallback:function(a,b,c,d,e,f,h,g,k){ja.apply(H,arguments)},invokeGuardedCallbackAndCatchFirstError:function(a,b,c,d,e,f,h,g,k){H.invokeGuardedCallback.apply(this,arguments);if(H.hasCaughtError()){var r=H.clearCaughtError();H._hasRethrowError||(H._hasRethrowError=!0,H._rethrowError=r)}},rethrowCaughtError:function(){return ka.apply(H,arguments)},hasCaughtError:function(){return H._hasCaughtError},clearCaughtError:function(){if(H._hasCaughtError){var a=
@@ -33887,13 +33873,13 @@ var React = __webpack_require__(11);
 var invariant = __webpack_require__(47);
 var warning = __webpack_require__(48);
 var ExecutionEnvironment = __webpack_require__(75);
-var _assign = __webpack_require__(29);
+var _assign = __webpack_require__(28);
 var emptyFunction = __webpack_require__(18);
 var checkPropTypes = __webpack_require__(73);
 var getActiveElement = __webpack_require__(76);
 var shallowEqual = __webpack_require__(77);
 var containsNode = __webpack_require__(78);
-var emptyObject = __webpack_require__(30);
+var emptyObject = __webpack_require__(29);
 var hyphenateStyleName = __webpack_require__(320);
 var camelizeStyleName = __webpack_require__(322);
 
@@ -50092,7 +50078,7 @@ module.exports = camelize;
 "use strict";
 
 var Subscriber_1 = __webpack_require__(2);
-var rxSubscriber_1 = __webpack_require__(32);
+var rxSubscriber_1 = __webpack_require__(31);
 var Observer_1 = __webpack_require__(81);
 function toSubscriber(nextOrObserver, error, complete) {
     if (nextOrObserver) {
@@ -50151,14 +50137,11 @@ var routing = function routing() {
     'payroll': function payroll() {
       (0, _responsive.switchPage)({ name: 'Payroll', params: null });
     },
-    'tcard': function tcard() {
-      (0, _responsive.switchPage)({ name: 'TimeCard', params: null });
-    },
     'registered': function registered(params, query) {
       (0, _responsive.switchPage)({ name: 'Registered', params: _extends({}, params, { query: query }) });
     },
     '*': function _() {
-      (0, _responsive.switchPage)({ name: 'TimeCard', params: null });
+      (0, _responsive.switchPage)({ name: 'Payroll', params: null });
     }
   }).resolve();
   return router;
@@ -51520,7 +51503,7 @@ var _react = __webpack_require__(11);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _components = __webpack_require__(38);
+var _components = __webpack_require__(37);
 
 var _showRWD = __webpack_require__(342);
 
@@ -51619,7 +51602,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.responsivePage = undefined;
 
-var _components = __webpack_require__(38);
+var _components = __webpack_require__(37);
 
 var compoi = _interopRequireWildcard(_components);
 
@@ -51674,7 +51657,7 @@ exports.responsivePage = responsivePage;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.TimeCard = undefined;
+exports.Payroll = undefined;
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
@@ -51684,13 +51667,11 @@ var _react = __webpack_require__(11);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _Day = __webpack_require__(344);
-
-var _fetches = __webpack_require__(57);
+var _TimeCard = __webpack_require__(635);
 
 var _mapClass2Element = __webpack_require__(59);
 
-var _styles = __webpack_require__(23);
+var _fetches = __webpack_require__(57);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -51698,281 +51679,190 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } // eslint-disable-line no-unused-vars
 
-// eslint-disable-line no-unused-vars
-var moment = __webpack_require__(1); // eslint-disable-line no-unused-vars
 
-var TimeCard = function (_React$Component) {
-  _inherits(TimeCard, _React$Component);
+var Payroll = function (_React$Component) {
+  _inherits(Payroll, _React$Component);
 
-  function TimeCard(props) {
-    _classCallCheck(this, TimeCard);
+  function Payroll(props) {
+    _classCallCheck(this, Payroll);
 
-    var _this = _possibleConstructorReturn(this, (TimeCard.__proto__ || Object.getPrototypeOf(TimeCard)).call(this, props));
+    var _this = _possibleConstructorReturn(this, (Payroll.__proto__ || Object.getPrototypeOf(Payroll)).call(this, props));
 
-    _this.active = 'mabibi';
-    _this.state = { week: moment().week(), wkarr: [], hrs: [], jchrs: [], wstat: undefined, showsub: false };
-    _this.yr = moment().format('YYYY');
-
-    _this.chwk = function (e) {
-      var val = e.target.value;
-      if (val > 0 && val <= 52) {
-        _this.getTimeCard(e.target.value);
-      }
+    _this.state = {
+      submitted: [],
+      gottcard: false,
+      week: 55,
+      yr: '1969'
     };
 
-    _this.handleDayChanges = function (cmd, newdata) {
-      if (cmd == 'punch') {
-        var inout = newdata.inout.slice();
-        var ndata = _extends({}, newdata);
-        ndata.inout = inout;
-        var idx = ndata.idx;
-        var hrs = ndata.hrs;
-        var hrarr = _this.state.hrs;
-        hrarr[idx] = hrs;
-        var wkarr = _this.state.wkarr.slice();
-        wkarr[idx] = ndata;
-        _this.setState({ wkarr: wkarr, hrs: hrarr }, _this.checkStatus());
-      }
-      if (cmd == 'delpu') {
-        var _wkarr = _this.state.wkarr.slice();
-        var _idx = _wkarr.findIndex(function (d) {
-          return d.wdprt == newdata;
-        });
-        var da = _wkarr[_idx];
-        var nda = _extends({}, da);
-        nda.hrs = 0;
-        nda.inout = [];
-        _wkarr[_idx] = nda;
-        var _hrarr = _this.state.hrs;
-        _hrarr[_idx] = 0;
-        _this.setState({ wkarr: _wkarr, hrs: _hrarr }, _this.checkStatus());
-      }
-      if (cmd == 'jcost') {
-        var _idx2 = newdata.idx;
-        var njcost = newdata.jcost.slice();
-        var sumhrs = drnd(njcost.reduce(function (t, j) {
-          return j.hrs + t;
-        }, 0));
-        console.log('sumhrs: ', sumhrs);
-        var jchrarr = _this.state.jchrs;
-        jchrarr[_idx2] = sumhrs;
-        var _wkarr2 = _this.state.wkarr.slice();
-        _wkarr2[_idx2].jcost = njcost;
-        _wkarr2[_idx2].jchrs = sumhrs;
-        _this.setState({ wkarr: _wkarr2, jchrs: jchrarr }, _this.checkStatus());
-      }
-    };
-
-    _this.checkStatus = function () {
-      console.log('this.state.hrs: ', _this.state.hrs);
-      console.log('this.state.jchrs: ', _this.state.jchrs);
-      var _this$state = _this.state,
-          hrs = _this$state.hrs,
-          jchrs = _this$state.jchrs;
-
-      var thrs = hrs.reduce(function (t, h) {
-        return t + h;
-      }, 0);
-      var st = hrs.map(function (h, i) {
-        return h == jchrs[i];
-      }).reduce(function (t, j) {
-        return t + j;
-      }, 0);
-      console.log('st: ', st);
-      var newstat = void 0;
-      var showsub = void 0;
-      if (st < 7 || thrs == 0) {
-        newstat = 'inprocess';
-        showsub = false;
-      } else {
-        newstat = 'ready';
-        showsub = true;
-      }
-      _this.changeStatus(newstat, showsub);
-    };
-
-    _this.clSubmit = function () {
-      _this.changeStatus('submitted', false);
-    };
-
-    _this.changeStatus = function (status, showsub) {
-      var nwstat = _extends({}, _this.state.wstat);
-      nwstat.status = status;
-      nwstat.hrs = drnd(_this.state.hrs.reduce(function (t, h) {
-        return t + h;
-      }, 0));
-      nwstat.wprt = _this.yr + '-W' + _this.state.week.toString().padStart(2, '0');
-      (0, _fetches.putTcardWk)(nwstat);
-      _this.setState({ wstat: nwstat, showsub: showsub }, function () {
-        return console.log('this.state.wstat: ', _this.state.wstat);
+    _this.getSubmitted = function () {
+      (0, _fetches.fetchSubmitted)().then(function (res) {
+        if (res.message) {
+          window.alert(res.message);
+        } else {
+          _this.setState({ submitted: res });
+        }
       });
     };
 
-    _this.setStatStyle = function () {
-      var sta = {
-        float: 'left',
-        background: '#efe869',
-        width: '70px'
-      };
-      if (_this.state.showsub || _this.state.wstat && (_this.state.wstat.status == 'submitted' || _this.state.wstat.status == 'approved' || _this.state.wstat.status == 'paid')) {
-        sta.background = '#9eea9d';
-      }
-      return sta;
+    _this.getWhosTcard = function (e) {
+      //getsAttribute of whatever is touched in li, not just li bank space
+      var idx = e.target.getAttribute('ix');
+      var wstat = _this.state.submitted[idx];
+      _this.setState({ week: wstat.wprt.slice(-2) * 1, yr: wstat.wprt.slice(0, 4) });
+      (0, _fetches.fetchWhoTcard)(wstat).then(function (res) {
+        if (res.message) {
+          window.alert(res.message);
+        } else {
+          _this.setState({ tcard: res, gottcard: true });
+        }
+      });
     };
 
-    _this.renderDays = function () {
-      var _this$state2 = _this.state,
-          week = _this$state2.week,
-          wkarr = _this$state2.wkarr,
-          jobs = _this$state2.jobs;
+    _this.handleTcardChanges = function (chobj) {
+      console.log('chobj: ', chobj);
+      console.log('this state.tcard: ', _this.state.tcard);
+      var tcard = _extends({}, _this.state.tcard);
+      var wkarr = tcard.wkarr.slice();
+      var hrs = tcard.hrs.slice();
+      var idx = chobj.idx;
+      hrs[idx] = chobj.hrs;
+      console.log('hrs: ', hrs);
+      wkarr[idx].hrs = chobj.hrs;
+      wkarr[idx].inout = chobj.inout;
+      tcard.wkarr = wkarr;
+      tcard.hrs = hrs;
+      console.log('tcard: ', tcard);
+      _this.setState({ tcard: tcard });
+    };
 
-      var rd = wkarr.map(function (d) {
-        return _react2.default.createElement(_Day.Day, { key: d.idx, data: d, ismobile: _this.props.responsive.ismobile, week: week, jobs: jobs, dayChanges: _this.handleDayChanges });
-      });
-      return rd;
+    _this.renderSubmitted = function (subm) {
+      if (subm.length > 0) return _react2.default.createElement(
+        'ul',
+        { style: style.subm.ul },
+        subm.map(function (s, i) {
+          return _react2.default.createElement(
+            'li',
+            { key: i, style: style.subm.li, ix: i, onClick: _this.getWhosTcard },
+            _react2.default.createElement(
+              'div',
+              { ix: i, style: style.subm.li.id },
+              s.wprt,
+              ': '
+            ),
+            _react2.default.createElement(
+              'div',
+              { ix: i, style: style.subm.li.id },
+              s.emailid
+            ),
+            _react2.default.createElement(
+              'div',
+              { ix: i, style: style.subm.li.stat },
+              s.status
+            )
+          );
+        })
+      );
+    };
+
+    _this.renderTimecard = function () {
+      if (_this.state.gottcard) {
+        return _react2.default.createElement(_TimeCard.TimeCard, { week: _this.state.week, yr: _this.state.yr, tcard: _this.state.tcard, ismobile: _this.props.responsive.ismobile, tcardChanges: _this.handleTcardChanges });
+      }
     };
 
     return _this;
   }
 
-  _createClass(TimeCard, [{
+  _createClass(Payroll, [{
     key: 'componentDidMount',
     value: function componentDidMount() {
-      this.getTimeCard(this.state.week);
-    }
-  }, {
-    key: 'getTimeCard',
-    value: function getTimeCard(wk) {
-      var _this2 = this;
-
-      (0, _fetches.fetchTcard)(wk).then(function (res) {
-        _this2.emailId = res.emailid;
-        if (res.message) {
-          window.alert(res.message);
-        } else {
-          _this2.setState({ week: wk, wkarr: res.wkarr, hrs: res.hrs, jchrs: res.jchrs, jobs: res.jobs, wstat: res.wstat }, _this2.checkStatus());
-        }
-      });
+      this.getSubmitted(this.state.week);
     }
   }, {
     key: 'render',
     value: function render() {
+      var submitted = this.state.submitted;
 
-      if (this.emailId) {
-        var _state = this.state,
-            week = _state.week,
-            wstat = _state.wstat,
-            showsub = _state.showsub;
-
-        var status = wstat ? wstat.status : "unsaved";
-        var statstyle = this.setStatStyle();
-        // unsaved, inprocess, ready, submitted, approved, paid
-        var thrs = drnd(this.state.hrs.reduce(function (t, h) {
-          return t + h;
-        }, 0));
-        var renderedDays = this.renderDays();
-        return _react2.default.createElement(
+      var submrend = this.renderSubmitted(submitted);
+      var tcard = this.renderTimecard();
+      return _react2.default.createElement(
+        'div',
+        null,
+        _react2.default.createElement(
           'div',
-          null,
+          { style: style.he },
           _react2.default.createElement(
             'div',
-            { style: { height: '60px', background: 'silver' } },
-            _react2.default.createElement(
-              'div',
-              { style: { float: 'left' } },
-              _react2.default.createElement(
-                'span',
-                { style: statstyle },
-                ' ',
-                status,
-                ' '
-              ),
-              _react2.default.createElement('br', null),
-              _react2.default.createElement(
-                'span',
-                { style: style.but },
-                showsub && _react2.default.createElement(
-                  'button',
-                  { onClick: this.clSubmit },
-                  'submit'
-                )
-              )
-            ),
-            _react2.default.createElement(
-              'div',
-              { style: style.inp },
-              _react2.default.createElement(
-                'span',
-                null,
-                'week',
-                _react2.default.createElement('input', { type: 'number', value: week, onChange: this.chwk, style: { width: "35px" } })
-              )
-            ),
-            _react2.default.createElement(
-              'div',
-              { style: style.thrs },
-              drnd(thrs)
-            )
-          ),
-          _react2.default.createElement(
-            'div',
-            null,
-            renderedDays
+            { style: style.he.title },
+            'payroll'
           )
-        );
-      } else {
-        return _react2.default.createElement(
+        ),
+        _react2.default.createElement(
+          'div',
+          { style: style.subm.div },
+          _react2.default.createElement(
+            'span',
+            null,
+            'outstanding submitted timecards'
+          ),
+          submrend
+        ),
+        _react2.default.createElement(
           'div',
           null,
-          'yeah you dont seem to be logged in here, try register'
-        );
-      }
+          tcard
+        )
+      );
     }
   }]);
 
-  return TimeCard;
+  return Payroll;
 }(_react2.default.Component);
 
-exports.TimeCard = TimeCard = (0, _mapClass2Element.mapClass2Element)(TimeCard);
+exports.Payroll = Payroll = (0, _mapClass2Element.mapClass2Element)(Payroll);
 
-exports.TimeCard = TimeCard;
+exports.Payroll = Payroll;
 
 
-var drnd = function drnd(n) {
-  return Math.round(n * 100) / 100;
+var style = {
+  he: {
+    height: '60px',
+    background: 'grey',
+    title: {
+      float: 'right'
+    }
+  },
+  subm: {
+    div: {
+      overflow: 'hidden',
+      background: 'silver'
+    },
+    ul: {
+      width: '98%',
+      padding: '5px',
+      listStyle: 'none',
+      float: 'left'
+    },
+    li: {
+      overflow: 'hidden',
+      padding: '6px',
+      border: '1px solid',
+      id: {
+        float: 'left'
+      },
+      stat: {
+        float: 'right'
+      }
+    }
+  }
 };
 
-// const style = {
-//   outer:{
-//     background: 'silver'
-//   }
-// }
-
-var style = _extends({
-  inn: {
-    height: '80px',
-    background: 'aqua'
-  },
-  but: {
-    width: '70px'
-  },
-  inp: {
-    margin: 'auto',
-    width: '33%'
-  },
-  thrs: {
-    fontSize: '20px',
-    float: 'right'
-  }
-}, _styles.pStyle, { outer: _extends({}, _styles.pStyle.outer, { background: 'silver' })
-  //pStyle.outer.background='#C4A265'
-
-});
-
 /***/ }),
-/* 344 */
+/* 344 */,
+/* 345 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -51993,7 +51883,7 @@ var _react2 = _interopRequireDefault(_react);
 
 var _fetches = __webpack_require__(57);
 
-var _JobCost = __webpack_require__(349);
+var _JobCost = __webpack_require__(350);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -52007,7 +51897,6 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var moment = __webpack_require__(1);
 
 // eslint-disable-line no-unused-vars
-
 
 var Day = function (_React$Component) {
   _inherits(Day, _React$Component);
@@ -52029,14 +51918,6 @@ var Day = function (_React$Component) {
       } else {
         return 'out';
       }
-    }, _this.ifNotMobileAppend = function () {
-      if (!_this.props.ismobile) {
-        _this.appendTime();
-      }
-    }, _this.ifMobileAppend = function () {
-      if (_this.props.ismobile) {
-        _this.appendTime();
-      }
     }, _this.appendTime = function () {
       if (_this.tinel.value.length != 5) {
         window.alert('could you check that you entered a time before hitting the punch clock');
@@ -52044,24 +51925,34 @@ var Day = function (_React$Component) {
         var ndata = _extends({}, _this.props.data);
         ndata.inout.push(_this.tinel.value);
         ndata.hrs = resumHrs(ndata.inout);
-        console.log('ndata: ', ndata);
-        console.log('resumHrs(ndata.inout): ', resumHrs(ndata.inout));
         _this.setPunch();
-        _this.props.dayChanges('punch', ndata);
-        (0, _fetches.putTcard)(ndata);
+        //this.props.dayChanges('punch',ndata)
+        _this.props.dayChanges('iopu', ndata);
+        //putTcard(ndata)
       }
-    }, _this.delDayPu = function (wdprt) {
-      _this.props.dayChanges('delpu', wdprt);
-      (0, _fetches.delTcardPu)(wdprt);
     }, _this.handleJcChanges = function (ch) {
       if (ch.cmd == 'jcost') {
         var wdprt = _this.props.data.wdprt;
         _this.props.dayChanges('jcost', { idx: _this.props.data.idx, jcost: ch.jcost });
-        var rec = { wdprt: wdprt, jcost: ch.jcost };
+        var rec = {
+          wdprt: wdprt,
+          jcost: ch.jcost,
+          emailid: _this.props.data.emailid
+        };
         (0, _fetches.putTcardJc)(rec);
       }
-      if (ch.cmd == 'punch') {
-        _this.delDayPu(ch.wdprt);
+      if (ch.cmd == 'clpu') {
+        var data = _extends({}, _this.props.data);
+        // const deldb = {wdprt:data.wdprt, emailid:data.emailid}
+        // delTcardPu(deldb)
+        var dch = {
+          idx: data.idx,
+          wdprt: data.wdprt,
+          emailid: data.emailid,
+          inout: [],
+          hrs: 0
+        };
+        _this.props.dayChanges('iopu', dch);
       }
     }, _this.renderIoList = function (data) {
       var perarr = createPeriodArray(data.inout);
@@ -52126,10 +52017,22 @@ var Day = function (_React$Component) {
       this.tinel = document.getElementById('tin' + this.props.data.idx);
       this.setPunch();
     }
+
+    // ifNotMobileAppend =()=>{
+    //   if(!this.props.ismobile){
+    //     this.appendTime()
+    //   }
+    // }  
+
+    // ifMobileAppend =()=>{
+    //   if(this.props.ismobile){
+    //     this.appendTime()
+    //   }
+    // }
+
   }, {
     key: 'render',
     value: function render() {
-      console.log('this.props: ', this.props);
       var tin = 'tin' + this.props.data.idx;
       var _props = this.props,
           data = _props.data,
@@ -52177,12 +52080,12 @@ var Day = function (_React$Component) {
           { style: style.punchclock.container },
           _react2.default.createElement(
             'button',
-            { style: style.punchclock.button, onClick: this.ifNotMobileAppend },
+            { style: style.punchclock.button, onClick: !this.props.ismobile && this.appendTime },
             'punch ',
             punch
           ),
           _react2.default.createElement('br', null),
-          _react2.default.createElement('input', { style: style.punchclock.input, id: tin, type: 'time', defaultValue: now, onChange: this.ifMobileAppend }),
+          _react2.default.createElement('input', { style: style.punchclock.input, id: tin, type: 'time', defaultValue: now, onChange: this.props.mobile && this.appendTime }),
           _react2.default.createElement('br', null)
         ),
         inoutList,
@@ -52200,8 +52103,8 @@ exports.Day = Day;
 var style = {
   tcardDiv: {
     overflow: 'hidden',
-    background: 'white',
-    border: '1px solid black'
+    border: '2px solid black',
+    background: 'white'
   },
   punchclock: {
     container: {
@@ -52318,19 +52221,19 @@ var resumHrs = function resumHrs(inout) {
 };
 
 /***/ }),
-/* 345 */
+/* 346 */
 /***/ (function(module, exports) {
 
 module.exports = {"m":"https"}
 
 /***/ }),
-/* 346 */
+/* 347 */
 /***/ (function(module, exports) {
 
 module.exports = {"https":{"coid":"reroo","appid":"payroll","firstday":5,"url":{"soauth":"https://services.sitebuilt.net/soauth","api":"https://services.sitebuilt.net/reroox/api","jobs":"https://tryit.sitebuilt.net/reroo/jobs/#jobs"},"cbPath":"#registered"},"local":{}}
 
 /***/ }),
-/* 347 */
+/* 348 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -52381,7 +52284,7 @@ var storageLocal = function storageLocal(itemName) {
 exports.storageLocal = storageLocal;
 
 /***/ }),
-/* 348 */
+/* 349 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var map = {
@@ -52644,10 +52547,10 @@ webpackContext.keys = function webpackContextKeys() {
 };
 webpackContext.resolve = webpackContextResolve;
 module.exports = webpackContext;
-webpackContext.id = 348;
+webpackContext.id = 349;
 
 /***/ }),
-/* 349 */
+/* 350 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -52724,11 +52627,8 @@ var JobCost = function (_React$Component) {
       _this.setState({ showon: e.target.getAttribute('ix') });
     }, _this.deleteJcost = function () {
       _this.props.jcChanges({ cmd: 'jcost', jcost: [] });
-    }, _this.clearPunch = function (e) {
-      console.log('clearPu');
-      console.log('e.target.getAttribute("wdprt"): ', e.target.getAttribute('wdprt'));
-      var wdprt = e.target.getAttribute('wdprt');
-      _this.props.jcChanges({ cmd: 'punch', wdprt: wdprt });
+    }, _this.clearPunch = function () {
+      _this.props.jcChanges({ cmd: 'clpu' });
     }, _this.renderInput = function () {
       return _react2.default.createElement('input', { style: style.jchr, type: 'number', value: drnd(_this.state.hrsleft), onChange: _this.add4day, step: '.25', onKeyUp: _this.inpKey });
     }, _this.renderList = function () {
@@ -52905,7 +52805,11 @@ var JobCost = function (_React$Component) {
             drnd(puhrs - jchrs)
           )
         ),
-        jlist
+        _react2.default.createElement(
+          'div',
+          null,
+          jlist
+        )
       );
     }
   }]);
@@ -52925,6 +52829,7 @@ var style = {
       textAlign: 'left'
     },
     ul: {
+      overfow: 'hidden',
       listStyle: 'none',
       float: 'left',
       background: 'silver'
@@ -52953,6 +52858,7 @@ var style = {
     border: '1px solid'
   },
   jcbox: {
+    overfow: 'hidden',
     float: 'left',
     border: '1px solid green',
     background: 'white'
@@ -53013,181 +52919,6 @@ var drnd = function drnd(n) {
 };
 
 /***/ }),
-/* 350 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.Payroll = undefined;
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _react = __webpack_require__(11);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _mapClass2Element = __webpack_require__(59);
-
-var _fetches = __webpack_require__(57);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var Payroll = function (_React$Component) {
-  _inherits(Payroll, _React$Component);
-
-  function Payroll(props) {
-    _classCallCheck(this, Payroll);
-
-    var _this = _possibleConstructorReturn(this, (Payroll.__proto__ || Object.getPrototypeOf(Payroll)).call(this, props));
-
-    _this.state = { submitted: [] };
-
-    _this.getSubmitted = function () {
-      (0, _fetches.fetchSubmitted)().then(function (res) {
-        if (res.message) {
-          window.alert(res.message);
-        } else {
-          _this.setState({ submitted: res });
-        }
-      });
-    };
-
-    _this.getWhosTcard = function (e) {
-      //getsAttribute of whatever is touched in li, not just li bank space
-      var idx = e.target.getAttribute('ix');
-      console.log('idx: ', _this.state.submitted[idx]);
-      (0, _fetches.fetchWhoTcard)(_this.state.submitted[idx]).then(function (res) {
-        if (res.message) {
-          window.alert(res.message);
-        } else {
-          _this.setState({ tcard: res });
-        }
-      });
-    };
-
-    _this.renderSubmitted = function (subm) {
-      if (subm.length > 0) return _react2.default.createElement(
-        'ul',
-        { style: style.subm.ul },
-        subm.map(function (s, i) {
-          return _react2.default.createElement(
-            'li',
-            { key: i, style: style.subm.li, ix: i, onClick: _this.getWhosTcard },
-            _react2.default.createElement(
-              'div',
-              { ix: i, style: style.subm.li.id },
-              s.wprt,
-              ': '
-            ),
-            _react2.default.createElement(
-              'div',
-              { ix: i, style: style.subm.li.id },
-              s.emailid
-            ),
-            _react2.default.createElement(
-              'div',
-              { ix: i, style: style.subm.li.stat },
-              s.status
-            )
-          );
-        })
-      );
-    };
-
-    return _this;
-  }
-
-  _createClass(Payroll, [{
-    key: 'componentDidMount',
-    value: function componentDidMount() {
-      this.getSubmitted(this.state.week);
-    }
-  }, {
-    key: 'render',
-    value: function render() {
-      console.log('this.props: ', this.props);
-      console.log('this.state: ', this.state);
-      var submitted = this.state.submitted;
-
-      var submrend = this.renderSubmitted(submitted);
-      return _react2.default.createElement(
-        'div',
-        null,
-        _react2.default.createElement(
-          'div',
-          { style: style.he },
-          _react2.default.createElement(
-            'div',
-            { style: style.he.title },
-            'payroll'
-          )
-        ),
-        _react2.default.createElement(
-          'div',
-          { style: style.subm.div },
-          _react2.default.createElement(
-            'span',
-            null,
-            'outstanding submitted timecards'
-          ),
-          submrend
-        )
-      );
-    }
-  }]);
-
-  return Payroll;
-}(_react2.default.Component);
-
-exports.Payroll = Payroll = (0, _mapClass2Element.mapClass2Element)(Payroll);
-
-exports.Payroll = Payroll;
-
-
-var style = {
-  he: {
-    height: '60px',
-    background: 'grey',
-    title: {
-      float: 'right'
-    }
-  },
-  subm: {
-    div: {
-      overflow: 'hidden',
-      background: 'silver'
-    },
-    ul: {
-      width: '98%',
-      padding: '5px',
-      listStyle: 'none',
-      float: 'left'
-    },
-    li: {
-      overflow: 'hidden',
-      padding: '6px',
-      border: '1px solid',
-      id: {
-        float: 'left'
-      },
-      stat: {
-        float: 'right'
-      }
-    }
-  }
-};
-
-/***/ }),
 /* 351 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -53203,9 +52934,9 @@ var _react = __webpack_require__(11);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _styles = __webpack_require__(23);
+var _styles = __webpack_require__(39);
 
-var _getCfg = __webpack_require__(39);
+var _getCfg = __webpack_require__(38);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -53235,15 +52966,6 @@ var Nav = function Nav() {
           'a',
           { style: _styles.mStyle.a, href: 'about', 'data-navigo': true },
           'about'
-        )
-      ),
-      _react2.default.createElement(
-        'li',
-        { style: _styles.mStyle.li },
-        _react2.default.createElement(
-          'a',
-          { style: _styles.mStyle.a, href: 'tcard', 'data-navigo': true },
-          'tcard'
         )
       ),
       _react2.default.createElement(
@@ -53288,7 +53010,7 @@ var _react = __webpack_require__(11);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _styles = __webpack_require__(23);
+var _styles = __webpack_require__(39);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -53333,11 +53055,11 @@ var _react = __webpack_require__(11);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _styles = __webpack_require__(23);
+var _styles = __webpack_require__(39);
 
 var _wfuncs = __webpack_require__(58);
 
-var _getCfg = __webpack_require__(39);
+var _getCfg = __webpack_require__(38);
 
 var _jobacts = __webpack_require__(354);
 
@@ -53425,7 +53147,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.setTcEmail = exports.setEdit = undefined;
 
-var _rxred = __webpack_require__(34);
+var _rxred = __webpack_require__(33);
 
 var setEdit = (0, _rxred.actionCreator)(function (payload) {
   return {
@@ -53456,7 +53178,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.loadGithubFollowers = undefined;
 
-var _rxred = __webpack_require__(34);
+var _rxred = __webpack_require__(33);
 
 var _Rx = __webpack_require__(356);
 
@@ -53649,9 +53371,9 @@ var Notification_1 = __webpack_require__(21);
 exports.Notification = Notification_1.Notification;
 var EmptyError_1 = __webpack_require__(45);
 exports.EmptyError = EmptyError_1.EmptyError;
-var ArgumentOutOfRangeError_1 = __webpack_require__(27);
+var ArgumentOutOfRangeError_1 = __webpack_require__(26);
 exports.ArgumentOutOfRangeError = ArgumentOutOfRangeError_1.ArgumentOutOfRangeError;
-var ObjectUnsubscribedError_1 = __webpack_require__(35);
+var ObjectUnsubscribedError_1 = __webpack_require__(34);
 exports.ObjectUnsubscribedError = ObjectUnsubscribedError_1.ObjectUnsubscribedError;
 var TimeoutError_1 = __webpack_require__(299);
 exports.TimeoutError = TimeoutError_1.TimeoutError;
@@ -53675,9 +53397,9 @@ var asap_1 = __webpack_require__(288);
 var async_1 = __webpack_require__(5);
 var queue_1 = __webpack_require__(227);
 var animationFrame_1 = __webpack_require__(628);
-var rxSubscriber_1 = __webpack_require__(32);
+var rxSubscriber_1 = __webpack_require__(31);
 var iterator_1 = __webpack_require__(20);
-var observable_1 = __webpack_require__(33);
+var observable_1 = __webpack_require__(32);
 var _operators = __webpack_require__(632);
 exports.operators = _operators;
 /* tslint:enable:no-unused-variable */
@@ -54881,7 +54603,7 @@ var __extends = (this && this.__extends) || function (d, b) {
 };
 var Observable_1 = __webpack_require__(0);
 var tryCatch_1 = __webpack_require__(9);
-var isFunction_1 = __webpack_require__(31);
+var isFunction_1 = __webpack_require__(30);
 var errorObject_1 = __webpack_require__(8);
 var Subscription_1 = __webpack_require__(6);
 var toString = Object.prototype.toString;
@@ -55122,7 +54844,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-var isFunction_1 = __webpack_require__(31);
+var isFunction_1 = __webpack_require__(30);
 var Observable_1 = __webpack_require__(0);
 var Subscription_1 = __webpack_require__(6);
 /**
@@ -55533,7 +55255,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-var isNumeric_1 = __webpack_require__(24);
+var isNumeric_1 = __webpack_require__(23);
 var Observable_1 = __webpack_require__(0);
 var async_1 = __webpack_require__(5);
 /**
@@ -56326,7 +56048,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-var isNumeric_1 = __webpack_require__(24);
+var isNumeric_1 = __webpack_require__(23);
 var Observable_1 = __webpack_require__(0);
 var async_1 = __webpack_require__(5);
 var isScheduler_1 = __webpack_require__(12);
@@ -56747,7 +56469,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-var AsyncAction_1 = __webpack_require__(25);
+var AsyncAction_1 = __webpack_require__(24);
 /**
  * We need this JSDoc comment for affecting ESDoc.
  * @ignore
@@ -56802,7 +56524,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-var AsyncScheduler_1 = __webpack_require__(26);
+var AsyncScheduler_1 = __webpack_require__(25);
 var QueueScheduler = (function (_super) {
     __extends(QueueScheduler, _super);
     function QueueScheduler() {
@@ -59619,7 +59341,7 @@ Observable_1.Observable.prototype.mergeAll = mergeAll_1.mergeAll;
 
 "use strict";
 
-var mergeAll_1 = __webpack_require__(37);
+var mergeAll_1 = __webpack_require__(36);
 /**
  * Converts a higher-order Observable into a first-order Observable which
  * concurrently delivers all values that are emitted on the inner Observables.
@@ -59988,7 +59710,7 @@ Observable_1.Observable.prototype.observeOn = observeOn_1.observeOn;
 
 "use strict";
 
-var observeOn_1 = __webpack_require__(36);
+var observeOn_1 = __webpack_require__(35);
 /**
  *
  * Re-emits all notifications from source Observable with specified scheduler.
@@ -60516,7 +60238,7 @@ Observable_1.Observable.prototype.reduce = reduce_1.reduce;
 
 "use strict";
 
-var reduce_1 = __webpack_require__(28);
+var reduce_1 = __webpack_require__(27);
 /* tslint:enable:max-line-length */
 /**
  * Applies an accumulator function over the source Observable, and returns the
@@ -61285,7 +61007,7 @@ var __extends = (this && this.__extends) || function (d, b) {
 };
 var Observable_1 = __webpack_require__(0);
 var asap_1 = __webpack_require__(288);
-var isNumeric_1 = __webpack_require__(24);
+var isNumeric_1 = __webpack_require__(23);
 /**
  * We need this JSDoc comment for affecting ESDoc.
  * @extends {Ignored}
@@ -61341,7 +61063,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var Immediate_1 = __webpack_require__(578);
-var AsyncAction_1 = __webpack_require__(25);
+var AsyncAction_1 = __webpack_require__(24);
 /**
  * We need this JSDoc comment for affecting ESDoc.
  * @ignore
@@ -61810,7 +61532,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-var AsyncScheduler_1 = __webpack_require__(26);
+var AsyncScheduler_1 = __webpack_require__(25);
 var AsapScheduler = (function (_super) {
     __extends(AsapScheduler, _super);
     function AsapScheduler() {
@@ -62828,7 +62550,7 @@ Observable_1.Observable.prototype.windowTime = windowTime_1.windowTime;
 "use strict";
 
 var async_1 = __webpack_require__(5);
-var isNumeric_1 = __webpack_require__(24);
+var isNumeric_1 = __webpack_require__(23);
 var isScheduler_1 = __webpack_require__(12);
 var windowTime_1 = __webpack_require__(304);
 function windowTime(windowTimeSpan) {
@@ -63501,7 +63223,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-var AsyncAction_1 = __webpack_require__(25);
+var AsyncAction_1 = __webpack_require__(24);
 var AnimationFrame_1 = __webpack_require__(630);
 /**
  * We need this JSDoc comment for affecting ESDoc.
@@ -63602,7 +63324,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-var AsyncScheduler_1 = __webpack_require__(26);
+var AsyncScheduler_1 = __webpack_require__(25);
 var AnimationFrameScheduler = (function (_super) {
     __extends(AnimationFrameScheduler, _super);
     function AnimationFrameScheduler() {
@@ -63726,7 +63448,7 @@ var max_1 = __webpack_require__(260);
 exports.max = max_1.max;
 var merge_1 = __webpack_require__(60);
 exports.merge = merge_1.merge;
-var mergeAll_1 = __webpack_require__(37);
+var mergeAll_1 = __webpack_require__(36);
 exports.mergeAll = mergeAll_1.mergeAll;
 var mergeMap_1 = __webpack_require__(19);
 exports.mergeMap = mergeMap_1.mergeMap;
@@ -63740,7 +63462,7 @@ var min_1 = __webpack_require__(263);
 exports.min = min_1.min;
 var multicast_1 = __webpack_require__(17);
 exports.multicast = multicast_1.multicast;
-var observeOn_1 = __webpack_require__(36);
+var observeOn_1 = __webpack_require__(35);
 exports.observeOn = observeOn_1.observeOn;
 var onErrorResumeNext_1 = __webpack_require__(62);
 exports.onErrorResumeNext = onErrorResumeNext_1.onErrorResumeNext;
@@ -63760,7 +63482,7 @@ var publishReplay_1 = __webpack_require__(271);
 exports.publishReplay = publishReplay_1.publishReplay;
 var race_1 = __webpack_require__(273);
 exports.race = race_1.race;
-var reduce_1 = __webpack_require__(28);
+var reduce_1 = __webpack_require__(27);
 exports.reduce = reduce_1.reduce;
 var repeat_1 = __webpack_require__(274);
 exports.repeat = repeat_1.repeat;
@@ -80976,9 +80698,9 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.initState = undefined;
 
-var _components = __webpack_require__(38);
+var _components = __webpack_require__(37);
 
-var _getCfg = __webpack_require__(39);
+var _getCfg = __webpack_require__(38);
 
 var lsh = _getCfg.ls.getItem();
 var lsemail = "nobody@nowhere.com";
@@ -81026,6 +80748,296 @@ var initialBrowser = function initialBrowser() {
 
 initState.responsive = initialBrowser();
 exports.initState = initState;
+
+/***/ }),
+/* 635 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.TimeCard = undefined;
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(11);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _Day = __webpack_require__(345);
+
+var _fetches = __webpack_require__(57);
+
+var _mapClass2Element = __webpack_require__(59);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } // eslint-disable-line no-unused-vars
+// var moment = require('moment');
+// eslint-disable-line no-unused-vars
+
+
+//import { stat } from 'fs';
+// import {pStyle} from '../styles'
+
+var TimeCard = function (_React$Component) {
+  _inherits(TimeCard, _React$Component);
+
+  function TimeCard(props) {
+    _classCallCheck(this, TimeCard);
+
+    var _this = _possibleConstructorReturn(this, (TimeCard.__proto__ || Object.getPrototypeOf(TimeCard)).call(this, props));
+
+    _this.state = {
+      showsub: true
+    };
+
+    _this.setStatBkg = function () {
+      var sta = _extends({}, style.he.st.txtsp);
+      if (_this.state.showsub || _this.state.wstat && (_this.state.wstat.status == 'submitted' || _this.state.wstat.status == 'approved' || _this.state.wstat.status == 'paid')) {
+        sta.background = '#9eea9d';
+      }
+      return sta;
+    };
+
+    _this.handleDayChanges = function (cmd, newdata) {
+      if (cmd == 'iopu') {
+        _this.props.tcardChanges(newdata);
+        _this.checkStatus();
+      }
+      if (cmd == 'punch') {
+        console.log('punch this.state: ', _this.state);
+        console.log('punch this.props: ', _this.props);
+        var inout = newdata.inout.slice();
+        var ndata = _extends({}, newdata);
+        ndata.inout = inout;
+        var idx = ndata.idx;
+        var hrs = ndata.hrs;
+        var hrarr = _this.props.tcard.hrs;
+        hrarr[idx] = hrs;
+        var wkarr = _this.props.tcard.wkarr.slice();
+        wkarr[idx] = ndata;
+        _this.props.tcardChanges({ wkarr: wkarr, hrs: hrarr });
+        _this.setState({ wkarr: wkarr, hrs: hrarr }, _this.checkStatus());
+      }
+      if (cmd == 'delpu') {
+        var _wkarr = _this.props.tcard.wkarr.slice();
+        var _idx = _wkarr.findIndex(function (d) {
+          return d.wdprt == newdata.wdprt;
+        });
+        var da = _wkarr[_idx];
+        var nda = _extends({}, da);
+        nda.hrs = 0;
+        nda.inout = [];
+        _wkarr[_idx] = nda;
+        var _hrarr = _this.props.tcard.hrs;
+        _hrarr[_idx] = 0;
+        _this.props.tcardChanges({ wkarr: _wkarr, hrs: _hrarr });
+        _this.setState({ wkarr: _wkarr, hrs: _hrarr }, _this.checkStatus());
+      }
+      if (cmd == 'jcost') {
+        var _idx2 = newdata.idx;
+        var njcost = newdata.jcost.slice();
+        var sumhrs = drnd(njcost.reduce(function (t, j) {
+          return j.hrs + t;
+        }, 0));
+        var jchrarr = _this.props.tcard.jchrs;
+        jchrarr[_idx2] = sumhrs;
+        var _wkarr2 = _this.props.tcard.wkarr.slice();
+        _wkarr2[_idx2].jcost = njcost;
+        _wkarr2[_idx2].jchrs = sumhrs;
+        _this.setState({ wkarr: _wkarr2, jchrs: jchrarr }, _this.checkStatus());
+      }
+    };
+
+    _this.checkStatus = function () {
+      var _this$props$tcard = _this.props.tcard,
+          hrs = _this$props$tcard.hrs,
+          jchrs = _this$props$tcard.jchrs;
+
+      var thrs = hrs.reduce(function (t, h) {
+        return t + h;
+      }, 0);
+      var st = hrs.map(function (h, i) {
+        return h == jchrs[i];
+      }).reduce(function (t, j) {
+        return t + j;
+      }, 0);
+      var newstat = void 0;
+      var showsub = void 0;
+      if (st < 7 || thrs == 0) {
+        newstat = 'inprocess';
+        showsub = false;
+      } else {
+        newstat = 'ready';
+        showsub = true;
+      }
+      _this.changeStatus(newstat, showsub);
+    };
+
+    _this.changeStatus = function (status, showsub) {
+      console.log('status: ', status);
+      var nwstat = _extends({}, _this.props.tcard.wstat);
+      nwstat.status = status;
+      nwstat.hrs = drnd(_this.props.tcard.hrs.reduce(function (t, h) {
+        return t + h;
+      }, 0));
+      nwstat.wprt = _this.props.yr + '-W' + _this.props.week.toString().padStart(2, '0');
+      (0, _fetches.putTcardWk)(nwstat);
+      _this.setState({ wstat: nwstat, showsub: showsub }, function () {
+        return console.log('this.state.wstat: ', _this.state.wstat);
+      });
+    };
+
+    _this.renderDays = function () {
+      var week = _this.state.week;
+      var _this$props$tcard2 = _this.props.tcard,
+          wkarr = _this$props$tcard2.wkarr,
+          jobs = _this$props$tcard2.jobs;
+
+      console.log('this.props: ', _this.props);
+      var rd = wkarr.map(function (d) {
+        return _react2.default.createElement(_Day.Day, { key: d.idx, data: d, ismobile: _this.props.ismobile, week: week, jobs: jobs, dayChanges: _this.handleDayChanges });
+      });
+      return rd;
+      // return (<h3>doggy</h3>)
+    };
+
+    return _this;
+  }
+
+  _createClass(TimeCard, [{
+    key: 'componentDidMount',
+    value: function componentDidMount() {}
+  }, {
+    key: 'render',
+    value: function render() {
+      if (this.props.tcard) {
+        var _props = this.props,
+            week = _props.week,
+            tcard = _props.tcard;
+        var wstat = tcard.wstat,
+            hrs = tcard.hrs,
+            emailid = tcard.emailid;
+        var showsub = this.state.showsub;
+
+        var status = wstat ? wstat.status : "unsaved";
+        var statstyle = this.setStatBkg();
+        // unsaved, inprocess, ready, submitted, approved, paid
+        var thrs = drnd(hrs.reduce(function (t, h) {
+          return t + h;
+        }, 0));
+        var renderedDays = this.renderDays();
+        return _react2.default.createElement(
+          'div',
+          null,
+          _react2.default.createElement(
+            'div',
+            { style: style.he },
+            _react2.default.createElement(
+              'div',
+              { style: style.he.st },
+              _react2.default.createElement(
+                'span',
+                { style: statstyle },
+                ' ',
+                status,
+                ' '
+              ),
+              _react2.default.createElement('br', null),
+              _react2.default.createElement(
+                'span',
+                { style: style.he.st.but },
+                showsub && _react2.default.createElement(
+                  'button',
+                  { onClick: this.clSubmit },
+                  'submit'
+                )
+              )
+            ),
+            _react2.default.createElement(
+              'div',
+              { style: style.inp },
+              _react2.default.createElement(
+                'span',
+                null,
+                'week ',
+                week,
+                ' ',
+                emailid
+              )
+            ),
+            _react2.default.createElement(
+              'div',
+              { style: style.thrs },
+              drnd(thrs)
+            )
+          ),
+          _react2.default.createElement(
+            'div',
+            { style: style.daydiv },
+            renderedDays
+          )
+        );
+      } else {
+        return _react2.default.createElement(
+          'div',
+          null,
+          'yeah you dont seem to be logged in here, try register'
+        );
+      }
+    }
+  }]);
+
+  return TimeCard;
+}(_react2.default.Component);
+
+exports.TimeCard = TimeCard = (0, _mapClass2Element.mapClass2Element)(TimeCard);
+
+exports.TimeCard = TimeCard;
+
+
+var drnd = function drnd(n) {
+  return Math.round(n * 100) / 100;
+};
+
+var style = {
+  he: {
+    height: '70px',
+    background: 'silver',
+    st: {
+      float: 'left',
+      but: {
+        width: '70px'
+      },
+      txtsp: {
+        width: '70px',
+        background: '#efe869'
+      }
+    }
+  },
+  inp: {
+    margin: 'auto',
+    width: '33%'
+  },
+  thrs: {
+    fontSize: '20px',
+    float: 'right'
+  },
+  daydiv: {
+    overflow: 'hidden',
+    width: '100%'
+  }
+};
 
 /***/ })
 /******/ ]);

@@ -94,7 +94,7 @@ class Jobs extends React.Component{
   }
 
   sav2wk = ()=>{
-    let wk = this.dwk.value.split('W')[1];
+    let wk = this.state.wk
     if(wk===undefined){
       window.alert('please select a week')
       return
@@ -165,7 +165,10 @@ class Jobs extends React.Component{
     sta.al =al 
     return sta
   }
-  
+
+  handleOnFocus=()=>{
+    console.log('got focus')
+  }  
   render(){
     const{jobs,wk, dddMMDD}=this.state
     const actstyle = this.setStatBkg()
@@ -184,7 +187,7 @@ class Jobs extends React.Component{
             <div> 
               <div style={style.he.get}>
                 <button onClick={this.getwk}>getwk</button>
-                <button onClick={this.sav2wk}>sav2wk</button>
+                <button onClick={this.sav2wk} onFocus={this.handleOnFocus()} >sav2wk</button>
               </div>
               <div style={style.he.act}>
                 <button onClick={this.sav}> <i className="material-icons">save</i> </button>

@@ -40,6 +40,9 @@ class TimeCard extends React.Component{
   }
 
   handleDayChanges = (cmd, newdata)=>{
+    if (cmd=='iopu'){
+      console.log('newdata: ', newdata)
+    }
     if (cmd=='punch'){
       const inout = newdata.inout.slice()
       const ndata= {...newdata}
@@ -65,6 +68,7 @@ class TimeCard extends React.Component{
       this.setState({wkarr, hrs:hrarr}, this.checkStatus())
     }
     if(cmd=='jcost'){
+      console.log('newdata: ', newdata)
       const idx = newdata.idx
       const njcost = newdata.jcost.slice()
       const sumhrs = drnd(njcost.reduce((t,j)=>j.hrs+t, 0))
@@ -172,7 +176,7 @@ class TimeCard extends React.Component{
             {drnd(thrs)}
           </div>
         </div>
-        <div>
+        <div style={style.daydiv}>
           {renderedDays}
         </div>
       </div> 
@@ -215,5 +219,9 @@ let style = {
   thrs:{
     fontSize: '20px',
     float:'right'
+  },
+  daydiv:{
+    overflow:'hidden',
+    width:'100%'
   }
 }

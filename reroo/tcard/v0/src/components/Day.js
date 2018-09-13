@@ -46,17 +46,22 @@ class Day extends React.Component {// eslint-disable-line no-unused-vars
       console.log('resumHrs(ndata.inout): ', resumHrs(ndata.inout))
       this.setPunch()
       this.props.dayChanges('punch',ndata)
+      //this.props.dayChanges('iopu',ndata)
       putTcard(ndata)
     }
   }
 
-  delDayPu =(wdprt)=>{
-    this.props.dayChanges('delpu',wdprt)
-    delTcardPu(wdprt)
+  delDayPu =(ndata)=>{
+    delTcardPu({ndata})
+    this.props.dayChanges('delpu',ndata)
+    //this.props.dayChanges('iopu',ndata)
+    ndata.inout=[]
+    ndata.hrs = 0
   }
   
   handleJcChanges=(ch)=>{
     if(ch.cmd=='jcost'){
+      
       const wdprt = this.props.data.wdprt
       this.props.dayChanges('jcost',{idx:this.props.data.idx, jcost:ch.jcost})
       const rec = {wdprt:wdprt, jcost:ch.jcost}
