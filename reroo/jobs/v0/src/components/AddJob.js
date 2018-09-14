@@ -19,15 +19,12 @@ class AddJob extends React.Component {
   state = {ejob:this.props.ejob, newup:'update'}
 
   componentDidMount() {
-    console.log('hit the addmojobs')
     this.setState({ejob:this.props.ejob})
   }
 
   updateJob=(e)=>{
     e.preventDefault()
-    console.log('updateJob')
     const cs=this.props.ejob.curjob.categories.replace(/\s/g, "").split(',')
-    console.log('cs: ', cs)
     const curjob = {...this.props.ejob.curjob}
     delete curjob.categories
     const newjcarr = cs.map((c)=>{
@@ -57,44 +54,26 @@ class AddJob extends React.Component {
     this.props.xmitChange({curjob:curjob});
   }
   delJob=()=>{
-    deleteJob(this.props.ejob.job)
-    router.navigate('/jobs');
+    deleteJob(this.props.ejob.curjob.job)
+    router.navigate('/jobs?rerender');
   }
-  // getQuery=()=>{
-  //   let newupd ={}
-  //   const params = this.props.cambio.page.params
-  //   if(params && params.query && params.query.split('?')[1]=='new'){
-  //     location.replace('#addjob')
-  //     newupd.label = 'new'
-  //     setTimeout(()=>{
-  //       const e = {target: {value:''}}
-  //       this.jobChanged(e)
-  //       this.catChanged(e)
-  //     },300) 
-  //   }else {
-  //     newupd.label= 'update'
-  //   }
-  //   return newupd
-  // }
+
   render() { 
-    console.log('this.props.ejob.curjob: ', this.props.ejob.curjob)
-    console.log('this.state: ', this.state)
     const{curjob, update, clearjc}=this.props.ejob
     if(clearjc){
       setClearJc({clearjc:false}) 
       const e = {target: {value:''}}
       this.jobChanged(e)
-      this.catChanged(e)  
+      this.catChanged(e)
     }
-    console.log('update: ', update)
-    console.log('clearjc: ', clearjc)
+    const newup = update ? 'udpate' : 'new'
     return (
       <div style={style.outer}>
       <Form>
         <legend>Add or Update Job</legend>
         <Input placeholder="Job" value={curjob.job} onChange={this.jobChanged}/>
         <Input placeholder="Categories- comma separated or null" value={curjob.categories} onChange={this.catChanged}/>
-        <Button variant="raised" onClick={this.updateJob}>update</Button>
+        <Button variant="raised" onClick={this.updateJob}>{newup}</Button>
         <Button onClick={this.delJob}>delete</Button>
       </Form>
 
@@ -113,17 +92,14 @@ let chHOC = (Comp) =>{// eslint-disable-line no-unused-vars
       return {props}
     }
     onChange=(curjob)=>{
-      console.log('curjob: ', curjob)
       let nstate  ={...this.state}
       let nprops = {...nstate.props}
       let nejob = {...nprops.ejob}
       nejob.curjob = curjob
       nprops.ejob = nejob
-      this.setState({props:nprops},()=>console.log('this.state: ', this.state))
+      this.setState({props:nprops})
     }
     render() {
-      console.log('this.props: ', this.props)
-      console.log('this.state: ', this.state)
       return (
         <Comp {...this.props} {...this.state} xmitChange={this.onChange}/>
       )

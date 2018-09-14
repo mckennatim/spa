@@ -11771,6 +11771,7 @@ var putTcardJc = function putTcardJc(aday) {
 };
 var putTcardPu = function putTcardPu(aday) {
   //updpu {wdprt, hrs, inout}= req.body.tday
+  console.log('aday: ', aday);
   var tday = adjDay4db(_getCfg.cfg.firstday, aday);
   var lsh = _getCfg.ls.getItem();
   if ((0, _wfuncs.geta)('lsh.token', lsh)) {
@@ -11891,6 +11892,8 @@ var adjWk4app = function adjWk4app(firstday, wkarr) {
 };
 
 var adjDay4db = function adjDay4db(firstday, rec) {
+  console.log('firstday: ', firstday);
+  console.log('rec: ', rec);
   var d = _extends({}, rec);
   if (firstday != 1 && d.wdprt.slice(-1) >= firstday) {
     console.log('it is greater: ');

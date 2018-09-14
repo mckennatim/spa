@@ -15,7 +15,10 @@ https://github.com/mozilla-services/react-jsonschema-form
 https://gridbyexample.com/examples/example13/
 https://www.mozilla.org/en-US/firefox/60.0a2/whatsnew/#cssgrid
 https://mozilladevelopers.github.io/playground/css-grid/
+### 95-reroo-payroll-src.2
+hay flowchart. todo submitted and hilight colors
 ### 94-reroo-jobs-src.4-beta0.4
+
 How to update from another page or server and also from inputs on the current page. getDerivedStateFromProps takes incoming props and turns it to state.props. Then changes bubbleing up from the paage enclosed by the HOC can then change that state.props. Weird.
 
 

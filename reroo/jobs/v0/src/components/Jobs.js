@@ -2,9 +2,9 @@ import React from 'react'// eslint-disable-line no-unused-vars
 var moment = require('moment');
 import {router} from '../app'
 import {mapClass2Element} from '../hoc/mapClass2Element'
-import {fetchJobs, postJobs, fetchSettings} from '../services/fetches'
+import {fetchJobs, postJobs, fetchSettings, putJob } from '../services/fetches'
 import{adjWdprtDn, padWk} from  '../utilities/reroo'
-import { setEdit, setUpdate, setClearJc } from '../actions/jobacts';
+import { setEdit, setUpdate, setClearJc} from '../actions/jobacts';
 
 
 class Jobs extends React.Component{
@@ -40,13 +40,16 @@ class Jobs extends React.Component{
     let njobs = this.state.jobs.map((job)=>{
       if (job.id==a.id){
         job.active = !job.active
+        
+        let njob ={...job}
+        njob.active = job.active + 0
+        delete njob.id
+        console.log('njob: ', njob)
+        putJob([njob])
       }
       return job
     })
-    console.log(njobs);
-    console.log('ON LINE 73');
     this.setState({jobs:njobs})
-    console.log(a)
   }
 
   filtAct = ()=>this.setState({filt:'active'});
