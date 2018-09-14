@@ -14,11 +14,10 @@ class Cat extends React.Component {
 class Mouse extends React.Component {// eslint-disable-line no-unused-vars
   constructor(props) {
     super(props);
-    this.handleMouseMove = this.handleMouseMove.bind(this);
     this.state = { x: 0, y: 0 };
   }
 
-  handleMouseMove(event) {
+  handleMouseMove=(event)=> {
     this.setState({
       x: event.clientX,
       y: event.clientY

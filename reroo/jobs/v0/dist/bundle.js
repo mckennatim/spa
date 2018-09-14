@@ -7559,7 +7559,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 // eslint-disable-line no-unused-vars
 // eslint-disable-line no-unused-vars
 window.onblur = function () {
-  (0, _responsive.setFocus)({ infocus: false });
+  //setFocus({infocus: false})
 };
 
 _Observable.Observable.fromEvent(window, 'resize').debounceTime(300).subscribe(function () {
@@ -9835,7 +9835,7 @@ var FilterSubscriber = (function (_super) {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.deleteJob = exports.putJob = exports.postJobs = exports.fetchJobs = exports.fetchSettings = undefined;
+exports.deleteJob = exports.newJob = exports.putJob = exports.postJobs = exports.fetchJobs = exports.fetchSettings = undefined;
 
 var _getCfg = __webpack_require__(47);
 
@@ -9907,7 +9907,6 @@ var postJobs = function postJobs(jobs, wk) {
 
 var putJob = function putJob(job) {
   var lsh = _getCfg.ls.getItem();
-  console.log(job);
   if ((0, _wfuncs.geta)('lsh.token', lsh)) {
     var url = _getCfg.cfg.url.api + '/jobs/update';
     var options = {
@@ -9926,10 +9925,28 @@ var putJob = function putJob(job) {
     return p2;
   }
 };
-
+var newJob = function newJob(job) {
+  var lsh = _getCfg.ls.getItem();
+  if ((0, _wfuncs.geta)('lsh.token', lsh)) {
+    var url = _getCfg.cfg.url.api + '/jobs/new';
+    var options = {
+      headers: { 'Authorization': 'Bearer ' + lsh['token'],
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
+      },
+      method: 'PUT',
+      body: JSON.stringify({ jobs: job })
+    };
+    return fetch(url, options).then(function (response) {
+      return response.json();
+    });
+  } else {
+    var p2 = Promise.resolve({ qmessage: 'you dont exist! ' });
+    return p2;
+  }
+};
 var deleteJob = function deleteJob(job) {
   var lsh = _getCfg.ls.getItem();
-  console.log(job);
   if ((0, _wfuncs.geta)('lsh.token', lsh)) {
     var url = _getCfg.cfg.url.api + '/jobs/del';
     var options = {
@@ -9953,6 +9970,7 @@ exports.fetchSettings = fetchSettings;
 exports.fetchJobs = fetchJobs;
 exports.postJobs = postJobs;
 exports.putJob = putJob;
+exports.newJob = newJob;
 exports.deleteJob = deleteJob;
 
 /***/ }),
@@ -52782,8 +52800,8 @@ var routing = function routing() {
     'sortjobs': function sortjobs() {
       (0, _responsive.switchPage)({ name: 'SortJobs', params: null });
     },
-    'jobs': function jobs() {
-      (0, _responsive.switchPage)({ name: 'Jobs', params: null });
+    'jobs': function jobs(params, query) {
+      (0, _responsive.switchPage)({ name: 'Jobs', params: _extends({}, params, { query: query }) });
     },
     'addjob': function addjob(params, query) {
       (0, _responsive.switchPage)({ name: 'AddJob', params: _extends({}, params, { query: query }) });
@@ -53982,10 +54000,15 @@ var ejob = function ejob(state, action) {
   switch (action.type) {
     case 'SET_EDIT':
       return _extends({}, state, {
-        job: action.payload.job,
-        categories: action.payload.categories,
-        idx: action.payload.idx,
-        coid: action.payload.coid
+        curjob: action.payload
+      });
+    case 'SET_UPDATE':
+      return _extends({}, state, {
+        update: action.payload.update
+      });
+    case 'SET_CLEAR_JC':
+      return _extends({}, state, {
+        clearjc: action.payload.clearjc
       });
     default:
       return state;
@@ -54465,7 +54488,6 @@ var Jobs = function (_React$Component) {
       wk: moment().week(),
       filt: 'all',
       yr: moment().format('YYYY'),
-      firstday: 5,
       dddMMDD: ''
     }, _this.dwk = null, _this.getSettings = function () {
       (0, _fetches.fetchSettings)().then(function (res) {
@@ -54522,7 +54544,7 @@ var Jobs = function (_React$Component) {
       return moment(wdprt).format('ddd MM/DD');
     }, _this.sav2wk = function () {
       var wk = _this.state.wk;
-      if (wk === undefined) {
+      if (wk === undefined || wk == 0) {
         window.alert('please select a week');
         return;
       }
@@ -54533,12 +54555,8 @@ var Jobs = function (_React$Component) {
         return { job: j.job, category: j.category, active: j.active * 1, idx: j.idx, week: wk, coid: j.coid };
       });
       (0, _fetches.postJobs)(jobs, wk);
-    }, _this.sav = function () {
-      var jobs = _this.state.jobs.map(function (j) {
-        return { job: j.job, category: j.category, active: j.active * 1, idx: j.idx, week: 0, coid: j.coid };
-      });
-      (0, _fetches.postJobs)(jobs, 0);
     }, _this.editJob = function (j) {
+      console.log('j: ', j);
       var jo = { job: j.job, active: j.active, idx: j.idx, coid: j.coid };
       var ar = [];
       _this.state.jobs.filter(function (job) {
@@ -54548,6 +54566,9 @@ var Jobs = function (_React$Component) {
       });
       jo.categories = ar.join(', ');
       (0, _jobacts.setEdit)(jo);
+      (0, _jobacts.setUpdate)({ update: true });
+      (0, _jobacts.setClearJc)({ clearjc: false });
+      // router.navigate('/addjob?idx='+j.idx);
       _app.router.navigate('/addjob');
     }, _this.chwk = function (e) {
       var val = e.target.value;
@@ -54592,8 +54613,17 @@ var Jobs = function (_React$Component) {
       sta.ia = ia;
       sta.al = al;
       return sta;
+    }, _this.getQuery = function () {
+      var params = _this.props.cambio.page.params;
+      if (params && params.query && params.query.split('?')[1] == 'rerender') {
+        console.log('params: ', params);
+        location.replace('#jobs');
+        setTimeout(function () {
+          _this.getJobs();
+        }, 300);
+      }
     }, _this.handleOnFocus = function () {
-      console.log('got focus');
+      //console.log('got focus')
     }, _temp), _possibleConstructorReturn(_this, _ret);
   }
 
@@ -54604,11 +54634,17 @@ var Jobs = function (_React$Component) {
       this.getJobs();
       this.dwk = document.getElementById("wk");
     }
+    // sav = () =>{
+    //   const jobs = this.state.jobs.map((j)=>{return {job: j.job, category: j.category,   active: j.active*1, idx: j.idx, week:0, coid:j.coid}})
+    //   postJobs(jobs, 0)
+    // }
+
   }, {
     key: 'render',
     value: function render() {
       var _this2 = this;
 
+      this.getQuery();
       var _state = this.state,
           jobs = _state.jobs,
           wk = _state.wk,
@@ -54653,17 +54689,6 @@ var Jobs = function (_React$Component) {
               _react2.default.createElement(
                 'div',
                 { style: style.he.act },
-                _react2.default.createElement(
-                  'button',
-                  { onClick: this.sav },
-                  ' ',
-                  _react2.default.createElement(
-                    'i',
-                    { className: 'material-icons' },
-                    'save'
-                  ),
-                  ' '
-                ),
                 _react2.default.createElement(
                   'button',
                   { style: actstyle.ac, onClick: this.filtAct },
@@ -55263,7 +55288,7 @@ webpackContext.id = 388;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.setEdit = undefined;
+exports.setClearJc = exports.setUpdate = exports.setEdit = undefined;
 
 var _rxred = __webpack_require__(42);
 
@@ -55273,8 +55298,22 @@ var setEdit = (0, _rxred.actionCreator)(function (payload) {
     payload: payload
   };
 });
+var setUpdate = (0, _rxred.actionCreator)(function (payload) {
+  return {
+    type: 'SET_UPDATE',
+    payload: payload
+  };
+});
+var setClearJc = (0, _rxred.actionCreator)(function (payload) {
+  return {
+    type: 'SET_CLEAR_JC',
+    payload: payload
+  };
+});
 
 exports.setEdit = setEdit;
+exports.setUpdate = setUpdate;
+exports.setClearJc = setClearJc;
 
 /***/ }),
 /* 390 */
@@ -55291,7 +55330,6 @@ exports.AddJob = undefined;
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; // eslint-disable-line 
-// eslint-disable-line 
 // eslint-disable-line 
 // eslint-disable-line 
 
@@ -55312,10 +55350,6 @@ var _input = __webpack_require__(392);
 
 var _input2 = _interopRequireDefault(_input);
 
-var _textarea = __webpack_require__(396);
-
-var _textarea2 = _interopRequireDefault(_textarea);
-
 var _button = __webpack_require__(397);
 
 var _button2 = _interopRequireDefault(_button);
@@ -55325,6 +55359,8 @@ var _styles = __webpack_require__(21);
 var _fetches = __webpack_require__(70);
 
 var _getCfg = __webpack_require__(47);
+
+var _jobacts = __webpack_require__(389);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -55352,43 +55388,38 @@ var AddJob = function (_React$Component) {
       args[_key] = arguments[_key];
     }
 
-    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = AddJob.__proto__ || Object.getPrototypeOf(AddJob)).call.apply(_ref, [this].concat(args))), _this), _this.state = { ejob: _this.props.ejob }, _this.updateJob = function (e) {
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = AddJob.__proto__ || Object.getPrototypeOf(AddJob)).call.apply(_ref, [this].concat(args))), _this), _this.state = { ejob: _this.props.ejob, newup: 'update' }, _this.updateJob = function (e) {
       e.preventDefault();
-      console.log(_this.state.ejob);
-      var cs = _this.state.ejob.categories.replace(/\s/g, "").split(',');
-      console.log(cs);
-      var job = _this.state.ejob.job;
-      var idx = _this.state.ejob.idx;
-      var active = _this.state.ejob.active;
-      var coid = _this.state.ejob.coid;
-      var nca = cs.map(function (c) {
-        return { job: job, category: c, idx: idx, active: active, week: 0, coid: coid };
+      console.log('updateJob');
+      var cs = _this.props.ejob.curjob.categories.replace(/\s/g, "").split(',');
+      console.log('cs: ', cs);
+      var curjob = _extends({}, _this.props.ejob.curjob);
+      delete curjob.categories;
+      var newjcarr = cs.map(function (c) {
+        var ncurjob = _extends({}, curjob);
+        ncurjob.category = c;
+        return ncurjob;
       });
-      console.log(nca);
-      (0, _fetches.putJob)(nca);
-      _app.router.navigate('/jobs');
+      console.log('newjcarr: ', newjcarr);
+      if (_this.state.ejob.update) {
+        (0, _fetches.putJob)(newjcarr);
+      } else {
+        (0, _fetches.newJob)(newjcarr);
+      }
+      _app.router.navigate('/jobs?rerender');
     }, _this.jobChanged = function (e) {
-      console.log('editchanged ', e.target.value);
-      var ejob = _this.state.ejob;
-      ejob.job = e.target.value;
-      ejob.idx = 0;
-      ejob.active = 0;
-      ejob.coid = _getCfg.cfg.coid;
-      _this.setState({ ejob: ejob }, function () {
-        return console.log(_this.state.ejob);
-      });
+      var curjob = _this.props.ejob.curjob;
+      curjob.job = e.target.value;
+      curjob.idx = 0;
+      curjob.active = 0;
+      curjob.coid = _getCfg.cfg.coid;
+      _this.props.xmitChange({ curjob: curjob });
     }, _this.catChanged = function (e) {
-      console.log('editchanged ', e.target.value);
-      var ejob = _this.state.ejob;
-      console.log(ejob.categories);
-
-      ejob.categories = e.target.value;
-      _this.setState({ ejob: ejob }, function () {
-        return console.log(_this.state.ejob);
-      });
+      var curjob = _this.props.ejob.curjob;
+      curjob.categories = e.target.value;
+      _this.props.xmitChange({ curjob: curjob });
     }, _this.delJob = function () {
-      console.log(_this.state.ejob.job);
-      (0, _fetches.deleteJob)(_this.state.ejob.job);
+      (0, _fetches.deleteJob)(_this.props.ejob.job);
       _app.router.navigate('/jobs');
     }, _temp), _possibleConstructorReturn(_this, _ret);
   }
@@ -55396,12 +55427,44 @@ var AddJob = function (_React$Component) {
   _createClass(AddJob, [{
     key: 'componentDidMount',
     value: function componentDidMount() {
-      console.log(this.props);
+      console.log('hit the addmojobs');
       this.setState({ ejob: this.props.ejob });
     }
   }, {
     key: 'render',
+
+    // getQuery=()=>{
+    //   let newupd ={}
+    //   const params = this.props.cambio.page.params
+    //   if(params && params.query && params.query.split('?')[1]=='new'){
+    //     location.replace('#addjob')
+    //     newupd.label = 'new'
+    //     setTimeout(()=>{
+    //       const e = {target: {value:''}}
+    //       this.jobChanged(e)
+    //       this.catChanged(e)
+    //     },300) 
+    //   }else {
+    //     newupd.label= 'update'
+    //   }
+    //   return newupd
+    // }
     value: function render() {
+      console.log('this.props.ejob.curjob: ', this.props.ejob.curjob);
+      console.log('this.state: ', this.state);
+      var _props$ejob = this.props.ejob,
+          curjob = _props$ejob.curjob,
+          update = _props$ejob.update,
+          clearjc = _props$ejob.clearjc;
+
+      if (clearjc) {
+        (0, _jobacts.setClearJc)({ clearjc: false });
+        var e = { target: { value: '' } };
+        this.jobChanged(e);
+        this.catChanged(e);
+      }
+      console.log('update: ', update);
+      console.log('clearjc: ', clearjc);
       return _react2.default.createElement(
         'div',
         { style: style.outer },
@@ -55413,8 +55476,8 @@ var AddJob = function (_React$Component) {
             null,
             'Add or Update Job'
           ),
-          _react2.default.createElement(_input2.default, { placeholder: 'Job', value: this.state.ejob.job, onChange: this.jobChanged }),
-          _react2.default.createElement(_input2.default, { placeholder: 'Categories- comma separated or null', value: this.state.ejob.categories, onChange: this.catChanged }),
+          _react2.default.createElement(_input2.default, { placeholder: 'Job', value: curjob.job, onChange: this.jobChanged }),
+          _react2.default.createElement(_input2.default, { placeholder: 'Categories- comma separated or null', value: curjob.categories, onChange: this.catChanged }),
           _react2.default.createElement(
             _button2.default,
             { variant: 'raised', onClick: this.updateJob },
@@ -55433,7 +55496,53 @@ var AddJob = function (_React$Component) {
   return AddJob;
 }(_react2.default.Component);
 
-exports.AddJob = AddJob = (0, _mapClass2Element.mapClass2Element)(AddJob);
+var chHOC = function chHOC(Comp) {
+  // eslint-disable-line no-unused-vars
+  return function (_React$Component2) {
+    _inherits(PP, _React$Component2);
+
+    function PP(props) {
+      _classCallCheck(this, PP);
+
+      var _this2 = _possibleConstructorReturn(this, (PP.__proto__ || Object.getPrototypeOf(PP)).call(this, props));
+
+      _this2.state = {};
+
+      _this2.onChange = function (curjob) {
+        console.log('curjob: ', curjob);
+        var nstate = _extends({}, _this2.state);
+        var nprops = _extends({}, nstate.props);
+        var nejob = _extends({}, nprops.ejob);
+        nejob.curjob = curjob;
+        nprops.ejob = nejob;
+        _this2.setState({ props: nprops }, function () {
+          return console.log('this.state: ', _this2.state);
+        });
+      };
+
+      return _this2;
+    }
+
+    _createClass(PP, [{
+      key: 'render',
+      value: function render() {
+        console.log('this.props: ', this.props);
+        console.log('this.state: ', this.state);
+        return _react2.default.createElement(Comp, _extends({}, this.props, this.state, { xmitChange: this.onChange }));
+      }
+    }], [{
+      key: 'getDerivedStateFromProps',
+      value: function getDerivedStateFromProps(props, state) {
+        // eslint-disable-line no-unused-vars
+        return { props: props };
+      }
+    }]);
+
+    return PP;
+  }(_react2.default.Component);
+};
+
+exports.AddJob = AddJob = (0, _mapClass2Element.mapClass2Element)(chHOC(AddJob));
 
 exports.AddJob = AddJob;
 
@@ -55609,46 +55718,7 @@ var controlledMessage = 'You provided a `value` prop to a form field ' + 'withou
 module.exports = { controlledMessage: controlledMessage };
 
 /***/ }),
-/* 396 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var babelHelpers = __webpack_require__(22);
-/**
- * MUI React Textarea Component
- * @module react/textarea
- */
-
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _react = __webpack_require__(5);
-
-var _react2 = babelHelpers.interopRequireDefault(_react);
-
-var _textfieldHelpers = __webpack_require__(243);
-
-/**
- * Textarea constructor
- * @class
- */
-var Textarea = (0, _textfieldHelpers.textfieldWrapper)(function (props) {
-  var inputRef = props.inputRef,
-      rest = babelHelpers.objectWithoutProperties(props, ['inputRef']);
-
-  // default number of rows
-
-  if (!'rows' in rest) rest.rows = 2;
-
-  return _react2.default.createElement('textarea', babelHelpers.extends({ ref: inputRef }, rest));
-});
-
-exports.default = Textarea;
-module.exports = exports['default'];
-
-/***/ }),
+/* 396 */,
 /* 397 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -55999,6 +56069,8 @@ var SortJobs = function (_React$Component) {
           unique = _this$state.unique,
           jobs = _this$state.jobs;
 
+      console.log('jobs: ', jobs);
+      console.log('unique: ', unique);
       var njobs = jobs.map(function (ajob) {
         var idx = unique.findIndex(function (x) {
           return x.job == ajob.job;
@@ -56009,7 +56081,7 @@ var SortJobs = function (_React$Component) {
       console.log(njobs);
       (0, _fetches.postJobs)(njobs, 0);
       //router.navigate('/jobs');
-      location.replace('#jobs');
+      location.replace('#jobs?rerender');
     }, _temp), _possibleConstructorReturn(_this, _ret);
   }
 
@@ -56024,9 +56096,7 @@ var SortJobs = function (_React$Component) {
     value: function getJobs() {
       var _this2 = this;
 
-      console.log('inGetJobs');
       (0, _fetches.fetchJobs)(0).then(function (res) {
-        console.log(res.jobs);
         var unique = [].concat(_toConsumableArray(new Set(res.jobs.map(function (j) {
           return j.job;
         })))).map(function (aj, i) {
@@ -67182,9 +67252,16 @@ var _react2 = _interopRequireDefault(_react);
 
 var _getCfg = __webpack_require__(47);
 
+var _jobacts = __webpack_require__(389);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+// eslint-disable-line no-unused-vars
 var Nav = function Nav() {
+
+  var setU = function setU() {
+    (0, _jobacts.setClearJc)({ clearjc: true }), (0, _jobacts.setUpdate)({ update: false });
+  };
   return _react2.default.createElement(
     'div',
     { style: style, id: 'menu' },
@@ -67232,13 +67309,13 @@ var Nav = function Nav() {
         { style: style.li },
         _react2.default.createElement(
           'a',
-          { style: style.a, href: 'addjob', 'data-navigo': true },
+          { style: style.a, href: 'addjob', onClick: setU, 'data-navigo': true },
           'admojob'
         )
       )
     )
   );
-}; // eslint-disable-line no-unused-vars
+};
 exports.Nav = Nav;
 
 
@@ -95059,10 +95136,16 @@ var initState = {
     page: { name: 'Home', params: null }
   },
   ejob: {
-    job: 'Job',
-    categories: 'Categories-comma separated or none',
-    idx: 0,
-    active: 0 }
+    curjob: {
+      job: '',
+      categories: '',
+      idx: 0,
+      active: 0,
+      coid: ''
+    },
+    update: true,
+    clearjc: false
+  }
 };
 
 var initialBrowser = function initialBrowser() {

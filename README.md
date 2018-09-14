@@ -15,6 +15,39 @@ https://github.com/mozilla-services/react-jsonschema-form
 https://gridbyexample.com/examples/example13/
 https://www.mozilla.org/en-US/firefox/60.0a2/whatsnew/#cssgrid
 https://mozilladevelopers.github.io/playground/css-grid/
+### 94-reroo-jobs-src.4-beta0.4
+How to update from another page or server and also from inputs on the current page. getDerivedStateFromProps takes incoming props and turns it to state.props. Then changes bubbleing up from the paage enclosed by the HOC can then change that state.props. Weird.
+
+
+    let chHOC = (Comp) =>{// eslint-disable-line no-unused-vars
+      return class PP extends React.Component {
+        constructor (props){
+          super(props);
+        }
+        state={}
+        static getDerivedStateFromProps(props, state){// eslint-disable-line no-unused-vars
+          return {props}
+        }
+        onChange=(curjob)=>{
+          console.log('curjob: ', curjob)
+          let nstate  ={...this.state}
+          let nprops = {...nstate.props}
+          let nejob = {...nprops.ejob}
+          nejob.curjob = curjob
+          nprops.ejob = nejob
+          this.setState({props:nprops},()=>console.log('this.state: ', this.state))
+        }
+        render() {
+          console.log('this.props: ', this.props)
+          console.log('this.state: ', this.state)
+          return (
+            <Comp {...this.props} {...this.state} xmitChange={this.onChange}/>
+          )
+        }
+      }  
+    }
+
+    AddJob = mapClass2Element(chHOC(AddJob))
 
 ### "
 Changed the css so each component panel has independent css. 
