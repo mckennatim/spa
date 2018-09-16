@@ -11,18 +11,15 @@ class TimeCard extends React.Component{
   constructor(props){
     super(props)
   }
-  state={
-    showsub:true
-  }
   componentDidMount(){
 
   }   
   setStatBkg=()=>{
     let sta ={...style.he.st.txtsp}
-    if(this.state.showsub || 
-      (this.state.wstat &&(this.state.wstat.status=='submitted' 
-      || this.state.wstat.status=='approved' 
-      || this.state.wstat.status=='paid'
+    if(this.props.tcard.showsub || 
+      (this.props.tcard.wstat &&(this.props.tcard.wstat.status=='submitted' 
+      || this.props.tcard.wstat.status=='approved' 
+      || this.props.tcard.wstat.status=='paid'
       ))){
       sta.background ='#9eea9d'
     }
@@ -78,7 +75,7 @@ class TimeCard extends React.Component{
 
 
   renderDays=()=>{
-    const {week}=this.state;
+    const {week}=this.props;
     const {wkarr, jobs}=this.props.tcard;
     console.log('this.props: ', this.props)
     const rd = wkarr.map((d)=>{
@@ -93,9 +90,8 @@ class TimeCard extends React.Component{
   render(){
     if(this.props.tcard){  
       const{week, tcard}=this.props
-      const {wstat, hrs, emailid }=tcard;
+      const {wstat, hrs, emailid, showsub }=tcard;
       console.log('this.state: ', this.state)
-      const {showsub}=this.state
       const status= wstat ? wstat.status : "unsaved" 
       const statstyle = this.setStatBkg()
       // unsaved, inprocess, ready, submitted, approved, paid

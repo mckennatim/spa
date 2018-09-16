@@ -50,15 +50,26 @@ class Payroll extends React.Component {
     console.log('this state.tcard: ', this.state.tcard)
     let modtcard = {...this.state.tcard}
     let wkarr = modtcard.wkarr.slice()
-    let hrs =  modtcard.hrs.slice()
+    const idx = chobj.idx
     if (cmd=='iopu'){
-      const idx = chobj.idx
+      let hrs =  modtcard.hrs.slice()
       hrs[idx] = chobj.hrs
       console.log('hrs: ', hrs)
       wkarr[idx].hrs = chobj.hrs
       wkarr[idx].inout =chobj.inout
       modtcard.wkarr = wkarr
       modtcard.hrs = hrs
+    }
+    if (cmd=='jcost'){
+      let jchrs =  modtcard.jchrs.slice()
+      const njcost = chobj.jcost.slice()
+      // njcost=[{ job: "105 Green St", cat: null, hrs: 2 }]
+      const sumhrs = drnd(njcost.reduce((t,j)=>j.hrs+t, 0))
+      jchrs[idx]=sumhrs
+      wkarr[idx].jcost=njcost
+      wkarr[idx].jchrs=sumhrs
+      modtcard.wkarr = wkarr
+      modtcard.jchrs = jchrs
     }
     this.changeTcard(modtcard)
   }

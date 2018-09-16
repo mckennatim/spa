@@ -1,0 +1,89 @@
+import React from 'react'// eslint-disable-line no-unused-vars
+import {router} from '../app'
+import {App} from './App'
+import {TimeCard} from './TimeCard'
+import {Nav} from './Nav'
+import {Dog} from './Dog'
+import {Registered} from './Registered'
+import {pStyle} from '../styles'
+import {loadGithubFollowers} from '../actions/test';// eslint-disable-line no-unused-vars
+// import { render } from '../utilities/wfuncs';
+import {mapClass2Element} from '../hoc/mapClass2Element'
+const help = require('../help.md')
+
+const About = () =>{
+  const renderHelp=()=>{
+    return(
+      <div dangerouslySetInnerHTML={{__html: help}}/>
+    )
+  }
+  const helpHtml = renderHelp()
+  const style = {
+    background: '#99CCCC',
+    margin:'8px',
+    padding: '5px'
+  }
+  return(
+    <div style={style}>
+      <h4> ReRoo Tcard</h4>
+      {helpHtml}
+    </div>
+  )
+}
+
+class Cat extends React.Component{
+  cat='mabibi'
+  render(){
+    return(
+      <h3> Cat is {this.cat}</h3>
+    )
+  }
+}
+Cat = mapClass2Element(Cat)
+
+const Home = () =>{
+  function goprod(){
+    console.log("in home goprod")
+    router.navigate('/about');
+  }
+    const style = {
+    ...pStyle, outer: {...pStyle.outer, background: '#CC66CC'}
+  }
+  return(
+    <div style={style.outer}>
+      <h3> Home </h3>
+      <button id="but" onClick={goprod}>goto about</button>
+    </div>
+  )
+}
+//const multi=[] //multi delared but empty defaults to single panel
+
+const multi =[
+  {
+    pri:'About', 
+    mul:[
+      ['About', 'TimeCard'],
+      ['About', 'TimeCard', 'Cat'],
+      ['About','TimeCard', 'Cat', 'Home']
+    ]
+  },
+  {
+    pri:'Cat',
+    mul:[
+      ['Cat', 'About']
+    ]
+  },  
+  {
+    pri:'TimeCard',
+    mul:[
+      ['TimeCard', 'About'],
+      ['TimeCard', 'About', 'Cat']
+      
+    ]
+  }
+]
+
+//['watch', 'phone', 'phoneL', 'tablet', 'tabletL', 'laptop']
+const panes= [1,1,2,2,3,3,4]
+
+export {TimeCard, Cat, About, Home, Dog, App, Nav, Registered, multi, panes}

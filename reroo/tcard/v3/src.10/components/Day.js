@@ -1,0 +1,219 @@
+import React from 'react'// eslint-disable-line no-unused-vars
+var moment = require('moment');
+import {putTcard, putTcardJc, delTcardPu} from '../services/fetches'
+import {JobCost} from './JobCost'// eslint-disable-line no-unused-vars
+
+
+
+class Day extends React.Component {// eslint-disable-line no-unused-vars
+  
+  tinel =null
+  hrs=0
+  list = 'empty'
+    componentDidMount(){
+    this.tinel = document.getElementById('tin'+this.props.data.idx)
+    this.setPunch()
+  } 
+
+  setPunch =()=>{
+    if(this.props.data.inout.length % 2 == 0 || this.props.data.inout.length==0){
+      return 'in'
+    }else{
+      return 'out'
+    }
+  }
+
+  appendTime=()=>{
+    if(this.tinel.value.length!=5){
+      window.alert('could you check that you entered a time before hitting the punch clock')
+    }else{
+      const ndata = {...this.props.data}
+      ndata.inout.push(this.tinel.value)
+      ndata.hrs=resumHrs(ndata.inout)
+      console.log('ndata: ', ndata)
+      console.log('resumHrs(ndata.inout): ', resumHrs(ndata.inout))
+      this.setPunch()
+      this.props.dayChanges('punch',ndata)
+      putTcard(ndata)
+    }
+  }
+
+  delDayPu =(wdprt)=>{
+    console.log('in delDayPu: ', wdprt)
+    this.props.dayChanges('delpu',wdprt)
+    delTcardPu(wdprt)
+  }
+  
+  handleJcChanges=(ch)=>{
+    if(ch.cmd=='jcost'){
+      const wdprt = this.props.data.wdprt
+      console.log('ch: ', ch)
+      console.log('this.props.data: ', this.props.data)
+      console.log('this.props.data.wdprt: ', this.props.data.wdprt)
+      this.props.dayChanges('jcost',{idx:this.props.data.idx, jcost:ch.jcost})
+      const rec = {wdprt:wdprt, jcost:ch.jcost}
+      console.log('rec: ', JSON.stringify(rec))
+      putTcardJc(rec)
+    }
+    if(ch.cmd=='punch'){
+      this.delDayPu(ch.wdprt)
+    }
+  }
+
+  renderIoList =(data)=>{
+    const perarr = createPeriodArray(data.inout)
+    return (
+    <div style={style.table.div} >
+      <table style={style.table.table}><tbody>
+        <tr style={style.table.tr}>
+          <th style={style.table.thtd}>in</th>
+          <th style={style.table.thtd}>out</th>
+          <th style={style.table.thtd}>hrs</th>
+        </tr>
+        {perarr.map((per, i)=>{
+          return(
+          <tr key={i} style={style.table.tr}>
+            <td style={style.table.thtd}>{per[0]}</td>
+            <td style={style.table.thtd}>{per[1]}</td>
+            <td style={style.table.thtd}>{per[2]}</td>
+          </tr>
+          )
+        })
+        }    
+      </tbody></table>
+    </div>
+    )
+  }
+  render() { 
+    const tin= 'tin'+this.props.data.idx
+    const {data, jobs}=this.props
+    const {hrs, jcost, jchrs, wdprt}=data
+    const punch = this.setPunch()
+    const inoutList = this.renderIoList(data)
+    return ( 
+      <div style={style.tcardDiv}>
+        <div style={style.daydate.container}>
+          <span style={style.daydate.day}> {moment(data.wdprt).format('ddd')} </span>
+          <br/>
+          <span>  {moment(data.wdprt).format('MM/DD/YY')}</span>
+        </div>
+        <div style={style.hrs.div}>
+          <span style={style.hrs.span}>{hrs}</span>
+        </div>
+        <div style={style.punchclock.container}>
+          <button style={style.punchclock.button} onClick={this.appendTime}>punch {punch}</button><br/>
+          <input style={style.punchclock.input} id={tin} type="time" /><br/>
+        </div>
+        {inoutList}
+        <JobCost jcost={jcost} jchrs={jchrs} puhrs={hrs} jobs={jobs} wdprt={wdprt} jcChanges={this.handleJcChanges}/>
+      </div>
+     );
+  }
+}
+
+export{Day}
+
+const style={
+  tcardDiv:{
+    border: '2px solid black',
+    background: 'white'
+  },
+  punchclock:{
+    container:{
+      padding:'2px',
+      border: '2px green solid',
+      borderRadius: '12px',
+      float: 'left',
+      background: 'white'
+    },
+    input:{
+      borderRadius: '0px 0px 12px 12px'
+    },
+    button:{
+      borderRadius: '12px 12px 0px 0px',
+      width: '100px',
+      background: 'white'
+    }
+  },
+  daydate:{
+    container:{
+      float:'left',
+      width:'70px',
+      background: 'silver'
+    },
+    day:{
+      fontSize: '25px'
+    }
+  },
+  hrs:{
+    div:{
+      float: 'right',
+      width: '80px',
+      fontSize: '18px',
+      textAlign: 'right'
+    },
+    span:{
+
+    }
+  },
+  table:{
+    div:{
+      float:'right',
+      background: 'white',
+      width: '130px'
+    },
+    table:{
+      borderCollapse: 'collapse',
+      width: '100%'
+    },
+    tr:{
+      padding: '0px',
+      margin: '0px'
+    },
+    thtd:{
+      padding: '0px',
+      margin: '0px'
+    }
+  }
+} 
+
+const io2hrs = (pin, pout)=>{
+  const ti = moment.duration(moment(pout, "HH:mm").diff(moment(pin, "HH:mm")));
+  const hrs = (ti._data.hours + ti._data.minutes/60).toFixed(2);  
+  return hrs
+}
+
+const createPeriodArray = (inout)=>{
+  let pin, pout, phrs, ioperiods=[], ioper=[]
+  inout.map((io,i)=>{
+    if(i % 2 == 1){
+      pout = io
+      phrs = io2hrs(pin,pout)
+      ioper.push(pout)
+      ioper.push(phrs*1)
+      ioperiods.splice(-1,1)
+      ioperiods.push(ioper)
+    }
+    if(i % 2 == 0){
+      pin = io
+      ioper = [pin]
+      ioperiods.push(ioper)
+    }
+  }) 
+  return ioperiods
+}
+
+const resumHrs = (inout)=>{
+  let pin, pout, phrs, thrs=0
+  inout.map((io,i)=>{
+    if(i % 2 == 1){
+      pout = io
+      phrs = io2hrs(pin,pout)
+      thrs += phrs*1
+    }
+    if(i % 2 == 0){
+      pin = io
+    }
+  }) 
+  return thrs  
+}

@@ -51731,15 +51731,28 @@ var Payroll = function (_React$Component) {
       console.log('this state.tcard: ', _this.state.tcard);
       var modtcard = _extends({}, _this.state.tcard);
       var wkarr = modtcard.wkarr.slice();
-      var hrs = modtcard.hrs.slice();
+      var idx = chobj.idx;
       if (cmd == 'iopu') {
-        var idx = chobj.idx;
+        var hrs = modtcard.hrs.slice();
         hrs[idx] = chobj.hrs;
         console.log('hrs: ', hrs);
         wkarr[idx].hrs = chobj.hrs;
         wkarr[idx].inout = chobj.inout;
         modtcard.wkarr = wkarr;
         modtcard.hrs = hrs;
+      }
+      if (cmd == 'jcost') {
+        var jchrs = modtcard.jchrs.slice();
+        var njcost = chobj.jcost.slice();
+        // njcost=[{ job: "105 Green St", cat: null, hrs: 2 }]
+        var sumhrs = (0, _wfuncs.drnd)(njcost.reduce(function (t, j) {
+          return j.hrs + t;
+        }, 0));
+        jchrs[idx] = sumhrs;
+        wkarr[idx].jcost = njcost;
+        wkarr[idx].jchrs = sumhrs;
+        modtcard.wkarr = wkarr;
+        modtcard.jchrs = jchrs;
       }
       _this.changeTcard(modtcard);
     };
@@ -51950,13 +51963,9 @@ var TimeCard = function (_React$Component) {
 
     var _this = _possibleConstructorReturn(this, (TimeCard.__proto__ || Object.getPrototypeOf(TimeCard)).call(this, props));
 
-    _this.state = {
-      showsub: true
-    };
-
     _this.setStatBkg = function () {
       var sta = _extends({}, style.he.st.txtsp);
-      if (_this.state.showsub || _this.state.wstat && (_this.state.wstat.status == 'submitted' || _this.state.wstat.status == 'approved' || _this.state.wstat.status == 'paid')) {
+      if (_this.props.tcard.showsub || _this.props.tcard.wstat && (_this.props.tcard.wstat.status == 'submitted' || _this.props.tcard.wstat.status == 'approved' || _this.props.tcard.wstat.status == 'paid')) {
         sta.background = '#9eea9d';
       }
       return sta;
@@ -52010,7 +52019,7 @@ var TimeCard = function (_React$Component) {
     };
 
     _this.renderDays = function () {
-      var week = _this.state.week;
+      var week = _this.props.week;
       var _this$props$tcard = _this.props.tcard,
           wkarr = _this$props$tcard.wkarr,
           jobs = _this$props$tcard.jobs;
@@ -52038,11 +52047,10 @@ var TimeCard = function (_React$Component) {
             tcard = _props.tcard;
         var wstat = tcard.wstat,
             hrs = tcard.hrs,
-            emailid = tcard.emailid;
+            emailid = tcard.emailid,
+            showsub = tcard.showsub;
 
         console.log('this.state: ', this.state);
-        var showsub = this.state.showsub;
-
         var status = wstat ? wstat.status : "unsaved";
         var statstyle = this.setStatBkg();
         // unsaved, inprocess, ready, submitted, approved, paid
@@ -52213,11 +52221,19 @@ var Day = function (_React$Component) {
       if (_this.tinel.value.length != 5) {
         window.alert('could you check that you entered a time before hitting the punch clock');
       } else {
-        var ndata = _extends({}, _this.props.data);
-        ndata.inout.push(_this.tinel.value);
-        ndata.hrs = resumHrs(ndata.inout);
+        var data = _extends({}, _this.props.data);
+        var inout = data.inout.slice(0);
+        inout.push(_this.tinel.value);
+        var modhrs = resumHrs(inout);
+        var purec = {
+          idx: data.idx,
+          wdprt: data.wdprt,
+          emailid: data.emailid,
+          inout: inout,
+          hrs: modhrs
+        };
         _this.setPunch();
-        _this.modifyIoPu(ndata);
+        _this.modifyIoPu(purec);
       }
     }, _this.modifyIoPu = function (purec) {
       (0, _fetches.putTcardPu)(purec);
