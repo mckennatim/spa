@@ -6,7 +6,6 @@ class JobCost extends React.Component {
 
 
   showJobs = ()=>{
-    console.log('this.props.jobs: ', this.props.jobs)
     let sh = this.state.showjobs ? false : true
     this.setState({showjobs:sh})
   }
@@ -16,7 +15,6 @@ class JobCost extends React.Component {
   }
 
   inpKey =(e)=>{
-    console.log('event: ', e.keyCode)
     if(e.keyCode==13){
       const val = drnd(e.target.value)
       const idx = e.target.parentElement.getAttribute('ix')
@@ -43,7 +41,6 @@ class JobCost extends React.Component {
   
   addSome=(e)=>{
     this.setState({hrsleft: drnd(this.props.puhrs-this.props.jchrs)})
-    console.log('adding: ', e.target.getAttribute('ix'))
     this.setState({showon:e.target.getAttribute('ix')})
   }
 

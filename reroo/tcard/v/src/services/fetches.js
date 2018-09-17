@@ -17,7 +17,7 @@ const fetchSettings=()=>{
           }
         })
         .catch((e)=>{
-          return {qmessage: e.message+' - perhaps you need to register'}
+          return {qmessage: e.message+'fetchSettings- perhaps you need to register'}
         })
       )         
   }else{
@@ -42,17 +42,16 @@ const fetchTcard=(wk)=>{
           }
         })
         .catch((e)=>{
-          return {qmessage: e.message}
+          return {qmessage: e.message + ' from fetchTcard'}
         })
       )         
   }else{
-    let p2 =Promise.resolve({qmessage:'you dont exist! '})
+    let p2 =Promise.resolve({qmessage:'click register back on the app '})
     return p2
   }
 }
 
 const putTcardWk=(wkstat)=>{
-  console.log('wkstat: ', wkstat)
   var lsh = ls.getItem();
   if(geta('lsh.token', lsh)){
     let url= cfg.url.api+'/tcard/updstat'

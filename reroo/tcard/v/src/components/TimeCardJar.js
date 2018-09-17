@@ -25,7 +25,6 @@ class TimeCardJar extends React.Component {
     fetchSettings() 
       .then((res)=>{
         if (res.qmessage){
-          console.log('res.qmessage: ', res.qmessage)
           window.alert(res.qmessage)
         }else{        
           ls.modItem('firstday', res.firstday)
@@ -38,33 +37,33 @@ class TimeCardJar extends React.Component {
       .then((res)=>{
         this.emailId=res.emailid
         if (res.qmessage){
-          console.log('res.qmessage: ', res.qmessage)
           window.alert(res.qmessage)
         }else{
-          console.log('res: ', res)
-          console.log('this.setShowSub(res): ', this.setShowSub(res))
           this.setState({tcard:res, gottcard:true, showsub:this.setShowSub(res)})
         }
       })
   }
 
+  handleWeekChanged = (wk)=>{
+    this.setState({week:wk})
+    this.getTimeCard(wk)
+  }
+
   setShowSub =(tcard)=>{
     let showsub=false
-    if(tcard.wstat.status=='ready'){
+    if(tcard.wstat && tcard.wstat.status=='ready'){
       showsub=true
     }
     return showsub
   }
 
   handleTcardChanges=(cmd,chobj)=>{
-    console.log('chobj: ', chobj)
     let modtcard = {...this.state.tcard}
     let wkarr = modtcard.wkarr.slice()
     const idx = chobj.idx
     if (cmd=='iopu'){
       let hrs =  modtcard.hrs.slice()
       hrs[idx] = chobj.hrs
-      console.log('hrs: ', hrs)
       wkarr[idx].hrs = chobj.hrs
       wkarr[idx].inout =chobj.inout
       modtcard.wkarr = wkarr
@@ -96,8 +95,6 @@ class TimeCardJar extends React.Component {
   reCalcStatus =(modtcard)=>{
     const {hrs, jchrs, wstat}=modtcard
     let modwstat= {...wstat}
-    console.log('hrs array: ', hrs)
-    console.log('jchrs array: ', jchrs)
     const wkpuhrs=drnd(hrs.reduce((t,h)=>t+h,0))
     const wkjchrs= drnd(jchrs.reduce((t,h)=>t+h,0))// eslint-disable-line no-unused-vars
     const st = hrs //[1,0,1,0,1,1,1]
@@ -112,7 +109,6 @@ class TimeCardJar extends React.Component {
       status = 'ready'
       showsub=true
     }
-    console.log('status: ', status)
     modwstat={...modwstat, status:status, hrs:wkpuhrs}
     modtcard={...modtcard, wstat:modwstat}
     this.setState({showsub})
@@ -123,7 +119,7 @@ class TimeCardJar extends React.Component {
   renderTimecard = ()=>{
     if(this.state.gottcard){
       return (
-        <TimeCard week={this.state.week} yr={this.state.yr} tcard={this.state.tcard} ismobile={this.props.responsive.ismobile} showsub={this.state.showsub} tcardChanges={this.handleTcardChanges}/>
+        <TimeCard week={this.state.week} yr={this.state.yr} tcard={this.state.tcard} ismobile={this.props.responsive.ismobile} showsub={this.state.showsub} tcardChanges={this.handleTcardChanges} weekChanged={this.handleWeekChanged}/>
       )
     }
   }
@@ -132,10 +128,6 @@ class TimeCardJar extends React.Component {
     const tcard = this.renderTimecard()
     return ( 
       <div >
-        <div style={style.he}>
-          <div style={style.he.title}>TimeCardJar</div>
-        </div>
- 
         <div>
           {tcard}
         </div>
@@ -148,35 +140,3 @@ TimeCardJar=mapClass2Element(TimeCardJar)
  
 export {TimeCardJar} ;
 
-let style={
-  he:{
-    height:'60px',
-    background:'grey',
-    title:{
-      float: 'right'
-    }
-  },
-  subm:{
-    div:{
-      overflow:'hidden',
-      background: 'silver'
-    },
-    ul:{
-      width: '98%',
-      padding: '5px',
-      listStyle: 'none',
-      float: 'left'
-    },
-    li:{
-      overflow:'hidden',
-      padding: '6px',
-      border:'1px solid',
-      id:{
-        float: 'left'
-      },
-      stat: {
-        float: 'right'
-      }
-    }
-  }
-}

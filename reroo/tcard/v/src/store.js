@@ -20,7 +20,7 @@ const initState = {
     categories:'Categories-comma separated or none', 
     idx:0, 
     active:0,
-    tcemail:lsemail
+    email:lsemail
   }
 };
 

@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom'
 var moment = require('moment');
 import {ls} from '../utilities/getCfg'
 
-var lsh = ls.getItem()
+// var lsh = ls.getItem()
 
 const geta=(dotstr, obj)=>{
   return dotstr.split(".")
@@ -64,7 +64,7 @@ const processDb4app =(res)=>{
   const wkarr = wkendLast(adjWk4app(ls.getKey('firstday'), res.wkarr))
   const hrs= sumThing(wkarr, 'hrs')
   const jchrs= sumThing(wkarr, 'jchrs')
-  return {wkarr, hrs, jchrs, emailid:lsh.email, jobs:res.jobs, wstat:res.wstat}
+  return {wkarr, hrs, jchrs, emailid:ls.getKey('email'), jobs:res.jobs, wstat:res.wstat}
 }
 
 const adjDay4db = (firstday, rec)=>{

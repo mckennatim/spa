@@ -21,18 +21,6 @@ class Day extends React.Component {// eslint-disable-line no-unused-vars
     }
   }
 
-  // ifNotMobileAppend =()=>{
-  //   if(!this.props.ismobile){
-  //     this.appendTime()
-  //   }
-  // }  
-
-  // ifMobileAppend =()=>{
-  //   if(this.props.ismobile){
-  //     this.appendTime()
-  //   }
-  // }
-
   appendTime=()=>{
     if(this.tinel.value.length!=5){
       window.alert('could you check that you entered a time before hitting the punch clock')
@@ -71,8 +59,6 @@ class Day extends React.Component {// eslint-disable-line no-unused-vars
     }
     if(ch.cmd=='clpu'){
       const data = {...this.props.data}
-      // const deldb = {wdprt:data.wdprt, emailid:data.emailid}
-      // delTcardPu(deldb)
       const purec = {
         idx:data.idx,
         wdprt:data.wdprt,

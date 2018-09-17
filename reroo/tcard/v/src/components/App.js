@@ -32,7 +32,7 @@ class App extends React.Component{
     return(
       <div>
         <div className="header">
-        <span>ReRoo Payroll  </span>
+        <span>Timecards    </span>
           {this.loadNav()}
         </div>
         <div className="container">

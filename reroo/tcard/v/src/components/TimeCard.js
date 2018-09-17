@@ -22,6 +22,13 @@ class TimeCard extends React.Component{
     return sta
   }
 
+  chwk=(e)=>{
+    let wk =e.target.value
+    if(wk>0 && wk<=52){
+      this.props.weekChanged(wk)
+    }
+  }
+
   handleDayChanges = (cmd, newdata)=>{
     this.props.tcardChanges(cmd,newdata)
   }
@@ -32,7 +39,6 @@ class TimeCard extends React.Component{
   renderDays=()=>{
     const {week}=this.props;
     const {wkarr, jobs}=this.props.tcard;
-    console.log('this.props: ', this.props)
     const rd = wkarr.map((d)=>{
       return(
         <Day key={d.idx} data={d} ismobile={this.props.ismobile} week={week} jobs={jobs} dayChanges={this.handleDayChanges}/>
@@ -42,7 +48,6 @@ class TimeCard extends React.Component{
   }
 
   render(){
-    console.log('this.props.tcard: ', this.props.tcard)
     if(this.props.tcard){  
       const{week, showsub, tcard}=this.props
       const {wstat, hrs, emailid}=tcard;
@@ -61,7 +66,9 @@ class TimeCard extends React.Component{
             </span>
           </div>
           <div style={style.inp}>
-            <span>week {week} {emailid}
+
+            <span>week             
+              <input type="number" value={week} onChange={this.chwk} style={{width:"35px"}}/> {emailid}
             </span>
           </div>
           <div style={style.thrs}>

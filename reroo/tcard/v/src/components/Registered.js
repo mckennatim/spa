@@ -13,12 +13,9 @@ pStyle.outer.background='#C4A265'
 
 function Registered(props){
   const onSuccess = () =>{
-    console.log('registered success: ')
   }
   const hitButton=()=>{
-    console.log('in hitButton')
     setTcEmail({tcemail:mobj.email})
-    //switchPage({name: 'TimeCard', params: null})
     location.replace('#tcard')
   }
 
@@ -26,15 +23,12 @@ function Registered(props){
   var regstr = 'dog'
   const query= props.cambio.page.params.query;
   var mobj = parseQuery(query)
-  console.log(mobj);
   
   if (mobj!=undefined) {
     if(Object.keys(mobj).find((x)=>x=='message')){
-      console.log('ie message');
       regstr=decodeURI(mobj.message)
     }else{
       if(mobj.email){
-        console.log('hay mobj')
         em = mobj.email
       }else {
         em = ls.getKey('email')
