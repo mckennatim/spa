@@ -15,6 +15,8 @@ https://github.com/mozilla-services/react-jsonschema-form
 https://gridbyexample.com/examples/example13/
 https://www.mozilla.org/en-US/firefox/60.0a2/whatsnew/#cssgrid
 https://mozilladevelopers.github.io/playground/css-grid/
+### 97-timecards-jobs.src.1.registered-common.src1.fectches
+### 96-reroo-payroll-V1-tcard-v
 ### 95-reroo-payroll-src.2
 hay flowchart. todo submitted and hilight colors
 ### 94-reroo-jobs-src.4-beta0.4
