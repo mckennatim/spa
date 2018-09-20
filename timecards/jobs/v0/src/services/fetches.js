@@ -51,7 +51,6 @@ const fetchJobs=(wk)=>{
 }
 const postJobs=(jobs,wk)=>{
   var lsh = ls.getItem();
-  console.log(jobs)
   if(geta('lsh.token', lsh)){
     let url= cfg.url.api+'/jobs/post/'+wk
     let options= {

@@ -3,7 +3,7 @@ var moment = require('moment');
 import {router} from '../app'
 import {mapClass2Element} from '../hoc/mapClass2Element'
 import {fetchJobs, postJobs, fetchSettings, putJob } from '../services/fetches'
-import{adjWdprtDn, padWk} from  '../utilities/reroo'
+import{adjWdprtDn, padWk} from  '../../../../common/v0/src/utilities/reroo'
 import { setEdit, setUpdate, setClearJc} from '../actions/jobacts';
 
 
@@ -14,7 +14,8 @@ class Jobs extends React.Component{
     wk: moment().week(),
     filt: 'all',
     yr: moment().format('YYYY'),
-    dddMMDD:''
+    dddMMDD:'',
+    firstday:3
   }
 
   dwk=null
@@ -28,7 +29,10 @@ class Jobs extends React.Component{
   getSettings=()=>{
     fetchSettings()     
       .then((res)=>{
-        this.setState({firstday: res.firstday},()=>{})
+        console.log('res: ', res)
+        this.setState({firstday: res.firstday, coid:res.coid},()=>{
+          this.alterJobsYdate(0) 
+        })
       })
 
   }
@@ -92,7 +96,7 @@ class Jobs extends React.Component{
   alterDddMMDD=(wk)=>{
     let wdprt = `${this.state.yr}-W${padWk(wk)}-${this.state.firstday}`
     wdprt = adjWdprtDn(this.state.firstday, wdprt)
-    return moment(wdprt).format('ddd MM/DD')
+    return moment(wdprt).format("ddd MM/DD")
   }
 
   sav2wk = ()=>{
@@ -101,7 +105,6 @@ class Jobs extends React.Component{
       window.alert('please select a week')
       return
     } 
-    console.log(wk);
     const jobs = this.state.jobs
       .filter((j)=>j.active)
       .map((j)=>{return {job: j.job, category: j.category,   active: j.active*1, idx: j.idx, week:wk, coid:j.coid}})

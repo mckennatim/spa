@@ -24,20 +24,19 @@ class AddJob extends React.Component {
 
   updateJob=(e)=>{
     e.preventDefault()
+    console.log('this.props.ejob.curjob: ', this.props.ejob.curjob)
     const cs=this.props.ejob.curjob.categories.replace(/\s/g, "").split(',')
     const curjob = {...this.props.ejob.curjob}
     delete curjob.categories
+    curjob.week=0
+    curjob.coid=this.state.coid
     const newjcarr = cs.map((c)=>{
       const ncurjob = {...curjob}
       ncurjob.category=c
       return ncurjob
     })
     console.log('newjcarr: ', newjcarr)
-    if (this.state.ejob.update){
       putJob(newjcarr)
-    } else{
-      newJob(newjcarr)
-    }
     router.navigate('/jobs?rerender');
   }
   jobChanged =(e)=>{

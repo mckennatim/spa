@@ -9931,7 +9931,6 @@ var fetchJobs = function fetchJobs(wk) {
 };
 var postJobs = function postJobs(jobs, wk) {
   var lsh = _getCfg.ls.getItem();
-  console.log(jobs);
   if ((0, _wfuncs.geta)('lsh.token', lsh)) {
     var url = _getCfg.cfg.url.api + '/jobs/post/' + wk;
     var options = {
@@ -54212,7 +54211,7 @@ var _mapClass2Element = __webpack_require__(21);
 
 var _fetches = __webpack_require__(71);
 
-var _reroo = __webpack_require__(387);
+var _reroo = __webpack_require__(762);
 
 var _jobacts = __webpack_require__(72);
 
@@ -54246,10 +54245,14 @@ var Jobs = function (_React$Component) {
       wk: moment().week(),
       filt: 'all',
       yr: moment().format('YYYY'),
-      dddMMDD: ''
+      dddMMDD: '',
+      firstday: 3
     }, _this.dwk = null, _this.getSettings = function () {
       (0, _fetches.fetchSettings)().then(function (res) {
-        _this.setState({ firstday: res.firstday }, function () {});
+        console.log('res: ', res);
+        _this.setState({ firstday: res.firstday, coid: res.coid }, function () {
+          _this.alterJobsYdate(0);
+        });
       });
     }, _this.getJobs = function () {
       _this.alterJobsYdate(0);
@@ -54302,14 +54305,13 @@ var Jobs = function (_React$Component) {
     }, _this.alterDddMMDD = function (wk) {
       var wdprt = _this.state.yr + '-W' + (0, _reroo.padWk)(wk) + '-' + _this.state.firstday;
       wdprt = (0, _reroo.adjWdprtDn)(_this.state.firstday, wdprt);
-      return moment(wdprt).format('ddd MM/DD');
+      return moment(wdprt).format("ddd MM/DD");
     }, _this.sav2wk = function () {
       var wk = _this.state.wk;
       if (wk === undefined || wk == 0) {
         window.alert('please select a week');
         return;
       }
-      console.log(wk);
       var jobs = _this.state.jobs.filter(function (j) {
         return j.active;
       }).map(function (j) {
@@ -54690,90 +54692,7 @@ var storageLocal = function storageLocal(itemName) {
 exports.storageLocal = storageLocal;
 
 /***/ }),
-/* 387 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-var moment = __webpack_require__(1);
-
-var processDb4app = function processDb4app(firstday, emailid, res) {
-  var wkarr = wkendLast(adjWk4app(firstday, res.wkarr));
-  var hrs = sumThing(wkarr, 'hrs');
-  var jchrs = sumThing(wkarr, 'jchrs');
-  return { wkarr: wkarr, hrs: hrs, jchrs: jchrs, emailid: emailid, jobs: res.jobs, wstat: res.wstat };
-};
-
-var adjDay4db = function adjDay4db(firstday, rec) {
-  var d = _extends({}, rec);
-  if (firstday != 1 && d.wdprt.slice(-1) >= firstday) {
-    console.log('it is greater: ');
-    d.wdprt = moment(d.wdprt).add(7, "days").format("YYYY-[W]WW-E");
-  }
-  return d;
-};
-var adjWdprtDn = function adjWdprtDn(firstday, wdprt) {
-  var mowdprt = moment(wdprt);
-  var nwdprt = mowdprt.format("YYYY-[W]WW-E");
-  if (firstday != 1 && wdprt.slice(-1) >= firstday) {
-    nwdprt = mowdprt.subtract(7, "days").format("YYYY-[W]WW-E");
-  }
-  return nwdprt;
-};
-
-var padWk = function padWk(wk) {
-  return wk.toString().padStart(2, '0');
-};
-
-exports.processDb4app = processDb4app;
-exports.adjDay4db = adjDay4db;
-exports.adjWdprtDn = adjWdprtDn;
-exports.padWk = padWk;
-
-
-var adjWk4app = function adjWk4app(firstday, wkarr) {
-  var appwkarr = wkarr.map(function (d) {
-    if (firstday != 1 && d.wdprt.slice(-1) >= firstday) {
-      d.wdprt = moment(d.wdprt).subtract(7, "days").format("YYYY-[W]WW-E");
-    }
-    return d;
-  }).sort(function (a, b) {
-    return a.wdprt > b.wdprt;
-  });
-  return appwkarr;
-};
-
-var wkendLast = function wkendLast(apwa) {
-  for (var i = 6; i <= 7; i++) {
-    var fi = apwa.findIndex(function (a) {
-      return a.wdprt.slice(-1) == i;
-    });
-    var rec = apwa[fi];
-    apwa.splice(fi, 1);
-    apwa.push(rec);
-  }
-  var napwa = apwa.map(function (wa, i) {
-    wa.idx = i;
-    return wa;
-  });
-  return napwa;
-};
-
-var sumThing = function sumThing(arr, fld) {
-  var narr = arr.map(function (a) {
-    return a[fld];
-  });
-  return narr;
-};
-
-/***/ }),
+/* 387 */,
 /* 388 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -55114,20 +55033,19 @@ var AddJob = function (_React$Component) {
 
     return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = AddJob.__proto__ || Object.getPrototypeOf(AddJob)).call.apply(_ref, [this].concat(args))), _this), _this.state = { ejob: _this.props.ejob, newup: 'update' }, _this.updateJob = function (e) {
       e.preventDefault();
+      console.log('this.props.ejob.curjob: ', _this.props.ejob.curjob);
       var cs = _this.props.ejob.curjob.categories.replace(/\s/g, "").split(',');
       var curjob = _extends({}, _this.props.ejob.curjob);
       delete curjob.categories;
+      curjob.week = 0;
+      curjob.coid = _this.state.coid;
       var newjcarr = cs.map(function (c) {
         var ncurjob = _extends({}, curjob);
         ncurjob.category = c;
         return ncurjob;
       });
       console.log('newjcarr: ', newjcarr);
-      if (_this.state.ejob.update) {
-        (0, _fetches.putJob)(newjcarr);
-      } else {
-        (0, _fetches.newJob)(newjcarr);
-      }
+      (0, _fetches.putJob)(newjcarr);
       _app.router.navigate('/jobs?rerender');
     }, _this.jobChanged = function (e) {
       var curjob = _this.props.ejob.curjob;
@@ -55947,8 +55865,6 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }(); // eslint-disable-line no-unused-vars
 
-//import {pStyle} from '../styles'
-
 
 var _react = __webpack_require__(5);
 
@@ -55971,10 +55887,6 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 // eslint-disable-line no-unused-vars
-// const style = {
-//   ...pStyle, outer: {...pStyle.outer, background: '#C4A265'}
-// }
-// pStyle.outer.background='#C4A265'
 
 var reorder = function reorder(list, startIndex, endIndex) {
   var result = Array.from(list);
@@ -55992,12 +55904,10 @@ var grid = 8;
 
 var getItemStyle = function getItemStyle(isDragging, draggableStyle) {
   return _extends({
-    // some basic styles to make the items look a bit nicer
     userSelect: 'none',
     padding: grid * 2,
     margin: '0 0 ' + grid + 'px 0',
 
-    // change background colour if dragging
     background: isDragging ? 'lightgreen' : 'grey'
 
   }, draggableStyle);
@@ -56032,7 +55942,6 @@ var SortJobs = function (_React$Component) {
       unique: [{ id: 99, content: 'dog' }]
     }, _this.dwk = null, _this.onDragEnd = function (result) {
       // dropped outside the list
-      console.log(_this.state);
       if (!result.destination) {
         return;
       }
@@ -56043,8 +55952,6 @@ var SortJobs = function (_React$Component) {
           unique = _this$state.unique,
           jobs = _this$state.jobs;
 
-      console.log('jobs: ', jobs);
-      console.log('unique: ', unique);
       var njobs = jobs.map(function (ajob) {
         var idx = unique.findIndex(function (x) {
           return x.job == ajob.job;
@@ -56052,7 +55959,6 @@ var SortJobs = function (_React$Component) {
         delete ajob.id;
         return _extends({}, ajob, { idx: idx });
       });
-      console.log(njobs);
       (0, _fetches.postJobs)(njobs, 0);
       //router.navigate('/jobs');
       location.replace('#jobs?rerender');
@@ -95593,6 +95499,90 @@ var initialBrowser = function initialBrowser() {
 
 initState.responsive = initialBrowser();
 exports.initState = initState;
+
+/***/ }),
+/* 762 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var moment = __webpack_require__(1);
+
+var processDb4app = function processDb4app(firstday, emailid, res) {
+  var wkarr = wkendLast(adjWk4app(firstday, res.wkarr));
+  var hrs = sumThing(wkarr, 'hrs');
+  var jchrs = sumThing(wkarr, 'jchrs');
+  return { wkarr: wkarr, hrs: hrs, jchrs: jchrs, emailid: emailid, jobs: res.jobs, wstat: res.wstat };
+};
+
+var adjDay4db = function adjDay4db(firstday, rec) {
+  var d = _extends({}, rec);
+  if (firstday != 1 && d.wdprt.slice(-1) >= firstday) {
+    console.log('it is greater: ');
+    d.wdprt = moment(d.wdprt).add(7, "days").format("YYYY-[W]WW-E");
+  }
+  return d;
+};
+var adjWdprtDn = function adjWdprtDn(firstday, wdprt) {
+  var mowdprt = moment(wdprt);
+  var nwdprt = mowdprt.format("YYYY-[W]WW-E");
+  if (firstday > 4 && wdprt.slice(-1) >= firstday) {
+    nwdprt = mowdprt.subtract(7, "days").format("YYYY-[W]WW-E");
+  }
+  return nwdprt;
+};
+
+var padWk = function padWk(wk) {
+  return wk.toString().padStart(2, '0');
+};
+
+exports.processDb4app = processDb4app;
+exports.adjDay4db = adjDay4db;
+exports.adjWdprtDn = adjWdprtDn;
+exports.padWk = padWk;
+
+
+var adjWk4app = function adjWk4app(firstday, wkarr) {
+  var appwkarr = wkarr.map(function (d) {
+    if (firstday > 4 && d.wdprt.slice(-1) >= firstday) {
+      d.wdprt = moment(d.wdprt).subtract(7, "days").format("YYYY-[W]WW-E");
+    }
+    return d;
+  }).sort(function (a, b) {
+    return a.wdprt > b.wdprt;
+  });
+  return appwkarr;
+};
+
+var wkendLast = function wkendLast(apwa) {
+  for (var i = 6; i <= 7; i++) {
+    var fi = apwa.findIndex(function (a) {
+      return a.wdprt.slice(-1) == i;
+    });
+    var rec = apwa[fi];
+    apwa.splice(fi, 1);
+    apwa.push(rec);
+  }
+  var napwa = apwa.map(function (wa, i) {
+    wa.idx = i;
+    return wa;
+  });
+  return napwa;
+};
+
+var sumThing = function sumThing(arr, fld) {
+  var narr = arr.map(function (a) {
+    return a[fld];
+  });
+  return narr;
+};
 
 /***/ })
 /******/ ]);

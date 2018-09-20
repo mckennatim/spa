@@ -18,7 +18,7 @@ const adjDay4db = (firstday, rec)=>{
 const adjWdprtDn=(firstday, wdprt)=>{
   const mowdprt = moment(wdprt)
   let nwdprt = mowdprt.format("YYYY-[W]WW-E")
-  if (firstday!=1 && wdprt.slice(-1)>=firstday){
+  if (firstday>4 && wdprt.slice(-1)>=firstday){
     nwdprt = mowdprt.subtract(7, "days").format("YYYY-[W]WW-E")
   }
   return nwdprt
@@ -36,7 +36,7 @@ export{processDb4app, adjDay4db, adjWdprtDn, padWk}
 const adjWk4app =(firstday, wkarr)=>{
   const appwkarr= wkarr
     .map((d)=>{
-      if (firstday!=1 && d.wdprt.slice(-1)>=firstday){
+      if (firstday>4 && d.wdprt.slice(-1)>=firstday){
         d.wdprt= moment(d.wdprt).subtract(7, "days").format("YYYY-[W]WW-E")
       }
       return d
