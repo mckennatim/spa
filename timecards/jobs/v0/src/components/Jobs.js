@@ -2,7 +2,7 @@ import React from 'react'// eslint-disable-line no-unused-vars
 var moment = require('moment');
 import {router} from '../app'
 import {mapClass2Element} from '../hoc/mapClass2Element'
-import {fetchJobs, postJobs, fetchSettings, putJob } from '../services/fetches'
+import {fetchJobs, postJobs, fetchSettings, putCk } from '../services/fetches'
 import{adjWdprtDn, padWk} from  '../../../../common/v0/src/utilities/reroo'
 import { setEdit, setKeyVal} from '../actions/jobacts';
 
@@ -42,14 +42,17 @@ class Jobs extends React.Component{
   }
 
   onChecked=(a)=>{
+    console.log('a: ', a)
+    const aa = {...a}
+    aa.active = !aa.active + 0
+    putCk(aa)
     let njobs = this.state.jobs.map((job)=>{
       if (job.id==a.id){
         job.active = !job.active
-        
         let njob ={...job}
         njob.active = job.active + 0
         delete njob.id
-        putJob([njob])
+        console.log('njob: ', njob)
       }
       return job
     })
@@ -105,6 +108,7 @@ class Jobs extends React.Component{
   }
 
   sav2wk = ()=>{
+    console.log('save2week')
     let wk = this.state.wk
     if(wk===undefined || wk==0){
       window.alert('please select a week')
@@ -112,7 +116,7 @@ class Jobs extends React.Component{
     } 
     const jobs = this.state.jobs
       .filter((j)=>j.active)
-      .map((j)=>{return {job: j.job, category: j.category,   active: j.active*1, idx: j.idx, week:wk, coid:j.coid}})
+      .map((j)=>{return {job: j.job, category: j.category,   active: j.active*1, idx: j.idx, week:wk}})
     postJobs(jobs, wk)  
   }
   // sav = () =>{
@@ -122,7 +126,7 @@ class Jobs extends React.Component{
 
   editJob=(j)=>{
     console.log('j: ', j)
-    let jo = {job:j.job, active:j.active, idx:j.idx, coid:j.coid, week:0}
+    let jo = {job:j.job, active:j.active, idx:j.idx, week:0}
     let ar = []
     this.state.jobs
       .filter((job)=>job.idx==j.idx)

@@ -2,7 +2,7 @@ import React from 'react' // eslint-disable-line no-unused-vars
 import {cfg} from '../utilities/getCfg'
 import { setKeyVal } from '../actions/jobacts';
 
-
+console.log('cfg.url.authqry: ', cfg.url.authqry)
 
 const Nav = () =>{
 

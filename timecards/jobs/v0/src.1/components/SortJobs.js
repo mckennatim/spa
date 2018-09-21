@@ -1,33 +1,24 @@
 import React from 'react'// eslint-disable-line no-unused-vars
 import {mapClass2Element} from '../hoc/mapClass2Element'
 import {fetchJobs, postJobs} from '../services/fetches'
-//import {pStyle} from '../styles'
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';// eslint-disable-line no-unused-vars
-// const style = {
-//   ...pStyle, outer: {...pStyle.outer, background: '#C4A265'}
-// }
-// pStyle.outer.background='#C4A265'
 
 const reorder = (list, startIndex, endIndex) => {
   const result = Array.from(list);
   const [removed] = result.splice(startIndex, 1);
   result.splice(endIndex, 0, removed);
-
   return result;
 };
 
 const grid = 8;
 
 const getItemStyle = (isDragging, draggableStyle) => ({
-  // some basic styles to make the items look a bit nicer
   userSelect: 'none',
   padding: grid * 2,
   margin: `0 0 ${grid}px 0`,
 
-  // change background colour if dragging
   background: isDragging ? 'lightgreen' : 'grey',
 
-  // styles we need to apply on draggables
   ...draggableStyle,
 });
 
@@ -65,28 +56,27 @@ class SortJobs extends React.Component{
 
   onDragEnd=(result)=> {
     // dropped outside the list
-    console.log(this.state);
     if (!result.destination) {return;}
     const unique = reorder(
       this.state.unique,
       result.source.index,
       result.destination.index
     );
-    this.setState({unique});
+    this.setState({unique},()=>{
+      this.save2server()
+    });
   }  
 
   save2server=()=>{
     const {unique, jobs} =this.state
-    console.log('jobs: ', jobs)
-    console.log('unique: ', unique)
     const njobs = jobs.map((ajob)=>{
       let idx = unique.findIndex((x) =>{
         return x.job==ajob.job
       })
       delete ajob.id
+      delete ajob.coid
       return {...ajob, idx:idx}
     })
-    console.log(njobs);
     postJobs(njobs, 0)
     //router.navigate('/jobs');
     location.replace('#jobs?rerender')
@@ -96,9 +86,7 @@ class SortJobs extends React.Component{
     if (this.state.unique){
       return(
         <div>
-          <div>
-            <button onClick={this.save2server}>save2server</button>
-          </div>
+          <h4>Drag and Drop To Reorder</h4>
         <DragDropContext onDragEnd={this.onDragEnd}>
         <Droppable droppableId="droppable">
           {(provided, snapshot) => (

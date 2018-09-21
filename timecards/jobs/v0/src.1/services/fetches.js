@@ -51,7 +51,6 @@ const fetchJobs=(wk)=>{
 }
 const postJobs=(jobs,wk)=>{
   var lsh = ls.getItem();
-  console.log(jobs)
   if(geta('lsh.token', lsh)){
     let url= cfg.url.api+'/jobs/post/'+wk
     let options= {
@@ -83,6 +82,29 @@ const putJob=(job)=>{
       },
       method: 'PUT',
       body: JSON.stringify({jobs:job})
+    }  
+    return(
+      fetch(url, options)
+        .then((response)=>response.json())
+    )        
+  }else{
+    let p2 =Promise.resolve({qmessage:'you dont exist! '})
+    return p2
+  }
+}
+const putCk=(job)=>{
+  const jobobjstr =JSON.stringify({job:job})
+  console.log('jobobjstr: ', JSON.parse(jobobjstr))
+  var lsh = ls.getItem();
+  if(geta('lsh.token', lsh)){
+    let url= cfg.url.api+'/jobs/ck'
+    let options= {
+      headers: {'Authorization': 'Bearer '+ lsh['token'],
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      method: 'PUT',
+      body: jobobjstr
     }  
     return(
       fetch(url, options)
@@ -136,4 +158,4 @@ const deleteJob=(job)=>{
   }
 }
 
-export{fetchSettings, fetchJobs, postJobs, putJob, newJob, deleteJob}
+export{fetchSettings, fetchJobs, postJobs, putJob, newJob, deleteJob, putCk}

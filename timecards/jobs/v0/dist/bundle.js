@@ -9846,7 +9846,7 @@ var FilterSubscriber = (function (_super) {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.deleteJob = exports.newJob = exports.putJob = exports.postJobs = exports.fetchJobs = exports.fetchSettings = undefined;
+exports.putCk = exports.deleteJob = exports.newJob = exports.putJob = exports.postJobs = exports.fetchJobs = exports.fetchSettings = undefined;
 
 var _getCfg = __webpack_require__(71);
 
@@ -9935,6 +9935,28 @@ var putJob = function putJob(job) {
     return p2;
   }
 };
+var putCk = function putCk(job) {
+  var jobobjstr = JSON.stringify({ job: job });
+  console.log('jobobjstr: ', JSON.parse(jobobjstr));
+  var lsh = _getCfg.ls.getItem();
+  if ((0, _wfuncs.geta)('lsh.token', lsh)) {
+    var url = _getCfg.cfg.url.api + '/jobs/ck';
+    var options = {
+      headers: { 'Authorization': 'Bearer ' + lsh['token'],
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
+      },
+      method: 'PUT',
+      body: jobobjstr
+    };
+    return fetch(url, options).then(function (response) {
+      return response.json();
+    });
+  } else {
+    var p2 = Promise.resolve({ qmessage: 'you dont exist! ' });
+    return p2;
+  }
+};
 var newJob = function newJob(job) {
   var lsh = _getCfg.ls.getItem();
   if ((0, _wfuncs.geta)('lsh.token', lsh)) {
@@ -9982,6 +10004,7 @@ exports.postJobs = postJobs;
 exports.putJob = putJob;
 exports.newJob = newJob;
 exports.deleteJob = deleteJob;
+exports.putCk = putCk;
 
 /***/ }),
 /* 71 */
@@ -10013,7 +10036,7 @@ var authqry = cfg.url.soauth + "/spa/" + cfg.appid + "?apiURL=" + encodeURICompo
 
 cfg.url.authqry = authqry;
 
-var ls = (0, _storageLocal.storageLocal)(cfg.appid);
+var ls = (0, _storageLocal.storageLocal)(cfg.superapp);
 
 exports.ls = ls;
 exports.cfg = cfg;
@@ -53985,7 +54008,7 @@ var App = function (_React$Component) {
           _react2.default.createElement(
             'span',
             null,
-            'reroo jobs '
+            'timecards - jobs app jobs '
           ),
           this.loadNav()
         ),
@@ -54253,14 +54276,17 @@ var Jobs = function (_React$Component) {
     }, _this.getJobs = function () {
       _this.alterJobsYdate(0);
     }, _this.onChecked = function (a) {
+      console.log('a: ', a);
+      var aa = _extends({}, a);
+      aa.active = !aa.active + 0;
+      (0, _fetches.putCk)(aa);
       var njobs = _this.state.jobs.map(function (job) {
         if (job.id == a.id) {
           job.active = !job.active;
-
           var njob = _extends({}, job);
           njob.active = job.active + 0;
           delete njob.id;
-          (0, _fetches.putJob)([njob]);
+          console.log('njob: ', njob);
         }
         return job;
       });
@@ -54306,6 +54332,7 @@ var Jobs = function (_React$Component) {
       wdprt = (0, _reroo.adjWdprtDn)(_this.state.firstday, wdprt);
       return moment(wdprt).format("ddd MM/DD");
     }, _this.sav2wk = function () {
+      console.log('save2week');
       var wk = _this.state.wk;
       if (wk === undefined || wk == 0) {
         window.alert('please select a week');
@@ -54314,12 +54341,12 @@ var Jobs = function (_React$Component) {
       var jobs = _this.state.jobs.filter(function (j) {
         return j.active;
       }).map(function (j) {
-        return { job: j.job, category: j.category, active: j.active * 1, idx: j.idx, week: wk, coid: j.coid };
+        return { job: j.job, category: j.category, active: j.active * 1, idx: j.idx, week: wk };
       });
       (0, _fetches.postJobs)(jobs, wk);
     }, _this.editJob = function (j) {
       console.log('j: ', j);
-      var jo = { job: j.job, active: j.active, idx: j.idx, coid: j.coid, week: 0 };
+      var jo = { job: j.job, active: j.active, idx: j.idx, week: 0 };
       var ar = [];
       _this.state.jobs.filter(function (job) {
         return job.idx == j.idx;
@@ -54640,7 +54667,7 @@ module.exports = {"m":"https"}
 /* 385 */
 /***/ (function(module, exports) {
 
-module.exports = {"https":{"appid":"timecards","url":{"soauth":"https://services.sitebuilt.net/soauth","api":"https://services.sitebuilt.net/timecards/api"},"cbPath":"#registered"},"local":{}}
+module.exports = {"https":{"superapp":"tiimecards","appid":"jobs","url":{"soauth":"https://services.sitebuilt.net/soauth","api":"https://services.sitebuilt.net/timecards/api"},"cbPath":"#registered"},"local":{}}
 
 /***/ }),
 /* 386 */
@@ -55117,7 +55144,6 @@ var AddJob = function (_React$Component) {
       var curjob = _extends({}, _this.props.ejob.curjob);
       delete curjob.categories;
       curjob.week = 0;
-      curjob.coid = _this.props.ejob.coid;
       var newjcarr = cs.map(function (c) {
         var ncurjob = _extends({}, curjob);
         ncurjob.category = c;
@@ -55132,7 +55158,6 @@ var AddJob = function (_React$Component) {
       curjob.idx = 0;
       curjob.active = 0;
       curjob.week = 0;
-      curjob.coid = _this.props.ejob.coid;
       _this.props.xmitChange({ curjob: curjob });
     }, _this.catChanged = function (e) {
       var curjob = _this.props.ejob.curjob;
@@ -55976,7 +56001,6 @@ var reorder = function reorder(list, startIndex, endIndex) {
       removed = _result$splice2[0];
 
   result.splice(endIndex, 0, removed);
-
   return result;
 };
 
@@ -56026,7 +56050,9 @@ var SortJobs = function (_React$Component) {
         return;
       }
       var unique = reorder(_this.state.unique, result.source.index, result.destination.index);
-      _this.setState({ unique: unique });
+      _this.setState({ unique: unique }, function () {
+        _this.save2server();
+      });
     }, _this.save2server = function () {
       var _this$state = _this.state,
           unique = _this$state.unique,
@@ -56037,6 +56063,7 @@ var SortJobs = function (_React$Component) {
           return x.job == ajob.job;
         });
         delete ajob.id;
+        delete ajob.coid;
         return _extends({}, ajob, { idx: idx });
       });
       (0, _fetches.postJobs)(njobs, 0);
@@ -56075,13 +56102,9 @@ var SortJobs = function (_React$Component) {
           'div',
           null,
           _react2.default.createElement(
-            'div',
+            'h4',
             null,
-            _react2.default.createElement(
-              'button',
-              { onClick: this.save2server },
-              'save2server'
-            )
+            'Drag and Drop To Reorder'
           ),
           _react2.default.createElement(
             _reactBeautifulDnd.DragDropContext,
@@ -67219,6 +67242,8 @@ var _jobacts = __webpack_require__(72);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 // eslint-disable-line no-unused-vars
+console.log('cfg.url.authqry: ', _getCfg.cfg.url.authqry);
+
 var Nav = function Nav() {
 
   var setU = function setU() {
@@ -67526,7 +67551,103 @@ var Registered = function (_React$Component) {
       });
     };
 
-    _this.state = { cos: [], token: '' };
+    _this.renderNothing = function () {
+      return _react2.default.createElement(
+        'h1',
+        null,
+        'nothing'
+      );
+    };
+
+    _this.renderCoids = function () {
+      return _react2.default.createElement(
+        'div',
+        { style: style.he },
+        _react2.default.createElement(
+          'h4',
+          null,
+          'You Are Registered  '
+        ),
+        _react2.default.createElement(
+          'span',
+          null,
+          'You are registered on this app for multiple businesses. Select which on you want to be logged in at. This app will remeber your last business selection. To switch later, just ',
+          _react2.default.createElement(
+            'a',
+            { href: _getCfg.cfg.url.authqry },
+            'register'
+          ),
+          ' again then select another business'
+        ),
+        _react2.default.createElement(
+          'h4',
+          null,
+          'Select a business/org/entity '
+        ),
+        _react2.default.createElement(
+          'ul',
+          { style: style.myli.ul },
+          _this.state.cos.map(function (coid, i) {
+            return _react2.default.createElement(
+              'li',
+              { style: style.myli.li, key: i, idx: i, onClick: _this.clickCoid },
+              coid,
+              ' '
+            );
+          })
+        )
+      );
+    };
+
+    _this.renderMessage = function () {
+      return _react2.default.createElement(
+        'div',
+        null,
+        _react2.default.createElement(
+          'h1',
+          null,
+          'message'
+        ),
+        '"',
+        _react2.default.createElement(
+          'span',
+          null,
+          _this.state.message,
+          ' ',
+          _react2.default.createElement(
+            'a',
+            { href: 'https://timecards.sitebuilt.net' },
+            'here'
+          ),
+          ' '
+        )
+      );
+    };
+
+    _this.selectRender = function (renderwhat) {
+      switch (renderwhat) {
+        case 'message':
+          console.log('rendering message');
+          return _this.renderMessage();
+        case 'coids':
+          return _this.renderCoids();
+        case 'nothing':
+          return _this.renderNothing();
+        default:
+          return _react2.default.createElement(
+            'h4',
+            null,
+            'default'
+          );
+      }
+    };
+
+    _this.state = {
+      cos: [],
+      token: '',
+      renderwhat: 'nothing',
+      message: ''
+    };
     return _this;
   }
 
@@ -67538,48 +67659,37 @@ var Registered = function (_React$Component) {
       var query = this.props.cambio.page.params.query;
       var mobj = (0, _wfuncs.parseQuery)(query);
       console.log('mobj: ', mobj);
-      (0, _fetches.fetchCoids)(mobj).then(function (res) {
-        console.log('res: ', res);
-        if (res.coid && res.coid.length == 1) {
-          _this2.getCtoken(mobj.token, res.coid[0]);
-        }
-        _this2.setState({ cos: res.coid, token: mobj.token });
-      });
+      if (mobj.message) {
+        var message = decodeURI(mobj.message) + ' Check with your employer to see if you can access this app. Or start your own ';
+        this.setState({ renderwhat: 'message', message: message });
+      } else {
+        (0, _fetches.fetchCoids)(mobj).then(function (res) {
+          console.log('res: ', res);
+          if (res.qmessage) {
+            _this2.setState({ renderwhat: 'message', message: res.qmessage });
+          }
+          if (res.coid && res.coid.length == 1) {
+            _this2.getCtoken(mobj.token, res.coid[0]);
+          } else {
+            _this2.setState({ renderwhat: 'coids', cos: res.coid, token: mobj.token });
+          }
+        });
+      }
     }
   }, {
     key: 'render',
     value: function render() {
-      var _this3 = this;
+      var _state = this.state,
+          cos = _state.cos,
+          renderwhat = _state.renderwhat;
 
-      var cos = this.state.cos;
-
+      console.log('renderwhat: ', renderwhat);
       console.log('cos: ', cos);
+      var renderthis = this.selectRender(renderwhat);
       return _react2.default.createElement(
         'div',
         null,
-        _react2.default.createElement(
-          'h4',
-          null,
-          'You Be Registered  '
-        ),
-        _react2.default.createElement(
-          'a',
-          { href: _getCfg.cfg.url.authqry },
-          'hi'
-        ),
-        JSON.stringify(cos),
-        _react2.default.createElement(
-          'ul',
-          null,
-          cos.map(function (coid, i) {
-            return _react2.default.createElement(
-              'li',
-              { key: i, idx: i, onClick: _this3.clickCoid },
-              coid,
-              ' '
-            );
-          })
-        )
+        renderthis
       );
     }
   }]);
@@ -67591,52 +67701,101 @@ exports.Registered = Registered = (0, _mapClass2Element.mapClass2Element)(Regist
 
 exports.Registered = Registered;
 
-/*
-function Registered(props){
-  const onSuccess = () =>{
-    location.replace('#jobs')
-  }
-  var em ='NOT'
-  var regstr = 'dog'
-  const query= props.cambio.page.params.query;
-  var mobj = parseQuery(query)
-  console.log('mobj: ', mobj)
-  
-  if (mobj!=undefined) {
-    if(Object.keys(mobj).find((x)=>x=='message')){
-      console.log('ie message');
-      regstr=decodeURI(mobj.message)
-    }else{
-      fetchCoids(mobj)
-        .then((res)=>{
-          console.log('res: ', res)
-        })
-      if(mobj.email){
-        console.log('hay mobj')
-        em = mobj.email
-      }else {
-        em = ls.getKey('email')
-        if(!em){
-          em = '--no not really'
-        }
-      }
-      regstr ='want to register as somebody else'
-      ls.setItem(mobj)
-      onSuccess()
-    }
-  }else{
-    regstr = 'so register already'
-  }
-  return(
-    <div style={style.outer} >
-      <h4>You Be Registered {em} </h4>
-      <a style={mStyle.a} href={cfg.url.authqry}>{regstr}</a>
-      <span></span>
-    </div>
-    )
-}
 
-*/
+var style = {
+  he: {
+    margin: '2px 10px 10px 10px',
+    height: '70px',
+    yw: {
+      padding: '1px 1px 10px 1px'
+    },
+    yr: {
+      width: '45px',
+      background: 'silver'
+    },
+    wk: {
+      width: '36px',
+      background: 'whitesmoke'
+    },
+    img: {
+
+      float: 'right',
+      width: '30px'
+    },
+    act: {
+      float: 'right'
+    },
+    get: {
+      float: 'left'
+    },
+    but: {
+      ac: {
+        margin: '4px',
+        padding: '4px'
+      },
+      ia: {
+        margin: '4px',
+        padding: '4px'
+      },
+      al: {
+        margin: '4px',
+        padding: '4px'
+      }
+    }
+  },
+  myli: {
+    od: {
+      overflow: 'hidden',
+      width: '100%',
+      border: '1px solid #ccc'
+    },
+    ul: {
+      textAlign: 'left',
+      listStyleType: 'none',
+      paddingLeft: '12px'
+    },
+    li: {
+      background: '#99CCCC',
+      padding: '6px',
+      overflow: 'hidden',
+      border: 'solid 1px black'
+    },
+    idx: {
+      float: 'left',
+      width: '7%',
+      padding: '5px'
+    },
+    icon: {
+      fontSize: '18px'
+    },
+    ck: {
+      transform: 'scale(1.5)',
+      msTransform: 'scale(1.5)',
+      WebkitTransform: 'scale(1.5)',
+      padding: '10px',
+      border: '2px solid black'
+    },
+    job: {
+      padding: '3px',
+      width: '50%',
+      float: 'left',
+      background: '#99CCCC'
+    },
+    cat: {
+      padding: '3px',
+      width: '20%',
+      float: 'left',
+      background: '#99CCCC'
+
+    },
+    act: {
+      width: '10%',
+      float: 'right',
+      background: '#99CCCC'
+
+    }
+  }
+};
 
 /***/ }),
 /* 476 */
@@ -95553,8 +95712,7 @@ var initState = {
       job: '',
       categories: '',
       idx: 0,
-      active: 0,
-      coid: ''
+      active: 0
     },
     update: true,
     clearjc: false

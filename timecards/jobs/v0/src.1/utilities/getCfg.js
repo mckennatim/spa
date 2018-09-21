@@ -8,6 +8,6 @@ const authqry = cfg.url.soauth+"/spa/"+cfg.appid+"?apiURL="+encodeURIComponent(c
 
 cfg.url.authqry = authqry
 
-const ls = storageLocal(cfg.appid)
+const ls = storageLocal(cfg.superapp)
 
 export{ls, cfg}

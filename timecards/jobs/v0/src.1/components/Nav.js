@@ -1,14 +1,13 @@
 import React from 'react' // eslint-disable-line no-unused-vars
 import {cfg} from '../utilities/getCfg'
-import { setClearJc, setUpdate } from '../actions/jobacts';
+import { setKeyVal } from '../actions/jobacts';
 
-
+console.log('cfg.url.authqry: ', cfg.url.authqry)
 
 const Nav = () =>{
 
   const setU=()=>{
-    setClearJc({clearjc:true}),
-    setUpdate({update:false})
+    setKeyVal({update:false, clearjc:true})
   }
   return (
     <div style={style} id="menu"> 

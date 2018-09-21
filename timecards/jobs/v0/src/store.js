@@ -15,8 +15,7 @@ const initState = {
       job:'',
       categories:'',
       idx:0,
-      active:0,
-      coid:''
+      active:0
     }, 
     update: true,
     clearjc: false

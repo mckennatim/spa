@@ -28,7 +28,6 @@ class AddJob extends React.Component {
     const curjob = {...this.props.ejob.curjob}
     delete curjob.categories
     curjob.week=0
-    curjob.coid=this.props.ejob.coid
     const newjcarr = cs.map((c)=>{
       const ncurjob = {...curjob}
       ncurjob.category=c
@@ -44,7 +43,6 @@ class AddJob extends React.Component {
     curjob.idx = 0
     curjob.active = 0
     curjob.week=0
-    curjob.coid = this.props.ejob.coid
     this.props.xmitChange({curjob:curjob});
   }
   catChanged =(e)=>{

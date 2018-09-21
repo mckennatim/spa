@@ -31,7 +31,7 @@ class App extends React.Component{
     return(
       <div>
         <div style={style.he}>
-          <span>reroo jobs </span>
+          <span>timecards - jobs app jobs </span>
           {this.loadNav()}
         </div>
         <div style={style.container}>

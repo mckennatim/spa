@@ -7,7 +7,6 @@ const reorder = (list, startIndex, endIndex) => {
   const result = Array.from(list);
   const [removed] = result.splice(startIndex, 1);
   result.splice(endIndex, 0, removed);
-
   return result;
 };
 
@@ -63,7 +62,9 @@ class SortJobs extends React.Component{
       result.source.index,
       result.destination.index
     );
-    this.setState({unique});
+    this.setState({unique},()=>{
+      this.save2server()
+    });
   }  
 
   save2server=()=>{
@@ -73,6 +74,7 @@ class SortJobs extends React.Component{
         return x.job==ajob.job
       })
       delete ajob.id
+      delete ajob.coid
       return {...ajob, idx:idx}
     })
     postJobs(njobs, 0)
@@ -84,9 +86,7 @@ class SortJobs extends React.Component{
     if (this.state.unique){
       return(
         <div>
-          <div>
-            <button onClick={this.save2server}>save2server</button>
-          </div>
+          <h4>Drag and Drop To Reorder</h4>
         <DragDropContext onDragEnd={this.onDragEnd}>
         <Droppable droppableId="droppable">
           {(provided, snapshot) => (

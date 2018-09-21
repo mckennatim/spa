@@ -5,16 +5,19 @@ const ejob=(state, action) =>{
         ...state,
         curjob: action.payload
       };     
-      case 'SET_UPDATE':
-        return {
-          ...state,
-          update: action.payload.update
-        };    
-        case 'SET_CLEAR_JC':
-        return {
-          ...state,
-          clearjc: action.payload.clearjc
-        };    
+    case 'SET_UPDATE':
+      return {
+        ...state,
+        update: action.payload.update
+      };    
+    case 'SET_KEY_VAL':
+      const keys = Object.keys(action.payload)
+      keys.map((key)=>{
+        state[key] =action.payload[key]
+      })
+      return {
+        ...state,
+      };    
     default:
       return state;
   }
