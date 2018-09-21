@@ -30,6 +30,7 @@ class Registered extends React.Component {
   }
 
   getCtoken=(token,coid)=>{
+    console.log('this.props.ejob.task: ', this.props.ejob.task)
     fetchCtoken(token,coid)
       .then((res)=>{
         console.log('res: ', res)

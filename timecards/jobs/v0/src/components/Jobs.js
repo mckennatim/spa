@@ -4,7 +4,7 @@ import {router} from '../app'
 import {mapClass2Element} from '../hoc/mapClass2Element'
 import {fetchJobs, postJobs, fetchSettings, putJob } from '../services/fetches'
 import{adjWdprtDn, padWk} from  '../../../../common/v0/src/utilities/reroo'
-import { setEdit, setUpdate, setClearJc} from '../actions/jobacts';
+import { setEdit, setKeyVal} from '../actions/jobacts';
 
 
 class Jobs extends React.Component{
@@ -30,7 +30,8 @@ class Jobs extends React.Component{
     fetchSettings()     
       .then((res)=>{
         console.log('res: ', res)
-        this.setState({firstday: res.firstday, coid:res.coid},()=>{
+        this.setState({firstday: res.firstday},()=>{
+          setKeyVal({coid: res.coid, qmessage:res.qmessage, task:'jobs'})
           this.alterJobsYdate(0) 
         })
       })
@@ -48,7 +49,6 @@ class Jobs extends React.Component{
         let njob ={...job}
         njob.active = job.active + 0
         delete njob.id
-        console.log('njob: ', njob)
         putJob([njob])
       }
       return job
@@ -78,7 +78,12 @@ class Jobs extends React.Component{
     }
   }
   getwk = ()=>{
+    
     this.alterJobsYdate(this.state.wk)  
+  }
+  buzz=()=>{
+    console.log('buzz()')
+    window.navigator.vibrate(100)
   }
   getwk0 = ()=>{
     this.alterJobsYdate(0)  
@@ -117,15 +122,14 @@ class Jobs extends React.Component{
 
   editJob=(j)=>{
     console.log('j: ', j)
-    let jo = {job:j.job, active:j.active, idx:j.idx, coid:j.coid}
+    let jo = {job:j.job, active:j.active, idx:j.idx, coid:j.coid, week:0}
     let ar = []
     this.state.jobs
       .filter((job)=>job.idx==j.idx)
       .map((ji)=>ar.push(ji.category))
     jo.categories = ar.join(', ')
     setEdit(jo)
-    setUpdate({update:true})
-    setClearJc({clearjc:false})
+    setKeyVal({update:true, clearjc:false})
     // router.navigate('/addjob?idx='+j.idx);
     router.navigate('/addjob');
   }
@@ -177,8 +181,7 @@ class Jobs extends React.Component{
 
   getQuery=()=>{
     const params = this.props.cambio.page.params
-    if(params && params.query && params.query.split('?')[1]=='rerender'){
-      console.log('params: ', params)
+    if(params && params.query =='rerender'){
       location.replace('#jobs')
       setTimeout(()=>{
         this.getJobs()
@@ -205,12 +208,12 @@ class Jobs extends React.Component{
               wk 
               <input type="number" value={wk} onChange={this.chwk} style={style.he.wk}/> 
               starting on {dddMMDD}
-              <img style={style.he.img} src="icons/job-search.png" alt="jobs" onClick={this.getwk0}/>
+              <img style={style.he.img} src="icons/job-search.png" alt="jobs" onClick={this.getwk0} onKeyDown={this.buzz()}/>
             </div>
             <div> 
               <div style={style.he.get}>
-                <button onClick={this.getwk}>getwk</button>
-                <button onClick={this.sav2wk} onFocus={this.handleOnFocus()} >sav2wk</button>
+                <button onClick={this.getwk} onKeyDown={this.buzz()} >getwk</button>
+                <button onClick={this.sav2wk} onKeyDown={this.buzz()} >sav2wk</button>
               </div>
               <div style={style.he.act}>
               {/*
@@ -251,6 +254,7 @@ class Jobs extends React.Component{
       return(
         <div>
           <a href="home" data-navigo>maybe you need to register</a>
+          {this.props.ejob.qmessage}
         </div>
         )
     }

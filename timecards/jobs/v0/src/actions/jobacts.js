@@ -6,17 +6,11 @@ const setEdit = actionCreator((payload) => {
     payload
   }
 });
-const setUpdate = actionCreator((payload) => {
+const setKeyVal = actionCreator((payload) => {
   return {
-    type: 'SET_UPDATE',
-    payload
-  }
-});
-const setClearJc = actionCreator((payload) => {
-  return {
-    type: 'SET_CLEAR_JC',
+    type: 'SET_KEY_VAL',
     payload
   }
 });
 
-export{setEdit, setUpdate, setClearJc}
+export{setEdit, setKeyVal}

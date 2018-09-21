@@ -28,6 +28,7 @@ class Jobs extends React.Component{
   getSettings=()=>{
     fetchSettings()     
       .then((res)=>{
+        console.log('getSettings.res: ', res)
         this.setState({firstday: res.firstday},()=>{})
       })
 

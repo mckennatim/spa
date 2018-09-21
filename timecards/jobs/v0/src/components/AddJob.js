@@ -5,9 +5,8 @@ import Form from 'muicss/lib/react/form';// eslint-disable-line
 import Input from 'muicss/lib/react/input';// eslint-disable-line 
 import Button from 'muicss/lib/react/button';// eslint-disable-line 
 import {pStyle} from '../styles'
-import { putJob, newJob, deleteJob } from '../services/fetches';
-import {cfg} from '../utilities/getCfg'
-import {setClearJc } from '../actions/jobacts';
+import { putJob, deleteJob } from '../services/fetches';
+import {setKeyVal} from '../actions/jobacts';
 
 
 const style = {
@@ -29,7 +28,7 @@ class AddJob extends React.Component {
     const curjob = {...this.props.ejob.curjob}
     delete curjob.categories
     curjob.week=0
-    curjob.coid=this.state.coid
+    curjob.coid=this.props.ejob.coid
     const newjcarr = cs.map((c)=>{
       const ncurjob = {...curjob}
       ncurjob.category=c
@@ -44,7 +43,8 @@ class AddJob extends React.Component {
     curjob.job = e.target.value
     curjob.idx = 0
     curjob.active = 0
-    curjob.coid = cfg.coid
+    curjob.week=0
+    curjob.coid = this.props.ejob.coid
     this.props.xmitChange({curjob:curjob});
   }
   catChanged =(e)=>{
@@ -60,7 +60,7 @@ class AddJob extends React.Component {
   render() { 
     const{curjob, update, clearjc}=this.props.ejob
     if(clearjc){
-      setClearJc({clearjc:false}) 
+      setKeyVal({clearjc:false}) 
       const e = {target: {value:''}}
       this.jobChanged(e)
       this.catChanged(e)
@@ -90,7 +90,7 @@ let chHOC = (Comp) =>{// eslint-disable-line no-unused-vars
     static getDerivedStateFromProps(props, state){// eslint-disable-line no-unused-vars
       return {props}
     }
-    onChange=(curjob)=>{
+    handleXmitChange=(curjob)=>{
       let nstate  ={...this.state}
       let nprops = {...nstate.props}
       let nejob = {...nprops.ejob}
@@ -100,7 +100,7 @@ let chHOC = (Comp) =>{// eslint-disable-line no-unused-vars
     }
     render() {
       return (
-        <Comp {...this.props} {...this.state} xmitChange={this.onChange}/>
+        <Comp {...this.props} {...this.state} xmitChange={this.handleXmitChange}/>
       )
     }
   }  

@@ -1,2 +1,2 @@
 #!/bin/sh
-scp -r ./jobs root@sitebuilt.net:/home/tryit/public_html/reroo
+scp -r ./jobs root@sitebuilt.net:/home/timecards/public_html/
