@@ -15,6 +15,9 @@ https://github.com/mozilla-services/react-jsonschema-form
 https://gridbyexample.com/examples/example13/
 https://www.mozilla.org/en-US/firefox/60.0a2/whatsnew/#cssgrid
 https://mozilladevelopers.github.io/playground/css-grid/
+### 99-timecards-tcard.done
+### 98-timecards-jobs.done
+registered is coied for each app since each app will chjeck its own permissions
 ### 97-timecards-jobs.src.1.registered-common.src1.fectches
 ### 96-reroo-payroll-V1-tcard-v
 ### 95-reroo-payroll-src.2

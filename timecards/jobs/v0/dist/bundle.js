@@ -54315,7 +54315,6 @@ var Jobs = function (_React$Component) {
           return _this.fall();
       }
     }, _this.getwk = function () {
-
       _this.alterJobsYdate(_this.state.wk);
     }, _this.buzz = function () {
       console.log('buzz()');
@@ -54332,6 +54331,7 @@ var Jobs = function (_React$Component) {
       wdprt = (0, _reroo.adjWdprtDn)(_this.state.firstday, wdprt);
       return moment(wdprt).format("ddd MM/DD");
     }, _this.sav2wk = function () {
+      _this.buzz();
       console.log('save2week');
       var wk = _this.state.wk;
       if (wk === undefined || wk == 0) {
@@ -54343,7 +54343,9 @@ var Jobs = function (_React$Component) {
       }).map(function (j) {
         return { job: j.job, category: j.category, active: j.active * 1, idx: j.idx, week: wk };
       });
-      (0, _fetches.postJobs)(jobs, wk);
+      (0, _fetches.postJobs)(jobs, wk).then(function () {
+        console.log('done saving');
+      });
     }, _this.editJob = function (j) {
       console.log('j: ', j);
       var jo = { job: j.job, active: j.active, idx: j.idx, week: 0 };
@@ -54454,7 +54456,7 @@ var Jobs = function (_React$Component) {
               _react2.default.createElement('input', { type: 'number', value: wk, onChange: this.chwk, style: style.he.wk }),
               'starting on ',
               dddMMDD,
-              _react2.default.createElement('img', { style: style.he.img, src: 'icons/job-search.png', alt: 'jobs', onClick: this.getwk0, onKeyDown: this.buzz() })
+              _react2.default.createElement('img', { className: 'btn', style: style.he.img, src: 'icons/job-search.png', alt: 'jobs', onClick: this.getwk0, onKeyDown: this.buzz() })
             ),
             _react2.default.createElement(
               'div',
@@ -54464,12 +54466,12 @@ var Jobs = function (_React$Component) {
                 { style: style.he.get },
                 _react2.default.createElement(
                   'button',
-                  { onClick: this.getwk, onKeyDown: this.buzz() },
+                  { className: 'btn', onClick: this.getwk },
                   'getwk'
                 ),
                 _react2.default.createElement(
                   'button',
-                  { onClick: this.sav2wk, onKeyDown: this.buzz() },
+                  { className: 'btn', onClick: this.sav2wk },
                   'sav2wk'
                 )
               ),
@@ -54563,6 +54565,7 @@ exports.Jobs = Jobs;
 
 
 var style = {
+  btn: {},
   he: {
     margin: '2px 10px 10px 10px',
     height: '70px',

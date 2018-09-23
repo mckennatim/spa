@@ -5,6 +5,20 @@ body {
   color: #333;
 }
 
+.btn{
+  padding: 4px;
+  border-radius: 9px;
+
+}
+.btn:active{
+  background-color: #4CAF50;
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
+}
+.btn:focus{
+  outline: 0;
+}
+
 td, th {
     border: 1px solid #dddddd;
     text-align: center;

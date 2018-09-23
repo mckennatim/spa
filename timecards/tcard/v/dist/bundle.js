@@ -6297,11 +6297,11 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var cfg = _denv2.default[_envmy2.default.m || 'local'];
 
-var authqry = cfg.url.soauth + "/spa/" + cfg.coid + "-" + cfg.appid + "?apiURL=" + encodeURIComponent(cfg.url.api) + "&cbPath=" + encodeURIComponent(cfg.cbPath);
+var authqry = cfg.url.soauth + "/spa/" + cfg.appid + "?apiURL=" + encodeURIComponent(cfg.url.api) + "&cbPath=" + encodeURIComponent(cfg.cbPath);
 
 cfg.url.authqry = authqry;
 
-var ls = (0, _storageLocal.storageLocal)(cfg.appid);
+var ls = (0, _storageLocal.storageLocal)(cfg.superapp);
 
 exports.ls = ls;
 exports.cfg = cfg;
@@ -7803,10 +7803,14 @@ var drnd = function drnd(n) {
 };
 
 var processDb4app = function processDb4app(res) {
+  var wprt = res.wkarr[0].wdprt.slice(0, -2);
+  if (!res.wstat) {
+    res.wstat = { wprt: wprt };
+  }
   var wkarr = wkendLast(adjWk4app(_getCfg.ls.getKey('firstday'), res.wkarr));
   var hrs = sumThing(wkarr, 'hrs');
   var jchrs = sumThing(wkarr, 'jchrs');
-  return { wkarr: wkarr, hrs: hrs, jchrs: jchrs, emailid: _getCfg.ls.getKey('email'), jobs: res.jobs, wstat: res.wstat };
+  return { wkarr: wkarr, hrs: hrs, jchrs: jchrs, emailid: _getCfg.ls.getKey('email'), jobs: res.jobs, wstat: res.wstat, wprt: wprt };
 };
 
 var adjDay4db = function adjDay4db(firstday, rec) {
@@ -10652,7 +10656,7 @@ exports.Timestamp = Timestamp;
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 exports.router = undefined;
 
@@ -10683,18 +10687,18 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 // eslint-disable-line no-unused-vars
 // eslint-disable-line no-unused-vars
 window.onblur = function () {
-    //setFocus({infocus: false})
+  //setFocus({infocus: false})
 };
 //import {setDeviceType, setFocus} from './actions/responsive'
 
 
 _Observable.Observable.fromEvent(window, 'resize').debounceTime(300).subscribe(function () {
-    return (0, _responsive.setDeviceType)(window.innerWidth);
+  return (0, _responsive.setDeviceType)(window.innerWidth);
 });
 
 var container = document.getElementById('app');
 (0, _rxred.createStore)(_store.initState).do(_wfuncs.log).subscribe(function (state) {
-    return _reactDom2.default.render(_react2.default.createElement(_components.App, state), container);
+  return _reactDom2.default.render(_react2.default.createElement(_components.App, state), container);
 });
 ckIsMobile();
 
@@ -10705,12 +10709,12 @@ exports.router = router;
 
 function ckIsMobile() {
 
-    var os = getMobileOperatingSystem();
-    var mobile = false;
-    if (os == 'Android') {
-        mobile = true;
-    }
-    (0, _responsive.setIsMobile)(mobile);
+  var os = getMobileOperatingSystem();
+  var mobile = false;
+  if (os == 'Android') {
+    mobile = true;
+  }
+  (0, _responsive.setIsMobile)(mobile);
 }
 
 /**
@@ -10720,23 +10724,23 @@ function ckIsMobile() {
  * @returns {String}
  */
 function getMobileOperatingSystem() {
-    var userAgent = window.navigator.userAgent || window.navigator.vendor || window.opera;
+  var userAgent = window.navigator.userAgent || window.navigator.vendor || window.opera;
 
-    // Windows Phone must come first because its UA also contains "Android"
-    if (/windows phone/i.test(userAgent)) {
-        return "Windows Phone";
-    }
+  // Windows Phone must come first because its UA also contains "Android"
+  if (/windows phone/i.test(userAgent)) {
+    return "Windows Phone";
+  }
 
-    if (/android/i.test(userAgent)) {
-        return "Android";
-    }
+  if (/android/i.test(userAgent)) {
+    return "Android";
+  }
 
-    // iOS detection from: http://stackoverflow.com/a/9039885/177710
-    if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
-        return "iOS";
-    }
+  // iOS detection from: http://stackoverflow.com/a/9039885/177710
+  if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
+    return "iOS";
+  }
 
-    return "unknown";
+  return "unknown";
 }
 
 /***/ }),
@@ -11805,6 +11809,7 @@ var fetchTcard = function fetchTcard(wk) {
         return { qmessage: json.message };
       } else {
         var processed = (0, _wfuncs.processDb4app)(json);
+        console.log('processed: ', processed);
         return processed;
       }
     }).catch(function (e) {
@@ -51585,27 +51590,26 @@ var App = function (_React$Component) {
   }, {
     key: 'render',
     value: function render() {
-      //const {ejob}= this.props
       return _react2.default.createElement(
         'div',
         null,
         _react2.default.createElement(
           'div',
-          { className: 'header' },
+          { style: style.he },
           _react2.default.createElement(
             'span',
             null,
-            'Timecards    '
+            'timecards  app '
           ),
           this.loadNav()
         ),
         _react2.default.createElement(
           'div',
-          { className: 'container' },
+          { style: style.container },
           this.showPage().map(function (el, i) {
             return _react2.default.createElement(
               'div',
-              { className: 'content  ', key: i },
+              { style: style.content, key: i },
               el
             );
           })
@@ -51618,6 +51622,33 @@ var App = function (_React$Component) {
 }(_react2.default.Component);
 
 exports.App = App;
+
+
+var style = {
+  he: {
+    height: '50px',
+    background: 'white',
+    flexGrow: 1,
+    flexGhrink: 0,
+    flexBasis: '98%'
+  },
+  container: {
+    background: '#CCCCCC',
+    display: 'flex',
+    flexDirection: 'row', /* generally better */
+    flexWrap: 'wrap',
+    justifyContent: 'center',
+    alignContent: 'stretch',
+    alignItems: 'stretch'
+  },
+  content: {
+    minHeight: '200px',
+    background: 'silver',
+    flexGrow: 1,
+    flexShrink: 1, /*can shrink from 300px*/
+    flexBasis: '225px'
+  }
+};
 
 /***/ }),
 /* 342 */
@@ -51756,6 +51787,7 @@ var TimeCardJar = function (_React$Component) {
 
     _this.handleTcardChanges = function (cmd, chobj) {
       var modtcard = _extends({}, _this.state.tcard);
+      console.log('modtcard: ', modtcard);
       var wkarr = modtcard.wkarr.slice();
       var idx = chobj.idx;
       if (cmd == 'iopu') {
@@ -52452,7 +52484,7 @@ module.exports = {"m":"https"}
 /* 347 */
 /***/ (function(module, exports) {
 
-module.exports = {"https":{"coid":"reroo","appid":"tcard","url":{"soauth":"https://services.sitebuilt.net/soauth","api":"https://services.sitebuilt.net/reroox/api","jobs":"https://tryit.sitebuilt.net/reroo/jobs/#jobs"},"cbPath":"#registered"},"local":{}}
+module.exports = {"https":{"superapp":"timecards","appid":"tcard","url":{"soauth":"https://services.sitebuilt.net/soauth","api":"https://services.sitebuilt.net/timecards/api","jobs":"https://timecards.sitebuilt.net/jobs/#jobs"},"cbPath":"#registered"},"local":{}}
 
 /***/ }),
 /* 348 */
@@ -53256,85 +53288,361 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.Registered = undefined;
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; // eslint-disable-line no-unused-vars
-
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _react = __webpack_require__(11);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _styles = __webpack_require__(40);
-
 var _wfuncs = __webpack_require__(39);
 
 var _getCfg = __webpack_require__(18);
+
+var _mapClass2Element = __webpack_require__(58);
+
+var _fetches = __webpack_require__(635);
 
 var _jobacts = __webpack_require__(354);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var style = _extends({}, _styles.pStyle, { outer: _extends({}, _styles.pStyle.outer, { background: '#FF9966' })
-});
-_styles.pStyle.outer.background = '#C4A265';
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-function Registered(props) {
-  var onSuccess = function onSuccess() {};
-  var hitButton = function hitButton() {
-    (0, _jobacts.setTcEmail)({ tcemail: mobj.email });
-    location.replace('#tcard');
-  };
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
-  var em = 'NOT';
-  var regstr = 'dog';
-  var query = props.cambio.page.params.query;
-  var mobj = (0, _wfuncs.parseQuery)(query);
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } // eslint-disable-line no-unused-vars
 
-  if (mobj != undefined) {
-    if (Object.keys(mobj).find(function (x) {
-      return x == 'message';
-    })) {
-      regstr = decodeURI(mobj.message);
-    } else {
-      if (mobj.email) {
-        em = mobj.email;
-      } else {
-        em = _getCfg.ls.getKey('email');
-        if (!em) {
-          em = '--no not really';
-        }
+
+var Registered = function (_React$Component) {
+  _inherits(Registered, _React$Component);
+
+  function Registered(props) {
+    _classCallCheck(this, Registered);
+
+    var _this = _possibleConstructorReturn(this, (Registered.__proto__ || Object.getPrototypeOf(Registered)).call(this, props));
+
+    _this.clickCoid = function (e) {
+      var idx = e.target.getAttribute('idx');
+      var coid = _this.state.cos[idx];
+      _this.getCtoken(_this.state.token, coid);
+    };
+
+    _this.getCtoken = function (token, coid) {
+      console.log('this.props.ejob.task: ', _this.props.ejob.task);
+      (0, _fetches.fetchCtoken)(token, coid).then(function (res) {
+        console.log('res: ', res);
+        _getCfg.ls.setItem({ email: res.binfo.emailid, token: res.token });
+        location.replace('#jobs');
+      });
+    };
+
+    _this.renderNothing = function () {
+      return _react2.default.createElement(
+        'h1',
+        null,
+        'nothing'
+      );
+    };
+
+    _this.renderCoids = function () {
+      return _react2.default.createElement(
+        'div',
+        { style: style.he },
+        _react2.default.createElement(
+          'h4',
+          null,
+          'You Are Registered  '
+        ),
+        _react2.default.createElement(
+          'span',
+          null,
+          'You are registered on this app for multiple businesses. Select which on you want to be logged in at. This app will remeber your last business selection. To switch later, just ',
+          _react2.default.createElement(
+            'a',
+            { href: _getCfg.cfg.url.authqry },
+            'register'
+          ),
+          ' again then select another business'
+        ),
+        _react2.default.createElement(
+          'h4',
+          null,
+          'Select a business/org/entity '
+        ),
+        _react2.default.createElement(
+          'ul',
+          { style: style.myli.ul },
+          _this.state.cos.map(function (coid, i) {
+            return _react2.default.createElement(
+              'li',
+              { style: style.myli.li, key: i, idx: i, onClick: _this.clickCoid },
+              coid,
+              ' '
+            );
+          })
+        )
+      );
+    };
+
+    _this.renderMessage = function () {
+      return _react2.default.createElement(
+        'div',
+        null,
+        _react2.default.createElement(
+          'h1',
+          null,
+          'message'
+        ),
+        '"',
+        _react2.default.createElement(
+          'span',
+          null,
+          _this.state.message,
+          ' ',
+          _react2.default.createElement(
+            'a',
+            { href: 'https://timecards.sitebuilt.net' },
+            'here'
+          ),
+          ' '
+        )
+      );
+    };
+
+    _this.selectRender = function (renderwhat) {
+      switch (renderwhat) {
+        case 'message':
+          console.log('rendering message');
+          return _this.renderMessage();
+        case 'coids':
+          return _this.renderCoids();
+        case 'nothing':
+          return _this.renderNothing();
+        default:
+          return _react2.default.createElement(
+            'h4',
+            null,
+            'default'
+          );
       }
-      regstr = 'want to register as somebody else';
-      _getCfg.ls.setItem(mobj);
-      onSuccess();
-    }
-  } else {
-    regstr = 'so register already';
+    };
+
+    _this.state = {
+      cos: [],
+      token: '',
+      renderwhat: 'nothing',
+      message: ''
+    };
+    return _this;
   }
-  return _react2.default.createElement(
-    'div',
-    { style: style.outer },
-    _react2.default.createElement(
-      'h4',
-      null,
-      'You Be Registered ',
-      em,
-      ' '
-    ),
-    _react2.default.createElement(
-      'a',
-      { style: _styles.mStyle.a, href: _getCfg.cfg.url.authqry },
-      regstr
-    ),
-    _react2.default.createElement('span', null),
-    _react2.default.createElement(
-      'button',
-      { onClick: hitButton },
-      'go to tcard'
-    )
-  );
-}
+
+  _createClass(Registered, [{
+    key: 'componentDidMount',
+    value: function componentDidMount() {
+      var _this2 = this;
+
+      var query = this.props.cambio.page.params.query;
+      var mobj = (0, _wfuncs.parseQuery)(query);
+      console.log('mobj: ', mobj);
+      if (mobj.message) {
+        var message = decodeURI(mobj.message) + ' Check with your employer to see if you can access this app. Or start your own ';
+        this.setState({ renderwhat: 'message', message: message });
+      } else {
+        (0, _jobacts.setTcEmail)({ tcemail: mobj.email });
+        (0, _fetches.fetchCoids)(mobj).then(function (res) {
+          console.log('res: ', res);
+          if (res.qmessage) {
+            _this2.setState({ renderwhat: 'message', message: res.qmessage });
+          }
+          if (res.coid && res.coid.length == 1) {
+            _this2.getCtoken(mobj.token, res.coid[0]);
+          } else {
+            _this2.setState({ renderwhat: 'coids', cos: res.coid, token: mobj.token });
+          }
+        });
+      }
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      var _state = this.state,
+          cos = _state.cos,
+          renderwhat = _state.renderwhat;
+
+      console.log('renderwhat: ', renderwhat);
+      console.log('cos: ', cos);
+      var renderthis = this.selectRender(renderwhat);
+      return _react2.default.createElement(
+        'div',
+        null,
+        renderthis
+      );
+    }
+  }]);
+
+  return Registered;
+}(_react2.default.Component);
+
+exports.Registered = Registered = (0, _mapClass2Element.mapClass2Element)(Registered);
 
 exports.Registered = Registered;
+
+
+var style = {
+  he: {
+    margin: '2px 10px 10px 10px',
+    height: '70px',
+    yw: {
+      padding: '1px 1px 10px 1px'
+    },
+    yr: {
+      width: '45px',
+      background: 'silver'
+    },
+    wk: {
+      width: '36px',
+      background: 'whitesmoke'
+    },
+    img: {
+
+      float: 'right',
+      width: '30px'
+    },
+    act: {
+      float: 'right'
+    },
+    get: {
+      float: 'left'
+    },
+    but: {
+      ac: {
+        margin: '4px',
+        padding: '4px'
+      },
+      ia: {
+        margin: '4px',
+        padding: '4px'
+      },
+      al: {
+        margin: '4px',
+        padding: '4px'
+      }
+    }
+  },
+  myli: {
+    od: {
+      overflow: 'hidden',
+      width: '100%',
+      border: '1px solid #ccc'
+    },
+    ul: {
+      textAlign: 'left',
+      listStyleType: 'none',
+      paddingLeft: '12px'
+    },
+    li: {
+      background: '#99CCCC',
+      padding: '6px',
+      overflow: 'hidden',
+      border: 'solid 1px black'
+    },
+    idx: {
+      float: 'left',
+      width: '7%',
+      padding: '5px'
+    },
+    icon: {
+      fontSize: '18px'
+    },
+    ck: {
+      transform: 'scale(1.5)',
+      msTransform: 'scale(1.5)',
+      WebkitTransform: 'scale(1.5)',
+      padding: '10px',
+      border: '2px solid black'
+    },
+    job: {
+      padding: '3px',
+      width: '50%',
+      float: 'left',
+      background: '#99CCCC'
+    },
+    cat: {
+      padding: '3px',
+      width: '20%',
+      float: 'left',
+      background: '#99CCCC'
+
+    },
+    act: {
+      width: '10%',
+      float: 'right',
+      background: '#99CCCC'
+
+    }
+  }
+
+  /*
+  
+  import React from 'react'// eslint-disable-line no-unused-vars
+  import {pStyle} from '../styles'
+  import {parseQuery} from '../utilities/wfuncs'
+  import {cfg, ls} from '../utilities/getCfg'
+  import {mStyle} from '../styles'
+  import { setTcEmail} from '../actions/jobacts';
+  
+  
+  const style = {
+    ...pStyle, outer: {...pStyle.outer, background: '#FF9966'}
+  }
+  pStyle.outer.background='#C4A265'
+  
+  function Registered(props){
+    const onSuccess = () =>{
+    }
+    const hitButton=()=>{
+      setTcEmail({tcemail:mobj.email})
+      location.replace('#tcard')
+    }
+  
+    var em ='NOT'
+    var regstr = 'dog'
+    const query= props.cambio.page.params.query;
+    var mobj = parseQuery(query)
+    
+    if (mobj!=undefined) {
+      if(Object.keys(mobj).find((x)=>x=='message')){
+        regstr=decodeURI(mobj.message)
+      }else{
+        if(mobj.email){
+          em = mobj.email
+        }else {
+          em = ls.getKey('email')
+          if(!em){
+            em = '--no not really'
+          }
+        }
+        regstr ='want to register as somebody else'
+        ls.setItem(mobj)
+        onSuccess()
+      }
+    }else{
+      regstr = 'so register already'
+    }
+    return(
+      <div style={style.outer} >
+        <h4>You Be Registered {em} </h4>
+        <a style={mStyle.a} href={cfg.url.authqry}>{regstr}</a>
+        <span></span>
+        <button onClick={hitButton}>go to tcard</button>
+      </div>
+      )
+  }
+  
+  export {Registered}
+  */
+
+};
 
 /***/ }),
 /* 354 */
@@ -80949,6 +81257,372 @@ var initialBrowser = function initialBrowser() {
 
 initState.responsive = initialBrowser();
 exports.initState = initState;
+
+/***/ }),
+/* 635 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.fetchCtoken = exports.fetchCoids = exports.deleteJob = exports.newJob = exports.putJob = exports.postJobs = exports.fetchJobs = exports.fetchSettings = undefined;
+
+var _getCfg = __webpack_require__(636);
+
+var _wfuncs = __webpack_require__(640);
+
+var fetchCoids = function fetchCoids(mobj) {
+  if ((0, _wfuncs.geta)('mobj.token', mobj)) {
+    var url = _getCfg.cfg.url.api + '/reg/coids';
+    var options = { headers: { 'Authorization': 'Bearer ' + mobj.token } };
+    return fetch(url, options).then(function (response) {
+      return response.json();
+    }).then(function (json) {
+      console.log('json: ', json);
+      if (json.message) {
+        return { qmessage: json.message };
+      } else {
+        return json;
+      }
+    }).catch(function (e) {
+      return { qmessage: e.message };
+    });
+  } else {
+    var p2 = Promise.resolve({ qmessage: 'you dont exist! ' });
+    return p2;
+  }
+};
+var fetchCtoken = function fetchCtoken(token, coid) {
+  if (token) {
+    var url = _getCfg.cfg.url.api + '/reg/ctoken/' + coid;
+    var options = { headers: { 'Authorization': 'Bearer ' + token } };
+    return fetch(url, options).then(function (response) {
+      return response.json();
+    }).then(function (json) {
+      if (json.message) {
+        return { qmessage: json.message };
+      } else {
+        return json;
+      }
+    }).catch(function (e) {
+      return { qmessage: e.message };
+    });
+  } else {
+    var p2 = Promise.resolve({ qmessage: 'you dont exist! ' });
+    return p2;
+  }
+};
+
+var fetchSettings = function fetchSettings() {
+  var lsh = _getCfg.ls.getItem();
+  if ((0, _wfuncs.geta)('lsh.token', lsh)) {
+    var url = _getCfg.cfg.url.api + '/payroll/settings';
+    var options = { headers: { 'Authorization': 'Bearer ' + lsh['token'] } };
+    return fetch(url, options).then(function (response) {
+      return response.json();
+    }).then(function (json) {
+      if (json.message) {
+        return { qmessage: json.message };
+      } else {
+        return json[0];
+      }
+    }).catch(function (e) {
+      return { qmessage: e.message };
+    });
+  } else {
+    var p2 = Promise.resolve({ qmessage: 'you dont exist! ' });
+    return p2;
+  }
+};
+var fetchJobs = function fetchJobs(wk) {
+  var lsh = _getCfg.ls.getItem();
+  if ((0, _wfuncs.geta)('lsh.token', lsh)) {
+    var url = _getCfg.cfg.url.api + '/jobs/list/' + wk;
+    var options = { headers: { 'Authorization': 'Bearer ' + lsh['token'] } };
+    return fetch(url, options).then(function (response) {
+      return response.json();
+    }).then(function (json) {
+      if (json.message) {
+        return { qmessage: json.message };
+      } else {
+        return json;
+      }
+    }).catch(function (e) {
+      return { qmessage: e.message };
+    });
+  } else {
+    var p2 = Promise.resolve({ qmessage: 'you dont exist! ' });
+    return p2;
+  }
+};
+var postJobs = function postJobs(jobs, wk) {
+  var lsh = _getCfg.ls.getItem();
+  console.log(jobs);
+  if ((0, _wfuncs.geta)('lsh.token', lsh)) {
+    var url = _getCfg.cfg.url.api + '/jobs/post/' + wk;
+    var options = {
+      headers: { 'Authorization': 'Bearer ' + lsh['token'],
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
+      },
+      method: 'POST',
+      body: JSON.stringify({ jobs: jobs })
+    };
+    return fetch(url, options).then(function (response) {
+      return response.json();
+    });
+  } else {
+    var p2 = Promise.resolve({ qmessage: 'you dont exist! ' });
+    return p2;
+  }
+};
+
+var putJob = function putJob(job) {
+  var lsh = _getCfg.ls.getItem();
+  if ((0, _wfuncs.geta)('lsh.token', lsh)) {
+    var url = _getCfg.cfg.url.api + '/jobs/update';
+    var options = {
+      headers: { 'Authorization': 'Bearer ' + lsh['token'],
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
+      },
+      method: 'PUT',
+      body: JSON.stringify({ jobs: job })
+    };
+    return fetch(url, options).then(function (response) {
+      return response.json();
+    });
+  } else {
+    var p2 = Promise.resolve({ qmessage: 'you dont exist! ' });
+    return p2;
+  }
+};
+var newJob = function newJob(job) {
+  var lsh = _getCfg.ls.getItem();
+  if ((0, _wfuncs.geta)('lsh.token', lsh)) {
+    var url = _getCfg.cfg.url.api + '/jobs/new';
+    var options = {
+      headers: { 'Authorization': 'Bearer ' + lsh['token'],
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
+      },
+      method: 'PUT',
+      body: JSON.stringify({ jobs: job })
+    };
+    return fetch(url, options).then(function (response) {
+      return response.json();
+    });
+  } else {
+    var p2 = Promise.resolve({ qmessage: 'you dont exist! ' });
+    return p2;
+  }
+};
+var deleteJob = function deleteJob(job) {
+  var lsh = _getCfg.ls.getItem();
+  if ((0, _wfuncs.geta)('lsh.token', lsh)) {
+    var url = _getCfg.cfg.url.api + '/jobs/del';
+    var options = {
+      headers: { 'Authorization': 'Bearer ' + lsh['token'],
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
+      },
+      method: 'DELETE',
+      body: JSON.stringify({ job: job })
+    };
+    return fetch(url, options).then(function (response) {
+      return response.json();
+    });
+  } else {
+    var p2 = Promise.resolve({ qmessage: 'you dont exist! ' });
+    return p2;
+  }
+};
+
+exports.fetchSettings = fetchSettings;
+exports.fetchJobs = fetchJobs;
+exports.postJobs = postJobs;
+exports.putJob = putJob;
+exports.newJob = newJob;
+exports.deleteJob = deleteJob;
+exports.fetchCoids = fetchCoids;
+exports.fetchCtoken = fetchCtoken;
+
+/***/ }),
+/* 636 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.cfg = exports.ls = undefined;
+
+var _envmy = __webpack_require__(637);
+
+var _envmy2 = _interopRequireDefault(_envmy);
+
+var _denv = __webpack_require__(638);
+
+var _denv2 = _interopRequireDefault(_denv);
+
+var _storageLocal = __webpack_require__(639);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var cfg = _denv2.default[_envmy2.default.m || 'local'];
+
+var authqry = cfg.url.soauth + "/spa/" + cfg.appid + "?apiURL=" + encodeURIComponent(cfg.url.api) + "&cbPath=" + encodeURIComponent(cfg.cbPath);
+
+cfg.url.authqry = authqry;
+
+var ls = (0, _storageLocal.storageLocal)(cfg.appid);
+
+exports.ls = ls;
+exports.cfg = cfg;
+
+/***/ }),
+/* 637 */
+/***/ (function(module, exports) {
+
+module.exports = {"m":"https"}
+
+/***/ }),
+/* 638 */
+/***/ (function(module, exports) {
+
+module.exports = {"https":{"appid":"jobs","url":{"soauth":"https://services.sitebuilt.net/soauth","api":"https://services.sitebuilt.net/timecards/api"},"cbPath":"#registered"},"local":{}}
+
+/***/ }),
+/* 639 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+
+var storageLocal = function storageLocal(itemName) {
+  var itemStr = localStorage.getItem(itemName);
+  var getItem = function getItem() {
+    // console.log('in getItem')
+    if (!localStorage.getItem(itemName)) {
+      return null;
+    }
+    return JSON.parse(localStorage.getItem(itemName));
+  };
+  var setItem = function setItem(obj) {
+    localStorage.setItem(itemName, JSON.stringify(obj));
+  };
+  return {
+    itemName: itemName,
+    itemStr: itemStr,
+    getItem: getItem,
+    setItem: setItem,
+    modItem: function modItem(key, val) {
+      var ni = getItem();
+      if (ni) {
+        ni[key] = val;
+        setItem(ni);
+      }
+    },
+    getToken: function getToken() {
+      return getItem().token;
+    },
+    getKey: function getKey(key) {
+      return getItem()[key];
+    }
+  };
+};
+
+exports.storageLocal = storageLocal;
+
+/***/ }),
+/* 640 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.deepObjModify = exports.el = exports.parseQuery = exports.log = exports.render = exports.dog = exports.geta = undefined;
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _react = __webpack_require__(11);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactDom = __webpack_require__(73);
+
+var _reactDom2 = _interopRequireDefault(_reactDom);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var geta = function geta(dotstr, obj) {
+  return dotstr.split(".").slice(1).reduce(function (xs, x) {
+    return xs && xs[x] ? xs[x] : null;
+  }, obj);
+};
+
+var deepObjModify = function deepObjModify(dotstr, val, obj) {
+  if (geta(dotstr, obj)) {
+    var keyarray = dotstr.split(".");
+    var ls = keyarray.slice(-1)[0];
+    keyarray.slice(1).reduce(function (xs, x) {
+      if (xs && xs[x]) {
+        if (x == ls) {
+          xs[x] = val;
+        }
+        return xs[x];
+      }
+    }, obj);
+    var newobj = _extends({}, obj);
+    return newobj;
+  } else {
+    return null;
+  }
+};
+
+var log = console.log.bind(console);
+
+function el(id) {
+  return document.getElementById(id);
+}
+
+var dog = function dog() {
+  return 'girl';
+};
+
+var render = function render(pg, para) {
+  _reactDom2.default.render(_react2.default.createElement(pg, para), document.getElementById('rt'));
+};
+
+var parseQuery = function parseQuery(query) {
+  var obj = {};
+  query.split('&').map(function (term) {
+    var ar = term.split('=');
+    obj[ar[0]] = ar[1];
+  });
+  return obj;
+};
+
+exports.geta = geta;
+exports.dog = dog;
+exports.render = render;
+exports.log = log;
+exports.parseQuery = parseQuery;
+exports.el = el;
+exports.deepObjModify = deepObjModify;
 
 /***/ })
 /******/ ]);

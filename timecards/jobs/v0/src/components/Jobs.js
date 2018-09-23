@@ -81,7 +81,6 @@ class Jobs extends React.Component{
     }
   }
   getwk = ()=>{
-    
     this.alterJobsYdate(this.state.wk)  
   }
   buzz=()=>{
@@ -108,6 +107,7 @@ class Jobs extends React.Component{
   }
 
   sav2wk = ()=>{
+    this.buzz()
     console.log('save2week')
     let wk = this.state.wk
     if(wk===undefined || wk==0){
@@ -117,7 +117,10 @@ class Jobs extends React.Component{
     const jobs = this.state.jobs
       .filter((j)=>j.active)
       .map((j)=>{return {job: j.job, category: j.category,   active: j.active*1, idx: j.idx, week:wk}})
-    postJobs(jobs, wk)  
+    postJobs(jobs, wk)
+      .then(()=>{
+        console.log('done saving')
+      })
   }
   // sav = () =>{
   //   const jobs = this.state.jobs.map((j)=>{return {job: j.job, category: j.category,   active: j.active*1, idx: j.idx, week:0, coid:j.coid}})
@@ -212,12 +215,12 @@ class Jobs extends React.Component{
               wk 
               <input type="number" value={wk} onChange={this.chwk} style={style.he.wk}/> 
               starting on {dddMMDD}
-              <img style={style.he.img} src="icons/job-search.png" alt="jobs" onClick={this.getwk0} onKeyDown={this.buzz()}/>
+              <img className="btn" style={style.he.img} src="icons/job-search.png" alt="jobs" onClick={this.getwk0} onKeyDown={this.buzz()}/>
             </div>
             <div> 
               <div style={style.he.get}>
-                <button onClick={this.getwk} onKeyDown={this.buzz()} >getwk</button>
-                <button onClick={this.sav2wk} onKeyDown={this.buzz()} >sav2wk</button>
+                <button className="btn" onClick={this.getwk}  >getwk</button>
+                <button className="btn" onClick={this.sav2wk} >sav2wk</button>
               </div>
               <div style={style.he.act}>
               {/*
@@ -269,6 +272,9 @@ Jobs = mapClass2Element(Jobs)
 export {Jobs}
 
 const style = {
+  btn:{
+
+  },
   he:{
     margin: '2px 10px 10px 10px',
     height:'70px',
