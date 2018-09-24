@@ -54670,7 +54670,7 @@ module.exports = {"m":"https"}
 /* 385 */
 /***/ (function(module, exports) {
 
-module.exports = {"https":{"superapp":"tiimecards","appid":"jobs","url":{"soauth":"https://services.sitebuilt.net/soauth","api":"https://services.sitebuilt.net/timecards/api"},"cbPath":"#registered"},"local":{}}
+module.exports = {"https":{"superapp":"timecards","appid":"jobs","url":{"soauth":"https://services.sitebuilt.net/soauth","api":"https://services.sitebuilt.net/timecards/api"},"cbPath":"#registered"},"local":{}}
 
 /***/ }),
 /* 386 */

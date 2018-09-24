@@ -18,7 +18,6 @@ class Registered extends React.Component {
   componentDidMount() {
     const query= this.props.cambio.page.params.query;
     var mobj = parseQuery(query)
-    console.log('mobj: ', mobj) 
     if (mobj.message){
       const message = decodeURI(mobj.message) + ' Check with your employer to see if you can access this app. Or start your own ' 
       this.setState({renderwhat: 'message', message: message})
@@ -26,7 +25,6 @@ class Registered extends React.Component {
       setTcEmail({tcemail:mobj.email})
       fetchCoids(mobj)
       .then((res)=>{
-        console.log('res: ', res)
         if(res.qmessage){
           this.setState({renderwhat: 'message', message: res.qmessage})
         }
@@ -46,12 +44,10 @@ class Registered extends React.Component {
   }
 
   getCtoken=(token,coid)=>{
-    console.log('this.props.ejob.task: ', this.props.ejob.task)
     fetchCtoken(token,coid)
       .then((res)=>{
-        console.log('res: ', res)
         ls.setItem({email: res.binfo.emailid, token:res.token})
-        location.replace('#jobs')
+        location.replace('#tcard')
       })
   }  
 
@@ -85,7 +81,6 @@ class Registered extends React.Component {
   selectRender=(renderwhat)=>{
     switch (renderwhat) {
       case 'message':
-        console.log('rendering message')
         return this.renderMessage()
       case 'coids':
         return this.renderCoids()
@@ -96,9 +91,7 @@ class Registered extends React.Component {
     }
   }
   render() {
-    const{cos,renderwhat}=this.state 
-    console.log('renderwhat: ', renderwhat)
-    console.log('cos: ', cos)
+    const{renderwhat}=this.state 
     const renderthis = this.selectRender(renderwhat)
     return (
       <div >

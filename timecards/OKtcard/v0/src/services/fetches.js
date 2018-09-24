@@ -22,7 +22,7 @@ const fetchSubmitted =()=>{
         })
       )         
   }else{
-    let p2 =Promise.resolve({qmessage:'you dont exist! '})
+    let p2 =Promise.resolve({qmessage:'you dont exist or you have expired. Try re -registering'})
     return p2
   }  
 }

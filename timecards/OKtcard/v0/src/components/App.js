@@ -28,16 +28,15 @@ class App extends React.Component{
   }
 
   render(){
-    //const {ejob}= this.props
     return(
       <div>
-        <div className="header">
-        <span>ReRoo Payroll  </span>
+        <div style={style.he}>
+          <span>OKtcard app </span>
           {this.loadNav()}
         </div>
-        <div className="container">
+        <div style={style.container}>
         {this.showPage().map((el,i)=>{
-          return <div className="content  " key={i}>{el}</div>
+          return <div style={style.content} key={i}>{el}</div>
         })}
         </div>
       </div>
@@ -45,3 +44,29 @@ class App extends React.Component{
   }
 }
 export{App}
+
+let style = {
+  he:{
+    height: '50px',
+    background: 'white',
+    flexGrow: 1,
+    flexGhrink: 0,
+    flexBasis: '98%', 
+  },
+  container:{
+    background: '#CCCCCC',
+    display: 'flex',
+    flexDirection: 'row', /* generally better */
+    flexWrap: 'wrap',
+    justifyContent: 'center',
+    alignContent: 'stretch',
+    alignItems: 'stretch'
+  },
+  content:{
+    minHeight:'200px',
+    background: 'silver',
+    flexGrow: 1,
+    flexShrink: 1, /*can shrink from 300px*/
+    flexBasis: '225px'  
+  }
+}
