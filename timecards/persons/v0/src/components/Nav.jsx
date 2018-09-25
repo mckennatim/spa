@@ -8,7 +8,7 @@ console.log('cfg.url.authqry: ', cfg.url.authqry)
 const Nav = () =>{
 
   const setU=()=>{
-    setKeyVal({update:false, clearjc:true, curperson:blankperson})
+    setKeyVal({update:false, curperson:blankperson})
   }
   return (
     <div style={style} id="menu"> 

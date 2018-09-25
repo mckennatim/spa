@@ -44,6 +44,8 @@ class Persons extends React.Component{
   getPersons=()=>{
     fetchPersons()
     .then((res)=>{
+      const isPartner = res.binfo.role=='partner' ? true : false
+      setKeyVal({role:res.binfo.role, emailid:res.binfo.emailid, isPartner:isPartner})
       this.setState({persons: res.persons},()=>{})
     })    
   }
@@ -157,7 +159,7 @@ class Persons extends React.Component{
   editPerson=(j)=>{
     console.log('j: ', j)
     setEdit(j)
-    setKeyVal({update:true, clearjc:false})
+    setKeyVal({update:true})
     // router.navigate('/addperson?idx='+j.idx);
     router.navigate('/addperson');
   }

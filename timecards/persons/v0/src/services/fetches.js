@@ -82,7 +82,7 @@ const putPerson=(person)=>{
         'Content-Type': 'application/json',
       },
       method: 'PUT',
-      body: JSON.stringify({persons:person})
+      body: JSON.stringify({person:person})
     }  
     return(
       fetch(url, options)

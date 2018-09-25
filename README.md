@@ -15,7 +15,7 @@ https://github.com/mozilla-services/react-jsonschema-form
 https://gridbyexample.com/examples/example13/
 https://www.mozilla.org/en-US/firefox/60.0a2/whatsnew/#cssgrid
 https://mozilladevelopers.github.io/playground/css-grid/
-### 100timecards-person-addperson
+### 100-timecards-person-addperson
 ### 99-timecards-tcard.done
 ### 98-timecards-jobs.done
 registered is coied for each app since each app will chjeck its own permissions

@@ -39,12 +39,12 @@ class Registered extends React.Component {
 
   clickCoid=(e)=>{
     const idx =e.target.getAttribute('idx')
-    const coid = this.state.cos[idx]
-    this.getCtoken(this.state.token,coid)
+    const co = this.state.cos[idx]
+    this.getCtoken(this.state.token,co)
   }
 
-  getCtoken=(token,coid)=>{
-    fetchCtoken(token,coid)
+  getCtoken=(token,co)=>{
+    fetchCtoken(token,co)
       .then((res)=>{
         ls.setItem({email: res.binfo.emailid, token:res.token})
         location.replace('#oktcard')
@@ -63,8 +63,8 @@ class Registered extends React.Component {
         <span>You are registered on this app for multiple businesses. Select which on you want to be logged in at. This app will remeber your last business selection. To switch later, just <a href={cfg.url.authqry}>register</a> again then select another business</span>
         <h4>Select a business/org/entity </h4>
         <ul style={style.myli.ul}>
-          {this.state.cos.map((coid,i)=>(
-            <li style={style.myli.li} key={i} idx={i} onClick={this.clickCoid}>{coid} </li>
+          {this.state.cos.map((co,i)=>(
+            <li style={style.myli.li} key={i} idx={i} onClick={this.clickCoid}>{co.coid} as {co.role} </li>
           ))}
         </ul>
       </div>

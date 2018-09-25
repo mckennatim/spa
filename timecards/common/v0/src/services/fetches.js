@@ -25,9 +25,10 @@ const fetchCoids=(mobj)=>{
     return p2
   }
 }
-const fetchCtoken=(token, coid)=>{
+const fetchCtoken=(token, co)=>{
   if(token){
-    let url= cfg.url.api+'/reg/ctoken/'+coid
+    let url= cfg.url.api+'/reg/ctoken/'+co.coid+'/'+co.role
+    console.log('url: ', url)
     let options= {headers: {'Authorization': 'Bearer '+ token}}
     return(
       fetch(url, options)
@@ -73,6 +74,33 @@ const fetchSettings=()=>{
     return p2
   }
 }
+
+const fetchTokdata=()=>{
+  var lsh = ls.getItem();
+  if(geta('lsh.token', lsh)){
+    let url= cfg.url.api+'/persons/tokdata'
+    let options= {headers: {'Authorization': 'Bearer '+ lsh['token']}}
+    return(
+      fetch(url, options)
+        .then((response)=>response.json())
+        .then((json)=>{
+          console.log('json: ', json)
+          if(json.message){
+            return {qmessage: json.message}
+          }else{
+            return json
+          }
+        })
+        .catch((e)=>{
+          return {qmessage: e.message}
+        })
+      )         
+  }else{
+    let p2 =Promise.resolve({qmessage:'you dont exist!, cant get tokdata'})
+    return p2
+  }
+}
+
 const fetchJobs=(wk)=>{
   var lsh = ls.getItem();
   if(geta('lsh.token', lsh)){
@@ -184,4 +212,4 @@ const deleteJob=(job)=>{
   }
 }
 
-export{fetchSettings, fetchJobs, postJobs, putJob, newJob, deleteJob, fetchCoids, fetchCtoken}
+export{fetchSettings, fetchJobs, postJobs, putJob, newJob, deleteJob, fetchCoids, fetchCtoken, fetchTokdata}
