@@ -2,13 +2,13 @@ import React from 'react'// eslint-disable-line no-unused-vars
 import {router} from '../app'
 import {App} from './App'
 import {Active} from './Active'
-import {Jobs} from './Jobs'
-import {AddJob} from './AddJob'
-import {SortJobs} from './SortJobs'
-import {Nav} from './Nav'
+import {Persons} from './Persons.jsx'
+import {AddPerson} from './AddPerson.jsx'
+import {SortPersons} from './SortPersons'
+import {Nav} from './Nav.jsx'
 import {Dog} from './Dog'
 import {Products} from './Products'
-import {Registered} from './Registered'
+import {Registered} from './Registered.jsx'
 import {pStyle} from '../styles'
 import {loadGithubFollowers} from '../actions/test';
 //import { render } from '../utilities/wfuncs';
@@ -74,19 +74,19 @@ const multi =[
     ['About', 'Products', 'Home'],
     ['About','Products', 'About', 'Home']
     ]},
-  {pri:'Jobs', mul:[
-    ['Jobs', 'SortJobs'],
-    ['Jobs', 'SortJobs', 'Home'],
-    ['Jobs', 'SortJobs', 'Home', 'About']
+  {pri:'Persons', mul:[
+    ['Persons', 'SortPersons'],
+    ['Persons', 'SortPersons', 'Home'],
+    ['Persons', 'SortPersons', 'Home', 'About']
     ]},
   {pri:'AddJob', mul:[
-    ['Jobs', 'AddJob'],
-    ['Jobs', 'AddJob', 'Home'],
+    ['Persons', 'AddJob'],
+    ['Persons', 'AddJob', 'Home'],
     ]},    
-  {pri:'SortJobs', mul:[
-    ['Jobs', 'SortJobs'],
-    ['Jobs', 'SortJobs', 'AddJob'],
-    ['Jobs','SortJobs', 'About', 'AddJob']
+  {pri:'SortPersons', mul:[
+    ['Persons', 'SortPersons'],
+    ['Persons', 'SortPersons', 'AddJob'],
+    ['Persons','SortPersons', 'About', 'AddJob']
     ]},  
   {pri:'Products', mul:[
     ['Products', 'About'],
@@ -100,4 +100,6 @@ const multi =[
 //['watch', 'phone', 'phoneL', 'tablet', 'tabletL', 'laptop']
 const panes= [1,1,2,2,3,3,4]
 
-export {Active, Jobs, AddJob, SortJobs, Cat, About, Products,Home, Dog, App, Nav, Registered, multi, panes}
+export {Active, Persons
+  , AddPerson, SortPersons
+  , Cat, About, Products,Home, Dog, App, Nav, Registered, multi, panes}

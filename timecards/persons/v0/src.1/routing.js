@@ -14,11 +14,10 @@ const routing = ()=>{
       'about': ()=>{switchPage({name: 'About', params: null});},
       'dog': ()=>{switchPage({name: 'Dog', params: null});},
       'cat': ()=>{switchPage({name: 'Cat', params: null});},
-      'sortjobs': ()=>{switchPage({name: 'SortJobs', params: null});},
-      'jobs': (params,query)=>{switchPage({name: 'Jobs', params: {...params, query: query}});},
-      'addjob': (params, query)=> {switchPage({name: 'AddJob', params: {...params, query: query}});},
+      'persons': (params,query)=>{switchPage({name: 'Persons', params: {...params, query: query}});},
+      'addperson': (params, query)=> {switchPage({name: 'AddPerson', params: {...params, query: query}});},
       'registered': (params, query)=> {switchPage({name: 'Registered', params: {...params, query: query}});} ,
-      '*': ()=>{switchPage({name: 'Jobs', params: null});}
+      '*': ()=>{switchPage({name: 'Persons', params: null});}
     })
     .resolve();
   return router

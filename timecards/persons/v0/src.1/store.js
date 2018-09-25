@@ -1,5 +1,21 @@
 import {Home} from './components'
 
+const blankperson ={
+  emailid:'',
+  firstmid:'',
+  lastname: '',
+  street: '',
+  city: '',
+  st:'',
+  zip: '',
+  role:'',
+  rate:'',
+  ssn:'',
+  w4allow: '',
+  stAllow:'',
+  active:true
+}
+
 const initState = {
   test: {
     name: 'Harry',
@@ -10,13 +26,8 @@ const initState = {
     infocus: true,
     page: {name: 'Home', params: null}
   },
-  ejob: {
-    curjob:{
-      job:'',
-      categories:'',
-      idx:0,
-      active:0
-    }, 
+  eperson: {
+    curperson: blankperson,
     update: true,
     clearjc: false
   }
@@ -40,4 +51,4 @@ const initialBrowser = () => {
 }
 
 initState.responsive = initialBrowser()
-export {initState}
+export {initState, blankperson}

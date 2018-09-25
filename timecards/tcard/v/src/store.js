@@ -15,12 +15,13 @@ const initState = {
   cambio: {
     page: {name: 'Home', params: null}
   },
-  ejob: {
-    job:'Job', 
+  eperson: {
+    person:'Job', 
     categories:'Categories-comma separated or none', 
     idx:0, 
     active:0,
-    email:lsemail
+    email:lsemail,
+    curperson:{}
   }
 };
 

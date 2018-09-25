@@ -1,4 +1,4 @@
-import React from 'react'// eslint-disable-line no-unused-vars
+import React from 'react'
 import {Nav} from '../components'
 import {responsivePage} from '../showRWD'
 
@@ -14,7 +14,7 @@ class App extends React.Component{
   componentDidMount (){
   }
   loadNav(){
-    return Nav()
+    return Nav(this.props)
   }
 
   showRt(rtpg){
@@ -31,7 +31,7 @@ class App extends React.Component{
     return(
       <div>
         <div style={style.he}>
-          <span>timecards - jobs app jobs </span>
+          <span>timecards - person app </span>
           {this.loadNav()}
         </div>
         <div style={style.container}>

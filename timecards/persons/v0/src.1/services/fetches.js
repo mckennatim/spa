@@ -21,19 +21,20 @@ const fetchSettings=()=>{
         })
       )         
   }else{
-    let p2 =Promise.resolve({qmessage:'you dont exist! '})
+    let p2 =Promise.resolve({qmessage:'you dont exist! Try re-registering '})
     return p2
   }
 }
-const fetchJobs=(wk)=>{
+const fetchPersons=()=>{
   var lsh = ls.getItem();
   if(geta('lsh.token', lsh)){
-    let url= cfg.url.api+'/jobs/list/'+wk
+    let url= cfg.url.api+'/persons/list/'
     let options= {headers: {'Authorization': 'Bearer '+ lsh['token']}}
     return(
       fetch(url, options)
         .then((response)=>response.json())
         .then((json)=>{
+          console.log('json: ', json)
           if(json.message){
             return {qmessage: json.message}
           }else{
@@ -45,21 +46,21 @@ const fetchJobs=(wk)=>{
         })
       )         
   }else{
-    let p2 =Promise.resolve({qmessage:'you dont exist! '})
+    let p2 =Promise.resolve({qmessage:'you do not seem to be known on this device '})
     return p2
   }
 }
-const postJobs=(jobs,wk)=>{
+const postPersons=(persons,wk)=>{
   var lsh = ls.getItem();
   if(geta('lsh.token', lsh)){
-    let url= cfg.url.api+'/jobs/post/'+wk
+    let url= cfg.url.api+'/persons/post/'+wk
     let options= {
       headers: {'Authorization': 'Bearer '+ lsh['token'],
         Accept: 'application/json',
         'Content-Type': 'application/json',
       },
       method: 'POST',
-      body: JSON.stringify({jobs:jobs})
+      body: JSON.stringify({persons:persons})
     }  
     return(
       fetch(url, options)
@@ -71,17 +72,17 @@ const postJobs=(jobs,wk)=>{
   }
 }
 
-const putJob=(job)=>{
+const putPerson=(person)=>{
   var lsh = ls.getItem();
   if(geta('lsh.token', lsh)){
-    let url= cfg.url.api+'/jobs/update'
+    let url= cfg.url.api+'/persons/update'
     let options= {
       headers: {'Authorization': 'Bearer '+ lsh['token'],
         Accept: 'application/json',
         'Content-Type': 'application/json',
       },
       method: 'PUT',
-      body: JSON.stringify({jobs:job})
+      body: JSON.stringify({persons:person})
     }  
     return(
       fetch(url, options)
@@ -92,19 +93,19 @@ const putJob=(job)=>{
     return p2
   }
 }
-const putCk=(job)=>{
-  const jobobjstr =JSON.stringify({job:job})
-  console.log('jobobjstr: ', JSON.parse(jobobjstr))
+const putCk=(person)=>{
+  const personobjstr =JSON.stringify({person:person})
+  console.log('personobjstr: ', JSON.parse(personobjstr))
   var lsh = ls.getItem();
   if(geta('lsh.token', lsh)){
-    let url= cfg.url.api+'/jobs/ck'
+    let url= cfg.url.api+'/persons/ck'
     let options= {
       headers: {'Authorization': 'Bearer '+ lsh['token'],
         Accept: 'application/json',
         'Content-Type': 'application/json',
       },
       method: 'PUT',
-      body: jobobjstr
+      body: personobjstr
     }  
     return(
       fetch(url, options)
@@ -115,17 +116,17 @@ const putCk=(job)=>{
     return p2
   }
 }
-const newJob=(job)=>{
+const newPerson=(person)=>{
   var lsh = ls.getItem();
   if(geta('lsh.token', lsh)){
-    let url= cfg.url.api+'/jobs/new'
+    let url= cfg.url.api+'/persons/new'
     let options= {
       headers: {'Authorization': 'Bearer '+ lsh['token'],
         Accept: 'application/json',
         'Content-Type': 'application/json',
       },
       method: 'PUT',
-      body: JSON.stringify({jobs:job})
+      body: JSON.stringify({persons:person})
     }  
     return(
       fetch(url, options)
@@ -136,17 +137,17 @@ const newJob=(job)=>{
     return p2
   }
 }
-const deleteJob=(job)=>{
+const deletePerson=(person)=>{
   var lsh = ls.getItem();
   if(geta('lsh.token', lsh)){
-    let url= cfg.url.api+'/jobs/del'
+    let url= cfg.url.api+'/persons/del'
     let options= {
       headers: {'Authorization': 'Bearer '+ lsh['token'],
         Accept: 'application/json',
         'Content-Type': 'application/json',
       },
       method: 'DELETE',
-      body: JSON.stringify({job:job})
+      body: JSON.stringify({person:person})
     }  
     return(
       fetch(url, options)
@@ -158,4 +159,4 @@ const deleteJob=(job)=>{
   }
 }
 
-export{fetchSettings, fetchJobs, postJobs, putJob, newJob, deleteJob, putCk}
+export{fetchSettings, fetchPersons, postPersons, putPerson, newPerson, deletePerson, putCk}

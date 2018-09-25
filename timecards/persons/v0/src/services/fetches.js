@@ -21,7 +21,7 @@ const fetchSettings=()=>{
         })
       )         
   }else{
-    let p2 =Promise.resolve({qmessage:'you dont exist! '})
+    let p2 =Promise.resolve({qmessage:'you dont exist! Try re-registering '})
     return p2
   }
 }

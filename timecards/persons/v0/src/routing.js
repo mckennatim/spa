@@ -14,7 +14,6 @@ const routing = ()=>{
       'about': ()=>{switchPage({name: 'About', params: null});},
       'dog': ()=>{switchPage({name: 'Dog', params: null});},
       'cat': ()=>{switchPage({name: 'Cat', params: null});},
-      'sortpersons': ()=>{switchPage({name: 'SortPersons', params: null});},
       'persons': (params,query)=>{switchPage({name: 'Persons', params: {...params, query: query}});},
       'addperson': (params, query)=> {switchPage({name: 'AddPerson', params: {...params, query: query}});},
       'registered': (params, query)=> {switchPage({name: 'Registered', params: {...params, query: query}});} ,

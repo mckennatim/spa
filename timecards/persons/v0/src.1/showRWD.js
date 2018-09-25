@@ -1,5 +1,4 @@
 import * as compoi from './components'
-
 const responsivePage=(state)=>{
     let elArr = []
   const {types, browser} = state.responsive

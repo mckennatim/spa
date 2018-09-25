@@ -3,7 +3,7 @@ const eperson=(state, action) =>{
     case 'SET_EDIT':
       return {
         ...state,
-        curjob: action.payload
+        curperson: action.payload
       };     
     case 'SET_UPDATE':
       return {

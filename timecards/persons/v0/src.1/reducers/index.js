@@ -1,6 +1,6 @@
 import{responsive}from './responsive'
 import{cambio}from './cambio'
-import{ejob}from './jobred'
+import{eperson}from './personred'
 
 function test(state, action) {
   switch (action.type) {
@@ -38,7 +38,7 @@ function combineReducers(reducersObject) {
   }, state);
 }
 
-var reducersObj={responsive, test, cambio, ejob}
+var reducersObj={responsive, test, cambio, eperson}
 const rootReducer = combineReducers(reducersObj)
 export {rootReducer}
 

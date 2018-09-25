@@ -2,13 +2,13 @@ import React from 'react'// eslint-disable-line no-unused-vars
 import {router} from '../app'
 import {App} from './App'
 import {Active} from './Active'
-import {Persons} from './Persons'
-import {AddPerson} from './AddPerson'
+import {Persons} from './Persons.jsx'
+import {AddPerson} from './AddPerson.jsx'
 import {SortPersons} from './SortPersons'
-import {Nav} from './Nav'
+import {Nav} from './Nav.jsx'
 import {Dog} from './Dog'
 import {Products} from './Products'
-import {Registered} from './Registered'
+import {Registered} from './Registered.jsx'
 import {pStyle} from '../styles'
 import {loadGithubFollowers} from '../actions/test';
 //import { render } from '../utilities/wfuncs';
