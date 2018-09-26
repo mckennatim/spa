@@ -13,7 +13,7 @@ const blankperson ={
   rate: 15.00,
   ssn:'',
   w4allow: '',
-  stAllow:'',
+  stallow:'',
   active:true,
   effective: moment().format('YYYY-MM-D')
 }

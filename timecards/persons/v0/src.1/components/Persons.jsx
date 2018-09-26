@@ -44,6 +44,8 @@ class Persons extends React.Component{
   getPersons=()=>{
     fetchPersons()
     .then((res)=>{
+      const isPartner = res.binfo.role=='partner' ? true : false
+      setKeyVal({role:res.binfo.role, emailid:res.binfo.emailid, isPartner:isPartner})
       this.setState({persons: res.persons},()=>{})
     })    
   }
@@ -72,6 +74,7 @@ class Persons extends React.Component{
 
   dfiltCurrent = ()=>this.setState({dfilt:'current'});
   dfiltFuture = ()=>this.setState({dfilt:'future'});
+  dfiltHistory = ()=>this.setState({dfilt:'history'});
   dfiltAll = ()=>this.setState({dfilt:'all'});
   
   
@@ -99,6 +102,8 @@ class Persons extends React.Component{
       case 'all':
         return true 
       case 'current':
+        return person.effective<=cdate
+      case 'history':
         return person.effective<=cdate
       case 'future':
         return person.effective>cdate
@@ -149,15 +154,11 @@ class Persons extends React.Component{
         console.log('done saving')
       })
   }
-  // sav = () =>{
-  //   const Persons = this.state.Persons.map((j)=>{return {person: j.person, category: j.category,   active: j.active*1, idx: j.idx, week:0, coid:j.coid}})
-  //   postPersons(Persons, 0)
-  // }
 
   editPerson=(j)=>{
     console.log('j: ', j)
     setEdit(j)
-    setKeyVal({update:true, clearjc:false})
+    setKeyVal({update:true})
     // router.navigate('/addperson?idx='+j.idx);
     router.navigate('/addperson');
   }
@@ -181,6 +182,10 @@ class Persons extends React.Component{
     let ac = {...sta.ac}
     let ia = {...sta.ia}
     let al = {...sta.al}
+    let cu = {...sta.cu}
+    let fu = {...sta.fu}
+    let hi = {...sta.hi}
+    let da = {...sta.da}
     const norm = 'whitesmoke'
     const hili = '#99CCCC'
     const st = this.state.filt
@@ -201,9 +206,40 @@ class Persons extends React.Component{
         ac.background = norm
       break;
     }
+    const dst = this.state.dfilt
+    switch(dst){
+      case 'all':
+        da.background = hili
+        cu.background = norm
+        fu.background = norm
+        hi.background = norm
+      break;
+      case 'current':
+        da.background = norm
+        fu.background = norm
+        hi.background = norm
+        cu.background = hili
+      break;
+      case 'future':
+        hi.background = norm
+        da.background = norm
+        fu.background = hili
+        cu.background = norm
+      break;
+      case 'history':
+        da.background = norm
+        hi.background = hili
+        cu.background = norm
+        fu.background = norm
+      break;
+    }
     sta.ac =ac
     sta.ia =ia
     sta.al =al 
+    sta.cu =cu 
+    sta.fu =fu 
+    sta.hi =hi 
+    sta.da =da 
     return sta
   }
 
@@ -274,10 +310,11 @@ class Persons extends React.Component{
                 <button style={actstyle.al} onClick={this.filtAll}>all</button>
                 <br/>
                 <span>
-                  effective date:
-                  <button style={actstyle.ac} onClick={this.dfiltCurrent}>current</button>
-                  <button style={actstyle.ia} onClick={this.dfiltFuture}>future</button>
-                  <button style={actstyle.al} onClick={this.dfiltAll}>all</button>
+                  dates:
+                  <button style={actstyle.cu} onClick={this.dfiltCurrent}>current</button>
+                  <button style={actstyle.fu} onClick={this.dfiltFuture}>future</button>
+                  <button style={actstyle.hi} onClick={this.dfiltHistory}>history</button>
+                  <button style={actstyle.da} onClick={this.dfiltAll}>all</button>
 
                 </span>
             </div>
@@ -342,7 +379,23 @@ const style = {
       al:{
         margin: '4px',
         padding: '4px'
-      }
+      },
+      cu:{
+        margin: '4px',
+        padding: '4px'
+      },
+      fu:{
+        margin: '4px',
+        padding: '4px'
+      },
+      hi:{
+        margin: '4px',
+        padding: '4px'
+      },     
+      da:{
+        margin: '4px',
+        padding: '4px'
+      }     
     },
   },
   myli :{

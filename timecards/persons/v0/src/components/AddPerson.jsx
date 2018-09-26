@@ -77,6 +77,7 @@ class AddPerson extends React.Component {
     console.log('this.props.eperson.curperson: ', this.props.eperson.curperson)
     const curperson = {...this.props.eperson.curperson}
     putPerson(curperson)
+    router.navigate('/persons?rerender')
   }
   txtChanged = field => e =>{
     let curperson= this.props.eperson.curperson
@@ -95,7 +96,10 @@ class AddPerson extends React.Component {
     this.props.xmitChange({curperson:curperson});
   }
   delPerson=()=>{
-    deletePerson(this.props.eperson.curperson.person)
+    const {curperson} = this.props.eperson
+    const drec = {emailid:curperson.emailid, effective:curperson.effective}
+    console.log('drec: ', drec)
+    deletePerson(drec)
     router.navigate('/persons?rerender');
   }
 
@@ -103,7 +107,6 @@ class AddPerson extends React.Component {
     const { classes } = this.props;
     const{curperson, update, isPartner}=this.props.eperson
     const newup = update ? 'udpate' : 'new'
-    console.log('15.30.tostring() ', 15.3.toFixed(2))
     return (
       <div style={astyles.outer.div}>
       <form style={astyles.inner.div} className={classes.container} noValidate autoComplete="off">
@@ -233,8 +236,8 @@ class AddPerson extends React.Component {
           className={classes.textField}
           type="number"
           inputProps={{ min: "0", max: "15"}}
-          value={curperson.stAllow}
-          onChange={this.txtChanged('stAllow')}
+          value={curperson.stallow}
+          onChange={this.txtChanged('stallow')}
           margin="dense"
         /> 
         <div style={astyles.inner.but}>

@@ -1,3 +1,4 @@
+var moment = require('moment');
 import {Home} from './components'
 
 const blankperson ={
@@ -9,11 +10,12 @@ const blankperson ={
   st:'',
   zip: '',
   role:'',
-  rate:'',
+  rate: 15.00,
   ssn:'',
   w4allow: '',
-  stAllow:'',
-  active:true
+  stallow:'',
+  active:true,
+  effective: moment().format('YYYY-MM-D')
 }
 
 const initState = {
@@ -28,8 +30,7 @@ const initState = {
   },
   eperson: {
     curperson: blankperson,
-    update: true,
-    clearjc: false
+    update: true
   }
 };
 

@@ -3,6 +3,7 @@ import {parseQuery} from '../utilities/wfuncs'
 import {ls, cfg} from '../utilities/getCfg'
 import {mapClass2Element} from '../hoc/mapClass2Element'
 import {fetchCoids, fetchCtoken} from '../../../../common/v0/src/services/fetches'
+import {setKeyVal} from '../actions/personacts';
 
 class Registered extends React.Component {
   constructor(props) {
@@ -39,15 +40,17 @@ class Registered extends React.Component {
 
   clickCoid=(e)=>{
     const idx =e.target.getAttribute('idx')
-    const coid = this.state.cos[idx]
-    this.getCtoken(this.state.token,coid)
+    const co = this.state.cos[idx]
+    this.getCtoken(this.state.token, co)
   }
 
-  getCtoken=(token,coid)=>{
+  getCtoken=(token,co)=>{
     //console.log('this.props.ejob.task: ', this.props.ejob.task)
-    fetchCtoken(token,coid)
+    fetchCtoken(token,co)
       .then((res)=>{
         console.log('res: ', res)
+        const isPartner = res.role=='partner' ? true : false
+        setKeyVal({role:res.role, emailid:res.binfo.emailid, isPartner:isPartner})
         ls.setItem({email: res.binfo.emailid, token:res.token})
         location.replace('#persons')
       })
@@ -65,8 +68,8 @@ class Registered extends React.Component {
         <span>You are registered on this app for multiple businesses. Select which on you want to be logged in at. This app will remeber your last business selection. To switch later, just <a href={cfg.url.authqry}>register</a> again then select another business</span>
         <h4>Select a business/org/entity </h4>
         <ul style={style.myli.ul}>
-          {this.state.cos.map((coid,i)=>(
-            <li style={style.myli.li} key={i} idx={i} onClick={this.clickCoid}>{coid} </li>
+          {this.state.cos.map((co,i)=>(
+            <li style={style.myli.li} key={i} idx={i} onClick={this.clickCoid}>{co.coid} as {co.role} </li>
           ))}
         </ul>
       </div>

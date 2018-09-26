@@ -31,7 +31,7 @@ class App extends React.Component{
     return(
       <div>
         <div style={style.he}>
-          <span>timecards - person app </span>
+          <span>timecards - person for {this.props.eperson.coid}</span>
           {this.loadNav()}
         </div>
         <div style={style.container}>

@@ -31845,7 +31845,7 @@ var blankperson = {
   rate: 15.00,
   ssn: '',
   w4allow: '',
-  stAllow: '',
+  stallow: '',
   active: true,
   effective: moment().format('YYYY-MM-D')
 };
@@ -59795,7 +59795,8 @@ var App = function (_React$Component) {
           _react2.default.createElement(
             'span',
             null,
-            'timecards - person app '
+            'timecards - person for ',
+            this.props.eperson.coid
           ),
           this.loadNav()
         ),
@@ -60095,6 +60096,8 @@ var Persons = function (_React$Component) {
       return _this.setState({ dfilt: 'current' });
     }, _this.dfiltFuture = function () {
       return _this.setState({ dfilt: 'future' });
+    }, _this.dfiltHistory = function () {
+      return _this.setState({ dfilt: 'history' });
     }, _this.dfiltAll = function () {
       return _this.setState({ dfilt: 'all' });
     }, _this.fact = function (person) {
@@ -60121,6 +60124,8 @@ var Persons = function (_React$Component) {
         case 'all':
           return true;
         case 'current':
+          return person.effective <= cdate;
+        case 'history':
           return person.effective <= cdate;
         case 'future':
           return person.effective > cdate;
@@ -60184,6 +60189,10 @@ var Persons = function (_React$Component) {
       var ac = _extends({}, sta.ac);
       var ia = _extends({}, sta.ia);
       var al = _extends({}, sta.al);
+      var cu = _extends({}, sta.cu);
+      var fu = _extends({}, sta.fu);
+      var hi = _extends({}, sta.hi);
+      var da = _extends({}, sta.da);
       var norm = 'whitesmoke';
       var hili = '#99CCCC';
       var st = _this.state.filt;
@@ -60204,9 +60213,40 @@ var Persons = function (_React$Component) {
           ac.background = norm;
           break;
       }
+      var dst = _this.state.dfilt;
+      switch (dst) {
+        case 'all':
+          da.background = hili;
+          cu.background = norm;
+          fu.background = norm;
+          hi.background = norm;
+          break;
+        case 'current':
+          da.background = norm;
+          fu.background = norm;
+          hi.background = norm;
+          cu.background = hili;
+          break;
+        case 'future':
+          hi.background = norm;
+          da.background = norm;
+          fu.background = hili;
+          cu.background = norm;
+          break;
+        case 'history':
+          da.background = norm;
+          hi.background = hili;
+          cu.background = norm;
+          fu.background = norm;
+          break;
+      }
       sta.ac = ac;
       sta.ia = ia;
       sta.al = al;
+      sta.cu = cu;
+      sta.fu = fu;
+      sta.hi = hi;
+      sta.da = da;
       return sta;
     }, _this.getQuery = function () {
       var params = _this.props.cambio.page.params;
@@ -60313,11 +60353,6 @@ var Persons = function (_React$Component) {
       this.dwk = document.getElementById("wk");
       console.log('moment().format("YYY-MM-DD): ', moment().format("YYYY-MM-DD"));
     }
-    // sav = () =>{
-    //   const Persons = this.state.Persons.map((j)=>{return {person: j.person, category: j.category,   active: j.active*1, idx: j.idx, week:0, coid:j.coid}})
-    //   postPersons(Persons, 0)
-    // }
-
   }, {
     key: 'render',
     value: function render() {
@@ -60353,20 +60388,25 @@ var Persons = function (_React$Component) {
               _react2.default.createElement(
                 'span',
                 null,
-                'effective date:',
+                'dates:',
                 _react2.default.createElement(
                   'button',
-                  { style: actstyle.ac, onClick: this.dfiltCurrent },
+                  { style: actstyle.cu, onClick: this.dfiltCurrent },
                   'current'
                 ),
                 _react2.default.createElement(
                   'button',
-                  { style: actstyle.ia, onClick: this.dfiltFuture },
+                  { style: actstyle.fu, onClick: this.dfiltFuture },
                   'future'
                 ),
                 _react2.default.createElement(
                   'button',
-                  { style: actstyle.al, onClick: this.dfiltAll },
+                  { style: actstyle.hi, onClick: this.dfiltHistory },
+                  'history'
+                ),
+                _react2.default.createElement(
+                  'button',
+                  { style: actstyle.da, onClick: this.dfiltAll },
                   'all'
                 )
               )
@@ -60438,6 +60478,22 @@ var style = {
         padding: '4px'
       },
       al: {
+        margin: '4px',
+        padding: '4px'
+      },
+      cu: {
+        margin: '4px',
+        padding: '4px'
+      },
+      fu: {
+        margin: '4px',
+        padding: '4px'
+      },
+      hi: {
+        margin: '4px',
+        padding: '4px'
+      },
+      da: {
         margin: '4px',
         padding: '4px'
       }
@@ -61063,6 +61119,7 @@ var AddPerson = function (_React$Component) {
       console.log('this.props.eperson.curperson: ', _this.props.eperson.curperson);
       var curperson = _extends({}, _this.props.eperson.curperson);
       (0, _fetches.putPerson)(curperson);
+      _app.router.navigate('/persons?rerender');
     }, _this.txtChanged = function (field) {
       return function (e) {
         var curperson = _this.props.eperson.curperson;
@@ -61080,7 +61137,11 @@ var AddPerson = function (_React$Component) {
       curperson.categories = e.target.value;
       _this.props.xmitChange({ curperson: curperson });
     }, _this.delPerson = function () {
-      (0, _fetches.deletePerson)(_this.props.eperson.curperson.person);
+      var curperson = _this.props.eperson.curperson;
+
+      var drec = { emailid: curperson.emailid, effective: curperson.effective };
+      console.log('drec: ', drec);
+      (0, _fetches.deletePerson)(drec);
       _app.router.navigate('/persons?rerender');
     }, _temp), _possibleConstructorReturn(_this, _ret);
   }
@@ -61101,7 +61162,6 @@ var AddPerson = function (_React$Component) {
           isPartner = _props$eperson.isPartner;
 
       var newup = update ? 'udpate' : 'new';
-      console.log('15.30.tostring() ', 15.3.toFixed(2));
       return _react2.default.createElement(
         'div',
         { style: astyles.outer.div },
@@ -61242,8 +61302,8 @@ var AddPerson = function (_React$Component) {
             className: classes.textField,
             type: 'number',
             inputProps: { min: "0", max: "15" },
-            value: curperson.stAllow,
-            onChange: this.txtChanged('stAllow'),
+            value: curperson.stallow,
+            onChange: this.txtChanged('stallow'),
             margin: 'dense'
           }),
           _react2.default.createElement(

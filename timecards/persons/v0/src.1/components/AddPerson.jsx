@@ -2,6 +2,8 @@ import React from 'react';
 import {router} from '../app'
 import {mapClass2Element} from '../hoc/mapClass2Element'
 import { putPerson, deletePerson } from '../services/fetches';
+import {fetchTokdata} from '../../../../common/v0/src/services/fetches'
+import {setKeyVal} from '../actions/personacts';
 //import {setKeyVal} from '../actions/personacts';
 import PropTypes from 'prop-types';
 //import classNames from 'classnames';
@@ -58,32 +60,25 @@ class AddPerson extends React.Component {
 
   componentDidMount() {
     this.setState({eperson:this.props.eperson})
+    this.getTokdata()
+  }
+
+  getTokdata=()=>{
+    fetchTokdata()
+    .then((res)=>{
+      console.log('res: ', res)
+      const isPartner = res.binfo.role=='partner' ? true : false
+      setKeyVal({role:res.binfo.role, emailid:res.binfo.emailid, isPartner:isPartner})
+    })  
   }
 
   updatePerson=(e)=>{
     e.preventDefault()
     console.log('this.props.eperson.curperson: ', this.props.eperson.curperson)
-    const cs=this.props.eperson.curperson.categories.replace(/\s/g, "").split(',')
     const curperson = {...this.props.eperson.curperson}
-    delete curperson.categories
-    curperson.week=0
-    const newjcarr = cs.map((c)=>{
-      const ncurperson = {...curperson}
-      ncurperson.category=c
-      return ncurperson
-    })
-    console.log('newjcarr: ', newjcarr)
-      putPerson(newjcarr)
-    router.navigate('/persons?rerender');
+    putPerson(curperson)
+    router.navigate('/persons?rerender')
   }
-  personChanged =(e)=>{
-    const field = e.target.getAttribute('field')
-    let curperson= this.props.eperson.curperson
-    console.log('field: ', field)
-    curperson[field] = e.target.value
-    this.props.xmitChange({curperson:curperson});
-  }
-
   txtChanged = field => e =>{
     let curperson= this.props.eperson.curperson
     curperson[field] = e.target.value
@@ -101,18 +96,22 @@ class AddPerson extends React.Component {
     this.props.xmitChange({curperson:curperson});
   }
   delPerson=()=>{
-    deletePerson(this.props.eperson.curperson.person)
+    const {curperson} = this.props.eperson
+    const drec = {emailid:curperson.emailid, effective:curperson.effective}
+    console.log('drec: ', drec)
+    deletePerson(drec)
     router.navigate('/persons?rerender');
   }
 
   render() { 
     const { classes } = this.props;
-    const{curperson, update}=this.props.eperson
+    const{curperson, update, isPartner}=this.props.eperson
     const newup = update ? 'udpate' : 'new'
     return (
       <div style={astyles.outer.div}>
       <form style={astyles.inner.div} className={classes.container} noValidate autoComplete="off">
         <TextField
+          required
           id="standard-name"
           label="Email Id"
           className={classes.textField300}
@@ -169,7 +168,7 @@ class AddPerson extends React.Component {
           margin="dense"
         /> 
         <FormControl component="fieldset" className={classes.formControl}>
-          <FormLabel component="legend">Role</FormLabel>
+          <FormLabel required component="legend">Role</FormLabel>
           <RadioGroup
             aria-label="Role"
             name="gender1"
@@ -178,10 +177,10 @@ class AddPerson extends React.Component {
             onChange={this.txtChanged('role')}
             row={true}
           >
-          <FormControlLabel disabled value="partner" control={<Radio />} label="Partner" />
+          <FormControlLabel disabled={!isPartner} value="partner" control={<Radio />} label="Partner" />
           <FormControlLabel value="hr" control={<Radio />} label="H.R." />
           <FormControlLabel value="super" control={<Radio />} label="Super" />
-          <FormControlLabel value="worker" control={<Radio />} label="Worker" />
+          <FormControlLabel value="worker" control={<Radio />} label="Worker"/> <FormControlLabel value="clerk" control={<Radio />} label="Clerk"/>
           <FormControlLabel
             control={
               <Checkbox
@@ -194,6 +193,15 @@ class AddPerson extends React.Component {
           />
           </RadioGroup>
         </FormControl>
+        <TextField
+          id="standard-name"
+          label="Effective Date"
+          className={classes.textField}
+          type="date"
+          value={curperson.effective}
+          onChange={this.txtChanged('effective')}
+          margin="dense"
+        /> 
         <TextField
           id="standard-name"
           label="Rate: $"
@@ -228,8 +236,8 @@ class AddPerson extends React.Component {
           className={classes.textField}
           type="number"
           inputProps={{ min: "0", max: "15"}}
-          value={curperson.stAllow}
-          onChange={this.txtChanged('stAllow')}
+          value={curperson.stallow}
+          onChange={this.txtChanged('stallow')}
           margin="dense"
         /> 
         <div style={astyles.inner.but}>
