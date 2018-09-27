@@ -2,7 +2,7 @@ import React from 'react'// eslint-disable-line no-unused-vars
 var moment = require('moment');
 import {router} from '../app'
 import {mapClass2Element} from '../hoc/mapClass2Element'
-import {fetchPersons, postPersons, fetchSettings, putCk } from '../services/fetches'
+import {fetchPersons, postPersons, fetchSettings} from '../services/fetches'
 import{adjWdprtDn, padWk} from  '../../../../common/v0/src/utilities/reroo'
 import { setEdit, setKeyVal} from '../actions/personacts';
 
@@ -49,24 +49,21 @@ class Persons extends React.Component{
       this.setState({persons: res.persons},()=>{})
     })    
   }
-
-  onChecked=(a)=>{
-    console.log('a: ', a)
-    const aa = {...a}
-    aa.active = !aa.active + 0
-    putCk(aa)
-    let npersons = this.state.persons.map((person)=>{
-      if (person.id==a.id){
-        person.active = !person.active
-        let nperson ={...person}
-        nperson.active = person.active + 0
-        delete nperson.id
-        console.log('nperson: ', nperson)
-      }
-      return person
-    })
-    this.setState({persons:npersons})
-  }
+ 
+  
+  getCurrent=(persons)=>{
+    const cdate = moment().format('YYYY-MM-DD')
+    const cperson = persons
+      .filter((person)=>person.rate>0 && person.effective && person.effective<=cdate )
+      .reduce((t,p)=>{
+        const  oeid =t.slice(-1)[0].emailid
+        if(oeid != p.emailid){
+          t.push(p)
+        }
+        return t
+      },[{emailid:'dog'}])
+    return cperson.slice(1)
+  }  
 
   filtAct = ()=>this.setState({filt:'active'});
   filtInAct = ()=>this.setState({filt:'inactive'});
@@ -102,14 +99,21 @@ class Persons extends React.Component{
       case 'all':
         return true 
       case 'current':
-        return person.effective<=cdate
+        return true
       case 'history':
-        return person.effective<=cdate
+        return person.effective && person.effective<=cdate
       case 'future':
-        return person.effective>cdate
+        return person.effective && person.effective>cdate
       default:
         return this.fall()
     }
+  }
+
+  cfilt = (persons)=>{
+    if(this.state.dfilt=='current') {
+      persons = this.getCurrent(persons)
+    }
+    return persons
   }
 
   getwk = ()=>{
@@ -255,7 +259,8 @@ class Persons extends React.Component{
   }
 
   renderPersons=()=>{
-    const {persons}=this.state
+    let {persons}=this.state
+    persons = this.cfilt(persons)
     const rpersons = persons
       .filter((cperson)=>this.afilt(cperson))
       .filter((dperson)=>this.efilt(dperson))
@@ -270,8 +275,7 @@ class Persons extends React.Component{
           <div style={style.myli.person}> 
             <span>
               {aperson.emailid}<br/>
-              {aperson.firstmid} 
-              {aperson.lastname}<br/>
+             <span>{aperson.firstmid} {aperson.lastname}</span> <br/>
               {aperson.street}<br/>
               {aperson.city}, {aperson.st} {aperson.zip}<br/>
               role: {aperson.role}<br/>

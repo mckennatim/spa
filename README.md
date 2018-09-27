@@ -15,6 +15,9 @@ https://github.com/mozilla-services/react-jsonschema-form
 https://gridbyexample.com/examples/example13/
 https://www.mozilla.org/en-US/firefox/60.0a2/whatsnew/#cssgrid
 https://mozilladevelopers.github.io/playground/css-grid/
+### 102-timecards-persons-current
+current button by filtering and mapping through persons array whenever it changes
+### 101-timecards-persons-done
 ### 100-timecards-person-addperson
 ### 99-timecards-tcard.done
 ### 98-timecards-jobs.done

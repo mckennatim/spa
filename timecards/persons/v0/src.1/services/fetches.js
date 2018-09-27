@@ -50,6 +50,31 @@ const fetchPersons=()=>{
     return p2
   }
 }
+const fetchCurrent=()=>{
+  var lsh = ls.getItem();
+  if(geta('lsh.token', lsh)){
+    let url= cfg.url.api+'/persons/current/'
+    let options= {headers: {'Authorization': 'Bearer '+ lsh['token']}}
+    return(
+      fetch(url, options)
+        .then((response)=>response.json())
+        .then((json)=>{
+          console.log('json: ', json)
+          if(json.message){
+            return {qmessage: json.message}
+          }else{
+            return json
+          }
+        })
+        .catch((e)=>{
+          return {qmessage: e.message}
+        })
+      )         
+  }else{
+    let p2 =Promise.resolve({qmessage:'you do not seem to be known on this device '})
+    return p2
+  }
+}
 const postPersons=(persons,wk)=>{
   var lsh = ls.getItem();
   if(geta('lsh.token', lsh)){
@@ -159,4 +184,5 @@ const deletePerson=(person)=>{
   }
 }
 
-export{fetchSettings, fetchPersons, postPersons, putPerson, newPerson, deletePerson, putCk}
+export{fetchSettings, fetchPersons, postPersons, putPerson, newPerson, deletePerson, putCk, fetchCurrent
+}

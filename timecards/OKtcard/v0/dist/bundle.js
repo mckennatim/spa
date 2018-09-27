@@ -42259,7 +42259,6 @@ var fetchTcard = function fetchTcard(wk) {
         return { qmessage: json.message };
       } else {
         var processed = (0, _wfuncs.processDb4app)(json);
-        console.log('processed: ', processed);
         return processed;
       }
     }).catch(function (e) {
@@ -43816,12 +43815,12 @@ var Registered = function (_React$Component) {
 
     _this.clickCoid = function (e) {
       var idx = e.target.getAttribute('idx');
-      var coid = _this.state.cos[idx];
-      _this.getCtoken(_this.state.token, coid);
+      var co = _this.state.cos[idx];
+      _this.getCtoken(_this.state.token, co);
     };
 
-    _this.getCtoken = function (token, coid) {
-      (0, _fetches.fetchCtoken)(token, coid).then(function (res) {
+    _this.getCtoken = function (token, co) {
+      (0, _fetches.fetchCtoken)(token, co).then(function (res) {
         _getCfg.ls.setItem({ email: res.binfo.emailid, token: res.token });
         location.replace('#oktcard');
       });
@@ -43863,11 +43862,13 @@ var Registered = function (_React$Component) {
         _react2.default.createElement(
           'ul',
           { style: style.myli.ul },
-          _this.state.cos.map(function (coid, i) {
+          _this.state.cos.map(function (co, i) {
             return _react2.default.createElement(
               'li',
               { style: style.myli.li, key: i, idx: i, onClick: _this.clickCoid },
-              coid,
+              co.coid,
+              ' as ',
+              co.role,
               ' '
             );
           })
@@ -44144,7 +44145,7 @@ var style = {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.fetchCtoken = exports.fetchCoids = exports.deleteJob = exports.newJob = exports.putJob = exports.postJobs = exports.fetchJobs = exports.fetchSettings = undefined;
+exports.fetchTokdata = exports.fetchCtoken = exports.fetchCoids = exports.deleteJob = exports.newJob = exports.putJob = exports.postJobs = exports.fetchJobs = exports.fetchSettings = undefined;
 
 var _getCfg = __webpack_require__(257);
 
@@ -44171,9 +44172,10 @@ var fetchCoids = function fetchCoids(mobj) {
     return p2;
   }
 };
-var fetchCtoken = function fetchCtoken(token, coid) {
+var fetchCtoken = function fetchCtoken(token, co) {
   if (token) {
-    var url = _getCfg.cfg.url.api + '/reg/ctoken/' + coid;
+    var url = _getCfg.cfg.url.api + '/reg/ctoken/' + co.coid + '/' + co.role;
+    console.log('url: ', url);
     var options = { headers: { 'Authorization': 'Bearer ' + token } };
     return fetch(url, options).then(function (response) {
       return response.json();
@@ -44213,6 +44215,30 @@ var fetchSettings = function fetchSettings() {
     return p2;
   }
 };
+
+var fetchTokdata = function fetchTokdata() {
+  var lsh = _getCfg.ls.getItem();
+  if ((0, _wfuncs.geta)('lsh.token', lsh)) {
+    var url = _getCfg.cfg.url.api + '/persons/tokdata';
+    var options = { headers: { 'Authorization': 'Bearer ' + lsh['token'] } };
+    return fetch(url, options).then(function (response) {
+      return response.json();
+    }).then(function (json) {
+      console.log('json: ', json);
+      if (json.message) {
+        return { qmessage: json.message };
+      } else {
+        return json;
+      }
+    }).catch(function (e) {
+      return { qmessage: e.message };
+    });
+  } else {
+    var p2 = Promise.resolve({ qmessage: 'you dont exist!, cant get tokdata' });
+    return p2;
+  }
+};
+
 var fetchJobs = function fetchJobs(wk) {
   var lsh = _getCfg.ls.getItem();
   if ((0, _wfuncs.geta)('lsh.token', lsh)) {
@@ -44325,6 +44351,7 @@ exports.newJob = newJob;
 exports.deleteJob = deleteJob;
 exports.fetchCoids = fetchCoids;
 exports.fetchCtoken = fetchCtoken;
+exports.fetchTokdata = fetchTokdata;
 
 /***/ }),
 /* 257 */
@@ -44356,7 +44383,7 @@ var authqry = cfg.url.soauth + "/spa/" + cfg.appid + "?apiURL=" + encodeURICompo
 
 cfg.url.authqry = authqry;
 
-var ls = (0, _storageLocal.storageLocal)(cfg.appid);
+var ls = (0, _storageLocal.storageLocal)(cfg.superapp);
 
 exports.ls = ls;
 exports.cfg = cfg;
@@ -44371,7 +44398,7 @@ module.exports = {"m":"https"}
 /* 259 */
 /***/ (function(module, exports) {
 
-module.exports = {"https":{"appid":"jobs","url":{"soauth":"https://services.sitebuilt.net/soauth","api":"https://services.sitebuilt.net/timecards/api"},"cbPath":"#registered"},"local":{}}
+module.exports = {"https":{"superapp":"timecards","appid":"common","url":{"soauth":"https://services.sitebuilt.net/soauth","api":"https://services.sitebuilt.net/timecards/api"},"cbPath":"#registered"},"local":{}}
 
 /***/ }),
 /* 260 */

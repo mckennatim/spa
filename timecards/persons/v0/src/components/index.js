@@ -4,7 +4,6 @@ import {App} from './App'
 import {Active} from './Active'
 import {Persons} from './Persons.jsx'
 import {AddPerson} from './AddPerson.jsx'
-import {SortPersons} from './SortPersons'
 import {Nav} from './Nav.jsx'
 import {Dog} from './Dog'
 import {Products} from './Products'
@@ -74,24 +73,6 @@ const multi =[
     ['About', 'Products', 'Home'],
     ['About','Products', 'About', 'Home']
     ]},
-  {pri:'Persons', mul:[
-    ['Persons', 'SortPersons'],
-    ['Persons', 'SortPersons', 'Home'],
-    ['Persons', 'SortPersons', 'Home', 'About']
-    ]},
-  {pri:'AddJob', mul:[
-    ['Persons', 'AddJob'],
-    ['Persons', 'AddJob', 'Home'],
-    ]},    
-  {pri:'SortPersons', mul:[
-    ['Persons', 'SortPersons'],
-    ['Persons', 'SortPersons', 'AddJob'],
-    ['Persons','SortPersons', 'About', 'AddJob']
-    ]},  
-  {pri:'Products', mul:[
-    ['Products', 'About'],
-    ['Products', 'Home', 'About']
-    ]},
   {pri:'Cat', mul:[
     ['Cat', 'About']
     ]}
@@ -100,6 +81,4 @@ const multi =[
 //['watch', 'phone', 'phoneL', 'tablet', 'tabletL', 'laptop']
 const panes= [1,1,2,2,3,3,4]
 
-export {Active, Persons
-  , AddPerson, SortPersons
-  , Cat, About, Products,Home, Dog, App, Nav, Registered, multi, panes}
+export {Active, Persons, AddPerson, Cat, About, Products,Home, Dog, App, Nav, Registered, multi, panes}
