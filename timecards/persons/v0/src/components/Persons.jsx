@@ -54,7 +54,7 @@ class Persons extends React.Component{
   getCurrent=(persons)=>{
     const cdate = moment().format('YYYY-MM-DD')
     const cperson = persons
-      .filter((person)=>person.rate>0 && person.effective && person.effective<=cdate )
+      .filter((person)=>person.rate>0 && person.effective && person.effective<=cdate && person.active )
       .reduce((t,p)=>{
         const  oeid =t.slice(-1)[0].emailid
         if(oeid != p.emailid){
@@ -65,14 +65,14 @@ class Persons extends React.Component{
     return cperson.slice(1)
   }  
 
-  filtAct = ()=>this.setState({filt:'active'});
-  filtInAct = ()=>this.setState({filt:'inactive'});
-  filtAll = ()=>this.setState({filt:'all'});
+  filtAct = ()=>setKeyVal({filt:'active'});
+  filtInAct = ()=>setKeyVal({filt:'inactive'});
+  filtAll = ()=>setKeyVal({filt:'all'});
 
-  dfiltCurrent = ()=>this.setState({dfilt:'current'});
-  dfiltFuture = ()=>this.setState({dfilt:'future'});
-  dfiltHistory = ()=>this.setState({dfilt:'history'});
-  dfiltAll = ()=>this.setState({dfilt:'all'});
+  dfiltCurrent = ()=>setKeyVal({dfilt:'current'});
+  dfiltFuture = ()=>setKeyVal({dfilt:'future'});
+  dfiltHistory = ()=>setKeyVal({dfilt:'history'});
+  dfiltAll = ()=>setKeyVal({dfilt:'all'});
   
   
   fact = (person)=>person.active==true
@@ -80,7 +80,7 @@ class Persons extends React.Component{
   fall = ()=>true
 
   afilt = (person)=>{
-    switch (this.state.filt) {
+    switch (this.props.eperson.filt) {
       case 'all':
         return this.fall(person) 
       case 'active':
@@ -95,7 +95,7 @@ class Persons extends React.Component{
   efilt = (person)=>{
     person.effective = person.effective ? person.effective.split('T')[0] : null
     const cdate = moment().format("YYYY-MM-DD")
-    switch (this.state.dfilt) {
+    switch (this.props.eperson.dfilt) {
       case 'all':
         return true 
       case 'current':
@@ -110,7 +110,7 @@ class Persons extends React.Component{
   }
 
   cfilt = (persons)=>{
-    if(this.state.dfilt=='current') {
+    if(this.props.eperson.dfilt=='current') {
       persons = this.getCurrent(persons)
     }
     return persons
@@ -192,7 +192,7 @@ class Persons extends React.Component{
     let da = {...sta.da}
     const norm = 'whitesmoke'
     const hili = '#99CCCC'
-    const st = this.state.filt
+    const st = this.props.eperson.filt
     switch(st){
       case 'all':
         al.background = hili
@@ -210,7 +210,7 @@ class Persons extends React.Component{
         ac.background = norm
       break;
     }
-    const dst = this.state.dfilt
+    const dst = this.props.eperson.dfilt
     switch(dst){
       case 'all':
         da.background = hili
@@ -267,6 +267,11 @@ class Persons extends React.Component{
       .map((aperson, i)=>{
         let date = aperson.effective ? aperson.effective.split('T')[0] : '' 
         let active = aperson.active ? (<span>&#10004;</span>) : 'no'
+        let sthoh = aperson.sthoh ? (<span>&#10004;</span>) : 'no'
+        let stblind = aperson.stblind ? (<span>&#10004;</span>) : 'no'
+        let w4exempt = aperson.w4exempt ? (<span>&#10004;</span>) : 'no'
+        let student = aperson.student ? (<span>&#10004;</span>) : 'no'
+        
         return (
         <li  key={i} style={style.myli.li}>
           <div style={style.myli.idx}>
@@ -280,7 +285,8 @@ class Persons extends React.Component{
               {aperson.city}, {aperson.st} {aperson.zip}<br/>
               role: {aperson.role}<br/>
               effective: {date}<br/>
-              active: {active}
+              active: {active}<br/>
+              rate: ${aperson.rate}
             </span>
           </div>
           <div style={style.myli.cat}>
@@ -288,7 +294,11 @@ class Persons extends React.Component{
             {aperson.ssn}<br/>
             allowances<br/>
             fed:{aperson.w4allow}, state:{aperson.stallow} <br/>
-            rate: ${aperson.rate}
+            fadd:{aperson.w4add}, stadd:{aperson.stadd} <br/>
+            hoh:{sthoh}, blind:{stblind}<br/>
+            marital:{aperson.marital}<br/>
+            w4exempt: {w4exempt}<br/>
+            student: {student}<br/>
             </span>
           </div>
         </li >)
@@ -415,14 +425,14 @@ const style = {
     },
     li:{
       background: '#99CCCC',
-      padding: '6px',
+      padding: '2px',
       overflow: 'hidden',
       border: 'solid 1px black'
     },
     idx:{
       float: 'left',
-      width: '7%',
-      padding: '5px'
+      width: '5%',
+      padding: '4px'
     },
     icon:{
       fontSize: '18px'

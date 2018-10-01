@@ -98,6 +98,7 @@ const postPersons=(persons,wk)=>{
 }
 
 const putPerson=(person)=>{
+  console.log('person: ', person)
   var lsh = ls.getItem();
   if(geta('lsh.token', lsh)){
     let url= cfg.url.api+'/persons/update'

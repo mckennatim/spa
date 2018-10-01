@@ -116,7 +116,7 @@ class TimeCardJar extends React.Component {
       showsub=true
       blabel= 'submit'
     }
-    modwstat={...modwstat, status:status, hrs:wkpuhrs}
+    modwstat={...modwstat, status:status, hrs:wkpuhrs, hrsarr:JSON.stringify(hrs)}
     modtcard={...modtcard, wstat:modwstat}
     this.setState({showsub, blabel})
     return modtcard

@@ -240,6 +240,84 @@ class AddPerson extends React.Component {
           onChange={this.txtChanged('stallow')}
           margin="dense"
         /> 
+        <TextField
+          id="standard-name"
+          label="St. Add.."
+          className={classes.textField}
+          type="number"
+          inputProps={{ min: "0", max: "15"}}
+          value={curperson.stadd}
+          onChange={this.txtChanged('stadd')}
+          margin="dense"
+        /> 
+        <TextField
+          id="standard-name"
+          label="Fed. Add."
+          className={classes.textField}
+          type="number"
+          inputProps={{ min: "0", max: "15"}}
+          value={curperson.w4add}
+          onChange={this.txtChanged('w4add')}
+          margin="dense"
+        /> 
+        <FormControl> 
+        <FormControlLabel
+            control={
+              <Checkbox
+              checked={curperson.w4exempt==1 ? true : false}
+              onChange={this.ckChanged('w4exempt')}
+              value="w4exempt"
+              />
+            }
+            label='W4 Exempt'
+          />
+          <FormControlLabel
+            control={
+              <Checkbox
+              checked={curperson.student==1 ? true : false}
+              onChange={this.ckChanged('student')}
+              value="student"
+              />
+            }
+            label='Student'
+          />
+          <FormControlLabel
+            control={
+              <Checkbox
+              checked={curperson.sthoh==1 ? true : false}
+              onChange={this.ckChanged('sthoh')}
+              value="sthoh"
+              />
+            }
+            label='Head of Household'
+          />
+          <FormControlLabel
+            control={
+              <Checkbox
+              checked={curperson.stblind==1 ? true : false}
+              onChange={this.ckChanged('stblind')}
+              value="stblind"
+              />
+            }
+            label='Blind'
+          />          
+        </FormControl> 
+        <FormControl component="fieldset" className={classes.formControl}>
+          <FormLabel component="legend">Marital Status</FormLabel>
+          <RadioGroup
+            aria-label="Marital Status"
+            name="gender1"
+            className={classes.group}
+            value={curperson.marital}
+            onChange={this.txtChanged('marital')}
+            row={true}
+          >
+          <FormControlLabel value="single" control={<Radio />} label="Single" />
+          <FormControlLabel value="married" control={<Radio />} label="Married" />
+          <FormControlLabel value="marASsingl" control={<Radio />} label="Married As Single"/> 
+          </RadioGroup>
+        </FormControl>
+
         <div style={astyles.inner.but}>
           <Button 
             variant="contained" 

@@ -15982,6 +15982,7 @@ var postPersons = function postPersons(persons, wk) {
 };
 
 var putPerson = function putPerson(person) {
+  console.log('person: ', person);
   var lsh = _getCfg.ls.getItem();
   if ((0, _wfuncs.geta)('lsh.token', lsh)) {
     var url = _getCfg.cfg.url.api + '/persons/update';
@@ -58644,7 +58645,7 @@ var Persons = function (_React$Component) {
     }, _this.getCurrent = function (persons) {
       var cdate = moment().format('YYYY-MM-DD');
       var cperson = persons.filter(function (person) {
-        return person.rate > 0 && person.effective && person.effective <= cdate;
+        return person.rate > 0 && person.effective && person.effective <= cdate && person.active;
       }).reduce(function (t, p) {
         var oeid = t.slice(-1)[0].emailid;
         if (oeid != p.emailid) {
@@ -58654,19 +58655,19 @@ var Persons = function (_React$Component) {
       }, [{ emailid: 'dog' }]);
       return cperson.slice(1);
     }, _this.filtAct = function () {
-      return _this.setState({ filt: 'active' });
+      return (0, _personacts.setKeyVal)({ filt: 'active' });
     }, _this.filtInAct = function () {
-      return _this.setState({ filt: 'inactive' });
+      return (0, _personacts.setKeyVal)({ filt: 'inactive' });
     }, _this.filtAll = function () {
-      return _this.setState({ filt: 'all' });
+      return (0, _personacts.setKeyVal)({ filt: 'all' });
     }, _this.dfiltCurrent = function () {
-      return _this.setState({ dfilt: 'current' });
+      return (0, _personacts.setKeyVal)({ dfilt: 'current' });
     }, _this.dfiltFuture = function () {
-      return _this.setState({ dfilt: 'future' });
+      return (0, _personacts.setKeyVal)({ dfilt: 'future' });
     }, _this.dfiltHistory = function () {
-      return _this.setState({ dfilt: 'history' });
+      return (0, _personacts.setKeyVal)({ dfilt: 'history' });
     }, _this.dfiltAll = function () {
-      return _this.setState({ dfilt: 'all' });
+      return (0, _personacts.setKeyVal)({ dfilt: 'all' });
     }, _this.fact = function (person) {
       return person.active == true;
     }, _this.finact = function (person) {
@@ -58674,7 +58675,7 @@ var Persons = function (_React$Component) {
     }, _this.fall = function () {
       return true;
     }, _this.afilt = function (person) {
-      switch (_this.state.filt) {
+      switch (_this.props.eperson.filt) {
         case 'all':
           return _this.fall(person);
         case 'active':
@@ -58687,7 +58688,7 @@ var Persons = function (_React$Component) {
     }, _this.efilt = function (person) {
       person.effective = person.effective ? person.effective.split('T')[0] : null;
       var cdate = moment().format("YYYY-MM-DD");
-      switch (_this.state.dfilt) {
+      switch (_this.props.eperson.dfilt) {
         case 'all':
           return true;
         case 'current':
@@ -58700,7 +58701,7 @@ var Persons = function (_React$Component) {
           return _this.fall();
       }
     }, _this.cfilt = function (persons) {
-      if (_this.state.dfilt == 'current') {
+      if (_this.props.eperson.dfilt == 'current') {
         persons = _this.getCurrent(persons);
       }
       return persons;
@@ -58767,7 +58768,7 @@ var Persons = function (_React$Component) {
       var da = _extends({}, sta.da);
       var norm = 'whitesmoke';
       var hili = '#99CCCC';
-      var st = _this.state.filt;
+      var st = _this.props.eperson.filt;
       switch (st) {
         case 'all':
           al.background = hili;
@@ -58785,7 +58786,7 @@ var Persons = function (_React$Component) {
           ac.background = norm;
           break;
       }
-      var dst = _this.state.dfilt;
+      var dst = _this.props.eperson.dfilt;
       switch (dst) {
         case 'all':
           da.background = hili;
@@ -58843,6 +58844,27 @@ var Persons = function (_React$Component) {
           null,
           '\u2714'
         ) : 'no';
+        var sthoh = aperson.sthoh ? _react2.default.createElement(
+          'span',
+          null,
+          '\u2714'
+        ) : 'no';
+        var stblind = aperson.stblind ? _react2.default.createElement(
+          'span',
+          null,
+          '\u2714'
+        ) : 'no';
+        var w4exempt = aperson.w4exempt ? _react2.default.createElement(
+          'span',
+          null,
+          '\u2714'
+        ) : 'no';
+        var student = aperson.student ? _react2.default.createElement(
+          'span',
+          null,
+          '\u2714'
+        ) : 'no';
+
         return _react2.default.createElement(
           'li',
           { key: i, style: style.myli.li },
@@ -58891,7 +58913,10 @@ var Persons = function (_React$Component) {
               date,
               _react2.default.createElement('br', null),
               'active: ',
-              active
+              active,
+              _react2.default.createElement('br', null),
+              'rate: $',
+              aperson.rate
             )
           ),
           _react2.default.createElement(
@@ -58910,8 +58935,26 @@ var Persons = function (_React$Component) {
               aperson.stallow,
               ' ',
               _react2.default.createElement('br', null),
-              'rate: $',
-              aperson.rate
+              'fadd:',
+              aperson.w4add,
+              ', stadd:',
+              aperson.stadd,
+              ' ',
+              _react2.default.createElement('br', null),
+              'hoh:',
+              sthoh,
+              ', blind:',
+              stblind,
+              _react2.default.createElement('br', null),
+              'marital:',
+              aperson.marital,
+              _react2.default.createElement('br', null),
+              'w4exempt: ',
+              w4exempt,
+              _react2.default.createElement('br', null),
+              'student: ',
+              student,
+              _react2.default.createElement('br', null)
             )
           )
         );
@@ -59091,14 +59134,14 @@ var style = {
     },
     li: {
       background: '#99CCCC',
-      padding: '6px',
+      padding: '2px',
       overflow: 'hidden',
       border: 'solid 1px black'
     },
     idx: {
       float: 'left',
-      width: '7%',
-      padding: '5px'
+      width: '5%',
+      padding: '4px'
     },
     icon: {
       fontSize: '18px'
@@ -59885,6 +59928,85 @@ var AddPerson = function (_React$Component) {
             onChange: this.txtChanged('stallow'),
             margin: 'dense'
           }),
+          _react2.default.createElement(_TextField2.default, {
+            id: 'standard-name',
+            label: 'St. Add..',
+            className: classes.textField,
+            type: 'number',
+            inputProps: { min: "0", max: "15" },
+            value: curperson.stadd,
+            onChange: this.txtChanged('stadd'),
+            margin: 'dense'
+          }),
+          _react2.default.createElement(_TextField2.default, {
+            id: 'standard-name',
+            label: 'Fed. Add.',
+            className: classes.textField,
+            type: 'number',
+            inputProps: { min: "0", max: "15" },
+            value: curperson.w4add,
+            onChange: this.txtChanged('w4add'),
+            margin: 'dense'
+          }),
+          _react2.default.createElement(
+            _FormControl2.default,
+            null,
+            _react2.default.createElement(_FormControlLabel2.default, {
+              control: _react2.default.createElement(_Checkbox2.default, {
+                checked: curperson.w4exempt == 1 ? true : false,
+                onChange: this.ckChanged('w4exempt'),
+                value: 'w4exempt'
+              }),
+              label: 'W4 Exempt'
+            }),
+            _react2.default.createElement(_FormControlLabel2.default, {
+              control: _react2.default.createElement(_Checkbox2.default, {
+                checked: curperson.student == 1 ? true : false,
+                onChange: this.ckChanged('student'),
+                value: 'student'
+              }),
+              label: 'Student'
+            }),
+            _react2.default.createElement(_FormControlLabel2.default, {
+              control: _react2.default.createElement(_Checkbox2.default, {
+                checked: curperson.sthoh == 1 ? true : false,
+                onChange: this.ckChanged('sthoh'),
+                value: 'sthoh'
+              }),
+              label: 'Head of Household'
+            }),
+            _react2.default.createElement(_FormControlLabel2.default, {
+              control: _react2.default.createElement(_Checkbox2.default, {
+                checked: curperson.stblind == 1 ? true : false,
+                onChange: this.ckChanged('stblind'),
+                value: 'stblind'
+              }),
+              label: 'Blind'
+            })
+          ),
+          _react2.default.createElement(
+            _FormControl2.default,
+            { component: 'fieldset', className: classes.formControl },
+            _react2.default.createElement(
+              _FormLabel2.default,
+              { component: 'legend' },
+              'Marital Status'
+            ),
+            _react2.default.createElement(
+              _RadioGroup2.default,
+              {
+                'aria-label': 'Marital Status',
+                name: 'gender1',
+                className: classes.group,
+                value: curperson.marital,
+                onChange: this.txtChanged('marital'),
+                row: true
+              },
+              _react2.default.createElement(_FormControlLabel2.default, { value: 'single', control: _react2.default.createElement(_Radio2.default, null), label: 'Single' }),
+              _react2.default.createElement(_FormControlLabel2.default, { value: 'married', control: _react2.default.createElement(_Radio2.default, null), label: 'Married' }),
+              _react2.default.createElement(_FormControlLabel2.default, { value: 'marASsingl', control: _react2.default.createElement(_Radio2.default, null), label: 'Married As Single' })
+            )
+          ),
           _react2.default.createElement(
             'div',
             { style: astyles.inner.but },
