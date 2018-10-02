@@ -103,31 +103,42 @@ class Pay extends React.Component{
   } 
   
   calcWh=()=>{
-    console.log('this.state: ', this.state)
+    const lookupFedTax=(fedwh, singmar,period, subj2wh, w4add)=>{
+      let tax = 0
+      if(subj2wh>0){
+        const lkup = fedwh
+          .filter((wh)=>wh.singmar==singmar && subj2wh>wh.over && subj2wh<wh.notover)
+        tax+=lkup[0].perc*subj2wh + w4add
+      }
+      return tax
+    }
+    const calcStateTax = (p, strates, ssmed)=>{
+      let sttax, stSubj2tax
+      if(p.student || p.regot.gross<strates.nowhbelow){
+        sttax=0
+      }else{
+        const hoh = p.sthoh ? strates.hohded : 0
+        const blind = p.stblind ? strates.blided : 0
+        stSubj2tax = p.regot.gross - strates.allow*p.stallow -hoh - blind - ssmed
+        sttax = stSubj2tax*strates.rate + p.stadd
+      }
+      return sttax  
+    }    
     const {persons, rates} = this.state
+    const{fedr,fedwh, strates} =rates
     const whp = persons.map((p,i)=>{
       const{gross}=p.regot
-      const subj2wh = p.w4exempt ? 0 : gross-(rates.fedr.allow*p.w4allow)-p.w4add
-      console.log('gross: ', gross)
-      console.log('p.w4add: ', p.w4add)
-      console.log('rates.fedr.allow*p.w4allow: ', rates.fedr.allow*p.w4allow )
-      const ss = gross*rates.fedr.sse
-      const medi = gross*rates.fedr.medie
-      const singmar = rates.marital=='married' ? 'married' : 'single'
-      const fedtax = subj2wh>0 ? this.lookupFedTax(singmar, 'weekly', subj2wh) :0
-      console.log('fedtax: ', fedtax)
-      const net = gross-fedtax-ss -medi
-      console.log('net: ', net)
+      const subj2wh = p.w4exempt ? 0 : gross-(fedr.allow*p.w4allow)
+      const ss = gross*fedr.sse
+      const medi = gross*fedr.medie
+      const singmar = p.marital=='married' ? 'married' : 'single'
+      const fedtax = lookupFedTax(fedwh, singmar, 'weekly', subj2wh, p.w4add)
+      const sttax =  calcStateTax(p, strates, ss+medi)
+      const net = gross-fedtax-ss -medi - sttax
+      p.wh={gross:gross, ss:ss, medi:medi, fedtax:fedtax, sttax:sttax, net:net}
+      return p
     })
-  }
-  
-  lookupFedTax=(singmar,period, subj2wh)=>{
-    console.log('subj2wh: ', subj2wh)
-    const {fedwh} = this.state.rates 
-    const lkup = fedwh
-      .filter((wh)=>wh.singmar==singmar && subj2wh>wh.over && subj2wh<wh.notover)
-    return subj2wh*lkup[0].perc
-
+    this.setState({persons:whp},()=>console.log('this.state: ', this.state))
   }
 
   getCurrent=(persons)=>{
@@ -337,17 +348,66 @@ class Pay extends React.Component{
     }
   }
 
+  renderRegOt = (p)=>{
+    if(p.regot){
+      const{reg, gross}=p.regot
+      const ot = p.regot.mfot+p.regot.saot+p.regot.suot
+      return(
+        <table style={style.table.table}><tbody>
+        <tr style={style.table.tr}>
+          <td style={style.table.thtd}>reg.</td>
+          <td style={style.table.thtd}>{reg.toFixed(2)}</td>
+        </tr>
+        <tr style={style.table.tr}>
+          <td style={style.table.thtd}>o.t.</td>
+          <td style={style.table.thtd}>{ot.toFixed(2)}</td>
+        </tr>
+        <tr style={style.table.tr}>
+          <th style={style.table.thtd}>gross</th>
+          <th style={style.table.thtd}>{gross.toFixed(2)}</th>
+        </tr>
+        </tbody></table>  
+      )
+    }
+  }
+
+  renderWh = (p)=>{
+    if(p.wh){
+
+      return (
+        <table style={style.table.table}><tbody>
+        <tr><th colSpan="2">deductions</th></tr>  
+        <tr style={style.table.tr}>
+          <td style={style.table.thtd}>ssi</td>
+          <td style={style.table.thtd}>{p.wh.ss.toFixed(2)}</td>
+        </tr>
+        <tr style={style.table.tr}>
+          <td style={style.table.thtd}>medicare</td>
+          <td style={style.table.thtd}>{p.wh.medi.toFixed(2)}</td>
+        </tr>
+        <tr style={style.table.tr}>
+          <td style={style.table.thtd}>fed wh</td>
+          <td style={style.table.thtd}>{p.wh.fedtax.toFixed(2)}</td>
+        </tr>
+        <tr style={style.table.tr}>
+          <td style={style.table.thtd}>state wh</td>
+          <td style={style.table.thtd}>{p.wh.sttax.toFixed(2)}</td>
+        </tr>
+        <tr style={style.table.tr}>
+          <th style={style.table.thtd}>net pay</th>
+          <th style={style.table.thtd}>{p.wh.net.toFixed(2)}</th>
+        </tr>
+        </tbody></table>  
+      )
+    }
+  }
+
   renderPay=()=>{
     let {persons}=this.state
-    persons = this.cfilt(persons)
     const rpersons = persons
-      .filter((cperson)=>this.afilt(cperson))
-      .filter((dperson)=>this.efilt(dperson))
       .map((aperson, i)=>{
-        let date = aperson.effective ? aperson.effective.split('T')[0] : '' 
-        let active = aperson.active ? (<span>&#10004;</span>) : 'no'
-        let sthoh = aperson.sthoh ? (<span>&#10004;</span>) : 'no'
-        let stblind = aperson.stblind ? (<span>&#10004;</span>) : 'no'
+        const regot = this.renderRegOt(aperson)
+        const wh = this.renderWh(aperson)
         return (
         <li  key={i} style={style.myli.li}>
           <div style={style.myli.idx}>
@@ -365,7 +425,8 @@ class Pay extends React.Component{
             <span>  
             
             ${aperson.rate} x {aperson.hrs}hrs<br/>
-            {aperson.hrsarr}<br/>
+            {regot}
+            {wh}
             </span>
           </div>
         </li >)
@@ -530,5 +591,26 @@ const style = {
       background: '#99CCCC'
   
     }
+  },
+  table:{
+    div:{
+      float:'right',
+      background: 'white',
+      width: '130px'
+    },
+    table:{
+      borderCollapse: 'collapse',
+      width: '100%'
+    },
+    tr:{
+      padding: '0px',
+      margin: '0px'
+    },
+    thtd:{
+      padding: '0px',
+      margin: '0px',
+      textAlign:'right'
+    }
   }
 }
+

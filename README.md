@@ -15,6 +15,27 @@ https://github.com/mozilla-services/react-jsonschema-form
 https://gridbyexample.com/examples/example13/
 https://www.mozilla.org/en-US/firefox/60.0a2/whatsnew/#cssgrid
 https://mozilladevelopers.github.io/playground/css-grid/
+### 104-timecards-pay-net
+Data created by calcs is
+
+    regot:
+      gross: 662.2
+      mff: 1.0715509854327336
+      mfot: 33.400000000000034
+      reg: 560.3
+      saf: 1.5
+      saot: 25
+      suf: 2
+      suot: 43.5
+
+    wh:
+      fedtax: 95.26
+      gross: 662.2
+      medi: 9.6019
+      net: 464.0980733
+      ss: 41.056400000000004
+      sttax: 52.183626700000005     
+
 ### 102-timecards-persons-current
 current button by filtering and mapping through persons array whenever it changes
 ### 101-timecards-persons-done

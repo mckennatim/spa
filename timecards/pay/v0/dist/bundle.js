@@ -51667,34 +51667,52 @@ var Pay = function (_React$Component) {
         return _this.calcWh();
       });
     }, _this.calcWh = function () {
-      console.log('this.state: ', _this.state);
+      var lookupFedTax = function lookupFedTax(fedwh, singmar, period, subj2wh, w4add) {
+        var tax = 0;
+        if (subj2wh > 0) {
+          var lkup = fedwh.filter(function (wh) {
+            return wh.singmar == singmar && subj2wh > wh.over && subj2wh < wh.notover;
+          });
+          tax += lkup[0].perc * subj2wh + w4add;
+        }
+        return tax;
+      };
+      var calcStateTax = function calcStateTax(p, strates, ssmed) {
+        var sttax = void 0,
+            stSubj2tax = void 0;
+        if (p.student || p.regot.gross < strates.nowhbelow) {
+          sttax = 0;
+        } else {
+          var hoh = p.sthoh ? strates.hohded : 0;
+          var blind = p.stblind ? strates.blided : 0;
+          stSubj2tax = p.regot.gross - strates.allow * p.stallow - hoh - blind - ssmed;
+          sttax = stSubj2tax * strates.rate + p.stadd;
+        }
+        return sttax;
+      };
       var _this$state = _this.state,
           persons = _this$state.persons,
           rates = _this$state.rates;
+      var fedr = rates.fedr,
+          fedwh = rates.fedwh,
+          strates = rates.strates;
 
       var whp = persons.map(function (p, i) {
         var gross = p.regot.gross;
 
-        var subj2wh = p.w4exempt ? 0 : gross - rates.fedr.allow * p.w4allow - p.w4add;
-        console.log('gross: ', gross);
-        console.log('p.w4add: ', p.w4add);
-        console.log('rates.fedr.allow*p.w4allow: ', rates.fedr.allow * p.w4allow);
-        var ss = gross * rates.fedr.sse;
-        var medi = gross * rates.fedr.medie;
-        var singmar = rates.marital == 'married' ? 'married' : 'single';
-        var fedtax = subj2wh > 0 ? _this.lookupFedTax(singmar, 'weekly', subj2wh) : 0;
-        console.log('fedtax: ', fedtax);
-        var net = gross - fedtax - ss - medi;
-        console.log('net: ', net);
+        var subj2wh = p.w4exempt ? 0 : gross - fedr.allow * p.w4allow;
+        var ss = gross * fedr.sse;
+        var medi = gross * fedr.medie;
+        var singmar = p.marital == 'married' ? 'married' : 'single';
+        var fedtax = lookupFedTax(fedwh, singmar, 'weekly', subj2wh, p.w4add);
+        var sttax = calcStateTax(p, strates, ss + medi);
+        var net = gross - fedtax - ss - medi - sttax;
+        p.wh = { gross: gross, ss: ss, medi: medi, fedtax: fedtax, sttax: sttax, net: net };
+        return p;
       });
-    }, _this.lookupFedTax = function (singmar, period, subj2wh) {
-      console.log('subj2wh: ', subj2wh);
-      var fedwh = _this.state.rates.fedwh;
-
-      var lkup = fedwh.filter(function (wh) {
-        return wh.singmar == singmar && subj2wh > wh.over && subj2wh < wh.notover;
+      _this.setState({ persons: whp }, function () {
+        return console.log('this.state: ', _this.state);
       });
-      return subj2wh * lkup[0].perc;
     }, _this.getCurrent = function (persons) {
       var cdate = moment().format('YYYY-MM-DD');
       var cperson = persons.filter(function (person) {
@@ -51882,31 +51900,161 @@ var Pay = function (_React$Component) {
           _this.getPay();
         }, 300);
       }
+    }, _this.renderRegOt = function (p) {
+      if (p.regot) {
+        var _p$regot = p.regot,
+            reg = _p$regot.reg,
+            gross = _p$regot.gross;
+
+        var ot = p.regot.mfot + p.regot.saot + p.regot.suot;
+        return _react2.default.createElement(
+          'table',
+          { style: style.table.table },
+          _react2.default.createElement(
+            'tbody',
+            null,
+            _react2.default.createElement(
+              'tr',
+              { style: style.table.tr },
+              _react2.default.createElement(
+                'td',
+                { style: style.table.thtd },
+                'reg.'
+              ),
+              _react2.default.createElement(
+                'td',
+                { style: style.table.thtd },
+                reg.toFixed(2)
+              )
+            ),
+            _react2.default.createElement(
+              'tr',
+              { style: style.table.tr },
+              _react2.default.createElement(
+                'td',
+                { style: style.table.thtd },
+                'o.t.'
+              ),
+              _react2.default.createElement(
+                'td',
+                { style: style.table.thtd },
+                ot.toFixed(2)
+              )
+            ),
+            _react2.default.createElement(
+              'tr',
+              { style: style.table.tr },
+              _react2.default.createElement(
+                'th',
+                { style: style.table.thtd },
+                'gross'
+              ),
+              _react2.default.createElement(
+                'th',
+                { style: style.table.thtd },
+                gross.toFixed(2)
+              )
+            )
+          )
+        );
+      }
+    }, _this.renderWh = function (p) {
+      if (p.wh) {
+
+        return _react2.default.createElement(
+          'table',
+          { style: style.table.table },
+          _react2.default.createElement(
+            'tbody',
+            null,
+            _react2.default.createElement(
+              'tr',
+              null,
+              _react2.default.createElement(
+                'th',
+                { colSpan: '2' },
+                'deductions'
+              )
+            ),
+            _react2.default.createElement(
+              'tr',
+              { style: style.table.tr },
+              _react2.default.createElement(
+                'td',
+                { style: style.table.thtd },
+                'ssi'
+              ),
+              _react2.default.createElement(
+                'td',
+                { style: style.table.thtd },
+                p.wh.ss.toFixed(2)
+              )
+            ),
+            _react2.default.createElement(
+              'tr',
+              { style: style.table.tr },
+              _react2.default.createElement(
+                'td',
+                { style: style.table.thtd },
+                'medicare'
+              ),
+              _react2.default.createElement(
+                'td',
+                { style: style.table.thtd },
+                p.wh.medi.toFixed(2)
+              )
+            ),
+            _react2.default.createElement(
+              'tr',
+              { style: style.table.tr },
+              _react2.default.createElement(
+                'td',
+                { style: style.table.thtd },
+                'fed wh'
+              ),
+              _react2.default.createElement(
+                'td',
+                { style: style.table.thtd },
+                p.wh.fedtax.toFixed(2)
+              )
+            ),
+            _react2.default.createElement(
+              'tr',
+              { style: style.table.tr },
+              _react2.default.createElement(
+                'td',
+                { style: style.table.thtd },
+                'state wh'
+              ),
+              _react2.default.createElement(
+                'td',
+                { style: style.table.thtd },
+                p.wh.sttax.toFixed(2)
+              )
+            ),
+            _react2.default.createElement(
+              'tr',
+              { style: style.table.tr },
+              _react2.default.createElement(
+                'th',
+                { style: style.table.thtd },
+                'net pay'
+              ),
+              _react2.default.createElement(
+                'th',
+                { style: style.table.thtd },
+                p.wh.net.toFixed(2)
+              )
+            )
+          )
+        );
+      }
     }, _this.renderPay = function () {
       var persons = _this.state.persons;
 
-      persons = _this.cfilt(persons);
-      var rpersons = persons.filter(function (cperson) {
-        return _this.afilt(cperson);
-      }).filter(function (dperson) {
-        return _this.efilt(dperson);
-      }).map(function (aperson, i) {
-        var date = aperson.effective ? aperson.effective.split('T')[0] : '';
-        var active = aperson.active ? _react2.default.createElement(
-          'span',
-          null,
-          '\u2714'
-        ) : 'no';
-        var sthoh = aperson.sthoh ? _react2.default.createElement(
-          'span',
-          null,
-          '\u2714'
-        ) : 'no';
-        var stblind = aperson.stblind ? _react2.default.createElement(
-          'span',
-          null,
-          '\u2714'
-        ) : 'no';
+      var rpersons = persons.map(function (aperson, i) {
+        var regot = _this.renderRegOt(aperson);
+        var wh = _this.renderWh(aperson);
         return _react2.default.createElement(
           'li',
           { key: i, style: style.myli.li },
@@ -51962,8 +52110,8 @@ var Pay = function (_React$Component) {
               aperson.hrs,
               'hrs',
               _react2.default.createElement('br', null),
-              aperson.hrsarr,
-              _react2.default.createElement('br', null)
+              regot,
+              wh
             )
           )
         );
@@ -52181,6 +52329,26 @@ var style = {
       float: 'right',
       background: '#99CCCC'
 
+    }
+  },
+  table: {
+    div: {
+      float: 'right',
+      background: 'white',
+      width: '130px'
+    },
+    table: {
+      borderCollapse: 'collapse',
+      width: '100%'
+    },
+    tr: {
+      padding: '0px',
+      margin: '0px'
+    },
+    thtd: {
+      padding: '0px',
+      margin: '0px',
+      textAlign: 'right'
     }
   }
 };
