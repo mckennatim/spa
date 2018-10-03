@@ -66,7 +66,7 @@ class Pay extends React.Component{
   calcGross =() =>{
     const {ot} = this.props.eperson
     const {persons} = this.state
-    const np = persons.map((p,i)=>{
+    const np = persons.map((p)=>{
       let hrs = p.hrs
       const hrsarr = JSON.parse(p.hrsarr)
       let mfhrs = hrsarr.slice(0,5).reduce((t,h)=>t+h,0)
@@ -126,7 +126,7 @@ class Pay extends React.Component{
     }    
     const {persons, rates} = this.state
     const{fedr,fedwh, strates} =rates
-    const whp = persons.map((p,i)=>{
+    const whp = persons.map((p)=>{
       const{gross}=p.regot
       const subj2wh = p.w4exempt ? 0 : gross-(fedr.allow*p.w4allow)
       const ss = gross*fedr.sse
