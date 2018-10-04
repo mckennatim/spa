@@ -43,11 +43,13 @@ const render = (pg, para)=>{
 }
 
 const parseQuery = (query)=>{
-  var obj = {};
+  let obj = {}
   query.split('&')
     .map((term)=>{
-      var ar = term.split('=')
-      obj[ar[0]]=ar[1]
+      if(term){
+        var ar = term.split('=')
+        obj[ar[0]]=ar[1]
+      }
     }
   )
   return obj

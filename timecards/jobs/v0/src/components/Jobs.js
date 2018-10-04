@@ -5,7 +5,7 @@ import {mapClass2Element} from '../hoc/mapClass2Element'
 import {fetchJobs, postJobs, fetchSettings, putCk } from '../services/fetches'
 import{adjWdprtDn, padWk} from  '../../../../common/v0/src/utilities/reroo'
 import { setEdit, setKeyVal} from '../actions/jobacts';
-
+import {makeHref}from '../utilities/getCfg'
 
 class Jobs extends React.Component{
   Jobs='mabibi sufvhs'
@@ -259,9 +259,9 @@ class Jobs extends React.Component{
       )
     }else{
       return(
-        <div>
-          <a href="home" data-navigo>maybe you need to register</a>
-          {this.props.ejob.qmessage}
+        <div style={style.he}>
+          <p>Message from server: {this.state.qmessage}. </p><br/> <p> The link below will take you home where you will be asked to re-register. This will take you to a list of apps you can use in your company. If you are registered in more than one company, you can choose your company first. <a href={makeHref(location.hostname, 'signup', '#urapps')} >HOME</a></p> 
+          
         </div>
         )
     }

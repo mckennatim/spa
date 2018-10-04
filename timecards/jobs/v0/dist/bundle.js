@@ -9855,7 +9855,7 @@ var _wfuncs = __webpack_require__(47);
 var fetchSettings = function fetchSettings() {
   var lsh = _getCfg.ls.getItem();
   if ((0, _wfuncs.geta)('lsh.token', lsh)) {
-    var url = _getCfg.cfg.url.api + '/payroll/settings';
+    var url = _getCfg.cfg.url.api + '/jobs/settings';
     var options = { headers: { 'Authorization': 'Bearer ' + lsh['token'] } };
     return fetch(url, options).then(function (response) {
       return response.json();
@@ -10016,7 +10016,7 @@ exports.putCk = putCk;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.cfg = exports.ls = undefined;
+exports.makeHref = exports.cfg = exports.ls = undefined;
 
 var _envmy = __webpack_require__(384);
 
@@ -10038,8 +10038,22 @@ cfg.url.authqry = authqry;
 
 var ls = (0, _storageLocal.storageLocal)(cfg.superapp);
 
+var makeHref = function makeHref(host, app, rt) {
+  var href = void 0;
+  if (host == 'timecards.sitebuilt.net') {
+    href = '../' + app + '/';
+  } else {
+    href = '../../../' + app + '/v0/dist/';
+  }
+  if (rt) {
+    href += rt;
+  }
+  return href;
+};
+
 exports.ls = ls;
 exports.cfg = cfg;
+exports.makeHref = makeHref;
 
 /***/ }),
 /* 72 */
@@ -54233,6 +54247,8 @@ var _reroo = __webpack_require__(387);
 
 var _jobacts = __webpack_require__(72);
 
+var _getCfg = __webpack_require__(71);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -54544,13 +54560,26 @@ var Jobs = function (_React$Component) {
       } else {
         return _react2.default.createElement(
           'div',
-          null,
+          { style: style.he },
           _react2.default.createElement(
-            'a',
-            { href: 'home', 'data-navigo': true },
-            'maybe you need to register'
+            'p',
+            null,
+            'Message from server: ',
+            this.state.qmessage,
+            '. '
           ),
-          this.props.ejob.qmessage
+          _react2.default.createElement('br', null),
+          ' ',
+          _react2.default.createElement(
+            'p',
+            null,
+            ' The link below will take you home where you will be asked to re-register. This will take you to a list of apps you can use in your company. If you are registered in more than one company, you can choose your company first. ',
+            _react2.default.createElement(
+              'a',
+              { href: (0, _getCfg.makeHref)(location.hostname, 'signup', '#urapps') },
+              'HOME'
+            )
+          )
         );
       }
     }
@@ -67248,10 +67277,11 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 console.log('cfg.url.authqry: ', _getCfg.cfg.url.authqry);
 
 var Nav = function Nav() {
-
   var setU = function setU() {
     (0, _jobacts.setKeyVal)({ update: false, clearjc: true });
   };
+  var host = window.location.hostname;
+  var href = (0, _getCfg.makeHref)(host, 'signup', '#urapps');
   return _react2.default.createElement(
     'div',
     { style: style, id: 'menu' },
@@ -67263,8 +67293,8 @@ var Nav = function Nav() {
         { style: style.li },
         _react2.default.createElement(
           'a',
-          { style: style.a, href: _getCfg.cfg.url.authqry },
-          'register'
+          { style: style.a, href: href },
+          'apps'
         )
       ),
       _react2.default.createElement(
@@ -67302,7 +67332,8 @@ var Nav = function Nav() {
           { style: style.a, href: 'addjob', onClick: setU, 'data-navigo': true },
           'admojob'
         )
-      )
+      ),
+      _react2.default.createElement('div', null)
     )
   );
 };
@@ -67321,6 +67352,46 @@ var style = {
     textDecoration: 'none',
     color: 'green'
   }
+
+  // import React from 'react' // eslint-disable-line no-unused-vars
+  // import {cfg} from '../utilities/getCfg'
+  // import { setKeyVal } from '../actions/jobacts';
+
+  // console.log('cfg.url.authqry: ', cfg.url.authqry)
+
+  // const Nav = () =>{
+
+  //   const setU=()=>{
+  //     setKeyVal({update:false, clearjc:true})
+  //   }
+  //   return (
+  //     <div style={style} id="menu"> 
+  //       <ul>
+  //         <li style={style.li}><a style={style.a} href={cfg.url.authqry}>register</a></li>
+  //         <li style={style.li}><a style={style.a} href="about" data-navigo>about</a></li>
+  //         <li style={style.li}><a style={style.a} href="jobs" data-navigo>jobs</a></li>
+  //         <li style={style.li}><a style={style.a} href="sortjobs" data-navigo>sortjobs</a></li>
+  //         <li style={style.li}><a style={style.a} href="addjob"  onClick={setU}data-navigo>admojob</a></li>
+  //       </ul>
+  //     </div>
+  //   )
+  // }
+  // export {Nav}
+
+  // let style={
+  //   background: 'white',
+  //   li:{
+  //     display: 'inline',
+  //     padding: '2px',
+  //     paddingRight: '4px',
+  //     background: 'whitesmoke'
+  //   },
+  //   a:{
+  //     textDecoration: 'none',
+  //     color: 'green'    
+  //   }
+  // }
+
 };
 
 /***/ }),
@@ -67541,13 +67612,13 @@ var Registered = function (_React$Component) {
 
     _this.clickCoid = function (e) {
       var idx = e.target.getAttribute('idx');
-      var coid = _this.state.cos[idx];
-      _this.getCtoken(_this.state.token, coid);
+      var co = _this.state.cos[idx];
+      _this.getCtoken(_this.state.token, co);
     };
 
-    _this.getCtoken = function (token, coid) {
+    _this.getCtoken = function (token, co) {
       console.log('this.props.ejob.task: ', _this.props.ejob.task);
-      (0, _fetches.fetchCtoken)(token, coid).then(function (res) {
+      (0, _fetches.fetchCtoken)(token, co).then(function (res) {
         console.log('res: ', res);
         _getCfg.ls.setItem({ email: res.binfo.emailid, token: res.token });
         location.replace('#jobs');
@@ -67590,11 +67661,13 @@ var Registered = function (_React$Component) {
         _react2.default.createElement(
           'ul',
           { style: style.myli.ul },
-          _this.state.cos.map(function (coid, i) {
+          _this.state.cos.map(function (co, i) {
             return _react2.default.createElement(
               'li',
               { style: style.myli.li, key: i, idx: i, onClick: _this.clickCoid },
-              coid,
+              co.coid,
+              ' as ',
+              co.role,
               ' '
             );
           })
@@ -67810,7 +67883,7 @@ var style = {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.fetchCtoken = exports.fetchCoids = exports.deleteJob = exports.newJob = exports.putJob = exports.postJobs = exports.fetchJobs = exports.fetchSettings = undefined;
+exports.fetchTokdata = exports.fetchCtoken = exports.fetchCoids = exports.deleteJob = exports.newJob = exports.putJob = exports.postJobs = exports.fetchJobs = exports.fetchSettings = undefined;
 
 var _getCfg = __webpack_require__(477);
 
@@ -67837,9 +67910,10 @@ var fetchCoids = function fetchCoids(mobj) {
     return p2;
   }
 };
-var fetchCtoken = function fetchCtoken(token, coid) {
+var fetchCtoken = function fetchCtoken(token, co) {
   if (token) {
-    var url = _getCfg.cfg.url.api + '/reg/ctoken/' + coid;
+    var url = _getCfg.cfg.url.api + '/reg/ctoken/' + co.coid + '/' + co.role;
+    console.log('url: ', url);
     var options = { headers: { 'Authorization': 'Bearer ' + token } };
     return fetch(url, options).then(function (response) {
       return response.json();
@@ -67879,6 +67953,30 @@ var fetchSettings = function fetchSettings() {
     return p2;
   }
 };
+
+var fetchTokdata = function fetchTokdata() {
+  var lsh = _getCfg.ls.getItem();
+  if ((0, _wfuncs.geta)('lsh.token', lsh)) {
+    var url = _getCfg.cfg.url.api + '/persons/tokdata';
+    var options = { headers: { 'Authorization': 'Bearer ' + lsh['token'] } };
+    return fetch(url, options).then(function (response) {
+      return response.json();
+    }).then(function (json) {
+      console.log('json: ', json);
+      if (json.message) {
+        return { qmessage: json.message };
+      } else {
+        return json;
+      }
+    }).catch(function (e) {
+      return { qmessage: e.message };
+    });
+  } else {
+    var p2 = Promise.resolve({ qmessage: 'you dont exist!, cant get tokdata' });
+    return p2;
+  }
+};
+
 var fetchJobs = function fetchJobs(wk) {
   var lsh = _getCfg.ls.getItem();
   if ((0, _wfuncs.geta)('lsh.token', lsh)) {
@@ -67991,6 +68089,7 @@ exports.newJob = newJob;
 exports.deleteJob = deleteJob;
 exports.fetchCoids = fetchCoids;
 exports.fetchCtoken = fetchCtoken;
+exports.fetchTokdata = fetchTokdata;
 
 /***/ }),
 /* 477 */
@@ -68022,7 +68121,7 @@ var authqry = cfg.url.soauth + "/spa/" + cfg.appid + "?apiURL=" + encodeURICompo
 
 cfg.url.authqry = authqry;
 
-var ls = (0, _storageLocal.storageLocal)(cfg.appid);
+var ls = (0, _storageLocal.storageLocal)(cfg.superapp);
 
 exports.ls = ls;
 exports.cfg = cfg;
@@ -68037,7 +68136,7 @@ module.exports = {"m":"https"}
 /* 479 */
 /***/ (function(module, exports) {
 
-module.exports = {"https":{"appid":"jobs","url":{"soauth":"https://services.sitebuilt.net/soauth","api":"https://services.sitebuilt.net/timecards/api"},"cbPath":"#registered"},"local":{}}
+module.exports = {"https":{"superapp":"timecards","appid":"common","url":{"soauth":"https://services.sitebuilt.net/soauth","api":"https://services.sitebuilt.net/timecards/api"},"cbPath":"#registered"},"local":{}}
 
 /***/ }),
 /* 480 */

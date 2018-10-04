@@ -1,8 +1,9 @@
 import React from 'react';
-import {TimeCard} from '../../../../tcard/v/src/components/TimeCard'// eslint-disable-line no-unused-vars
+import {TimeCard} from '../../../../tcard/v0/src/components/TimeCard'// eslint-disable-line no-unused-vars
 import {mapClass2Element} from '../hoc/mapClass2Element'
 import {fetchSubmitted, fetchWhoTcard, putTcardWk} from '../services/fetches'
 import {drnd} from '../utilities/wfuncs'
+import {makeHref} from '../utilities/getCfg'
 
 class OKtcard extends React.Component {
   constructor(props){
@@ -24,7 +25,8 @@ class OKtcard extends React.Component {
     fetchSubmitted()
       .then((res)=>{
         if (res.qmessage){
-          window.alert(res.qmessage)
+          console.log('res.qmessage: ', res.qmessage)
+          this.setState({qmessage:res.qmessage})
         }else{
           this.setState({submitted:res})
         }
@@ -39,7 +41,8 @@ class OKtcard extends React.Component {
     fetchWhoTcard(wstat)
     .then((res)=>{
       if (res.message){
-        window.alert(res.message)
+        console.log('res.qmessage: ', res.qmessage)
+        this.setState({qmessage:res.qmessage})
       }else{
         res = this.reCalcStatus(res)
         this.setState({tcard:res, gottcard:true})
@@ -185,7 +188,7 @@ class OKtcard extends React.Component {
   // }
 
   renderSubmitted=(subm)=>{
-    if(subm.length>0)
+    if(subm.length>0){
     return(
       <ul style={style.subm.ul}>
         {subm.map((s,i)=>{
@@ -198,11 +201,21 @@ class OKtcard extends React.Component {
           )
         })}
       </ul>
-    )
+      )
+    }else{
+      return(
+        <div style={style.outer}>
+          <p>Message from server: {this.state.qmessage}. </p><br/> <p> The link below will take you home where you will be asked to re-register. This will take you to a list of apps you can use in your company. If you are registered in more than one company, you can choose your company first. <a href={makeHref(location.hostname, 'signup', '#urapps')} >HOME</a></p> 
+          
+        </div>
+        )
+    }
   } 
   
   renderTimecard = ()=>{
-    if(this.state.gottcard){
+    console.log('this.state: ', this.state)
+    const{gottcard} =this.state
+    if(gottcard){
       return (
         <TimeCard week={this.state.week} yr={this.state.yr} tcard={this.state.tcard} ismobile={this.props.responsive.ismobile} showsub={this.state.showsub} blabel={this.state.blabel} tcardChanges={this.handleTcardChanges}/>
       )
@@ -235,6 +248,11 @@ OKtcard=mapClass2Element(OKtcard)
 export {OKtcard} ;
 
 let style={
+  outer:{
+    overflow:'hidden',
+    margin: '2px 10px 10px 10px',
+    padding: '4px'
+  } ,
   he:{
     height:'60px',
     background:'grey',

@@ -1,14 +1,19 @@
 import React from 'react' // eslint-disable-line no-unused-vars
-import {cfg} from '../utilities/getCfg'
+import {cfg, makeHref} from '../utilities/getCfg'
 
 console.log('cfg.url.authqry: ', cfg.url.authqry)
 
 const Nav = () =>{
-
+  const host =window.location.hostname
+  const href = makeHref(host, 'signup', '#urapps')
   return (
     <div style={style} id="menu"> 
       <ul>
+        {/*
         <li style={style.li}><a style={style.a} href={cfg.url.authqry}>register</a></li>
+        */}
+
+      <li style={style.li}><a style={style.a} href={href}>apps</a></li>
         <li style={style.li}><a style={style.a} href="about" data-navigo>about</a></li>
         <li style={style.li}><a style={style.a} href="pay" data-navigo>pay</a></li>
         <div></div>

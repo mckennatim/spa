@@ -15,8 +15,9 @@ const Nav = () =>{
       <ul>
         <li style={style.li}><a style={style.a} href={cfg.url.authqry}>register</a></li>
         <li style={style.li}><a style={style.a} href="about" data-navigo>about</a></li>
-        <li style={style.li}><a style={style.a} href="persons" data-navigo>company</a></li>
-        <li style={style.li}><a style={style.a} href="addperson"  onClick={setU}data-navigo>addcompany</a></li>
+        <li style={style.li}><a style={style.a} href="urapps" data-navigo>apps</a></li>
+        <li style={style.li}><a style={style.a} href="companys" data-navigo>company</a></li>
+        <li style={style.li}><a style={style.a} href="addcompany"  onClick={setU}data-navigo>addcompany</a></li>
         <div></div>
       </ul>
     </div>

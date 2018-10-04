@@ -2,8 +2,8 @@ import React from 'react'// eslint-disable-line no-unused-vars
 import {parseQuery} from '../utilities/wfuncs'
 import {ls, cfg} from '../utilities/getCfg'
 import {mapClass2Element} from '../hoc/mapClass2Element'
-import {fetchCtoken} from '../../../../common/v0/src/services/fetches'
-import {postUniCoid} from '../services/fetches'
+// import {fetchCtoken, fetchCoids} from '../../../../common/v0/src/services/fetches'
+import {postUniCoid, fetchCtoken, fetchCoids} from '../services/fetches'
 import {setKeyVal} from '../actions/personacts';
 import TextField from '@material-ui/core/TextField';// eslint-disable-line no-unused-vars
 import Button from '@material-ui/core/Button';// eslint-disable-line no-unused-vars
@@ -50,19 +50,33 @@ class Registered extends React.Component {
   myRef = React.createRef();
 
   componentDidMount() {
-    this.setState({newco:this.props.newco})
+    //this.setState({newco:this.props.newco})
     const query= this.props.cambio.page.params.query;
+    console.log('query: ', query)
     var mobj = parseQuery(query)
-    if (mobj.message){
+    console.log('mobj: ', mobj)
+    const haymobj = Object.keys(mobj).length==0 ? false : true
+    if(!haymobj && !ls.getItem()){
+      console.log('you should get a message and mabe register') 
+      this.setState({renderwhat:'goregister'})
+    }else if (mobj.message){
       const message = decodeURI(mobj.message)
       this.setState({renderwhat: 'message', message: message })
-    }else{
-      let person = {...this.props.newco.person}
-      person.emailid=mobj.email 
-      person.role='partner'
-      setKeyVal({person:person})
-      const ttoken = decodeURI(mobj.token)
-      this.setState({renderwhat: 'createcoid', cos:[], coid:'', ttoken:ttoken})
+    }else if(mobj.token){
+      fetchCoids(mobj)
+      .then((res)=>{
+        console.log('res: ', res)
+        if(res.qmessage){
+          this.setState({renderwhat: 'message', message: res.qmessage})
+        }
+        if(res.coid &&  res.coid.length==1){
+          this.getCtoken(mobj.token, res.coid[0])
+        }else{
+          this.setState({renderwhat: 'coids', cos:res.coid, token:mobj.token})
+        }
+      }) 
+    }else if(ls.getItem()){
+      location.replace('#urapps')
     }
     let tid = this.refs.coidref
     console.log('tid: ', tid)
@@ -82,7 +96,7 @@ class Registered extends React.Component {
         const isPartner = res.role=='partner' ? true : false
         setKeyVal({role:res.role, emailid:res.binfo.emailid, isPartner:isPartner})
         ls.setItem({email: res.binfo.emailid, token:res.token})
-        location.replace('#persons')
+        location.replace('#urapps')
       })
   }  
   selectRender=(renderwhat)=>{
@@ -90,6 +104,8 @@ class Registered extends React.Component {
       case 'message':
         console.log('rendering message')
         return this.renderMessage()
+      case 'goregister':
+        return this.renderGoRegister()
       case 'coids':
         return this.renderCoids()
       case 'createcoid':
@@ -190,12 +206,25 @@ class Registered extends React.Component {
     )
   }
 
+  renderGoRegister=()=>{
+    // const {coid} = this.state.newco.co
+    // const {emailid} = this.state.newco.person
+    // const { classes } = this.props;
+    return(
+      <div>
+      <h4>Register or Find out more </h4>
+      <p>There is no record of you on this device. Perhaps there was and it expired. Could you hit <a href="#register">'register'</a>  to let this app know who you are? Are you new to this application? Press <a href="#about">'about'</a>  for a little more information about the on-boarding process. </p> 
+      </div>
+    )
+  }
+
   renderNothing=()=>{
     return (
       <h1>nothing</h1>
     )
   }
   renderCoids=()=>{
+    if(this.state.cos){
     return(
       <div style={style.he}>
         <h4>You Are Registered  </h4>
@@ -208,12 +237,18 @@ class Registered extends React.Component {
         </ul>
       </div>
     )
+   }
   }
   renderMessage=()=>{
+    if(this.state.message=='You are not authorized for this app for any active business'){
+     console.log('render message ')
+      ls.removeItem()
+    }
     return(
       <div>
         <h1>message</h1>"
-        <span>{this.state.message} <a href="https://timecards.sitebuilt.net">here</a> </span>
+        <p>{this.state.message}. So I guess I should delete the existing token and then who knows switch to signup
+       </p>
       </div>
     )
   }

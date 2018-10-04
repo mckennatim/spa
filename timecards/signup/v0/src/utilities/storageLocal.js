@@ -12,7 +12,11 @@ const storageLocal = (itemName)=>{
   const setItem=(obj)=>{
     localStorage.setItem(itemName, JSON.stringify(obj))
   }
+  const removeItem =()=>{
+    localStorage.removeItem(itemName)
+  }
   return{
+    removeItem: removeItem,
     itemName: itemName,
     itemStr: itemStr,
     getItem: getItem,
@@ -24,8 +28,8 @@ const storageLocal = (itemName)=>{
         setItem(ni)
       }
     },
-    getToken: ()=>getItem().token,
-    getKey: (key)=>getItem()[key]
+    getToken: ()=>getItem() ? getItem().token : null,
+    getKey: (key)=>getItem() ? getItem()[key] : null
   }
 }
 

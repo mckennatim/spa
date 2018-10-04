@@ -5,7 +5,7 @@ import {geta} from '../utilities/wfuncs'
 const fetchSubmitted =()=>{
   const lsh = ls.getItem();
   if(geta('lsh.token', lsh)){
-    let url= cfg.url.api+'/payroll/submitted'
+    let url= cfg.url.api+'/OKtcard/submitted'
     let options= {headers: {'Authorization': 'Bearer '+ lsh['token']}}
     return(
       fetch(url, options)
@@ -29,7 +29,7 @@ const fetchSubmitted =()=>{
 const fetchWhoTcard=(wkstat)=>{
   const lsh = ls.getItem();
   if(geta('lsh.token', lsh)){
-    let url= cfg.url.api+'/payroll/tcard/'+wkstat.wprt+'/'+wkstat.emailid
+    let url= cfg.url.api+'/OKtcard/tcard/'+wkstat.wprt+'/'+wkstat.emailid
     let options= {
       headers: {'Authorization': 'Bearer '+ lsh['token']}
     }
