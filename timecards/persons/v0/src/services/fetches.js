@@ -4,7 +4,7 @@ import {geta} from '../utilities/wfuncs'
 const fetchSettings=()=>{
   var lsh = ls.getItem();
   if(geta('lsh.token', lsh)){
-    let url= cfg.url.api+'/payroll/settings'
+    let url= cfg.url.api+'/persons/settings'
     let options= {headers: {'Authorization': 'Bearer '+ lsh['token']}}
     return(
       fetch(url, options)

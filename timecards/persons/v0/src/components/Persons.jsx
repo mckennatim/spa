@@ -5,6 +5,7 @@ import {mapClass2Element} from '../hoc/mapClass2Element'
 import {fetchPersons, postPersons, fetchSettings} from '../services/fetches'
 import{adjWdprtDn, padWk} from  '../../../../common/v0/src/utilities/reroo'
 import { setEdit, setKeyVal} from '../actions/personacts';
+import {makeHref} from '../utilities/getCfg'
 
 
 class Persons extends React.Component{
@@ -32,7 +33,8 @@ class Persons extends React.Component{
     fetchSettings()     
       .then((res)=>{
         if (res.qmessage){
-          window.alert(res.qmessage)
+          console.log('res.qmessage: ', res.qmessage)
+          this.setState({qmessage:res.qmessage})
         }else{
           this.setState({firstday: res.firstday},()=>{
             setKeyVal({coid: res.coid, qmessage:res.qmessage, task:'persons'})
@@ -340,14 +342,15 @@ class Persons extends React.Component{
       )
     }else{
       return(
-        <div>
-          <a href="home" data-navigo>maybe you need to register</a>
-          {this.props.eperson.qmessage}
+        <div style={style.he}>
+          <p>Message from server: {this.state.qmessage}. </p><br/> <p> The link below will take you home where you will be asked to re-register. This will take you to a list of apps you can use in your company. If you are registered in more than one company, you can choose your company first. <a href={makeHref(location.hostname, 'signup', '#urapps')} >HOME</a></p> 
+          
         </div>
         )
     }
   }
 }
+
 Persons = mapClass2Element(Persons)
 
 export {Persons}
@@ -357,8 +360,9 @@ const style = {
 
   },
   he:{
+    overflow:'hidden',
     margin: '2px 10px 10px 10px',
-    height:'70px',
+    padding: '4px',
     yw:{
       padding: '1px 1px 10px 1px'
     },

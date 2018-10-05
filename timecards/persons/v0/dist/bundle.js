@@ -10171,11 +10171,17 @@ exports.mergeAll = mergeAll;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.panes = exports.multi = exports.Registered = exports.Nav = exports.App = exports.Dog = exports.Home = exports.Products = exports.About = exports.Cat = exports.AddPerson = exports.Persons = exports.Active = undefined;
+exports.panes = exports.multi = exports.Nav = exports.App = exports.Home = exports.About = exports.Cat = exports.AddPerson = exports.Persons = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; // eslint-disable-line no-unused-vars
+
+// import {Active} from './Active'
+
+// import {Dog} from './Dog'
+// import {Products} from './Products'
+// import {Registered} from './Registered.jsx'
 
 //import { render } from '../utilities/wfuncs';
 
@@ -10188,19 +10194,11 @@ var _app = __webpack_require__(56);
 
 var _App = __webpack_require__(421);
 
-var _Active = __webpack_require__(423);
-
 var _Persons = __webpack_require__(424);
 
 var _AddPerson = __webpack_require__(430);
 
 var _Nav = __webpack_require__(586);
-
-var _Dog = __webpack_require__(587);
-
-var _Products = __webpack_require__(588);
-
-var _Registered = __webpack_require__(589);
 
 var _styles = __webpack_require__(67);
 
@@ -10326,17 +10324,13 @@ var multi = [{ pri: 'About', mul: [['About', 'Products'], ['About', 'Products', 
 //['watch', 'phone', 'phoneL', 'tablet', 'tabletL', 'laptop']
 var panes = [1, 1, 2, 2, 3, 3, 4];
 
-exports.Active = _Active.Active;
 exports.Persons = _Persons.Persons;
 exports.AddPerson = _AddPerson.AddPerson;
 exports.Cat = Cat;
 exports.About = About;
-exports.Products = _Products.Products;
 exports.Home = Home;
-exports.Dog = _Dog.Dog;
 exports.App = _App.App;
 exports.Nav = _Nav.Nav;
-exports.Registered = _Registered.Registered;
 exports.multi = multi;
 exports.panes = panes;
 
@@ -12257,7 +12251,7 @@ var FilterSubscriber = (function (_super) {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.cfg = exports.ls = undefined;
+exports.makeHref = exports.cfg = exports.ls = undefined;
 
 var _envmy = __webpack_require__(425);
 
@@ -12279,8 +12273,22 @@ cfg.url.authqry = authqry;
 
 var ls = (0, _storageLocal.storageLocal)(cfg.superapp);
 
+var makeHref = function makeHref(host, app, rt) {
+  var href = void 0;
+  if (host == 'timecards.sitebuilt.net') {
+    href = '../' + app + '/';
+  } else {
+    href = '../../../' + app + '/v0/dist/';
+  }
+  if (rt) {
+    href += rt;
+  }
+  return href;
+};
+
 exports.ls = ls;
 exports.cfg = cfg;
+exports.makeHref = makeHref;
 
 /***/ }),
 /* 95 */
@@ -15898,7 +15906,7 @@ var _wfuncs = __webpack_require__(68);
 var fetchSettings = function fetchSettings() {
   var lsh = _getCfg.ls.getItem();
   if ((0, _wfuncs.geta)('lsh.token', lsh)) {
-    var url = _getCfg.cfg.url.api + '/payroll/settings';
+    var url = _getCfg.cfg.url.api + '/persons/settings';
     var options = { headers: { 'Authorization': 'Bearer ' + lsh['token'] } };
     return fetch(url, options).then(function (response) {
       return response.json();
@@ -56918,17 +56926,8 @@ var routing = function routing() {
   var cfg = { root: null, useHash: true };
   router = new _navigo2.default(cfg.root, cfg.useHash);
   router.on({
-    'products': function products() {
-      (0, _responsive.switchPage)({ name: 'Products', params: null });
-    },
-    'products/:id': function productsId(params) {
-      (0, _responsive.switchPage)({ name: 'Products', params: params });
-    },
     'about': function about() {
       (0, _responsive.switchPage)({ name: 'About', params: null });
-    },
-    'dog': function dog() {
-      (0, _responsive.switchPage)({ name: 'Dog', params: null });
     },
     'cat': function cat() {
       (0, _responsive.switchPage)({ name: 'Cat', params: null });
@@ -56938,9 +56937,6 @@ var routing = function routing() {
     },
     'addperson': function addperson(params, query) {
       (0, _responsive.switchPage)({ name: 'AddPerson', params: _extends({}, params, { query: query }) });
-    },
-    'registered': function registered(params, query) {
-      (0, _responsive.switchPage)({ name: 'Registered', params: _extends({}, params, { query: query }) });
     },
     '*': function _() {
       (0, _responsive.switchPage)({ name: 'Persons', params: null });
@@ -58477,93 +58473,7 @@ var responsivePage = function responsivePage(state) {
 exports.responsivePage = responsivePage;
 
 /***/ }),
-/* 423 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.Active = undefined;
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; // eslint-disable-line no-unused-vars
-
-
-var _react = __webpack_require__(4);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _mapClass2Element = __webpack_require__(47);
-
-var _styles = __webpack_require__(67);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var style = _extends({}, _styles.pStyle, { outer: _extends({}, _styles.pStyle.outer, { background: '#C4A265' })
-});
-_styles.pStyle.outer.background = '#C4A265';
-
-var Active = function (_React$Component) {
-  _inherits(Active, _React$Component);
-
-  function Active() {
-    var _ref;
-
-    var _temp, _this, _ret;
-
-    _classCallCheck(this, Active);
-
-    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-      args[_key] = arguments[_key];
-    }
-
-    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = Active.__proto__ || Object.getPrototypeOf(Active)).call.apply(_ref, [this].concat(args))), _this), _this.active = 'mabibi', _temp), _possibleConstructorReturn(_this, _ret);
-  }
-
-  _createClass(Active, [{
-    key: 'componentDidMount',
-    value: function componentDidMount() {
-      this.getActive();
-    }
-  }, {
-    key: 'getActive',
-    value: function getActive() {
-      console.log('dog');
-    }
-  }, {
-    key: 'render',
-    value: function render() {
-      return _react2.default.createElement(
-        'div',
-        { style: style.outer },
-        _react2.default.createElement(
-          'h3',
-          null,
-          ' Active is ',
-          this.active
-        )
-      );
-    }
-  }]);
-
-  return Active;
-}(_react2.default.Component);
-
-exports.Active = Active = (0, _mapClass2Element.mapClass2Element)(Active);
-
-exports.Active = Active;
-
-/***/ }),
+/* 423 */,
 /* 424 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -58592,6 +58502,8 @@ var _fetches = __webpack_require__(146);
 var _reroo = __webpack_require__(428);
 
 var _personacts = __webpack_require__(69);
+
+var _getCfg = __webpack_require__(94);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -58629,7 +58541,8 @@ var Persons = function (_React$Component) {
     }, _this.dwk = null, _this.getSettings = function () {
       (0, _fetches.fetchSettings)().then(function (res) {
         if (res.qmessage) {
-          window.alert(res.qmessage);
+          console.log('res.qmessage: ', res.qmessage);
+          _this.setState({ qmessage: res.qmessage });
         } else {
           _this.setState({ firstday: res.firstday }, function () {
             (0, _personacts.setKeyVal)({ coid: res.coid, qmessage: res.qmessage, task: 'persons' });
@@ -59043,13 +58956,26 @@ var Persons = function (_React$Component) {
       } else {
         return _react2.default.createElement(
           'div',
-          null,
+          { style: style.he },
           _react2.default.createElement(
-            'a',
-            { href: 'home', 'data-navigo': true },
-            'maybe you need to register'
+            'p',
+            null,
+            'Message from server: ',
+            this.state.qmessage,
+            '. '
           ),
-          this.props.eperson.qmessage
+          _react2.default.createElement('br', null),
+          ' ',
+          _react2.default.createElement(
+            'p',
+            null,
+            ' The link below will take you home where you will be asked to re-register. This will take you to a list of apps you can use in your company. If you are registered in more than one company, you can choose your company first. ',
+            _react2.default.createElement(
+              'a',
+              { href: (0, _getCfg.makeHref)(location.hostname, 'signup', '#urapps') },
+              'HOME'
+            )
+          )
         );
       }
     }
@@ -59066,8 +58992,9 @@ exports.Persons = Persons;
 var style = {
   btn: {},
   he: {
+    overflow: 'hidden',
     margin: '2px 10px 10px 10px',
-    height: '70px',
+    padding: '4px',
     yw: {
       padding: '1px 1px 10px 1px'
     },
@@ -76747,7 +76674,8 @@ console.log('cfg.url.authqry: ', _getCfg.cfg.url.authqry); // eslint-disable-lin
 
 
 var Nav = function Nav() {
-
+  var host = window.location.hostname;
+  var href = (0, _getCfg.makeHref)(host, 'signup', '#urapps');
   var setU = function setU() {
     (0, _personacts.setKeyVal)({ update: false, curperson: _store.blankperson });
   };
@@ -76762,8 +76690,8 @@ var Nav = function Nav() {
         { style: style.li },
         _react2.default.createElement(
           'a',
-          { style: style.a, href: _getCfg.cfg.url.authqry },
-          'register'
+          { style: style.a, href: href },
+          'apps'
         )
       ),
       _react2.default.createElement(
@@ -76815,489 +76743,9 @@ var style = {
 };
 
 /***/ }),
-/* 587 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.Dog = undefined;
-
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; // eslint-disable-line no-unused-vars
-
-
-var _react = __webpack_require__(4);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _styles = __webpack_require__(67);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var style = _extends({}, _styles.pStyle, { outer: _extends({}, _styles.pStyle.outer, { background: '#C4A265' })
-});
-_styles.pStyle.outer.background = '#C4A265';
-
-function Dog(props) {
-  var name = props.name;
-
-  return _react2.default.createElement(
-    'div',
-    { style: style.outer },
-    _react2.default.createElement(
-      'h4',
-      null,
-      'in doDog ',
-      name,
-      ' '
-    )
-  );
-}
-
-exports.Dog = Dog;
-
-/***/ }),
-/* 588 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.Products = undefined;
-
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; // eslint-disable-line no-unused-vars
-
-
-var _react = __webpack_require__(4);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _wfuncs = __webpack_require__(68);
-
-var _styles = __webpack_require__(67);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var style = _extends({}, _styles.pStyle, { outer: _extends({}, _styles.pStyle.outer, { background: '#99FF99' })
-});
-
-var dlsty = {
-  overflowY: 'auto',
-  height: '350px'
-};
-var lusty = {
-  listStyleType: 'none',
-  paddingLeft: '12px'
-};
-
-var listy = {
-  textAlign: 'left',
-  padding: '10px',
-  border: 'solid 1px black'
-};
-
-var ld1sty = {
-  float: 'left',
-  width: '70%'
-};
-var ld3sty = {
-  width: '10%',
-  float: 'right'
-};
-var ld2sty = {
-  paddingLeft: '40px',
-  width: '80%'
-};
-
-var Products = function Products(props) {
-  var renderProducts = function renderProducts() {
-    if ((0, _wfuncs.geta)('props.responsive.page.params', props)) {
-      return _react2.default.createElement(
-        'div',
-        null,
-        _react2.default.createElement(
-          'h3',
-          null,
-          ' Product'
-        ),
-        _react2.default.createElement(
-          'h4',
-          null,
-          'pruduct ID: ',
-          props.responsive.page.params.id,
-          ' description: ',
-          props.responsive.page.params.inv
-        )
-      );
-    } else {
-      return _react2.default.createElement(
-        'div',
-        null,
-        _react2.default.createElement(
-          'h3',
-          null,
-          ' Products'
-        ),
-        _react2.default.createElement(
-          'div',
-          { style: dlsty },
-          _react2.default.createElement(
-            'ul',
-            { style: lusty },
-            props.test.users.map(function (user, index) {
-              return _react2.default.createElement(
-                'li',
-                { key: index, style: listy },
-                _react2.default.createElement(
-                  'div',
-                  { style: ld1sty },
-                  user,
-                  ' and my granbdmother also is a little funy, I don\'t know, I don\'t think she is a killer'
-                ),
-                _react2.default.createElement(
-                  'div',
-                  { style: ld3sty },
-                  '1'
-                ),
-                _react2.default.createElement(
-                  'div',
-                  { style: ld2sty },
-                  'a little funy, I don\'t know, I don\'t think she is a killer'
-                )
-              );
-            })
-          )
-        )
-      );
-    }
-  };
-
-  return _react2.default.createElement(
-    'div',
-    { style: style.outer },
-    renderProducts()
-  );
-};
-
-exports.Products = Products;
-
-/***/ }),
-/* 589 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.Registered = undefined;
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _react = __webpack_require__(4);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _wfuncs = __webpack_require__(68);
-
-var _getCfg = __webpack_require__(94);
-
-var _mapClass2Element = __webpack_require__(47);
-
-var _fetches = __webpack_require__(270);
-
-var _personacts = __webpack_require__(69);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } // eslint-disable-line no-unused-vars
-
-
-var Registered = function (_React$Component) {
-  _inherits(Registered, _React$Component);
-
-  function Registered(props) {
-    _classCallCheck(this, Registered);
-
-    var _this = _possibleConstructorReturn(this, (Registered.__proto__ || Object.getPrototypeOf(Registered)).call(this, props));
-
-    _this.clickCoid = function (e) {
-      var idx = e.target.getAttribute('idx');
-      var co = _this.state.cos[idx];
-      _this.getCtoken(_this.state.token, co);
-    };
-
-    _this.getCtoken = function (token, co) {
-      //console.log('this.props.ejob.task: ', this.props.ejob.task)
-      (0, _fetches.fetchCtoken)(token, co).then(function (res) {
-        console.log('res: ', res);
-        var isPartner = res.role == 'partner' ? true : false;
-        (0, _personacts.setKeyVal)({ role: res.role, emailid: res.binfo.emailid, isPartner: isPartner });
-        _getCfg.ls.setItem({ email: res.binfo.emailid, token: res.token });
-        location.replace('#persons');
-      });
-    };
-
-    _this.renderNothing = function () {
-      return _react2.default.createElement(
-        'h1',
-        null,
-        'nothing'
-      );
-    };
-
-    _this.renderCoids = function () {
-      return _react2.default.createElement(
-        'div',
-        { style: style.he },
-        _react2.default.createElement(
-          'h4',
-          null,
-          'You Are Registered  '
-        ),
-        _react2.default.createElement(
-          'span',
-          null,
-          'You are registered on this app for multiple businesses. Select which on you want to be logged in at. This app will remeber your last business selection. To switch later, just ',
-          _react2.default.createElement(
-            'a',
-            { href: _getCfg.cfg.url.authqry },
-            'register'
-          ),
-          ' again then select another business'
-        ),
-        _react2.default.createElement(
-          'h4',
-          null,
-          'Select a business/org/entity '
-        ),
-        _react2.default.createElement(
-          'ul',
-          { style: style.myli.ul },
-          _this.state.cos.map(function (co, i) {
-            return _react2.default.createElement(
-              'li',
-              { style: style.myli.li, key: i, idx: i, onClick: _this.clickCoid },
-              co.coid,
-              ' as ',
-              co.role,
-              ' '
-            );
-          })
-        )
-      );
-    };
-
-    _this.renderMessage = function () {
-      return _react2.default.createElement(
-        'div',
-        null,
-        _react2.default.createElement(
-          'h1',
-          null,
-          'message'
-        ),
-        '"',
-        _react2.default.createElement(
-          'span',
-          null,
-          _this.state.message,
-          ' ',
-          _react2.default.createElement(
-            'a',
-            { href: 'https://timecards.sitebuilt.net' },
-            'here'
-          ),
-          ' '
-        )
-      );
-    };
-
-    _this.selectRender = function (renderwhat) {
-      switch (renderwhat) {
-        case 'message':
-          console.log('rendering message');
-          return _this.renderMessage();
-        case 'coids':
-          return _this.renderCoids();
-        case 'nothing':
-          return _this.renderNothing();
-        default:
-          return _react2.default.createElement(
-            'h4',
-            null,
-            'default'
-          );
-      }
-    };
-
-    _this.state = {
-      cos: [],
-      token: '',
-      renderwhat: 'nothing',
-      message: ''
-    };
-    return _this;
-  }
-
-  _createClass(Registered, [{
-    key: 'componentDidMount',
-    value: function componentDidMount() {
-      var _this2 = this;
-
-      var query = this.props.cambio.page.params.query;
-      var mobj = (0, _wfuncs.parseQuery)(query);
-      console.log('mobj: ', mobj);
-      if (mobj.message) {
-        var message = decodeURI(mobj.message) + ' Check with your employer to see if you can access this app. Or start your own ';
-        this.setState({ renderwhat: 'message', message: message });
-      } else {
-        (0, _fetches.fetchCoids)(mobj).then(function (res) {
-          console.log('res: ', res);
-          if (res.qmessage) {
-            _this2.setState({ renderwhat: 'message', message: res.qmessage });
-          }
-          if (res.coid && res.coid.length == 1) {
-            _this2.getCtoken(mobj.token, res.coid[0]);
-          } else {
-            _this2.setState({ renderwhat: 'coids', cos: res.coid, token: mobj.token });
-          }
-        });
-      }
-    }
-  }, {
-    key: 'render',
-    value: function render() {
-      var _state = this.state,
-          cos = _state.cos,
-          renderwhat = _state.renderwhat;
-
-      console.log('renderwhat: ', renderwhat);
-      console.log('cos: ', cos);
-      var renderthis = this.selectRender(renderwhat);
-      return _react2.default.createElement(
-        'div',
-        null,
-        renderthis
-      );
-    }
-  }]);
-
-  return Registered;
-}(_react2.default.Component);
-
-exports.Registered = Registered = (0, _mapClass2Element.mapClass2Element)(Registered);
-
-exports.Registered = Registered;
-
-
-var style = {
-  he: {
-    margin: '2px 10px 10px 10px',
-    height: '70px',
-    yw: {
-      padding: '1px 1px 10px 1px'
-    },
-    yr: {
-      width: '45px',
-      background: 'silver'
-    },
-    wk: {
-      width: '36px',
-      background: 'whitesmoke'
-    },
-    img: {
-
-      float: 'right',
-      width: '30px'
-    },
-    act: {
-      float: 'right'
-    },
-    get: {
-      float: 'left'
-    },
-    but: {
-      ac: {
-        margin: '4px',
-        padding: '4px'
-      },
-      ia: {
-        margin: '4px',
-        padding: '4px'
-      },
-      al: {
-        margin: '4px',
-        padding: '4px'
-      }
-    }
-  },
-  myli: {
-    od: {
-      overflow: 'hidden',
-      width: '100%',
-      border: '1px solid #ccc'
-    },
-    ul: {
-      textAlign: 'left',
-      listStyleType: 'none',
-      paddingLeft: '12px'
-    },
-    li: {
-      background: '#99CCCC',
-      padding: '6px',
-      overflow: 'hidden',
-      border: 'solid 1px black'
-    },
-    idx: {
-      float: 'left',
-      width: '7%',
-      padding: '5px'
-    },
-    icon: {
-      fontSize: '18px'
-    },
-    ck: {
-      transform: 'scale(1.5)',
-      msTransform: 'scale(1.5)',
-      WebkitTransform: 'scale(1.5)',
-      padding: '10px',
-      border: '2px solid black'
-    },
-    job: {
-      padding: '3px',
-      width: '50%',
-      float: 'left',
-      background: '#99CCCC'
-    },
-    cat: {
-      padding: '3px',
-      width: '20%',
-      float: 'left',
-      background: '#99CCCC'
-
-    },
-    act: {
-      width: '10%',
-      float: 'right',
-      background: '#99CCCC'
-
-    }
-  }
-};
-
-/***/ }),
+/* 587 */,
+/* 588 */,
+/* 589 */,
 /* 590 */
 /***/ (function(module, exports, __webpack_require__) {
 
