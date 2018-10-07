@@ -17,8 +17,66 @@ https://www.mozilla.org/en-US/firefox/60.0a2/whatsnew/#cssgrid
 https://mozilladevelopers.github.io/playground/css-grid/
 
 https://accountinginfocus.com/financial-accounting/liabilities-financial-accounting/recording-payroll-and-payroll-liabilites/
-
+### 106-timecards-persons-ded-ben
 ### 105-timecards-signup
+Things to add: deductions before taxes: health & 401K, employee location, SUTA employee type: 1099,hourly,salary,salry-nexs To book the vacation accrual, debit vacation expense and credit the accrued vacation liability.When an employee subsequently takes a vacation, debit the vacation accrual and credit cash.
+
+1.Create your payroll journal entry with the sum of your gross pay listed as a debit to the expense account for your payroll processing.
+
+2.Add credits to the journal entry for your tax liability accounts, other contribution liabilities and the cash account. The amount credited to the cash account will reflect the actual money paid to your employees as net pay.
+
+
+
+    Small Business»
+    Human Resources»
+    Health Insurance»
+
+How to Account for the Employee Portion of Health Insurance Premiums
+by Tara Kimball
+Health premium contributions are a common payroll deduction.
+Related Articles
+
+    1
+    Record Payroll Health Insurance Premium Payments in Accounting
+    2
+    Payroll Deductions as Liabilities Vs. Payroll Expenses
+    3
+    Ways to Determine an Employee's Portion of Health Insurance When It Is Based on Age
+    4
+    How Do I Show a General Journal Entry for Company Deductions From Employee Payroll?
+
+When your employees pay a portion of their company-provided health insurance premiums, deduct their portion from each paycheck in the same manner as you handle the tax withholding and other deductions. Account for the health insurance premiums in your general ledger to maintain accurate records of your liabilities for reporting purposes until the premium payments are due, and post them to your expense account.
+
+1.
+
+Create your payroll journal entry with the sum of your gross pay listed as a debit to the expense account for your payroll processing.
+
+2.
+
+Add credits to the journal entry for your tax liability accounts, other contribution liabilities and the cash account. The amount credited to the cash account will reflect the actual money paid to your employees as net pay.
+
+3.
+
+Include a credit for the total of the employee health insurance deduction. Post the credit in a liability account labeled as a health insurance payable account, but label this account as employee contributions. Create a separate liability account for your share of the premiums.
+
+4.
+
+Post a debit to the liability account for the payable account balance when you issue your premium payment. Offset the debit with a credit to your cash account to reflect the payment.
+
+OK so you journal a paycheck by debiting payroll expense with gross pay and crediting taxes(emp & co), cash(netpay), health insurance payable(emp), health ins payable(co), same for 401k and vaca holiday.
+
+Now to get from gross to job costs you credit gross and debit jobs(inprocess). This assigns the expense to a job and  As you get payments you credit jobs(inprocess) and debit cash. Your gross profit on a job is the differece. 
+
+Percent complete as a number is what you have earned on a job. If you are 60% done on a 10000 job you have earned 6000. If you have been paid 4000 then you have debited cash and credited jobs(inprocess)4000 To account for the 2000 owed you credit jobs(inprocess) and debit accounts recievable.
+
+Once the job is done have debits for it that are the cash(payments) accounts recievable. The credits for a job are all the payments you got. The debits are all the expenses for that job. If you made mone ther is a credit balance. 
+
+Each weeks payroll expense can be zeroed by crediting payrol expense and distributing it to jobs. How to do that. For each employee week there is an array of hrs for each day. There is also an approtionment array like [1.17,1.17,1.17,1.17,1.5, 2.0] whis is used to apportion overtime pay / day. So if reg was 800 mfot was 120 and sa   
+
+What is it? 
+
+https://s3-us-west-2.amazonaws.com/courses-images-archive-read-only/wp-content/uploads/sites/1430/2016/03/04031427/job-cost-flow.pdf
+
 ### 104-timecards-pay-net
 Data created by calcs is
 

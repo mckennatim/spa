@@ -58840,7 +58840,42 @@ var UrApps = function (_React$Component) {
       args[_key] = arguments[_key];
     }
 
-    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = UrApps.__proto__ || Object.getPrototypeOf(UrApps)).call.apply(_ref, [this].concat(args))), _this), _this.active = 'mabibi or buttler', _temp), _possibleConstructorReturn(_this, _ret);
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = UrApps.__proto__ || Object.getPrototypeOf(UrApps)).call.apply(_ref, [this].concat(args))), _this), _this.active = 'mabibi or buttler', _this.renderApps = function () {
+      var _this$state = _this.state,
+          apps = _this$state.apps,
+          host = _this$state.host;
+
+      var ra = apps.filter(function (a) {
+        return a != 'signup' && a != 'books';
+      }).map(function (a, i) {
+        var href = (0, _getCfg.makeHref)(host, a);
+        console.log('href: ', href);
+        var img = 'img/' + a + '.png';
+        return _react2.default.createElement(
+          'li',
+          { key: i, style: style.myli.li },
+          _react2.default.createElement(
+            'a',
+            { href: href },
+            _react2.default.createElement(
+              'div',
+              { key: i },
+              _react2.default.createElement('img', { src: img, alt: a, style: style.myli.img }),
+              _react2.default.createElement(
+                'span',
+                null,
+                a
+              )
+            )
+          )
+        );
+      });
+      return _react2.default.createElement(
+        'ul',
+        { style: style.myli.ul },
+        ra
+      );
+    }, _temp), _possibleConstructorReturn(_this, _ret);
   }
 
   _createClass(UrApps, [{
@@ -58868,13 +58903,12 @@ var UrApps = function (_React$Component) {
       console.log('ls.getToken ? true : false: ', _getCfg.ls.getToken ? true : false);
       if (this.state && this.state.apps && _getCfg.ls.getToken()) {
         var _state = this.state,
-            apps = _state.apps,
             emailid = _state.emailid,
             role = _state.role,
             goodtil = _state.goodtil,
-            coid = _state.coid,
-            host = _state.host;
+            coid = _state.coid;
 
+        var renderedapps = this.renderApps();
         return _react2.default.createElement(
           'div',
           { style: style.outer },
@@ -58923,27 +58957,11 @@ var UrApps = function (_React$Component) {
             goodtil.split('T')[0]
           ),
           _react2.default.createElement('br', null),
-          apps.filter(function (a) {
-            return a != 'signup';
-          }).map(function (a, i) {
-            var href = (0, _getCfg.makeHref)(host, a);
-            console.log('href: ', href);
-            return _react2.default.createElement(
-              'div',
-              { key: i },
-              _react2.default.createElement(
-                'a',
-                { href: href },
-                _react2.default.createElement(
-                  'span',
-                  null,
-                  a
-                )
-              ),
-              ' ',
-              _react2.default.createElement('br', null)
-            );
-          })
+          _react2.default.createElement(
+            'div',
+            { style: style.myli.od },
+            renderedapps
+          )
         );
       } else {
         return _react2.default.createElement(
@@ -58983,6 +59001,114 @@ var style = {
     overflow: 'hidden',
     padding: '4px',
     margin: '2px 10px 10px 10px'
+  },
+  yw: {
+    padding: '1px 1px 10px 1px'
+  },
+  yr: {
+    width: '45px',
+    background: 'silver'
+  },
+  wk: {
+    width: '36px',
+    background: 'whitesmoke'
+  },
+  img: {
+
+    float: 'right',
+    width: '30px'
+  },
+  act: {
+    float: 'right'
+  },
+  get: {
+    float: 'left'
+  },
+  but: {
+    ac: {
+      margin: '4px',
+      padding: '4px'
+    },
+    ia: {
+      margin: '4px',
+      padding: '4px'
+    },
+    al: {
+      margin: '4px',
+      padding: '4px'
+    },
+    cu: {
+      margin: '4px',
+      padding: '4px'
+    },
+    fu: {
+      margin: '4px',
+      padding: '4px'
+    },
+    hi: {
+      margin: '4px',
+      padding: '4px'
+    },
+    da: {
+      margin: '4px',
+      padding: '4px'
+    }
+  },
+  myli: {
+    img: {
+      padding: '6px',
+      width: '40px'
+    },
+    od: {
+      overflow: 'hidden',
+      width: '100%',
+      border: '1px solid #ccc'
+    },
+    ul: {
+      textAlign: 'left',
+      listStyleType: 'none',
+      paddingLeft: '12px'
+    },
+    li: {
+      background: '#99CCCC',
+      padding: '2px',
+      overflow: 'hidden',
+      border: 'solid 1px black'
+    },
+    idx: {
+      float: 'left',
+      width: '5%',
+      padding: '4px'
+    },
+    icon: {
+      fontSize: '18px'
+    },
+    ck: {
+      transform: 'scale(1.5)',
+      msTransform: 'scale(1.5)',
+      WebkitTransform: 'scale(1.5)',
+      padding: '10px',
+      border: '2px solid black'
+    },
+    person: {
+      padding: '3px',
+      width: '50%',
+      float: 'left',
+      background: '#99CCCC'
+    },
+    cat: {
+      padding: '3px',
+      width: '20%',
+      float: 'left',
+      background: '#99CCCC'
+
+    },
+    act: {
+      width: '10%',
+      float: 'right',
+      background: '#99CCCC'
+
+    }
   }
 };
 

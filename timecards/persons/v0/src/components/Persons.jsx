@@ -301,6 +301,13 @@ class Persons extends React.Component{
             marital:{aperson.marital}<br/>
             w4exempt: {w4exempt}<br/>
             student: {student}<br/>
+            health.emp: {aperson.healthemp}<br/>
+            health.co: {aperson.healthco}<br/>
+            401K.emp: {aperson.k401emp}<br/>
+            401K.co: {aperson.k401co}<br/>
+            vacation: {aperson.vacation}<br/>
+            holiday: {aperson.holiday}<br/>
+
             </span>
           </div>
         </li >)

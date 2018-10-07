@@ -9,14 +9,10 @@ const routing = ()=>{
   router = new Navigo(cfg.root, cfg.useHash);
   router
     .on({
-      'products': ()=> {switchPage({name: 'Products', params: null});} ,
-      'products/:id': (params)=>{switchPage({name: 'Products', params: params});},
       'about': ()=>{switchPage({name: 'About', params: null});},
-      'dog': ()=>{switchPage({name: 'Dog', params: null});},
       'cat': ()=>{switchPage({name: 'Cat', params: null});},
       'persons': (params,query)=>{switchPage({name: 'Persons', params: {...params, query: query}});},
       'addperson': (params, query)=> {switchPage({name: 'AddPerson', params: {...params, query: query}});},
-      'registered': (params, query)=> {switchPage({name: 'Registered', params: {...params, query: query}});} ,
       '*': ()=>{switchPage({name: 'Persons', params: null});}
     })
     .resolve();

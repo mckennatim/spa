@@ -21,6 +21,11 @@ import RadioGroup from '@material-ui/core/RadioGroup';// eslint-disable-line no-
 
 
 const styles = theme => ({
+  flexForm:{
+    display: 'flex',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+  },
   container: {
     display: 'flex',
     flexWrap: 'wrap',
@@ -74,8 +79,8 @@ class AddPerson extends React.Component {
 
   updatePerson=(e)=>{
     e.preventDefault()
-    console.log('this.props.eperson.curperson: ', this.props.eperson.curperson)
     const curperson = {...this.props.eperson.curperson}
+    console.log('curperson: ', curperson)
     putPerson(curperson)
     router.navigate('/persons?rerender')
   }
@@ -317,7 +322,72 @@ class AddPerson extends React.Component {
           <FormControlLabel value="marASsingl" control={<Radio />} label="Married As Single"/> 
           </RadioGroup>
         </FormControl>
-
+        <FormControl className={classes.flexForm}>
+          <FormLabel component="legend">Deductions per month </FormLabel>
+          <FormControl className={classes.formControl}>
+            <FormLabel component="legend">Health Insurance </FormLabel>         
+            <TextField
+                id="standard-name"
+                label="Employee contribution"
+                className={classes.textField}
+                type="number"
+                value={curperson.healthemp}
+                onChange={this.txtChanged('healthemp')}
+                margin="dense"
+              /> 
+              <TextField
+                id="standard-name"
+                label="Company contribution"
+                className={classes.textField}
+                type="number"
+                value={curperson.healthco}
+                onChange={this.txtChanged('healthco')}
+                margin="dense"
+              /> 
+        </FormControl> 
+        <FormControl  className={classes.formControl}>
+            <FormLabel component="legend">401K </FormLabel>         
+            <TextField
+                id="standard-name"
+                label="Employee contribution"
+                className={classes.textField}
+                type="number"
+                value={curperson.k401emp}
+                onChange={this.txtChanged('k401emp')}
+                margin="dense"
+              /> 
+              <TextField
+                id="standard-name"
+                label="Company contribution"
+                className={classes.textField}
+                type="number"
+                value={curperson.k401co}
+                onChange={this.txtChanged('k401co')}
+                margin="dense"
+              /> 
+        </FormControl>       
+      </FormControl>             
+      <FormControl className={classes.flexForm}>
+        <FormLabel component="legend">Benefits: Days/Yr </FormLabel>
+          <TextField
+              id="standard-name"
+              label="Vacation"
+              className={classes.textField}
+              type="number"
+              value={curperson.vacation}
+              onChange={this.txtChanged('vacation')}
+              margin="dense"
+            /> 
+            <TextField
+              id="standard-name"
+              label="Holiday"
+              className={classes.textField}
+              type="number"
+              value={curperson.holiday}
+              onChange={this.txtChanged('holiday')}
+              margin="dense"
+            /> 
+    </FormControl>  
         <div style={astyles.inner.but}>
           <Button 
             variant="contained" 

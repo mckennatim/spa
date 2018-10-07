@@ -18,10 +18,39 @@ class UrApps extends React.Component{
       })
   }
 
+  renderApps=()=>{
+    const {apps, host}=this.state
+    const ra = apps
+      .filter((a)=>a!='signup' && a!='books')
+      .map((a,i)=>{
+      const href = makeHref(host,a)
+      console.log('href: ', href)
+      const img = `img/${a}.png`
+      return(
+        <li  key={i} style={style.myli.li}>
+        <a href={href}>
+          <div key={i}>
+            <img src={img} alt={a} style={style.myli.img}/> 
+            <span>
+            {a}
+            </span>
+          </div>
+        </a>
+        </li>
+      )
+    })      
+    return(
+      <ul style={style.myli.ul}>
+        {ra}
+      </ul>     
+    )
+  }
+
   render(){
     console.log('ls.getToken ? true : false: ', ls.getToken ? true : false)
     if(this.state && this.state.apps && ls.getToken()){
-      const {apps, emailid, role, goodtil, coid, host}=this.state
+      const {emailid, role, goodtil, coid}=this.state
+      const renderedapps = this.renderApps()
       return(
         <div style={style.outer}>
           <h3> UrApps is {this.active}</h3>
@@ -30,15 +59,9 @@ class UrApps extends React.Component{
           <p>If you are associated with another company, click <a href={cfg.url.authqry}>register</a> to be able to sign into that company </p>
           <span>role: {role}</span><br/>
           <span>signed up until: {goodtil.split('T')[0]}</span><br/>
-          {apps
-            .filter((a)=>a!='signup')
-            .map((a,i)=>{
-            const href = makeHref(host,a)
-            console.log('href: ', href)
-            return(
-              <div key={i}><a href={href}><span>{a}</span></a> <br/></div>
-            )
-          })}
+          <div style={style.myli.od}>
+            {renderedapps}
+          </div>
         </div>
       )
     }else{
@@ -60,5 +83,113 @@ const style = {
     overflow:'hidden',
     padding: '4px',
     margin: '2px 10px 10px 10px'
+  },
+  yw:{
+    padding: '1px 1px 10px 1px'
+  },
+  yr:{
+    width: '45px',
+    background: 'silver'
+  },
+  wk:{
+    width:'36px',
+    background: 'whitesmoke'
+  },
+  img:{
+    
+    float:'right',
+    width: '30px'
+  },
+  act:{
+    float: 'right'
+  },
+  get:{
+    float:'left'
+  },
+  but:{
+    ac:{
+      margin: '4px',
+      padding: '4px'
+    },
+    ia:{
+      margin: '4px',
+      padding: '4px'
+    },
+    al:{
+      margin: '4px',
+      padding: '4px'
+    },
+    cu:{
+      margin: '4px',
+      padding: '4px'
+    },
+    fu:{
+      margin: '4px',
+      padding: '4px'
+    },
+    hi:{
+      margin: '4px',
+      padding: '4px'
+    },     
+    da:{
+      margin: '4px',
+      padding: '4px'
+    }     
+  },
+  myli :{
+    img:{
+      padding:'6px',
+      width:'40px'
+    },
+    od:{
+      overflow:'hidden',
+      width: '100%',
+      border: '1px solid #ccc'
+    },
+    ul:{
+      textAlign: 'left',
+      listStyleType: 'none',
+      paddingLeft: '12px'
+    },
+    li:{
+      background: '#99CCCC',
+      padding: '2px',
+      overflow: 'hidden',
+      border: 'solid 1px black'
+    },
+    idx:{
+      float: 'left',
+      width: '5%',
+      padding: '4px'
+    },
+    icon:{
+      fontSize: '18px'
+    },
+    ck:{
+      transform: 'scale(1.5)',
+      msTransform: 'scale(1.5)',
+      WebkitTransform: 'scale(1.5)',
+      padding: '10px',
+      border: '2px solid black'
+    },
+    person:{
+      padding: '3px',
+      width: '50%',
+      float: 'left',
+      background: '#99CCCC'
+    },
+    cat:{
+      padding: '3px',
+      width: '20%',
+      float: 'left',
+      background: '#99CCCC'
+
+    },
+    act:{
+      width: '10%',
+      float: 'right',
+      background: '#99CCCC'
+
+    }
   }
 }

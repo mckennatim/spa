@@ -21,6 +21,11 @@ import RadioGroup from '@material-ui/core/RadioGroup';// eslint-disable-line no-
 
 
 const styles = theme => ({
+  flexForm:{
+    display: 'flex',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+  },
   container: {
     display: 'flex',
     flexWrap: 'wrap',
@@ -74,8 +79,8 @@ class AddPerson extends React.Component {
 
   updatePerson=(e)=>{
     e.preventDefault()
-    console.log('this.props.eperson.curperson: ', this.props.eperson.curperson)
     const curperson = {...this.props.eperson.curperson}
+    console.log('curperson: ', curperson)
     putPerson(curperson)
     router.navigate('/persons?rerender')
   }
@@ -240,6 +245,149 @@ class AddPerson extends React.Component {
           onChange={this.txtChanged('stallow')}
           margin="dense"
         /> 
+        <TextField
+          id="standard-name"
+          label="St. Add.."
+          className={classes.textField}
+          type="number"
+          inputProps={{ min: "0", max: "15"}}
+          value={curperson.stadd}
+          onChange={this.txtChanged('stadd')}
+          margin="dense"
+        /> 
+        <TextField
+          id="standard-name"
+          label="Fed. Add."
+          className={classes.textField}
+          type="number"
+          inputProps={{ min: "0", max: "15"}}
+          value={curperson.w4add}
+          onChange={this.txtChanged('w4add')}
+          margin="dense"
+        /> 
+        <FormControl> 
+        <FormControlLabel
+            control={
+              <Checkbox
+              checked={curperson.w4exempt==1 ? true : false}
+              onChange={this.ckChanged('w4exempt')}
+              value="w4exempt"
+              />
+            }
+            label='W4 Exempt'
+          />
+          <FormControlLabel
+            control={
+              <Checkbox
+              checked={curperson.student==1 ? true : false}
+              onChange={this.ckChanged('student')}
+              value="student"
+              />
+            }
+            label='Student'
+          />
+          <FormControlLabel
+            control={
+              <Checkbox
+              checked={curperson.sthoh==1 ? true : false}
+              onChange={this.ckChanged('sthoh')}
+              value="sthoh"
+              />
+            }
+            label='Head of Household'
+          />
+          <FormControlLabel
+            control={
+              <Checkbox
+              checked={curperson.stblind==1 ? true : false}
+              onChange={this.ckChanged('stblind')}
+              value="stblind"
+              />
+            }
+            label='Blind'
+          />          
+        </FormControl> 
+        <FormControl component="fieldset" className={classes.formControl}>
+          <FormLabel component="legend">Marital Status</FormLabel>
+          <RadioGroup
+            aria-label="Marital Status"
+            name="gender1"
+            className={classes.group}
+            value={curperson.marital}
+            onChange={this.txtChanged('marital')}
+            row={true}
+          >
+          <FormControlLabel value="single" control={<Radio />} label="Single" />
+          <FormControlLabel value="married" control={<Radio />} label="Married" />
+          <FormControlLabel value="marASsingl" control={<Radio />} label="Married As Single"/> 
+          </RadioGroup>
+        </FormControl>
+        <FormControl className={classes.flexForm}>
+          <FormLabel component="legend">Deductions per month </FormLabel>
+          <FormControl className={classes.formControl}>
+            <FormLabel component="legend">Health Insurance </FormLabel>         
+            <TextField
+                id="standard-name"
+                label="Employee contribution"
+                className={classes.textField}
+                type="number"
+                value={curperson.healthemp}
+                onChange={this.txtChanged('healthemp')}
+                margin="dense"
+              /> 
+              <TextField
+                id="standard-name"
+                label="Company contribution"
+                className={classes.textField}
+                type="number"
+                value={curperson.healthco}
+                onChange={this.txtChanged('healthco')}
+                margin="dense"
+              /> 
+        </FormControl> 
+        <FormControl  className={classes.formControl}>
+            <FormLabel component="legend">401K </FormLabel>         
+            <TextField
+                id="standard-name"
+                label="Employee contribution"
+                className={classes.textField}
+                type="number"
+                value={curperson.k401emp}
+                onChange={this.txtChanged('k401emp')}
+                margin="dense"
+              /> 
+              <TextField
+                id="standard-name"
+                label="Company contribution"
+                className={classes.textField}
+                type="number"
+                value={curperson.k401co}
+                onChange={this.txtChanged('k401co')}
+                margin="dense"
+              /> 
+        </FormControl>       
+      </FormControl>             
+      <FormControl className={classes.flexForm}>
+        <FormLabel component="legend">Benefits: Days/Yr </FormLabel>
+          <TextField
+              id="standard-name"
+              label="Vacation"
+              className={classes.textField}
+              type="number"
+              value={curperson.vacation}
+              onChange={this.txtChanged('vacation')}
+              margin="dense"
+            /> 
+            <TextField
+              id="standard-name"
+              label="Holiday"
+              className={classes.textField}
+              type="number"
+              value={curperson.holiday}
+              onChange={this.txtChanged('holiday')}
+              margin="dense"
+            /> 
+    </FormControl>  
         <div style={astyles.inner.but}>
           <Button 
             variant="contained" 
