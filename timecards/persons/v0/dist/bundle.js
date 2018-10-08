@@ -30150,11 +30150,26 @@ var blankperson = {
   st: '',
   zip: '',
   role: '',
+  active: true,
   rate: 15.00,
   ssn: '',
-  w4allow: '',
+  wtype: '1099',
+  haystatewh: 1,
+  haylocalwh: 0,
+  w4allow: 1,
+  w4add: 0,
+  marital: '',
+  w4exempt: '',
   stallow: '',
-  active: true,
+  stadd: '',
+  sthoh: '',
+  stblind: '',
+  student: '',
+  healthemp: '',
+  healthco: '',
+  vacation: '',
+  holiday: '',
+  personal: '',
   effective: moment().format('YYYY-MM-D')
 };
 
@@ -58489,11 +58504,6 @@ var Persons = function (_React$Component) {
           null,
           '\u2714'
         ) : 'no';
-        var stblind = aperson.stblind ? _react2.default.createElement(
-          'span',
-          null,
-          '\u2714'
-        ) : 'no';
         var w4exempt = aperson.w4exempt ? _react2.default.createElement(
           'span',
           null,
@@ -58504,13 +58514,26 @@ var Persons = function (_React$Component) {
           null,
           '\u2714'
         ) : 'no';
-
+        var haystatewh = aperson.haystatewh ? _react2.default.createElement(
+          'span',
+          null,
+          '\u2714'
+        ) : 'no';
+        var haylocalwh = aperson.haylocalwh ? _react2.default.createElement(
+          'span',
+          null,
+          '\u2714'
+        ) : 'no';
+        var haywh = aperson.wtype == '1099' ? 0 : 1;
+        var nohayded = !aperson.healthemp && !aperson.healthco && !aperson.k401emp && !aperson.k401co;
+        var nohayben = !aperson.vacation && !aperson.holiday && !aperson.personal;
+        var nohayname = !aperson.firstmid && !aperson.lastname;
         return _react2.default.createElement(
           'li',
           { key: i, style: style.myli.li },
           _react2.default.createElement(
             'div',
-            { style: style.myli.idx },
+            { style: style.myli.person },
             _react2.default.createElement(
               'span',
               { style: style.myli.idxsp, onClick: _this.editPerson.bind(null, aperson) },
@@ -58519,33 +58542,35 @@ var Persons = function (_React$Component) {
                 { style: style.myli.icon, className: 'material-icons' },
                 'edit'
               )
-            )
-          ),
-          _react2.default.createElement(
-            'div',
-            { style: style.myli.person },
+            ),
+            '   ',
+            _react2.default.createElement('br', null),
             _react2.default.createElement(
               'span',
               null,
               aperson.emailid,
               _react2.default.createElement('br', null),
-              _react2.default.createElement(
-                'span',
+              !nohayname && _react2.default.createElement(
+                'div',
                 null,
-                aperson.firstmid,
+                _react2.default.createElement(
+                  'span',
+                  null,
+                  aperson.firstmid,
+                  ' ',
+                  aperson.lastname
+                ),
                 ' ',
-                aperson.lastname
+                _react2.default.createElement('br', null),
+                aperson.street,
+                _react2.default.createElement('br', null),
+                aperson.city,
+                ', ',
+                aperson.st,
+                ' ',
+                aperson.zip,
+                _react2.default.createElement('br', null)
               ),
-              ' ',
-              _react2.default.createElement('br', null),
-              aperson.street,
-              _react2.default.createElement('br', null),
-              aperson.city,
-              ', ',
-              aperson.st,
-              ' ',
-              aperson.zip,
-              _react2.default.createElement('br', null),
               'role: ',
               aperson.role,
               _react2.default.createElement('br', null),
@@ -58556,63 +58581,344 @@ var Persons = function (_React$Component) {
               active,
               _react2.default.createElement('br', null),
               'rate: $',
-              aperson.rate
+              aperson.rate,
+              _react2.default.createElement('br', null),
+              'ssn: ',
+              aperson.ssn,
+              _react2.default.createElement('br', null),
+              'type:',
+              aperson.wtype,
+              _react2.default.createElement('br', null),
+              !!haywh && _react2.default.createElement(
+                'div',
+                null,
+                'state wh:',
+                haystatewh,
+                _react2.default.createElement('br', null),
+                'local wh:',
+                haylocalwh
+              )
             )
           ),
           _react2.default.createElement(
             'div',
             { style: style.myli.cat },
             _react2.default.createElement(
-              'span',
-              null,
-              aperson.ssn,
-              _react2.default.createElement('br', null),
-              'allowances',
-              _react2.default.createElement('br', null),
-              'fed:',
-              aperson.w4allow,
-              ', state:',
-              aperson.stallow,
-              ' ',
-              _react2.default.createElement('br', null),
-              'fadd:',
-              aperson.w4add,
-              ', stadd:',
-              aperson.stadd,
-              ' ',
-              _react2.default.createElement('br', null),
-              'hoh:',
-              sthoh,
-              ', blind:',
-              stblind,
-              _react2.default.createElement('br', null),
-              'marital:',
-              aperson.marital,
-              _react2.default.createElement('br', null),
-              'w4exempt: ',
-              w4exempt,
-              _react2.default.createElement('br', null),
-              'student: ',
-              student,
-              _react2.default.createElement('br', null),
-              'health.emp: ',
-              aperson.healthemp,
-              _react2.default.createElement('br', null),
-              'health.co: ',
-              aperson.healthco,
-              _react2.default.createElement('br', null),
-              '401K.emp: ',
-              aperson.k401emp,
-              _react2.default.createElement('br', null),
-              '401K.co: ',
-              aperson.k401co,
-              _react2.default.createElement('br', null),
-              'vacation: ',
-              aperson.vacation,
-              _react2.default.createElement('br', null),
-              'holiday: ',
-              aperson.holiday,
-              _react2.default.createElement('br', null)
+              'table',
+              { style: style.table.table },
+              _react2.default.createElement(
+                'tbody',
+                null,
+                !!haywh && _react2.default.createElement(
+                  'div',
+                  null,
+                  !nohayded && _react2.default.createElement(
+                    'table',
+                    null,
+                    '  ',
+                    _react2.default.createElement(
+                      'tbody',
+                      null,
+                      _react2.default.createElement(
+                        'tr',
+                        null,
+                        _react2.default.createElement(
+                          'th',
+                          { style: style.table.th, colSpan: '2' },
+                          'Deductions'
+                        )
+                      ),
+                      _react2.default.createElement(
+                        'tr',
+                        null,
+                        _react2.default.createElement(
+                          'th',
+                          { style: style.table.thtd },
+                          'Emp.'
+                        ),
+                        _react2.default.createElement(
+                          'th',
+                          { style: style.table.thtd },
+                          'Co.'
+                        )
+                      ),
+                      _react2.default.createElement(
+                        'tr',
+                        null,
+                        _react2.default.createElement(
+                          'th',
+                          null,
+                          'Health'
+                        )
+                      ),
+                      _react2.default.createElement(
+                        'tr',
+                        { style: style.table.tr },
+                        _react2.default.createElement(
+                          'td',
+                          { style: style.table.thtd },
+                          aperson.healthemp
+                        ),
+                        _react2.default.createElement(
+                          'td',
+                          { style: style.table.thtd },
+                          aperson.healthco
+                        )
+                      ),
+                      _react2.default.createElement(
+                        'tr',
+                        null,
+                        _react2.default.createElement(
+                          'th',
+                          null,
+                          '401 K'
+                        )
+                      ),
+                      _react2.default.createElement(
+                        'tr',
+                        { style: style.table.tr },
+                        _react2.default.createElement(
+                          'td',
+                          { style: style.table.thtd },
+                          aperson.k401emp
+                        ),
+                        _react2.default.createElement(
+                          'td',
+                          { style: style.table.thtd },
+                          aperson.k401co
+                        )
+                      )
+                    )
+                  ),
+                  _react2.default.createElement(
+                    'tr',
+                    null,
+                    _react2.default.createElement(
+                      'th',
+                      { style: style.table.th, colSpan: '2' },
+                      'W4 Fed.'
+                    )
+                  ),
+                  _react2.default.createElement(
+                    'tr',
+                    { style: style.table.tr },
+                    _react2.default.createElement(
+                      'td',
+                      { style: style.table.thtd },
+                      'allow.'
+                    ),
+                    _react2.default.createElement(
+                      'td',
+                      { style: style.table.thtd },
+                      aperson.w4allow
+                    )
+                  ),
+                  _react2.default.createElement(
+                    'tr',
+                    { style: style.table.tr },
+                    _react2.default.createElement(
+                      'td',
+                      { style: style.table.thtd },
+                      'addtl.wh.'
+                    ),
+                    _react2.default.createElement(
+                      'td',
+                      { style: style.table.thtd },
+                      aperson.w4add
+                    )
+                  ),
+                  _react2.default.createElement(
+                    'tr',
+                    { style: style.table.tr },
+                    _react2.default.createElement(
+                      'td',
+                      { style: style.table.thtd },
+                      'marital'
+                    ),
+                    _react2.default.createElement(
+                      'td',
+                      { style: style.table.thtd },
+                      aperson.marital
+                    )
+                  ),
+                  _react2.default.createElement(
+                    'tr',
+                    { style: style.table.tr },
+                    _react2.default.createElement(
+                      'td',
+                      { style: style.table.thtd },
+                      'exempt'
+                    ),
+                    _react2.default.createElement(
+                      'td',
+                      { style: style.table.thtd },
+                      w4exempt
+                    )
+                  ),
+                  _react2.default.createElement(
+                    'tr',
+                    null,
+                    _react2.default.createElement(
+                      'th',
+                      { style: style.table.th, colSpan: '2' },
+                      'W4 State ',
+                      aperson.st
+                    )
+                  ),
+                  _react2.default.createElement(
+                    'tr',
+                    { style: style.table.tr },
+                    _react2.default.createElement(
+                      'td',
+                      { style: style.table.thtd },
+                      'allow.'
+                    ),
+                    _react2.default.createElement(
+                      'td',
+                      { style: style.table.thtd },
+                      aperson.stallow
+                    )
+                  ),
+                  _react2.default.createElement(
+                    'tr',
+                    { style: style.table.tr },
+                    _react2.default.createElement(
+                      'td',
+                      { style: style.table.thtd },
+                      'addtl.wh.'
+                    ),
+                    _react2.default.createElement(
+                      'td',
+                      { style: style.table.thtd },
+                      aperson.stadd
+                    )
+                  ),
+                  _react2.default.createElement(
+                    'tr',
+                    { style: style.table.tr },
+                    _react2.default.createElement(
+                      'td',
+                      { style: style.table.thtd },
+                      'h.o.h'
+                    ),
+                    _react2.default.createElement(
+                      'td',
+                      { style: style.table.thtd },
+                      sthoh
+                    )
+                  ),
+                  _react2.default.createElement(
+                    'tr',
+                    { style: style.table.tr },
+                    _react2.default.createElement(
+                      'td',
+                      { style: style.table.thtd },
+                      'stu/exmpt'
+                    ),
+                    _react2.default.createElement(
+                      'td',
+                      { style: style.table.thtd },
+                      student
+                    )
+                  ),
+                  _react2.default.createElement(
+                    'tr',
+                    { style: style.table.tr },
+                    _react2.default.createElement(
+                      'td',
+                      { style: style.table.thtd },
+                      'blind/deaf'
+                    ),
+                    _react2.default.createElement(
+                      'td',
+                      { style: style.table.thtd },
+                      aperson.stblind
+                    )
+                  ),
+                  aperson.haylocalwh != 0 && _react2.default.createElement(
+                    'div',
+                    null,
+                    _react2.default.createElement(
+                      'tr',
+                      null,
+                      _react2.default.createElement(
+                        'th',
+                        { style: style.table.th, colSpan: '2' },
+                        'W4 Local'
+                      )
+                    ),
+                    _react2.default.createElement(
+                      'tr',
+                      { style: style.table.tr },
+                      _react2.default.createElement(
+                        'td',
+                        { style: style.table.thtd },
+                        'allow.'
+                      ),
+                      _react2.default.createElement(
+                        'td',
+                        { style: style.table.thtd },
+                        aperson.localallow
+                      )
+                    )
+                  ),
+                  !nohayben && _react2.default.createElement(
+                    'div',
+                    null,
+                    _react2.default.createElement(
+                      'tr',
+                      null,
+                      _react2.default.createElement(
+                        'th',
+                        { style: style.table.th, colSpan: '2' },
+                        'Benefits'
+                      )
+                    ),
+                    _react2.default.createElement(
+                      'tr',
+                      { style: style.table.tr },
+                      _react2.default.createElement(
+                        'td',
+                        { style: style.table.thtd },
+                        'holiday'
+                      ),
+                      _react2.default.createElement(
+                        'td',
+                        { style: style.table.thtd },
+                        aperson.vacation
+                      )
+                    ),
+                    _react2.default.createElement(
+                      'tr',
+                      { style: style.table.tr },
+                      _react2.default.createElement(
+                        'td',
+                        { style: style.table.thtd },
+                        'vacation'
+                      ),
+                      _react2.default.createElement(
+                        'td',
+                        { style: style.table.thtd },
+                        aperson.holiday
+                      )
+                    ),
+                    aperson.personal != 0 && _react2.default.createElement(
+                      'tr',
+                      { style: style.table.tr },
+                      _react2.default.createElement(
+                        'td',
+                        { style: style.table.tht },
+                        'personal'
+                      ),
+                      _react2.default.createElement(
+                        'td',
+                        { style: style.table.thtd },
+                        aperson.personal
+                      )
+                    )
+                  )
+                )
+              )
             )
           )
         );
@@ -58833,7 +59139,7 @@ var style = {
     },
     cat: {
       padding: '3px',
-      width: '20%',
+      width: '40%',
       float: 'left',
       background: '#99CCCC'
 
@@ -58843,6 +59149,31 @@ var style = {
       float: 'right',
       background: '#99CCCC'
 
+    }
+  },
+  table: {
+    div: {
+      float: 'right',
+      background: 'white',
+      width: '130px'
+    },
+    table: {
+      borderCollapse: 'collapse',
+      width: '100%'
+    },
+    tr: {
+      padding: '0px',
+      margin: '0px'
+    },
+    thtd: {
+      padding: '0px',
+      margin: '0px',
+      textAlign: 'right'
+    },
+    th: {
+      padding: '0px',
+      margin: '0px',
+      textAlign: 'left'
     }
   }
 };
@@ -59585,194 +59916,276 @@ var AddPerson = function (_React$Component) {
             onChange: this.txtChanged('ssn'),
             margin: 'dense'
           }),
-          _react2.default.createElement(_TextField2.default, {
-            id: 'standard-name',
-            label: 'W4 Allow.',
-            className: classes.textField,
-            type: 'number',
-            inputProps: { min: "0", max: "15" },
-            value: curperson.w4allow,
-            onChange: this.txtChanged('w4allow'),
-            margin: 'dense'
-          }),
-          _react2.default.createElement(_TextField2.default, {
-            id: 'standard-name',
-            label: 'St. Allow.',
-            className: classes.textField,
-            type: 'number',
-            inputProps: { min: "0", max: "15" },
-            value: curperson.stallow,
-            onChange: this.txtChanged('stallow'),
-            margin: 'dense'
-          }),
-          _react2.default.createElement(_TextField2.default, {
-            id: 'standard-name',
-            label: 'St. Add..',
-            className: classes.textField,
-            type: 'number',
-            inputProps: { min: "0", max: "15" },
-            value: curperson.stadd,
-            onChange: this.txtChanged('stadd'),
-            margin: 'dense'
-          }),
-          _react2.default.createElement(_TextField2.default, {
-            id: 'standard-name',
-            label: 'Fed. Add.',
-            className: classes.textField,
-            type: 'number',
-            inputProps: { min: "0", max: "15" },
-            value: curperson.w4add,
-            onChange: this.txtChanged('w4add'),
-            margin: 'dense'
-          }),
-          _react2.default.createElement(
-            _FormControl2.default,
-            null,
-            _react2.default.createElement(_FormControlLabel2.default, {
-              control: _react2.default.createElement(_Checkbox2.default, {
-                checked: curperson.w4exempt == 1 ? true : false,
-                onChange: this.ckChanged('w4exempt'),
-                value: 'w4exempt'
-              }),
-              label: 'W4 Exempt'
-            }),
-            _react2.default.createElement(_FormControlLabel2.default, {
-              control: _react2.default.createElement(_Checkbox2.default, {
-                checked: curperson.student == 1 ? true : false,
-                onChange: this.ckChanged('student'),
-                value: 'student'
-              }),
-              label: 'Student'
-            }),
-            _react2.default.createElement(_FormControlLabel2.default, {
-              control: _react2.default.createElement(_Checkbox2.default, {
-                checked: curperson.sthoh == 1 ? true : false,
-                onChange: this.ckChanged('sthoh'),
-                value: 'sthoh'
-              }),
-              label: 'Head of Household'
-            }),
-            _react2.default.createElement(_FormControlLabel2.default, {
-              control: _react2.default.createElement(_Checkbox2.default, {
-                checked: curperson.stblind == 1 ? true : false,
-                onChange: this.ckChanged('stblind'),
-                value: 'stblind'
-              }),
-              label: 'Blind'
-            })
-          ),
           _react2.default.createElement(
             _FormControl2.default,
             { component: 'fieldset', className: classes.formControl },
             _react2.default.createElement(
               _FormLabel2.default,
-              { component: 'legend' },
-              'Marital Status'
+              { required: true, component: 'legend' },
+              'Worker Type'
             ),
             _react2.default.createElement(
               _RadioGroup2.default,
               {
-                'aria-label': 'Marital Status',
+                'aria-label': 'Role',
                 name: 'gender1',
                 className: classes.group,
-                value: curperson.marital,
-                onChange: this.txtChanged('marital'),
+                value: curperson.wtype,
+                onChange: this.txtChanged('wtype'),
                 row: true
               },
-              _react2.default.createElement(_FormControlLabel2.default, { value: 'single', control: _react2.default.createElement(_Radio2.default, null), label: 'Single' }),
-              _react2.default.createElement(_FormControlLabel2.default, { value: 'married', control: _react2.default.createElement(_Radio2.default, null), label: 'Married' }),
-              _react2.default.createElement(_FormControlLabel2.default, { value: 'marASsingl', control: _react2.default.createElement(_Radio2.default, null), label: 'Married As Single' })
+              _react2.default.createElement(_FormControlLabel2.default, { disabled: !isPartner, value: 'hourly', control: _react2.default.createElement(_Radio2.default, null), label: 'Hourly' }),
+              _react2.default.createElement(_FormControlLabel2.default, { value: 'salary', control: _react2.default.createElement(_Radio2.default, null), label: 'Salary' }),
+              _react2.default.createElement(_FormControlLabel2.default, { value: 'salaryne', control: _react2.default.createElement(_Radio2.default, null), label: 'Salary non-exempt' }),
+              _react2.default.createElement(_FormControlLabel2.default, { value: '1099', control: _react2.default.createElement(_Radio2.default, null), label: '1099' })
             )
           ),
-          _react2.default.createElement(
-            _FormControl2.default,
-            { className: classes.flexForm },
-            _react2.default.createElement(
-              _FormLabel2.default,
-              { component: 'legend' },
-              'Deductions per month '
-            ),
+          curperson.wtype != '1099' && _react2.default.createElement(
+            'div',
+            null,
             _react2.default.createElement(
               _FormControl2.default,
-              { className: classes.formControl },
+              { component: 'fieldset', className: classes.formControl },
               _react2.default.createElement(
                 _FormLabel2.default,
                 { component: 'legend' },
-                'Health Insurance '
+                'State/Local Witholding'
               ),
+              _react2.default.createElement(_FormControlLabel2.default, {
+                control: _react2.default.createElement(_Checkbox2.default, {
+                  checked: curperson.haystatewh == 1 ? true : false,
+                  onChange: this.ckChanged('haystatewh'),
+                  value: 'haystatewh'
+                }),
+                label: 'State wh'
+              }),
+              _react2.default.createElement(_FormControlLabel2.default, {
+                control: _react2.default.createElement(_Checkbox2.default, {
+                  checked: curperson.haylocalwh == 1 ? true : false,
+                  onChange: this.ckChanged('haylocalwh'),
+                  value: 'haylocalwh'
+                }),
+                label: 'Local wh'
+              }),
               _react2.default.createElement(_TextField2.default, {
                 id: 'standard-name',
-                label: 'Employee contribution',
+                label: 'Fed W4 Allowance',
                 className: classes.textField,
                 type: 'number',
-                value: curperson.healthemp,
-                onChange: this.txtChanged('healthemp'),
+                inputProps: { min: "0", max: "15" },
+                value: curperson.w4allow,
+                onChange: this.txtChanged('w4allow'),
                 margin: 'dense'
               }),
               _react2.default.createElement(_TextField2.default, {
                 id: 'standard-name',
-                label: 'Company contribution',
+                label: 'Fed Additional Withhold.',
                 className: classes.textField,
                 type: 'number',
-                value: curperson.healthco,
-                onChange: this.txtChanged('healthco'),
+                inputProps: { min: "0", max: "15" },
+                value: curperson.w4add,
+                onChange: this.txtChanged('w4add'),
                 margin: 'dense'
-              })
+              }),
+              curperson.haystatewh && _react2.default.createElement(
+                'div',
+                null,
+                _react2.default.createElement(_TextField2.default, {
+                  id: 'standard-name',
+                  label: 'State W4 Allowance',
+                  className: classes.textField,
+                  type: 'number',
+                  inputProps: { min: "0", max: "15" },
+                  value: curperson.stallow,
+                  onChange: this.txtChanged('stallow'),
+                  margin: 'dense'
+                }),
+                _react2.default.createElement(_TextField2.default, {
+                  id: 'standard-name',
+                  label: 'State Additional Withhold.',
+                  className: classes.textField,
+                  type: 'number',
+                  inputProps: { min: "0", max: "15" },
+                  value: curperson.stadd,
+                  onChange: this.txtChanged('stadd'),
+                  margin: 'dense'
+                }),
+                _react2.default.createElement(_TextField2.default, {
+                  id: 'standard-name',
+                  label: 'Blind/Deaf you and/or spouse',
+                  className: classes.textField,
+                  type: 'number',
+                  inputProps: { min: "0", max: "4" },
+                  value: curperson.stblind,
+                  onChange: this.txtChanged('stblind'),
+                  margin: 'dense'
+                })
+              )
             ),
             _react2.default.createElement(
               _FormControl2.default,
-              { className: classes.formControl },
+              { component: 'fieldset', className: classes.formControl },
               _react2.default.createElement(
                 _FormLabel2.default,
                 { component: 'legend' },
-                '401K '
+                'Fed'
+              ),
+              _react2.default.createElement(_FormControlLabel2.default, {
+                control: _react2.default.createElement(_Checkbox2.default, {
+                  checked: curperson.w4exempt == 1 ? true : false,
+                  onChange: this.ckChanged('w4exempt'),
+                  value: 'w4exempt'
+                }),
+                label: 'W4 Exempt'
+              }),
+              curperson.haystatewh && _react2.default.createElement(
+                'div',
+                null,
+                _react2.default.createElement(
+                  _FormLabel2.default,
+                  { component: 'legend' },
+                  'State'
+                ),
+                _react2.default.createElement(_FormControlLabel2.default, {
+                  control: _react2.default.createElement(_Checkbox2.default, {
+                    checked: curperson.student == 1 ? true : false,
+                    onChange: this.ckChanged('student'),
+                    value: 'student'
+                  }),
+                  label: 'Student'
+                }),
+                _react2.default.createElement(_FormControlLabel2.default, {
+                  control: _react2.default.createElement(_Checkbox2.default, {
+                    checked: curperson.sthoh == 1 ? true : false,
+                    onChange: this.ckChanged('sthoh'),
+                    value: 'sthoh'
+                  }),
+                  label: 'Head of Household'
+                })
+              )
+            ),
+            _react2.default.createElement(
+              _FormControl2.default,
+              { component: 'fieldset', className: classes.formControl },
+              _react2.default.createElement(
+                _FormLabel2.default,
+                { component: 'legend' },
+                'Marital Status'
+              ),
+              _react2.default.createElement(
+                _RadioGroup2.default,
+                {
+                  'aria-label': 'Marital Status',
+                  name: 'gender1',
+                  className: classes.group,
+                  value: curperson.marital,
+                  onChange: this.txtChanged('marital'),
+                  row: true
+                },
+                _react2.default.createElement(_FormControlLabel2.default, { value: 'single', control: _react2.default.createElement(_Radio2.default, null), label: 'Single' }),
+                _react2.default.createElement(_FormControlLabel2.default, { value: 'married', control: _react2.default.createElement(_Radio2.default, null), label: 'Married' }),
+                _react2.default.createElement(_FormControlLabel2.default, { value: 'marASsingl', control: _react2.default.createElement(_Radio2.default, null), label: 'Married As Single' })
+              )
+            ),
+            _react2.default.createElement(
+              _FormControl2.default,
+              { className: classes.flexForm },
+              _react2.default.createElement(
+                _FormLabel2.default,
+                { component: 'legend' },
+                'Deductions per month '
+              ),
+              _react2.default.createElement(
+                _FormControl2.default,
+                { className: classes.formControl },
+                _react2.default.createElement(
+                  _FormLabel2.default,
+                  { component: 'legend' },
+                  'Health Insurance '
+                ),
+                _react2.default.createElement(_TextField2.default, {
+                  id: 'standard-name',
+                  label: 'Employee contribution',
+                  className: classes.textField,
+                  type: 'number',
+                  value: curperson.healthemp,
+                  onChange: this.txtChanged('healthemp'),
+                  margin: 'dense'
+                }),
+                _react2.default.createElement(_TextField2.default, {
+                  id: 'standard-name',
+                  label: 'Company contribution',
+                  className: classes.textField,
+                  type: 'number',
+                  value: curperson.healthco,
+                  onChange: this.txtChanged('healthco'),
+                  margin: 'dense'
+                })
+              ),
+              _react2.default.createElement(
+                _FormControl2.default,
+                { className: classes.formControl },
+                _react2.default.createElement(
+                  _FormLabel2.default,
+                  { component: 'legend' },
+                  '401K '
+                ),
+                _react2.default.createElement(_TextField2.default, {
+                  id: 'standard-name',
+                  label: 'Employee contribution',
+                  className: classes.textField,
+                  type: 'number',
+                  value: curperson.k401emp,
+                  onChange: this.txtChanged('k401emp'),
+                  margin: 'dense'
+                }),
+                _react2.default.createElement(_TextField2.default, {
+                  id: 'standard-name',
+                  label: 'Company contribution',
+                  className: classes.textField,
+                  type: 'number',
+                  value: curperson.k401co,
+                  onChange: this.txtChanged('k401co'),
+                  margin: 'dense'
+                })
+              )
+            ),
+            _react2.default.createElement(
+              _FormControl2.default,
+              { className: classes.flexForm },
+              _react2.default.createElement(
+                _FormLabel2.default,
+                { component: 'legend' },
+                'Benefits: Days/Yr '
               ),
               _react2.default.createElement(_TextField2.default, {
                 id: 'standard-name',
-                label: 'Employee contribution',
+                label: 'Vacation',
                 className: classes.textField,
                 type: 'number',
-                value: curperson.k401emp,
-                onChange: this.txtChanged('k401emp'),
+                value: curperson.vacation,
+                onChange: this.txtChanged('vacation'),
                 margin: 'dense'
               }),
               _react2.default.createElement(_TextField2.default, {
                 id: 'standard-name',
-                label: 'Company contribution',
+                label: 'Holiday',
                 className: classes.textField,
                 type: 'number',
-                value: curperson.k401co,
-                onChange: this.txtChanged('k401co'),
+                value: curperson.holiday,
+                onChange: this.txtChanged('holiday'),
+                margin: 'dense'
+              }),
+              _react2.default.createElement(_TextField2.default, {
+                id: 'standard-name',
+                label: 'Personal',
+                className: classes.textField,
+                type: 'number',
+                value: curperson.personal,
+                onChange: this.txtChanged('personal'),
                 margin: 'dense'
               })
             )
-          ),
-          _react2.default.createElement(
-            _FormControl2.default,
-            { className: classes.flexForm },
-            _react2.default.createElement(
-              _FormLabel2.default,
-              { component: 'legend' },
-              'Benefits: Days/Yr '
-            ),
-            _react2.default.createElement(_TextField2.default, {
-              id: 'standard-name',
-              label: 'Vacation',
-              className: classes.textField,
-              type: 'number',
-              value: curperson.vacation,
-              onChange: this.txtChanged('vacation'),
-              margin: 'dense'
-            }),
-            _react2.default.createElement(_TextField2.default, {
-              id: 'standard-name',
-              label: 'Holiday',
-              className: classes.textField,
-              type: 'number',
-              value: curperson.holiday,
-              onChange: this.txtChanged('holiday'),
-              margin: 'dense'
-            })
           ),
           _react2.default.createElement(
             'div',

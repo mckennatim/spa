@@ -225,9 +225,49 @@ class AddPerson extends React.Component {
           onChange={this.txtChanged('ssn')}
           margin="dense"
         /> 
+        <FormControl component="fieldset" className={classes.formControl}>
+          <FormLabel required component="legend">Worker Type</FormLabel>
+          <RadioGroup
+            aria-label="Role"
+            name="gender1"
+            className={classes.group}
+            value={curperson.wtype}
+            onChange={this.txtChanged('wtype')}
+            row={true}
+          >
+          <FormControlLabel disabled={!isPartner} value="hourly" control={<Radio />} label="Hourly" />
+          <FormControlLabel value="salary" control={<Radio />} label="Salary" />
+          <FormControlLabel value="salaryne" control={<Radio />} label="Salary non-exempt" />
+          <FormControlLabel value="1099" control={<Radio />} label="1099"/>        
+          </RadioGroup>
+        </FormControl >
+        {curperson.wtype!='1099' && <div>
+        <FormControl component="fieldset" className={classes.formControl}>
+        <FormLabel component="legend">State/Local Witholding</FormLabel>   
+        <FormControlLabel
+            control={
+              <Checkbox
+              checked={curperson.haystatewh==1 ? true : false}
+              onChange={this.ckChanged('haystatewh')}
+              value="haystatewh"
+              />
+            }
+            label='State wh'
+          />
+          <FormControlLabel
+            control={
+              <Checkbox
+              checked={curperson.haylocalwh==1 ? true : false}
+              onChange={this.ckChanged('haylocalwh')}
+              value="haylocalwh"
+              />
+            }
+            label='Local wh'
+          />  
+          
         <TextField
           id="standard-name"
-          label="W4 Allow."
+          label="Fed W4 Allowance"
           className={classes.textField}
           type="number"
           inputProps={{ min: "0", max: "15"}}
@@ -237,7 +277,18 @@ class AddPerson extends React.Component {
         /> 
         <TextField
           id="standard-name"
-          label="St. Allow."
+          label="Fed Additional Withhold."
+          className={classes.textField}
+          type="number"
+          inputProps={{ min: "0", max: "15"}}
+          value={curperson.w4add}
+          onChange={this.txtChanged('w4add')}
+          margin="dense"
+        />
+        {curperson.haystatewh && <div>
+        <TextField
+          id="standard-name"
+          label="State W4 Allowance"
           className={classes.textField}
           type="number"
           inputProps={{ min: "0", max: "15"}}
@@ -247,25 +298,28 @@ class AddPerson extends React.Component {
         /> 
         <TextField
           id="standard-name"
-          label="St. Add.."
+          label="State Additional Withhold."
           className={classes.textField}
           type="number"
           inputProps={{ min: "0", max: "15"}}
           value={curperson.stadd}
           onChange={this.txtChanged('stadd')}
           margin="dense"
-        /> 
+        />
         <TextField
           id="standard-name"
-          label="Fed. Add."
+          label="Blind/Deaf you and/or spouse"
           className={classes.textField}
           type="number"
-          inputProps={{ min: "0", max: "15"}}
-          value={curperson.w4add}
-          onChange={this.txtChanged('w4add')}
+          inputProps={{ min: "0", max: "4"}}
+          value={curperson.stblind}
+          onChange={this.txtChanged('stblind')}
           margin="dense"
-        /> 
-        <FormControl> 
+        />
+        </div> } 
+        </FormControl>
+        <FormControl component="fieldset" className={classes.formControl}> 
+        <FormLabel component="legend">Fed</FormLabel>
         <FormControlLabel
             control={
               <Checkbox
@@ -276,6 +330,8 @@ class AddPerson extends React.Component {
             }
             label='W4 Exempt'
           />
+          {curperson.haystatewh && <div>
+          <FormLabel component="legend">State</FormLabel>
           <FormControlLabel
             control={
               <Checkbox
@@ -296,16 +352,7 @@ class AddPerson extends React.Component {
             }
             label='Head of Household'
           />
-          <FormControlLabel
-            control={
-              <Checkbox
-              checked={curperson.stblind==1 ? true : false}
-              onChange={this.ckChanged('stblind')}
-              value="stblind"
-              />
-            }
-            label='Blind'
-          />          
+          </div>}
         </FormControl> 
         <FormControl component="fieldset" className={classes.formControl}>
           <FormLabel component="legend">Marital Status</FormLabel>
@@ -386,8 +433,18 @@ class AddPerson extends React.Component {
               value={curperson.holiday}
               onChange={this.txtChanged('holiday')}
               margin="dense"
-            /> 
+            />
+            <TextField
+              id="standard-name"
+              label="Personal"
+              className={classes.textField}
+              type="number"
+              value={curperson.personal}
+              onChange={this.txtChanged('personal')}
+              margin="dense"
+            />  
     </FormControl>  
+    </div> } 
         <div style={astyles.inner.but}>
           <Button 
             variant="contained" 

@@ -267,48 +267,134 @@ class Persons extends React.Component{
       .filter((cperson)=>this.afilt(cperson))
       .filter((dperson)=>this.efilt(dperson))
       .map((aperson, i)=>{
-        let date = aperson.effective ? aperson.effective.split('T')[0] : '' 
-        let active = aperson.active ? (<span>&#10004;</span>) : 'no'
-        let sthoh = aperson.sthoh ? (<span>&#10004;</span>) : 'no'
-        let stblind = aperson.stblind ? (<span>&#10004;</span>) : 'no'
-        let w4exempt = aperson.w4exempt ? (<span>&#10004;</span>) : 'no'
-        let student = aperson.student ? (<span>&#10004;</span>) : 'no'
-        
+        const date = aperson.effective ? aperson.effective.split('T')[0] : '' 
+        const active = aperson.active ? (<span>&#10004;</span>) : 'no'
+        const sthoh = aperson.sthoh ? (<span>&#10004;</span>) : 'no'
+        const w4exempt = aperson.w4exempt ? (<span>&#10004;</span>) : 'no'
+        const student = aperson.student ? (<span>&#10004;</span>) : 'no'
+        const haystatewh = aperson.haystatewh ? (<span>&#10004;</span>) : 'no'
+        const haylocalwh = aperson.haylocalwh ? (<span>&#10004;</span>) : 'no'
+        const haywh = aperson.wtype=='1099' ? 0 : 1
+        const nohayded = !aperson.healthemp && !aperson.healthco && !aperson.k401emp && !aperson.k401co
+        const nohayben = !aperson.vacation && !aperson.holiday && !aperson.personal  
+        const nohayname = !aperson.firstmid && !aperson.lastname      
         return (
         <li  key={i} style={style.myli.li}>
-          <div style={style.myli.idx}>
-            <span style={style.myli.idxsp} onClick={this.editPerson.bind(null, aperson)}><i style={style.myli.icon} className="material-icons">edit</i></span>   
-          </div>
           <div style={style.myli.person}> 
+            <span style={style.myli.idxsp} onClick={this.editPerson.bind(null, aperson)}><i style={style.myli.icon} className="material-icons">edit</i></span>   <br/>
+                  
             <span>
               {aperson.emailid}<br/>
+              {!nohayname && <div>
              <span>{aperson.firstmid} {aperson.lastname}</span> <br/>
               {aperson.street}<br/>
               {aperson.city}, {aperson.st} {aperson.zip}<br/>
+              </div> }
               role: {aperson.role}<br/>
               effective: {date}<br/>
               active: {active}<br/>
-              rate: ${aperson.rate}
+              rate: ${aperson.rate}<br/>
+              ssn: {aperson.ssn}<br/>
+              type:{aperson.wtype}<br/>
+              {!!haywh &&  
+              <div>
+              state wh:{haystatewh}<br/>
+              local wh:{haylocalwh}
+              </div>
+              }
             </span>
           </div>
           <div style={style.myli.cat}>
-            <span>  
-            {aperson.ssn}<br/>
-            allowances<br/>
-            fed:{aperson.w4allow}, state:{aperson.stallow} <br/>
-            fadd:{aperson.w4add}, stadd:{aperson.stadd} <br/>
-            hoh:{sthoh}, blind:{stblind}<br/>
-            marital:{aperson.marital}<br/>
-            w4exempt: {w4exempt}<br/>
-            student: {student}<br/>
-            health.emp: {aperson.healthemp}<br/>
-            health.co: {aperson.healthco}<br/>
-            401K.emp: {aperson.k401emp}<br/>
-            401K.co: {aperson.k401co}<br/>
-            vacation: {aperson.vacation}<br/>
-            holiday: {aperson.holiday}<br/>
-
-            </span>
+            <table style={style.table.table}>
+            <tbody>
+            {!!haywh &&  
+            <div>
+            {!nohayded && 
+            <table>  <tbody>
+            <tr><th style={style.table.th} colSpan="2">Deductions</th></tr> 
+            <tr>
+              <th style={style.table.thtd}>Emp.</th>
+              <th style={style.table.thtd}>Co.</th>
+            </tr> 
+            <tr><th >Health</th></tr> 
+            <tr style={style.table.tr}>
+              <td style={style.table.thtd}>{aperson.healthemp}</td>
+              <td style={style.table.thtd}>{aperson.healthco}</td>
+            </tr>
+            <tr><th >401 K</th></tr> 
+            <tr style={style.table.tr}>
+              <td style={style.table.thtd}>{aperson.k401emp}</td>
+              <td style={style.table.thtd}>{aperson.k401co}</td>
+            </tr>  
+            </tbody></table> }
+            <tr><th style={style.table.th} colSpan="2">W4 Fed.</th></tr> 
+            <tr style={style.table.tr}>
+              <td style={style.table.thtd}>allow.</td>
+              <td style={style.table.thtd}>{aperson.w4allow}</td>
+            </tr>
+            <tr style={style.table.tr}>
+              <td style={style.table.thtd}>addtl.wh.</td>
+              <td style={style.table.thtd}>{aperson.w4add}</td>
+            </tr>
+            <tr style={style.table.tr}>
+              <td style={style.table.thtd}>marital</td>
+              <td style={style.table.thtd}>{aperson.marital}</td>
+            </tr>
+            <tr style={style.table.tr}>
+              <td style={style.table.thtd}>exempt</td>
+              <td style={style.table.thtd}>{w4exempt}</td>
+            </tr> 
+            <tr><th style={style.table.th} colSpan="2">W4 State {aperson.st}</th></tr> 
+            <tr style={style.table.tr}>
+              <td style={style.table.thtd}>allow.</td>
+              <td style={style.table.thtd}>{aperson.stallow}</td>
+            </tr>
+            <tr style={style.table.tr}>
+              <td style={style.table.thtd}>addtl.wh.</td>
+              <td style={style.table.thtd}>{aperson.stadd}</td>
+            </tr>
+            <tr style={style.table.tr}>
+              <td style={style.table.thtd}>h.o.h</td>
+              <td style={style.table.thtd}>{sthoh}</td>
+            </tr>
+            <tr style={style.table.tr}>
+              <td style={style.table.thtd}>stu/exmpt</td>
+              <td style={style.table.thtd}>{student}</td>
+            </tr> 
+            <tr style={style.table.tr}>
+              <td style={style.table.thtd}>blind/deaf</td>
+              <td style={style.table.thtd}>{aperson.stblind}</td>
+            </tr> 
+            {aperson.haylocalwh!=0 &&
+            <div>
+            <tr><th style={style.table.th} colSpan="2">W4 Local</th></tr> 
+            <tr style={style.table.tr}>
+              <td style={style.table.thtd}>allow.</td>
+              <td style={style.table.thtd}>{aperson.localallow}</td>
+            </tr>
+            </div>
+            }
+            {!nohayben && <div>
+            <tr><th style={style.table.th} colSpan="2">Benefits</th></tr> 
+            <tr style={style.table.tr}>
+              <td style={style.table.thtd}>holiday</td>
+              <td style={style.table.thtd}>{aperson.vacation}</td>
+            </tr>
+            <tr style={style.table.tr}>
+              <td style={style.table.thtd}>vacation</td>
+              <td style={style.table.thtd}>{aperson.holiday}</td>
+            </tr>
+            {aperson.personal!=0 &&
+            <tr style={style.table.tr}>
+              <td style={style.table.tht}>personal</td>
+              <td style={style.table.thtd}>{aperson.personal}</td>
+            </tr>
+            }
+            </div> }
+            </div>
+          }
+            </tbody>
+            </table>
           </div>
         </li >)
     })
@@ -463,7 +549,7 @@ const style = {
     },
     cat:{
       padding: '3px',
-      width: '20%',
+      width: '40%',
       float: 'left',
       background: '#99CCCC'
   
@@ -474,5 +560,30 @@ const style = {
       background: '#99CCCC'
   
     }
+  },
+  table:{
+    div:{
+      float:'right',
+      background: 'white',
+      width: '130px'
+    },
+    table:{
+      borderCollapse: 'collapse',
+      width: '100%'
+    },
+    tr:{
+      padding: '0px',
+      margin: '0px'
+    },
+    thtd:{
+      padding: '0px',
+      margin: '0px',
+      textAlign:'right'
+    },
+    th:{
+      padding: '0px',
+      margin: '0px',
+      textAlign:'left'
+    }    
   }
 }
