@@ -305,12 +305,13 @@ class Persons extends React.Component{
             </span>
           </div>
           <div style={style.myli.cat}>
-            <table style={style.table.table}>
-            <tbody>
-            {!!haywh &&  
+          <br/>
+          {!!haywh &&  
+
             <div>
             {!nohayded && 
-            <table>  <tbody>
+            <table style={style.table.table}>
+            <tbody>
             <tr><th style={style.table.th} colSpan="2">Deductions</th></tr> 
             <tr>
               <th style={style.table.thtd}>Emp.</th>
@@ -327,6 +328,8 @@ class Persons extends React.Component{
               <td style={style.table.thtd}>{aperson.k401co}</td>
             </tr>  
             </tbody></table> }
+            <table style={style.table.table}>
+            <tbody>
             <tr><th style={style.table.th} colSpan="2">W4 Fed.</th></tr> 
             <tr style={style.table.tr}>
               <td style={style.table.thtd}>allow.</td>
@@ -366,35 +369,36 @@ class Persons extends React.Component{
               <td style={style.table.thtd}>{aperson.stblind}</td>
             </tr> 
             {aperson.haylocalwh!=0 &&
-            <div>
             <tr><th style={style.table.th} colSpan="2">W4 Local</th></tr> 
+            }
+            {aperson.haylocalwh!=0 &&
             <tr style={style.table.tr}>
               <td style={style.table.thtd}>allow.</td>
               <td style={style.table.thtd}>{aperson.localallow}</td>
             </tr>
-            </div>
             }
-            {!nohayben && <div>
-            <tr><th style={style.table.th} colSpan="2">Benefits</th></tr> 
-            <tr style={style.table.tr}>
-              <td style={style.table.thtd}>holiday</td>
-              <td style={style.table.thtd}>{aperson.vacation}</td>
-            </tr>
-            <tr style={style.table.tr}>
-              <td style={style.table.thtd}>vacation</td>
-              <td style={style.table.thtd}>{aperson.holiday}</td>
-            </tr>
-            {aperson.personal!=0 &&
-            <tr style={style.table.tr}>
-              <td style={style.table.tht}>personal</td>
-              <td style={style.table.thtd}>{aperson.personal}</td>
-            </tr>
-            }
+            </tbody></table> 
+            {!nohayben && 
+              <table style={style.table.table}>
+              <tbody>
+              <tr><th style={style.table.th} colSpan="2">Benefits</th></tr> 
+              <tr style={style.table.tr}>
+                <td style={style.table.thtd}>holiday</td>
+                <td style={style.table.thtd}>{aperson.vacation}</td>
+              </tr>
+              <tr style={style.table.tr}>
+                <td style={style.table.thtd}>vacation</td>
+                <td style={style.table.thtd}>{aperson.holiday}</td>
+              </tr>
+              {aperson.personal!=0 &&
+              <tr style={style.table.tr}>
+                <td style={style.table.tht}>personal</td>
+                <td style={style.table.thtd}>{aperson.personal}</td>
+              </tr>
+              }
+              </tbody>
+            </table> }
             </div> }
-            </div>
-          }
-            </tbody>
-            </table>
           </div>
         </li >)
     })

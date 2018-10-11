@@ -2,11 +2,11 @@ import React from 'react'// eslint-disable-line no-unused-vars
 var moment = require('moment');
 import {router} from '../app'
 import {mapClass2Element} from '../hoc/mapClass2Element'
-import {fetchPay, postPay, fetchSettings, fetchRates} from '../services/fetches'
+import {fetchPay, postPay, fetchSettings, fetchRates, postJobRates} from '../services/fetches'
 import{adjWdprtDn, padWk} from  '../../../../common/v0/src/utilities/reroo'
 import { setEdit, setKeyVal} from '../actions/personacts';
-import {makeHref} from '../utilities/getCfg'
-
+import {makeHref,drnd} from '../utilities/getCfg'
+import Checkbox from '@material-ui/core/Checkbox';// eslint-disable-line no-unused-vars
 
 class Pay extends React.Component{
   Pay='mabibi sufvhs'
@@ -51,7 +51,6 @@ class Pay extends React.Component{
         if (res.qmessage){
           window.alert(res.qmessage)
         }else{
-          console.log('res: ', res)
           this.setState({rates:res},()=>this.calcGross())
         }
       })
@@ -96,14 +95,38 @@ class Pay extends React.Component{
       reg = hrs*p.rate
       aot = saot+suot+mfot
       gross=reg+aot
-      let mff = 1.5 - (20/mfhrs)
+      let mff = mfhrs>30 ? 1.5 - (20/mfhrs) : 1
       let saf = saot>0 ? ot.sa : mff
       let suf = suot>0 ? ot.su :mff
-      const regot = {reg:reg, mfot:mfot, gross:gross, saot:saot, suot:suot, mff:mff, saf:saf, suf:suf}
+      let mfrate = drnd(mff*p.rate)
+      let sarate = drnd(saf*p.rate)
+      let surate = drnd(suf*p.rate)
+      const regot = {reg:reg, mfot:mfot, gross:gross, saot:saot, suot:suot, mff:mff, saf:saf, suf:suf, mfrate, sarate, surate}
       return {...p, regot}
     })
-    this.setState({persons:np},()=>this.calcWh())
+    this.setState({persons:np},()=>this.calcDeductions())
   } 
+
+  calcDeductions =()=>{
+    const{persons} = this.state
+    const dedpers = persons
+      // .filter((p)=>p.wtype!='1099')
+      .map((p)=>{
+        let hded=0
+        let kded=0
+        if(p.healthemp>0){
+          hded = p.healthemp*12.0/50
+        }
+        if(p.k401emp>0){
+          kded = p.k401emp*12.0/50
+        }
+        const taxablegross = p.regot.gross - hded - kded
+        p.ded = {gross:drnd(p.regot.gross), healthded:drnd(hded), k401ded:drnd(kded), taxablegross:drnd(taxablegross) }
+        // console.log('p.ded: ', p.ded)
+        return p
+      })
+      this.setState({persons:dedpers},()=>this.calcWh())
+  }
   
   calcWh=()=>{
     const lookupFedTax=(fedwh, singmar,period, subj2wh, w4add)=>{
@@ -117,12 +140,12 @@ class Pay extends React.Component{
     }
     const calcStateTax = (p, strates, ssmed)=>{
       let sttax, stSubj2tax
-      if(p.student || p.regot.gross<strates.nowhbelow){
+      if(p.student || p.ded.taxablegross<strates.nowhbelow){
         sttax=0
       }else{
         const hoh = p.sthoh ? strates.hohded : 0
         const blind = p.stblind ? strates.blided : 0
-        stSubj2tax = p.regot.gross - strates.allow*p.stallow -hoh - blind - ssmed
+        stSubj2tax = p.ded.taxablegross - strates.allow*p.stallow -hoh - blind - ssmed
         sttax = stSubj2tax*strates.rate + p.stadd
       }
       return sttax  
@@ -130,18 +153,70 @@ class Pay extends React.Component{
     const {persons, rates} = this.state
     const{fedr,fedwh, strates} =rates
     const whp = persons.map((p)=>{
-      const{gross}=p.regot
-      const subj2wh = p.w4exempt ? 0 : gross-(fedr.allow*p.w4allow)
-      const ss = gross*fedr.sse
-      const medi = gross*fedr.medie
+      const{taxablegross, gross}=p.ded
+      const subj2wh = p.w4exempt ? 0 : taxablegross-(fedr.allow*p.w4allow)
+      const ss = taxablegross*fedr.ssw
+      const medi = taxablegross*fedr.mediw
       const singmar = p.marital=='married' ? 'married' : 'single'
       const fedtax = lookupFedTax(fedwh, singmar, 'weekly', subj2wh, p.w4add)
       const sttax =  calcStateTax(p, strates, ss+medi)
       const net = gross-fedtax-ss -medi - sttax
-      p.wh={gross:gross, ss:ss, medi:medi, fedtax:fedtax, sttax:sttax, net:net}
+      p.wh={gross:gross, taxablegross:taxablegross, ss:drnd(ss), medi:drnd(medi), fedtax:drnd(fedtax), sttax:drnd(sttax), net:drnd(net)}
       return p
     })
-    this.setState({persons:whp},()=>console.log('this.state: ', this.state))
+    this.setState({persons:whp},()=>this.calcBurden())
+  }
+
+  calcBurden=()=>{
+    const {persons, rates} = this.state
+    const{fedr, cosr} =rates
+    const burper = persons.map((p)=>{
+      const{ gross}=p.ded
+      const ss = drnd(gross*fedr.sse)
+      const medi = drnd(gross*fedr.medie)
+      let health = p.healthco>0 ? drnd(p.healthco*12.0/50) : 0
+      let k401 = p.k401co>0 ? drnd(p.k401co*12.0/50) : 0
+      let vaca = p.vacation>0 ? drnd(p.vacation/250*gross) : 0
+      let holi = p.holiday>0 ? drnd(p.holiday/250*gross) : 0
+      let pers = p.personal>0 ? drnd(p.personal/250*gross) : 0
+      let suta = drnd(cosr.stuirate*gross)
+      let comp = drnd(cosr.wcrate*gross)
+      let futa = drnd(fedr.futa*gross)
+      let tburden = drnd(ss+medi+health+k401+vaca+holi+pers+suta+comp+futa)
+      let bpercent = drnd(tburden/gross*10)/10
+      p.burden={gross,ss,medi,health,k401,vaca,holi,pers,suta,futa,tburden, bpercent}
+      return p
+    })
+    this.setState({persons:burper},()=>this.calcCostPerHrPerDay())
+  }
+
+  calcCostPerHrPerDay = ()=>{
+    const {persons} = this.state
+    const coper = persons.map((p)=>{
+      let np = {}
+      const {sarate, surate, mfrate} =p.regot
+      let ratarr = new Array(7).fill(drnd(mfrate*(1+p.burden.bpercent)))
+      ratarr[5]=drnd(sarate*(1+p.burden.bpercent))
+      ratarr[6]=drnd(surate*(1+p.burden.bpercent))
+      np.ratearr = ratarr
+      np.emailid=p.emailid
+      np.wpart=p.wprt
+      p.jcrates = np
+      return p
+    })
+    this.setState({persons:coper},()=>console.log('this.state: ', this.state))
+    
+  }
+
+  paySelected = ()=>{
+    const{persons}=this.state
+    const jper = persons
+      .filter((p)=>p.check)
+      .map((p)=>{
+        return p.jcrates
+      })
+    console.log('jper: ', jper)  
+    postJobRates(jper)
   }
 
   getCurrent=(persons)=>{
@@ -351,6 +426,24 @@ class Pay extends React.Component{
     }
   }
 
+  handleCheck = idx => e =>{
+    let nstate = {...this.state}
+    const persons=nstate.persons.slice()
+    persons[idx].check=e.target.checked
+    console.log('persons: ', persons)
+    this.setState({persons}, ()=>console.log('this.state: ', this.state))
+  }
+
+  handleCheckAll = (e) =>{
+    let nstate = {...this.state}
+    const npersons= nstate.persons.slice()
+    const ckper = npersons.map((p)=>{
+      p.check=e.target.checked
+      return p
+    })
+    this.setState({persons:ckper, checkall:e.target.checked}, ()=>console.log('this.state: ', this.state))
+  }
+
   renderRegOt = (p)=>{
     if(p.regot){
       const{reg, gross}=p.regot
@@ -406,7 +499,6 @@ class Pay extends React.Component{
   }
 
   renderPay=()=>{
-    console.log('this.state: ', this.state)
     let {persons}=this.state
     const rpersons = persons
       .map((aperson, i)=>{
@@ -414,11 +506,9 @@ class Pay extends React.Component{
         const wh = this.renderWh(aperson)
         return (
         <li  key={i} style={style.myli.li}>
-          <div style={style.myli.idx}>
-            <span style={style.myli.idxsp} onClick={this.editPerson.bind(null, aperson)}><i style={style.myli.icon} className="material-icons">edit</i></span>   
-          </div>
           <div style={style.myli.person}> 
-            <span>
+          <input style={style.ckbox} type="checkbox" checked={aperson.check} onChange={this.handleCheck(i)}/> 
+            <span><br/>
               {aperson.wprt}<br/>
              <span>{aperson.firstmid} {aperson.lastname}</span> <br/>
               {aperson.street}<br/>
@@ -443,7 +533,8 @@ class Pay extends React.Component{
   }
 
   render(){
-    if (this.state.persons){
+    const{persons }=this.state
+    if (persons){
       this.getQuery()
       const actstyle = this.setStatBkg()
       const rndrdpersons = this.renderPay()
@@ -455,11 +546,11 @@ class Pay extends React.Component{
                 <button style={actstyle.ia} onClick={this.filtInAct}>inact</button>
                 <button style={actstyle.al} onClick={this.filtAll}>all</button>
                 <br/>
-                <span>
-                  dates:
+                <span >
+                  <input style={style.ckbox} type="checkbox" checked={this.state.checkall} onChange={this.handleCheckAll}/> 
                   <button style={actstyle.cu} onClick={this.dfiltCurrent}>current</button>
                   <button style={actstyle.fu} onClick={this.dfiltFuture}>future</button>
-                  <button style={actstyle.hi} onClick={this.dfiltHistory}>history</button>
+                  <button style={actstyle.hi} onClick={this.paySelected}>Pay Selected</button>
                   <button style={actstyle.da} onClick={this.dfiltAll}>all</button>
 
                 </span>
@@ -616,6 +707,14 @@ const style = {
       margin: '0px',
       textAlign:'right'
     }
+  },
+  ckbox:{
+    MozTransform: 'scale(1.2)',
+    msTransform: 'scale(1.5)',
+    WebkitTransform: 'scale(1.8)',
+    OTransform: 'scale(1.5)',
+    padding: '10px',
+    margin: '10px'
   }
 }
 

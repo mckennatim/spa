@@ -104,6 +104,7 @@ class OKtcard extends React.Component {
   }
 
   reCalcStatus =(modtcard)=>{
+    console.log('modtcard: ', modtcard)
     const {hrs, jchrs, wstat}=modtcard
     let modwstat= {...wstat}
     const wkpuhrs=drnd(hrs.reduce((t,h)=>t+h,0))
@@ -113,6 +114,7 @@ class OKtcard extends React.Component {
       .reduce((t,j)=>t+j,0)
       let status=modwstat.status
     let showsub, blabel 
+    console.log('st: ', st)
     if(st<7 || wkpuhrs==0){
       status = 'inprocess'
       showsub=false

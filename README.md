@@ -10,13 +10,19 @@ https://cloudinary.com/console/welcome
 json2form
 https://github.com/mozilla-services/react-jsonschema-form
 
-
+ncheckalldddd
 ## tags
 https://gridbyexample.com/examples/example13/
 https://www.mozilla.org/en-US/firefox/60.0a2/whatsnew/#cssgrid
 https://mozilladevelopers.github.io/playground/css-grid/
 
 https://accountinginfocus.com/financial-accounting/liabilities-financial-accounting/recording-payroll-and-payroll-liabilites/
+
+https://www.seyfarth.com/dir_docs/publications/neht01120810.pdf ma tax law
+https://www.seyfarth.com/dir_docs/publications/neht01120810.pdf
+https://www.michigan.gov/mdcs/0,4614,7-147-6879_19184_21557-234596--,00.html
+### 107-tc-pay-payroll-addappid
+
 ### 106-timecards-persons-ded-ben
 ### 105-timecards-signup
 Things to add: deductions before taxes: health & 401K, employee location, SUTA employee type: 1099,hourly,salary,salry-nexs To book the vacation accrual, debit vacation expense and credit the accrued vacation liability.When an employee subsequently takes a vacation, debit the vacation accrual and credit cash.

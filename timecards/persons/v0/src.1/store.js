@@ -10,12 +10,27 @@ const blankperson ={
   st:'',
   zip: '',
   role:'',
+  active:true,
   rate: 15.00,
   ssn:'',
-  w4allow: '',
+  wtype: '1099',
+  haystatewh: 1,
+  haylocalwh: 0,
+  w4allow: 1,
+  w4add: 0,
+  marital: '',
+  w4exempt: '',
   stallow:'',
-  active:true,
-  effective: moment().format('YYYY-MM-D')
+  stadd: '',
+  sthoh: '',
+  stblind: '',
+  student: '',
+  healthemp: '',
+  healthco: '',
+  vacation: '',
+  holiday: '',
+  personal: '',
+  effective: moment().format('YYYY-MM-DD')
 }
 
 const initState = {

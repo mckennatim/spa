@@ -5117,7 +5117,7 @@ var __extends = (this && this.__extends) || function (d, b) {
 };
 var isFunction_1 = __webpack_require__(55);
 var Subscription_1 = __webpack_require__(21);
-var Observer_1 = __webpack_require__(129);
+var Observer_1 = __webpack_require__(130);
 var rxSubscriber_1 = __webpack_require__(56);
 /**
  * Implements the {@link Observer} interface and extends the
@@ -5467,9 +5467,9 @@ module.exports = _objectWithoutProperties;
 "use strict";
 
 var root_1 = __webpack_require__(25);
-var isArrayLike_1 = __webpack_require__(133);
-var isPromise_1 = __webpack_require__(134);
-var isObject_1 = __webpack_require__(127);
+var isArrayLike_1 = __webpack_require__(134);
+var isPromise_1 = __webpack_require__(135);
+var isObject_1 = __webpack_require__(128);
 var Observable_1 = __webpack_require__(0);
 var iterator_1 = __webpack_require__(41);
 var InnerSubscriber_1 = __webpack_require__(400);
@@ -5777,9 +5777,9 @@ var _jssPreset = _interopRequireDefault(__webpack_require__(276));
 
 var _mergeClasses = _interopRequireDefault(__webpack_require__(277));
 
-var _createMuiTheme = _interopRequireDefault(__webpack_require__(103));
+var _createMuiTheme = _interopRequireDefault(__webpack_require__(104));
 
-var _themeListener = _interopRequireDefault(__webpack_require__(104));
+var _themeListener = _interopRequireDefault(__webpack_require__(105));
 
 var _createGenerateClassName = _interopRequireDefault(__webpack_require__(281));
 
@@ -6196,7 +6196,7 @@ var Observable_1 = __webpack_require__(0);
 var Subscriber_1 = __webpack_require__(5);
 var Subscription_1 = __webpack_require__(21);
 var ObjectUnsubscribedError_1 = __webpack_require__(59);
-var SubjectSubscription_1 = __webpack_require__(131);
+var SubjectSubscription_1 = __webpack_require__(132);
 var rxSubscriber_1 = __webpack_require__(56);
 /**
  * @class SubjectSubscriber<T>
@@ -6362,11 +6362,11 @@ exports.AnonymousSubject = AnonymousSubject;
 "use strict";
 
 var isArray_1 = __webpack_require__(28);
-var isObject_1 = __webpack_require__(127);
+var isObject_1 = __webpack_require__(128);
 var isFunction_1 = __webpack_require__(55);
 var tryCatch_1 = __webpack_require__(24);
 var errorObject_1 = __webpack_require__(22);
-var UnsubscriptionError_1 = __webpack_require__(128);
+var UnsubscriptionError_1 = __webpack_require__(129);
 /**
  * Represents a disposable resource, such as the execution of an Observable. A
  * Subscription has one important method, `unsubscribe`, that takes no argument
@@ -7328,7 +7328,7 @@ var _reactHelpers = __webpack_require__(45);
 
 var _Textarea = _interopRequireDefault(__webpack_require__(498));
 
-var _utils = __webpack_require__(105);
+var _utils = __webpack_require__(106);
 
 /* eslint-disable jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions */
 var styles = function styles(theme) {
@@ -8035,7 +8035,7 @@ var _warning = __webpack_require__(33);
 
 var _warning2 = _interopRequireDefault(_warning);
 
-var _toCss = __webpack_require__(100);
+var _toCss = __webpack_require__(101);
 
 var _toCss2 = _interopRequireDefault(_toCss);
 
@@ -9536,8 +9536,8 @@ exports.ArgumentOutOfRangeError = ArgumentOutOfRangeError;
 "use strict";
 
 var scan_1 = __webpack_require__(87);
-var takeLast_1 = __webpack_require__(120);
-var defaultIfEmpty_1 = __webpack_require__(116);
+var takeLast_1 = __webpack_require__(121);
+var defaultIfEmpty_1 = __webpack_require__(117);
 var pipe_1 = __webpack_require__(82);
 /* tslint:enable:max-line-length */
 /**
@@ -9970,7 +9970,7 @@ exports.ObserveOnMessage = ObserveOnMessage;
 "use strict";
 
 var mergeMap_1 = __webpack_require__(40);
-var identity_1 = __webpack_require__(140);
+var identity_1 = __webpack_require__(141);
 /**
  * Converts a higher-order Observable into a first-order Observable which
  * concurrently delivers all values that are emitted on the inner Observables.
@@ -11053,7 +11053,7 @@ var queue_1 = __webpack_require__(299);
 var Subscription_1 = __webpack_require__(21);
 var observeOn_1 = __webpack_require__(60);
 var ObjectUnsubscribedError_1 = __webpack_require__(59);
-var SubjectSubscription_1 = __webpack_require__(131);
+var SubjectSubscription_1 = __webpack_require__(132);
 /**
  * @class ReplaySubject<T>
  */
@@ -11355,11 +11355,11 @@ var _components = __webpack_require__(62);
 
 var _rxred = __webpack_require__(58);
 
-var _wfuncs = __webpack_require__(97);
+var _wfuncs = __webpack_require__(98);
 
 var _store = __webpack_require__(855);
 
-var _responsive = __webpack_require__(130);
+var _responsive = __webpack_require__(131);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -11825,8 +11825,8 @@ exports.ScalarObservable = ScalarObservable;
 "use strict";
 
 var isScheduler_1 = __webpack_require__(27);
-var of_1 = __webpack_require__(136);
-var from_1 = __webpack_require__(137);
+var of_1 = __webpack_require__(137);
+var from_1 = __webpack_require__(138);
 var concatAll_1 = __webpack_require__(91);
 /* tslint:enable:max-line-length */
 /**
@@ -12003,7 +12003,7 @@ exports.concatAll = concatAll;
 "use strict";
 
 var Observable_1 = __webpack_require__(0);
-var from_1 = __webpack_require__(137);
+var from_1 = __webpack_require__(138);
 Observable_1.Observable.from = from_1.from;
 //# sourceMappingURL=from.js.map
 
@@ -12166,6 +12166,60 @@ exports.mapClass2Element = mapClass2Element;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.drnd = exports.makeHref = exports.cfg = exports.ls = undefined;
+
+var _envmy = __webpack_require__(417);
+
+var _envmy2 = _interopRequireDefault(_envmy);
+
+var _denv = __webpack_require__(418);
+
+var _denv2 = _interopRequireDefault(_denv);
+
+var _storageLocal = __webpack_require__(419);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var cfg = _denv2.default[_envmy2.default.m || 'local'];
+
+var authqry = cfg.url.soauth + "/spa/" + cfg.appid + "?apiURL=" + encodeURIComponent(cfg.url.api) + "&cbPath=" + encodeURIComponent(cfg.cbPath);
+
+cfg.url.authqry = authqry;
+
+var ls = (0, _storageLocal.storageLocal)(cfg.superapp);
+
+var makeHref = function makeHref(host, app, rt) {
+  var href = void 0;
+  if (host == 'timecards.sitebuilt.net') {
+    href = '../' + app + '/';
+  } else {
+    href = '../../../' + app + '/v0/dist/';
+  }
+  if (rt) {
+    href += rt;
+  }
+  return href;
+};
+
+var drnd = function drnd(n) {
+  return Math.round(n * 100) / 100;
+};
+
+exports.ls = ls;
+exports.cfg = cfg;
+exports.makeHref = makeHref;
+exports.drnd = drnd;
+
+/***/ }),
+/* 98 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 exports.deepObjModify = exports.el = exports.parseQuery = exports.log = exports.render = exports.dog = exports.geta = undefined;
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
@@ -12237,7 +12291,7 @@ exports.el = el;
 exports.deepObjModify = deepObjModify;
 
 /***/ }),
-/* 98 */
+/* 99 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12258,7 +12312,7 @@ Object.defineProperty(exports, "default", {
 var _Input = _interopRequireDefault(__webpack_require__(445));
 
 /***/ }),
-/* 99 */
+/* 100 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12279,7 +12333,7 @@ Object.defineProperty(exports, "default", {
 var _InputBase = _interopRequireDefault(__webpack_require__(37));
 
 /***/ }),
-/* 100 */
+/* 101 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12366,7 +12420,7 @@ function toCss(selector, style) {
 }
 
 /***/ }),
-/* 101 */
+/* 102 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12391,7 +12445,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'd
 exports['default'] = new _SheetsRegistry2['default']();
 
 /***/ }),
-/* 102 */
+/* 103 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12446,7 +12500,7 @@ if (_isInBrowser2['default']) {
 exports['default'] = { js: js, css: css };
 
 /***/ }),
-/* 103 */
+/* 104 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12530,7 +12584,7 @@ exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ }),
-/* 104 */
+/* 105 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12576,7 +12630,7 @@ var _default = themeListener;
 exports.default = _default;
 
 /***/ }),
-/* 105 */
+/* 106 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12622,7 +12676,7 @@ function isAdornedStart(obj) {
 }
 
 /***/ }),
-/* 106 */
+/* 107 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12672,7 +12726,7 @@ exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ }),
-/* 107 */
+/* 108 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12707,9 +12761,9 @@ var _hoistNonReactStatics = _interopRequireDefault(__webpack_require__(268));
 
 var _wrapDisplayName = _interopRequireDefault(__webpack_require__(66));
 
-var _createMuiTheme = _interopRequireDefault(__webpack_require__(103));
+var _createMuiTheme = _interopRequireDefault(__webpack_require__(104));
 
-var _themeListener = _interopRequireDefault(__webpack_require__(104));
+var _themeListener = _interopRequireDefault(__webpack_require__(105));
 
 var defaultTheme;
 
@@ -12805,7 +12859,7 @@ exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ }),
-/* 108 */
+/* 109 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12830,7 +12884,7 @@ var _default = ownerWindow;
 exports.default = _default;
 
 /***/ }),
-/* 109 */
+/* 110 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12839,7 +12893,7 @@ exports.default = _default;
 exports.__esModule = true;
 exports.EXITING = exports.ENTERED = exports.ENTERING = exports.EXITED = exports.UNMOUNTED = undefined;
 
-var _propTypes = __webpack_require__(110);
+var _propTypes = __webpack_require__(111);
 
 var PropTypes = _interopRequireWildcard(_propTypes);
 
@@ -13434,7 +13488,7 @@ exports.default = (0, _reactLifecyclesCompat.polyfill)(Transition);
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ }),
-/* 110 */
+/* 111 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(process) {/**
@@ -13469,7 +13523,7 @@ if (process.env.NODE_ENV !== 'production') {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ }),
-/* 111 */
+/* 112 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13488,7 +13542,7 @@ module.exports = ReactPropTypesSecret;
 
 
 /***/ }),
-/* 112 */
+/* 113 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13593,7 +13647,7 @@ exports.mergeStatic = mergeStatic;
 //# sourceMappingURL=merge.js.map
 
 /***/ }),
-/* 113 */
+/* 114 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13688,7 +13742,7 @@ exports.RaceSubscriber = RaceSubscriber;
 //# sourceMappingURL=race.js.map
 
 /***/ }),
-/* 114 */
+/* 115 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13698,7 +13752,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-var FromObservable_1 = __webpack_require__(138);
+var FromObservable_1 = __webpack_require__(139);
 var isArray_1 = __webpack_require__(28);
 var OuterSubscriber_1 = __webpack_require__(10);
 var subscribeToResult_1 = __webpack_require__(9);
@@ -13831,7 +13885,7 @@ var OnErrorResumeNextSubscriber = (function (_super) {
 //# sourceMappingURL=onErrorResumeNext.js.map
 
 /***/ }),
-/* 115 */
+/* 116 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13904,7 +13958,7 @@ exports.concatMap = concatMap;
 //# sourceMappingURL=concatMap.js.map
 
 /***/ }),
-/* 116 */
+/* 117 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13987,7 +14041,7 @@ var DefaultIfEmptySubscriber = (function (_super) {
 //# sourceMappingURL=defaultIfEmpty.js.map
 
 /***/ }),
-/* 117 */
+/* 118 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14101,7 +14155,7 @@ var DistinctUntilChangedSubscriber = (function (_super) {
 //# sourceMappingURL=distinctUntilChanged.js.map
 
 /***/ }),
-/* 118 */
+/* 119 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14207,7 +14261,7 @@ exports.FindValueSubscriber = FindValueSubscriber;
 //# sourceMappingURL=find.js.map
 
 /***/ }),
-/* 119 */
+/* 120 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14331,7 +14385,7 @@ var AuditSubscriber = (function (_super) {
 //# sourceMappingURL=audit.js.map
 
 /***/ }),
-/* 120 */
+/* 121 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14446,7 +14500,7 @@ var TakeLastSubscriber = (function (_super) {
 //# sourceMappingURL=takeLast.js.map
 
 /***/ }),
-/* 121 */
+/* 122 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14537,7 +14591,7 @@ var RefCountSubscriber = (function (_super) {
 //# sourceMappingURL=refCount.js.map
 
 /***/ }),
-/* 122 */
+/* 123 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14685,7 +14739,7 @@ var SwitchMapSubscriber = (function (_super) {
 //# sourceMappingURL=switchMap.js.map
 
 /***/ }),
-/* 123 */
+/* 124 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14716,7 +14770,7 @@ exports.Timestamp = Timestamp;
 //# sourceMappingURL=timestamp.js.map
 
 /***/ }),
-/* 124 */
+/* 125 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14755,7 +14809,7 @@ var ExecutionEnvironment = {
 module.exports = ExecutionEnvironment;
 
 /***/ }),
-/* 125 */
+/* 126 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14797,7 +14851,7 @@ function getActiveElement(doc) /*?DOMElement*/{
 module.exports = getActiveElement;
 
 /***/ }),
-/* 126 */
+/* 127 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14840,7 +14894,7 @@ function containsNode(outerNode, innerNode) {
 module.exports = containsNode;
 
 /***/ }),
-/* 127 */
+/* 128 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14852,7 +14906,7 @@ exports.isObject = isObject;
 //# sourceMappingURL=isObject.js.map
 
 /***/ }),
-/* 128 */
+/* 129 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14883,7 +14937,7 @@ exports.UnsubscriptionError = UnsubscriptionError;
 //# sourceMappingURL=UnsubscriptionError.js.map
 
 /***/ }),
-/* 129 */
+/* 130 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14897,7 +14951,7 @@ exports.empty = {
 //# sourceMappingURL=Observer.js.map
 
 /***/ }),
-/* 130 */
+/* 131 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14935,7 +14989,7 @@ exports.switchPage = switchPage;
 exports.setFocus = setFocus;
 
 /***/ }),
-/* 131 */
+/* 132 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14981,7 +15035,7 @@ exports.SubjectSubscription = SubjectSubscription;
 //# sourceMappingURL=SubjectSubscription.js.map
 
 /***/ }),
-/* 132 */
+/* 133 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15100,7 +15154,7 @@ var DoSubscriber = (function (_super) {
 //# sourceMappingURL=tap.js.map
 
 /***/ }),
-/* 133 */
+/* 134 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15109,7 +15163,7 @@ exports.isArrayLike = (function (x) { return x && typeof x.length === 'number'; 
 //# sourceMappingURL=isArrayLike.js.map
 
 /***/ }),
-/* 134 */
+/* 135 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15121,7 +15175,7 @@ exports.isPromise = isPromise;
 //# sourceMappingURL=isPromise.js.map
 
 /***/ }),
-/* 135 */
+/* 136 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15175,7 +15229,7 @@ exports.startWith = startWith;
 //# sourceMappingURL=startWith.js.map
 
 /***/ }),
-/* 136 */
+/* 137 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15185,17 +15239,17 @@ exports.of = ArrayObservable_1.ArrayObservable.of;
 //# sourceMappingURL=of.js.map
 
 /***/ }),
-/* 137 */
+/* 138 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var FromObservable_1 = __webpack_require__(138);
+var FromObservable_1 = __webpack_require__(139);
 exports.from = FromObservable_1.FromObservable.create;
 //# sourceMappingURL=from.js.map
 
 /***/ }),
-/* 138 */
+/* 139 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15206,9 +15260,9 @@ var __extends = (this && this.__extends) || function (d, b) {
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var isArray_1 = __webpack_require__(28);
-var isArrayLike_1 = __webpack_require__(133);
-var isPromise_1 = __webpack_require__(134);
-var PromiseObservable_1 = __webpack_require__(139);
+var isArrayLike_1 = __webpack_require__(134);
+var isPromise_1 = __webpack_require__(135);
+var PromiseObservable_1 = __webpack_require__(140);
 var IteratorObservable_1 = __webpack_require__(403);
 var ArrayObservable_1 = __webpack_require__(29);
 var ArrayLikeObservable_1 = __webpack_require__(404);
@@ -15323,7 +15377,7 @@ exports.FromObservable = FromObservable;
 //# sourceMappingURL=FromObservable.js.map
 
 /***/ }),
-/* 139 */
+/* 140 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15450,7 +15504,7 @@ function dispatchError(arg) {
 //# sourceMappingURL=PromiseObservable.js.map
 
 /***/ }),
-/* 140 */
+/* 141 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15460,55 +15514,6 @@ function identity(x) {
 }
 exports.identity = identity;
 //# sourceMappingURL=identity.js.map
-
-/***/ }),
-/* 141 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.makeHref = exports.cfg = exports.ls = undefined;
-
-var _envmy = __webpack_require__(417);
-
-var _envmy2 = _interopRequireDefault(_envmy);
-
-var _denv = __webpack_require__(418);
-
-var _denv2 = _interopRequireDefault(_denv);
-
-var _storageLocal = __webpack_require__(419);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var cfg = _denv2.default[_envmy2.default.m || 'local'];
-
-var authqry = cfg.url.soauth + "/spa/" + cfg.appid + "?apiURL=" + encodeURIComponent(cfg.url.api) + "&cbPath=" + encodeURIComponent(cfg.cbPath);
-
-cfg.url.authqry = authqry;
-
-var ls = (0, _storageLocal.storageLocal)(cfg.superapp);
-
-var makeHref = function makeHref(host, app, rt) {
-  var href = void 0;
-  if (host == 'timecards.sitebuilt.net') {
-    href = '../' + app + '/';
-  } else {
-    href = '../../../' + app + '/v0/dist/';
-  }
-  if (rt) {
-    href += rt;
-  }
-  return href;
-};
-
-exports.ls = ls;
-exports.cfg = cfg;
-exports.makeHref = makeHref;
 
 /***/ }),
 /* 142 */
@@ -27526,7 +27531,7 @@ Object.defineProperty(exports, 'RuleList', {
   }
 });
 
-var _sheets = __webpack_require__(101);
+var _sheets = __webpack_require__(102);
 
 Object.defineProperty(exports, 'sheets', {
   enumerable: true,
@@ -28947,7 +28952,7 @@ Object.defineProperty(exports, "withTheme", {
 
 var _createGenerateClassName = _interopRequireDefault(__webpack_require__(281));
 
-var _createMuiTheme = _interopRequireDefault(__webpack_require__(103));
+var _createMuiTheme = _interopRequireDefault(__webpack_require__(104));
 
 var _jssPreset = _interopRequireDefault(__webpack_require__(276));
 
@@ -28957,7 +28962,7 @@ var _createStyles = _interopRequireDefault(__webpack_require__(507));
 
 var _withStyles = _interopRequireDefault(__webpack_require__(15));
 
-var _withTheme = _interopRequireDefault(__webpack_require__(107));
+var _withTheme = _interopRequireDefault(__webpack_require__(108));
 
 /***/ }),
 /* 285 */
@@ -29632,8 +29637,8 @@ exports.default = _default;
 
 "use strict";
 
-var merge_1 = __webpack_require__(112);
-var merge_2 = __webpack_require__(112);
+var merge_1 = __webpack_require__(113);
+var merge_2 = __webpack_require__(113);
 exports.mergeStatic = merge_2.mergeStatic;
 /* tslint:enable:max-line-length */
 /**
@@ -31150,7 +31155,7 @@ exports.concat = concat;
 
 "use strict";
 
-var concatMap_1 = __webpack_require__(115);
+var concatMap_1 = __webpack_require__(116);
 /* tslint:enable:max-line-length */
 /**
  * Projects each source value to the same Observable which is merged multiple
@@ -32142,7 +32147,7 @@ exports.DistinctSubscriber = DistinctSubscriber;
 
 "use strict";
 
-var distinctUntilChanged_1 = __webpack_require__(117);
+var distinctUntilChanged_1 = __webpack_require__(118);
 /* tslint:enable:max-line-length */
 /**
  * Returns an Observable that emits all items emitted by the source Observable that are distinct by comparison from the previous item,
@@ -32764,7 +32769,7 @@ var FinallySubscriber = (function (_super) {
 
 "use strict";
 
-var find_1 = __webpack_require__(118);
+var find_1 = __webpack_require__(119);
 /**
  * Emits only the index of the first value emitted by the source Observable that
  * meets some condition.
@@ -33355,7 +33360,7 @@ var IsEmptySubscriber = (function (_super) {
 "use strict";
 
 var async_1 = __webpack_require__(11);
-var audit_1 = __webpack_require__(119);
+var audit_1 = __webpack_require__(120);
 var timer_1 = __webpack_require__(296);
 /**
  * Ignores source values for `duration` milliseconds, then emits the most recent
@@ -34183,7 +34188,7 @@ var Subject_1 = __webpack_require__(20);
 var Observable_1 = __webpack_require__(0);
 var Subscriber_1 = __webpack_require__(5);
 var Subscription_1 = __webpack_require__(21);
-var refCount_1 = __webpack_require__(121);
+var refCount_1 = __webpack_require__(122);
 /**
  * @class ConnectableObservable<T>
  */
@@ -34694,7 +34699,7 @@ exports.publishLast = publishLast;
 "use strict";
 
 var isArray_1 = __webpack_require__(28);
-var race_1 = __webpack_require__(113);
+var race_1 = __webpack_require__(114);
 /* tslint:enable:max-line-length */
 /**
  * Returns an Observable that mirrors the first source Observable to emit an item
@@ -35459,7 +35464,7 @@ var SequenceEqualCompareToSubscriber = (function (_super) {
 "use strict";
 
 var multicast_1 = __webpack_require__(34);
-var refCount_1 = __webpack_require__(121);
+var refCount_1 = __webpack_require__(122);
 var Subject_1 = __webpack_require__(20);
 function shareSubjectFactory() {
     return new Subject_1.Subject();
@@ -36048,8 +36053,8 @@ exports.clearImmediate = clearImmediate;
 
 "use strict";
 
-var switchMap_1 = __webpack_require__(122);
-var identity_1 = __webpack_require__(140);
+var switchMap_1 = __webpack_require__(123);
+var identity_1 = __webpack_require__(141);
 function switchAll() {
     return switchMap_1.switchMap(identity_1.identity);
 }
@@ -39522,7 +39527,7 @@ module.exports = react;
 /*
  Modernizr 3.0.0pre (Custom Build) | MIT
 */
-var ba=__webpack_require__(4),ca=__webpack_require__(124),m=__webpack_require__(35),C=__webpack_require__(32),da=__webpack_require__(125),ea=__webpack_require__(81),fa=__webpack_require__(126),ia=__webpack_require__(53);
+var ba=__webpack_require__(4),ca=__webpack_require__(125),m=__webpack_require__(35),C=__webpack_require__(32),da=__webpack_require__(126),ea=__webpack_require__(81),fa=__webpack_require__(127),ia=__webpack_require__(53);
 function G(a){for(var b=arguments.length-1,c="Minified React error #"+a+"; visit http://facebook.github.io/react/docs/error-decoder.html?invariant\x3d"+a,d=0;d<b;d++)c+="\x26args[]\x3d"+encodeURIComponent(arguments[d+1]);b=Error(c+" for the full message or use the non-minified dev environment for full errors and additional helpful warnings.");b.name="Invariant Violation";b.framesToPop=1;throw b;}ba?void 0:G("227");
 function ja(a,b,c,d,e,f,h,g,k){this._hasCaughtError=!1;this._caughtError=null;var r=Array.prototype.slice.call(arguments,3);try{b.apply(c,r)}catch(t){this._caughtError=t,this._hasCaughtError=!0}}
 var H={_caughtError:null,_hasCaughtError:!1,_rethrowError:null,_hasRethrowError:!1,invokeGuardedCallback:function(a,b,c,d,e,f,h,g,k){ja.apply(H,arguments)},invokeGuardedCallbackAndCatchFirstError:function(a,b,c,d,e,f,h,g,k){H.invokeGuardedCallback.apply(this,arguments);if(H.hasCaughtError()){var r=H.clearCaughtError();H._hasRethrowError||(H._hasRethrowError=!0,H._rethrowError=r)}},rethrowCaughtError:function(){return ka.apply(H,arguments)},hasCaughtError:function(){return H._hasCaughtError},clearCaughtError:function(){if(H._hasCaughtError){var a=
@@ -39829,13 +39834,13 @@ if (process.env.NODE_ENV !== "production") {
 var React = __webpack_require__(4);
 var invariant = __webpack_require__(39);
 var warning = __webpack_require__(54);
-var ExecutionEnvironment = __webpack_require__(124);
+var ExecutionEnvironment = __webpack_require__(125);
 var _assign = __webpack_require__(35);
 var emptyFunction = __webpack_require__(32);
 var checkPropTypes = __webpack_require__(79);
-var getActiveElement = __webpack_require__(125);
+var getActiveElement = __webpack_require__(126);
 var shallowEqual = __webpack_require__(81);
-var containsNode = __webpack_require__(126);
+var containsNode = __webpack_require__(127);
 var emptyObject = __webpack_require__(53);
 var hyphenateStyleName = __webpack_require__(391);
 var camelizeStyleName = __webpack_require__(393);
@@ -56036,7 +56041,7 @@ module.exports = camelize;
 
 var Subscriber_1 = __webpack_require__(5);
 var rxSubscriber_1 = __webpack_require__(56);
-var Observer_1 = __webpack_require__(129);
+var Observer_1 = __webpack_require__(130);
 function toSubscriber(nextOrObserver, error, complete) {
     if (nextOrObserver) {
         if (nextOrObserver instanceof Subscriber_1.Subscriber) {
@@ -56072,7 +56077,7 @@ var _navigo = __webpack_require__(397);
 
 var _navigo2 = _interopRequireDefault(_navigo);
 
-var _responsive = __webpack_require__(130);
+var _responsive = __webpack_require__(131);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -56655,7 +56660,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 "use strict";
 
-var tap_1 = __webpack_require__(132);
+var tap_1 = __webpack_require__(133);
 /* tslint:enable:max-line-length */
 /**
  * Perform a side effect for every emission on the source Observable, but return
@@ -56881,7 +56886,7 @@ exports.scan = scan;
 
 "use strict";
 
-var startWith_1 = __webpack_require__(135);
+var startWith_1 = __webpack_require__(136);
 /* tslint:enable:max-line-length */
 /**
  * Returns an Observable that emits the items you specify as arguments before it begins to emit
@@ -57755,7 +57760,11 @@ var _reroo = __webpack_require__(420);
 
 var _personacts = __webpack_require__(422);
 
-var _getCfg = __webpack_require__(141);
+var _getCfg = __webpack_require__(97);
+
+var _Checkbox = __webpack_require__(856);
+
+var _Checkbox2 = _interopRequireDefault(_Checkbox);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -57767,6 +57776,8 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 // eslint-disable-line no-unused-vars
 var moment = __webpack_require__(1);
+
+// eslint-disable-line no-unused-vars
 
 var Pay = function (_React$Component) {
   _inherits(Pay, _React$Component);
@@ -57807,7 +57818,6 @@ var Pay = function (_React$Component) {
         if (res.qmessage) {
           window.alert(res.qmessage);
         } else {
-          console.log('res: ', res);
           _this.setState({ rates: res }, function () {
             return _this.calcGross();
           });
@@ -57859,13 +57869,38 @@ var Pay = function (_React$Component) {
         reg = hrs * p.rate;
         aot = saot + suot + mfot;
         gross = reg + aot;
-        var mff = 1.5 - 20 / mfhrs;
+        var mff = mfhrs > 30 ? 1.5 - 20 / mfhrs : 1;
         var saf = saot > 0 ? ot.sa : mff;
         var suf = suot > 0 ? ot.su : mff;
-        var regot = { reg: reg, mfot: mfot, gross: gross, saot: saot, suot: suot, mff: mff, saf: saf, suf: suf };
+        var mfrate = (0, _getCfg.drnd)(mff * p.rate);
+        var sarate = (0, _getCfg.drnd)(saf * p.rate);
+        var surate = (0, _getCfg.drnd)(suf * p.rate);
+        var regot = { reg: reg, mfot: mfot, gross: gross, saot: saot, suot: suot, mff: mff, saf: saf, suf: suf, mfrate: mfrate, sarate: sarate, surate: surate };
         return _extends({}, p, { regot: regot });
       });
       _this.setState({ persons: np }, function () {
+        return _this.calcDeductions();
+      });
+    }, _this.calcDeductions = function () {
+      var persons = _this.state.persons;
+
+      var dedpers = persons
+      // .filter((p)=>p.wtype!='1099')
+      .map(function (p) {
+        var hded = 0;
+        var kded = 0;
+        if (p.healthemp > 0) {
+          hded = p.healthemp * 12.0 / 50;
+        }
+        if (p.k401emp > 0) {
+          kded = p.k401emp * 12.0 / 50;
+        }
+        var taxablegross = p.regot.gross - hded - kded;
+        p.ded = { gross: (0, _getCfg.drnd)(p.regot.gross), healthded: (0, _getCfg.drnd)(hded), k401ded: (0, _getCfg.drnd)(kded), taxablegross: (0, _getCfg.drnd)(taxablegross)
+          // console.log('p.ded: ', p.ded)
+        };return p;
+      });
+      _this.setState({ persons: dedpers }, function () {
         return _this.calcWh();
       });
     }, _this.calcWh = function () {
@@ -57882,12 +57917,12 @@ var Pay = function (_React$Component) {
       var calcStateTax = function calcStateTax(p, strates, ssmed) {
         var sttax = void 0,
             stSubj2tax = void 0;
-        if (p.student || p.regot.gross < strates.nowhbelow) {
+        if (p.student || p.ded.taxablegross < strates.nowhbelow) {
           sttax = 0;
         } else {
           var hoh = p.sthoh ? strates.hohded : 0;
           var blind = p.stblind ? strates.blided : 0;
-          stSubj2tax = p.regot.gross - strates.allow * p.stallow - hoh - blind - ssmed;
+          stSubj2tax = p.ded.taxablegross - strates.allow * p.stallow - hoh - blind - ssmed;
           sttax = stSubj2tax * strates.rate + p.stadd;
         }
         return sttax;
@@ -57900,21 +57935,83 @@ var Pay = function (_React$Component) {
           strates = rates.strates;
 
       var whp = persons.map(function (p) {
-        var gross = p.regot.gross;
+        var _p$ded = p.ded,
+            taxablegross = _p$ded.taxablegross,
+            gross = _p$ded.gross;
 
-        var subj2wh = p.w4exempt ? 0 : gross - fedr.allow * p.w4allow;
-        var ss = gross * fedr.sse;
-        var medi = gross * fedr.medie;
+        var subj2wh = p.w4exempt ? 0 : taxablegross - fedr.allow * p.w4allow;
+        var ss = taxablegross * fedr.ssw;
+        var medi = taxablegross * fedr.mediw;
         var singmar = p.marital == 'married' ? 'married' : 'single';
         var fedtax = lookupFedTax(fedwh, singmar, 'weekly', subj2wh, p.w4add);
         var sttax = calcStateTax(p, strates, ss + medi);
         var net = gross - fedtax - ss - medi - sttax;
-        p.wh = { gross: gross, ss: ss, medi: medi, fedtax: fedtax, sttax: sttax, net: net };
+        p.wh = { gross: gross, taxablegross: taxablegross, ss: (0, _getCfg.drnd)(ss), medi: (0, _getCfg.drnd)(medi), fedtax: (0, _getCfg.drnd)(fedtax), sttax: (0, _getCfg.drnd)(sttax), net: (0, _getCfg.drnd)(net) };
         return p;
       });
       _this.setState({ persons: whp }, function () {
+        return _this.calcBurden();
+      });
+    }, _this.calcBurden = function () {
+      var _this$state2 = _this.state,
+          persons = _this$state2.persons,
+          rates = _this$state2.rates;
+      var fedr = rates.fedr,
+          cosr = rates.cosr;
+
+      var burper = persons.map(function (p) {
+        var gross = p.ded.gross;
+
+        var ss = (0, _getCfg.drnd)(gross * fedr.sse);
+        var medi = (0, _getCfg.drnd)(gross * fedr.medie);
+        var health = p.healthco > 0 ? (0, _getCfg.drnd)(p.healthco * 12.0 / 50) : 0;
+        var k401 = p.k401co > 0 ? (0, _getCfg.drnd)(p.k401co * 12.0 / 50) : 0;
+        var vaca = p.vacation > 0 ? (0, _getCfg.drnd)(p.vacation / 250 * gross) : 0;
+        var holi = p.holiday > 0 ? (0, _getCfg.drnd)(p.holiday / 250 * gross) : 0;
+        var pers = p.personal > 0 ? (0, _getCfg.drnd)(p.personal / 250 * gross) : 0;
+        var suta = (0, _getCfg.drnd)(cosr.stuirate * gross);
+        var comp = (0, _getCfg.drnd)(cosr.wcrate * gross);
+        var futa = (0, _getCfg.drnd)(fedr.futa * gross);
+        var tburden = (0, _getCfg.drnd)(ss + medi + health + k401 + vaca + holi + pers + suta + comp + futa);
+        var bpercent = (0, _getCfg.drnd)(tburden / gross * 10) / 10;
+        p.burden = { gross: gross, ss: ss, medi: medi, health: health, k401: k401, vaca: vaca, holi: holi, pers: pers, suta: suta, futa: futa, tburden: tburden, bpercent: bpercent };
+        return p;
+      });
+      _this.setState({ persons: burper }, function () {
+        return _this.calcCostPerHrPerDay();
+      });
+    }, _this.calcCostPerHrPerDay = function () {
+      var persons = _this.state.persons;
+
+      var coper = persons.map(function (p) {
+        var np = {};
+        var _p$regot = p.regot,
+            sarate = _p$regot.sarate,
+            surate = _p$regot.surate,
+            mfrate = _p$regot.mfrate;
+
+        var ratarr = new Array(7).fill((0, _getCfg.drnd)(mfrate * (1 + p.burden.bpercent)));
+        ratarr[5] = (0, _getCfg.drnd)(sarate * (1 + p.burden.bpercent));
+        ratarr[6] = (0, _getCfg.drnd)(surate * (1 + p.burden.bpercent));
+        np.ratearr = ratarr;
+        np.emailid = p.emailid;
+        np.wpart = p.wprt;
+        p.jcrates = np;
+        return p;
+      });
+      _this.setState({ persons: coper }, function () {
         return console.log('this.state: ', _this.state);
       });
+    }, _this.paySelected = function () {
+      var persons = _this.state.persons;
+
+      var jper = persons.filter(function (p) {
+        return p.check;
+      }).map(function (p) {
+        return p.jcrates;
+      });
+      console.log('jper: ', jper);
+      (0, _fetches.postJobRates)(jper);
     }, _this.getCurrent = function (persons) {
       var cdate = moment().format('YYYY-MM-DD');
       var cperson = persons.filter(function (person) {
@@ -58102,11 +58199,31 @@ var Pay = function (_React$Component) {
           _this.getPay();
         }, 300);
       }
+    }, _this.handleCheck = function (idx) {
+      return function (e) {
+        var nstate = _extends({}, _this.state);
+        var persons = nstate.persons.slice();
+        persons[idx].check = e.target.checked;
+        console.log('persons: ', persons);
+        _this.setState({ persons: persons }, function () {
+          return console.log('this.state: ', _this.state);
+        });
+      };
+    }, _this.handleCheckAll = function (e) {
+      var nstate = _extends({}, _this.state);
+      var npersons = nstate.persons.slice();
+      var ckper = npersons.map(function (p) {
+        p.check = e.target.checked;
+        return p;
+      });
+      _this.setState({ persons: ckper, checkall: e.target.checked }, function () {
+        return console.log('this.state: ', _this.state);
+      });
     }, _this.renderRegOt = function (p) {
       if (p.regot) {
-        var _p$regot = p.regot,
-            reg = _p$regot.reg,
-            gross = _p$regot.gross;
+        var _p$regot2 = p.regot,
+            reg = _p$regot2.reg,
+            gross = _p$regot2.gross;
 
         var ot = p.regot.mfot + p.regot.saot + p.regot.suot;
         return _react2.default.createElement(
@@ -58252,7 +58369,6 @@ var Pay = function (_React$Component) {
         );
       }
     }, _this.renderPay = function () {
-      console.log('this.state: ', _this.state);
       var persons = _this.state.persons;
 
       var rpersons = persons.map(function (aperson, i) {
@@ -58263,23 +58379,12 @@ var Pay = function (_React$Component) {
           { key: i, style: style.myli.li },
           _react2.default.createElement(
             'div',
-            { style: style.myli.idx },
-            _react2.default.createElement(
-              'span',
-              { style: style.myli.idxsp, onClick: _this.editPerson.bind(null, aperson) },
-              _react2.default.createElement(
-                'i',
-                { style: style.myli.icon, className: 'material-icons' },
-                'edit'
-              )
-            )
-          ),
-          _react2.default.createElement(
-            'div',
             { style: style.myli.person },
+            _react2.default.createElement('input', { style: style.ckbox, type: 'checkbox', checked: aperson.check, onChange: _this.handleCheck(i) }),
             _react2.default.createElement(
               'span',
               null,
+              _react2.default.createElement('br', null),
               aperson.wprt,
               _react2.default.createElement('br', null),
               _react2.default.createElement(
@@ -58339,7 +58444,9 @@ var Pay = function (_React$Component) {
   }, {
     key: 'render',
     value: function render() {
-      if (this.state.persons) {
+      var persons = this.state.persons;
+
+      if (persons) {
         this.getQuery();
         var actstyle = this.setStatBkg();
         var rndrdpersons = this.renderPay();
@@ -58371,7 +58478,7 @@ var Pay = function (_React$Component) {
               _react2.default.createElement(
                 'span',
                 null,
-                'dates:',
+                _react2.default.createElement('input', { style: style.ckbox, type: 'checkbox', checked: this.state.checkall, onChange: this.handleCheckAll }),
                 _react2.default.createElement(
                   'button',
                   { style: actstyle.cu, onClick: this.dfiltCurrent },
@@ -58384,8 +58491,8 @@ var Pay = function (_React$Component) {
                 ),
                 _react2.default.createElement(
                   'button',
-                  { style: actstyle.hi, onClick: this.dfiltHistory },
-                  'history'
+                  { style: actstyle.hi, onClick: this.paySelected },
+                  'Pay Selected'
                 ),
                 _react2.default.createElement(
                   'button',
@@ -58567,6 +58674,14 @@ var style = {
       margin: '0px',
       textAlign: 'right'
     }
+  },
+  ckbox: {
+    MozTransform: 'scale(1.2)',
+    msTransform: 'scale(1.5)',
+    WebkitTransform: 'scale(1.8)',
+    OTransform: 'scale(1.5)',
+    padding: '10px',
+    margin: '10px'
   }
 };
 
@@ -58580,11 +58695,11 @@ var style = {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.fetchRates = exports.fetchCurrent = exports.putCk = exports.deletePay = exports.newPay = exports.putPay = exports.postPay = exports.fetchPay = exports.fetchSettings = undefined;
+exports.postJobRates = exports.fetchRates = exports.fetchCurrent = exports.putCk = exports.deletePay = exports.newPay = exports.putPay = exports.postPay = exports.fetchPay = exports.fetchSettings = undefined;
 
-var _getCfg = __webpack_require__(141);
+var _getCfg = __webpack_require__(97);
 
-var _wfuncs = __webpack_require__(97);
+var _wfuncs = __webpack_require__(98);
 
 var fetchSettings = function fetchSettings() {
   var lsh = _getCfg.ls.getItem();
@@ -58693,6 +58808,27 @@ var postPay = function postPay(persons, wk) {
   }
 };
 
+var postJobRates = function postJobRates(jcrates) {
+  var lsh = _getCfg.ls.getItem();
+  if ((0, _wfuncs.geta)('lsh.token', lsh)) {
+    var url = _getCfg.cfg.url.api + '/payroll/jc/';
+    var options = {
+      headers: { 'Authorization': 'Bearer ' + lsh['token'],
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
+      },
+      method: 'POST',
+      body: JSON.stringify({ jcrates: jcrates })
+    };
+    return fetch(url, options).then(function (response) {
+      return response.json();
+    });
+  } else {
+    var p2 = Promise.resolve({ qmessage: 'you dont exist! ' });
+    return p2;
+  }
+};
+
 var putPay = function putPay(person) {
   console.log('person: ', person);
   var lsh = _getCfg.ls.getItem();
@@ -58786,6 +58922,7 @@ exports.deletePay = deletePay;
 exports.putCk = putCk;
 exports.fetchCurrent = fetchCurrent;
 exports.fetchRates = fetchRates;
+exports.postJobRates = postJobRates;
 
 /***/ }),
 /* 417 */
@@ -59242,7 +59379,7 @@ var _react = __webpack_require__(4);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _getCfg = __webpack_require__(141);
+var _getCfg = __webpack_require__(97);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -59370,7 +59507,7 @@ var _react = __webpack_require__(4);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _wfuncs = __webpack_require__(97);
+var _wfuncs = __webpack_require__(98);
 
 var _styles = __webpack_require__(63);
 
@@ -60723,7 +60860,7 @@ var _warning = _interopRequireDefault(__webpack_require__(23));
 
 var _propTypes = _interopRequireDefault(__webpack_require__(7));
 
-var _Input = _interopRequireDefault(__webpack_require__(98));
+var _Input = _interopRequireDefault(__webpack_require__(99));
 
 var _FilledInput = _interopRequireDefault(__webpack_require__(500));
 
@@ -61735,7 +61872,7 @@ var _propTypes = _interopRequireDefault(__webpack_require__(7));
 
 var _classnames = _interopRequireDefault(__webpack_require__(14));
 
-var _InputBase = _interopRequireDefault(__webpack_require__(99));
+var _InputBase = _interopRequireDefault(__webpack_require__(100));
 
 var _withStyles = _interopRequireDefault(__webpack_require__(15));
 
@@ -62449,7 +62586,7 @@ var _functions = __webpack_require__(466);
 
 var _functions2 = _interopRequireDefault(_functions);
 
-var _sheets = __webpack_require__(101);
+var _sheets = __webpack_require__(102);
 
 var _sheets2 = _interopRequireDefault(_sheets);
 
@@ -63058,7 +63195,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _toCss = __webpack_require__(100);
+var _toCss = __webpack_require__(101);
 
 var _toCss2 = _interopRequireDefault(_toCss);
 
@@ -63117,7 +63254,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _toCss = __webpack_require__(100);
+var _toCss = __webpack_require__(101);
 
 var _toCss2 = _interopRequireDefault(_toCss);
 
@@ -63322,7 +63459,7 @@ var _warning = __webpack_require__(33);
 
 var _warning2 = _interopRequireDefault(_warning);
 
-var _sheets = __webpack_require__(101);
+var _sheets = __webpack_require__(102);
 
 var _sheets2 = _interopRequireDefault(_sheets);
 
@@ -64567,7 +64704,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.supportedValue = exports.supportedProperty = exports.prefix = undefined;
 
-var _prefix = __webpack_require__(102);
+var _prefix = __webpack_require__(103);
 
 var _prefix2 = _interopRequireDefault(_prefix);
 
@@ -64613,7 +64750,7 @@ var _isInBrowser = __webpack_require__(69);
 
 var _isInBrowser2 = _interopRequireDefault(_isInBrowser);
 
-var _prefix = __webpack_require__(102);
+var _prefix = __webpack_require__(103);
 
 var _prefix2 = _interopRequireDefault(_prefix);
 
@@ -64718,7 +64855,7 @@ var _isInBrowser = __webpack_require__(69);
 
 var _isInBrowser2 = _interopRequireDefault(_isInBrowser);
 
-var _prefix = __webpack_require__(102);
+var _prefix = __webpack_require__(103);
 
 var _prefix2 = _interopRequireDefault(_prefix);
 
@@ -66098,7 +66235,7 @@ var _propTypes = _interopRequireDefault(__webpack_require__(7));
 
 var _classnames = _interopRequireDefault(__webpack_require__(14));
 
-var _InputBase = _interopRequireDefault(__webpack_require__(99));
+var _InputBase = _interopRequireDefault(__webpack_require__(100));
 
 var _withStyles = _interopRequireDefault(__webpack_require__(15));
 
@@ -66438,7 +66575,7 @@ var _propTypes = _interopRequireDefault(__webpack_require__(7));
 
 var _classnames = _interopRequireDefault(__webpack_require__(14));
 
-var _InputBase = _interopRequireDefault(__webpack_require__(99));
+var _InputBase = _interopRequireDefault(__webpack_require__(100));
 
 var _NotchedOutline = _interopRequireDefault(__webpack_require__(504));
 
@@ -66922,9 +67059,9 @@ var _warning = _interopRequireDefault(__webpack_require__(23));
 
 var _brcast = _interopRequireDefault(__webpack_require__(506));
 
-var _themeListener = _interopRequireWildcard(__webpack_require__(104));
+var _themeListener = _interopRequireWildcard(__webpack_require__(105));
 
-var _exactProp = _interopRequireDefault(__webpack_require__(106));
+var _exactProp = _interopRequireDefault(__webpack_require__(107));
 
 /**
  * This component takes a `theme` property.
@@ -67611,7 +67748,7 @@ var _propTypes = _interopRequireDefault(__webpack_require__(7));
 
 var _classnames = _interopRequireDefault(__webpack_require__(14));
 
-var _utils = __webpack_require__(105);
+var _utils = __webpack_require__(106);
 
 var _withStyles = _interopRequireDefault(__webpack_require__(15));
 
@@ -68112,7 +68249,7 @@ var _mergeClasses = _interopRequireDefault(__webpack_require__(277));
 
 var _ArrowDropDown = _interopRequireDefault(__webpack_require__(292));
 
-var _Input = _interopRequireDefault(__webpack_require__(98));
+var _Input = _interopRequireDefault(__webpack_require__(99));
 
 var _InputBase = __webpack_require__(37);
 
@@ -68355,7 +68492,7 @@ var _warning = _interopRequireDefault(__webpack_require__(23));
 
 var _Menu = _interopRequireDefault(__webpack_require__(522));
 
-var _utils = __webpack_require__(105);
+var _utils = __webpack_require__(106);
 
 var _reactHelpers = __webpack_require__(45);
 
@@ -69235,7 +69372,7 @@ var _reactEventListener = _interopRequireDefault(__webpack_require__(283));
 
 var _ownerDocument = _interopRequireDefault(__webpack_require__(31));
 
-var _ownerWindow = _interopRequireDefault(__webpack_require__(108));
+var _ownerWindow = _interopRequireDefault(__webpack_require__(109));
 
 var _withStyles = _interopRequireDefault(__webpack_require__(15));
 
@@ -70380,7 +70517,7 @@ var _reactDom = _interopRequireDefault(__webpack_require__(26));
 
 var _propTypes = _interopRequireDefault(__webpack_require__(7));
 
-var _exactProp = _interopRequireDefault(__webpack_require__(106));
+var _exactProp = _interopRequireDefault(__webpack_require__(107));
 
 var _reactHelpers = __webpack_require__(45);
 
@@ -70540,7 +70677,7 @@ var _propTypes = _interopRequireDefault(__webpack_require__(7));
 
 var _ownerDocument = _interopRequireDefault(__webpack_require__(31));
 
-var _exactProp = _interopRequireDefault(__webpack_require__(106));
+var _exactProp = _interopRequireDefault(__webpack_require__(107));
 
 function getContainer(container, defaultContainer) {
   container = typeof container === 'function' ? container() : container;
@@ -71036,7 +71173,7 @@ var _isWindow = _interopRequireDefault(__webpack_require__(540));
 
 var _ownerDocument = _interopRequireDefault(__webpack_require__(31));
 
-var _ownerWindow = _interopRequireDefault(__webpack_require__(108));
+var _ownerWindow = _interopRequireDefault(__webpack_require__(109));
 
 function isBody(node) {
   return node && node.tagName.toLowerCase() === 'body';
@@ -71314,11 +71451,11 @@ var _react = _interopRequireDefault(__webpack_require__(4));
 
 var _propTypes = _interopRequireDefault(__webpack_require__(7));
 
-var _Transition = _interopRequireDefault(__webpack_require__(109));
+var _Transition = _interopRequireDefault(__webpack_require__(110));
 
 var _transitions = __webpack_require__(280);
 
-var _withTheme = _interopRequireDefault(__webpack_require__(107));
+var _withTheme = _interopRequireDefault(__webpack_require__(108));
 
 var _utils = __webpack_require__(291);
 
@@ -71481,7 +71618,7 @@ exports.default = _default;
 
 var assign = __webpack_require__(35);
 
-var ReactPropTypesSecret = __webpack_require__(111);
+var ReactPropTypesSecret = __webpack_require__(112);
 var checkPropTypes = __webpack_require__(547);
 
 var printWarning = function() {};
@@ -72045,7 +72182,7 @@ module.exports = function(isValidElement, throwOnDirectAccess) {
 var printWarning = function() {};
 
 if (process.env.NODE_ENV !== 'production') {
-  var ReactPropTypesSecret = __webpack_require__(111);
+  var ReactPropTypesSecret = __webpack_require__(112);
   var loggedTypeFailures = {};
 
   printWarning = function(text) {
@@ -72141,7 +72278,7 @@ module.exports = checkPropTypes;
 
 
 
-var ReactPropTypesSecret = __webpack_require__(111);
+var ReactPropTypesSecret = __webpack_require__(112);
 
 function emptyFunction() {}
 
@@ -72204,7 +72341,7 @@ exports.__esModule = true;
 exports.classNamesShape = exports.timeoutsShape = undefined;
 exports.transitionTimeout = transitionTimeout;
 
-var _propTypes = __webpack_require__(110);
+var _propTypes = __webpack_require__(111);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
@@ -72302,9 +72439,9 @@ var _react = _interopRequireDefault(__webpack_require__(4));
 
 var _propTypes = _interopRequireDefault(__webpack_require__(7));
 
-var _Transition = _interopRequireDefault(__webpack_require__(109));
+var _Transition = _interopRequireDefault(__webpack_require__(110));
 
-var _withTheme = _interopRequireDefault(__webpack_require__(107));
+var _withTheme = _interopRequireDefault(__webpack_require__(108));
 
 var _utils = __webpack_require__(291);
 
@@ -73482,7 +73619,7 @@ var _InputBase = __webpack_require__(37);
 
 var _ArrowDropDown = _interopRequireDefault(__webpack_require__(292));
 
-var _Input = _interopRequireDefault(__webpack_require__(98));
+var _Input = _interopRequireDefault(__webpack_require__(99));
 
 // @inheritedComponent Input
 var styles = function styles(theme) {
@@ -74145,7 +74282,7 @@ var _classnames = _interopRequireDefault(__webpack_require__(14));
 
 var _keycode = _interopRequireDefault(__webpack_require__(47));
 
-var _ownerWindow = _interopRequireDefault(__webpack_require__(108));
+var _ownerWindow = _interopRequireDefault(__webpack_require__(109));
 
 var _withStyles = _interopRequireDefault(__webpack_require__(15));
 
@@ -75101,7 +75238,7 @@ exports.__esModule = true;
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-var _propTypes = __webpack_require__(110);
+var _propTypes = __webpack_require__(111);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
@@ -75491,7 +75628,7 @@ var _propTypes = _interopRequireDefault(__webpack_require__(7));
 
 var _classnames = _interopRequireDefault(__webpack_require__(14));
 
-var _Transition = _interopRequireDefault(__webpack_require__(109));
+var _Transition = _interopRequireDefault(__webpack_require__(110));
 
 /**
  * @ignore - internal component.
@@ -75864,11 +76001,11 @@ var ObjectUnsubscribedError_1 = __webpack_require__(59);
 exports.ObjectUnsubscribedError = ObjectUnsubscribedError_1.ObjectUnsubscribedError;
 var TimeoutError_1 = __webpack_require__(371);
 exports.TimeoutError = TimeoutError_1.TimeoutError;
-var UnsubscriptionError_1 = __webpack_require__(128);
+var UnsubscriptionError_1 = __webpack_require__(129);
 exports.UnsubscriptionError = UnsubscriptionError_1.UnsubscriptionError;
 var timeInterval_1 = __webpack_require__(368);
 exports.TimeInterval = timeInterval_1.TimeInterval;
-var timestamp_1 = __webpack_require__(123);
+var timestamp_1 = __webpack_require__(124);
 exports.Timestamp = timestamp_1.Timestamp;
 var TestScheduler_1 = __webpack_require__(846);
 exports.TestScheduler = TestScheduler_1.TestScheduler;
@@ -77456,7 +77593,7 @@ Observable_1.Observable.fromPromise = fromPromise_1.fromPromise;
 
 "use strict";
 
-var PromiseObservable_1 = __webpack_require__(139);
+var PromiseObservable_1 = __webpack_require__(140);
 exports.fromPromise = PromiseObservable_1.PromiseObservable.create;
 //# sourceMappingURL=fromPromise.js.map
 
@@ -77958,7 +78095,7 @@ exports.merge = merge_1.mergeStatic;
 "use strict";
 
 var Observable_1 = __webpack_require__(0);
-var race_1 = __webpack_require__(113);
+var race_1 = __webpack_require__(114);
 Observable_1.Observable.race = race_1.race;
 //# sourceMappingURL=race.js.map
 
@@ -78055,7 +78192,7 @@ exports.NeverObservable = NeverObservable;
 "use strict";
 
 var Observable_1 = __webpack_require__(0);
-var of_1 = __webpack_require__(136);
+var of_1 = __webpack_require__(137);
 Observable_1.Observable.of = of_1.of;
 //# sourceMappingURL=of.js.map
 
@@ -78076,7 +78213,7 @@ Observable_1.Observable.onErrorResumeNext = onErrorResumeNext_1.onErrorResumeNex
 
 "use strict";
 
-var onErrorResumeNext_1 = __webpack_require__(114);
+var onErrorResumeNext_1 = __webpack_require__(115);
 exports.onErrorResumeNext = onErrorResumeNext_1.onErrorResumeNextStatic;
 //# sourceMappingURL=onErrorResumeNext.js.map
 
@@ -79767,7 +79904,7 @@ Observable_1.Observable.prototype.concatMap = concatMap_1.concatMap;
 
 "use strict";
 
-var concatMap_1 = __webpack_require__(115);
+var concatMap_1 = __webpack_require__(116);
 /* tslint:enable:max-line-length */
 /**
  * Projects each source value to an Observable which is merged in the output
@@ -80206,7 +80343,7 @@ Observable_1.Observable.prototype.defaultIfEmpty = defaultIfEmpty_1.defaultIfEmp
 
 "use strict";
 
-var defaultIfEmpty_1 = __webpack_require__(116);
+var defaultIfEmpty_1 = __webpack_require__(117);
 /* tslint:enable:max-line-length */
 /**
  * Emits a given value if the source Observable completes without emitting any
@@ -80504,7 +80641,7 @@ Observable_1.Observable.prototype.distinctUntilChanged = distinctUntilChanged_1.
 
 "use strict";
 
-var distinctUntilChanged_1 = __webpack_require__(117);
+var distinctUntilChanged_1 = __webpack_require__(118);
 /* tslint:enable:max-line-length */
 /**
  * Returns an Observable that emits all items emitted by the source Observable that are distinct by comparison from the previous item.
@@ -80951,7 +81088,7 @@ Observable_1.Observable.prototype.find = find_1.find;
 
 "use strict";
 
-var find_1 = __webpack_require__(118);
+var find_1 = __webpack_require__(119);
 /* tslint:enable:max-line-length */
 /**
  * Emits only the first value emitted by the source Observable that meets some
@@ -81402,7 +81539,7 @@ Observable_1.Observable.prototype.audit = audit_1.audit;
 
 "use strict";
 
-var audit_1 = __webpack_require__(119);
+var audit_1 = __webpack_require__(120);
 /**
  * Ignores source values for a duration determined by another Observable, then
  * emits the most recent value from the source Observable, then repeats this
@@ -82268,7 +82405,7 @@ Observable_1.Observable.prototype.onErrorResumeNext = onErrorResumeNext_1.onErro
 
 "use strict";
 
-var onErrorResumeNext_1 = __webpack_require__(114);
+var onErrorResumeNext_1 = __webpack_require__(115);
 /* tslint:enable:max-line-length */
 /**
  * When any of the provided Observable emits an complete or error notification, it immediately subscribes to the next one
@@ -82687,7 +82824,7 @@ Observable_1.Observable.prototype.race = race_1.race;
 
 var race_1 = __webpack_require__(345);
 // NOTE: to support backwards compatability with 5.4.* and lower
-var race_2 = __webpack_require__(113);
+var race_2 = __webpack_require__(114);
 exports.raceStatic = race_2.race;
 /* tslint:enable:max-line-length */
 /**
@@ -84135,7 +84272,7 @@ Observable_1.Observable.prototype.switchMap = switchMap_1.switchMap;
 
 "use strict";
 
-var switchMap_1 = __webpack_require__(122);
+var switchMap_1 = __webpack_require__(123);
 /* tslint:enable:max-line-length */
 /**
  * Projects each source value to an Observable which is merged in the output
@@ -84331,7 +84468,7 @@ Observable_1.Observable.prototype.takeLast = takeLast_1.takeLast;
 
 "use strict";
 
-var takeLast_1 = __webpack_require__(120);
+var takeLast_1 = __webpack_require__(121);
 /**
  * Emits only the last `count` values emitted by the source Observable.
  *
@@ -84817,7 +84954,7 @@ Observable_1.Observable.prototype.timestamp = timestamp_1.timestamp;
 "use strict";
 
 var async_1 = __webpack_require__(11);
-var timestamp_1 = __webpack_require__(123);
+var timestamp_1 = __webpack_require__(124);
 /**
  * @param scheduler
  * @return {Observable<Timestamp<any>>|WebSocketSubject<T>|Observable<T>}
@@ -85849,7 +85986,7 @@ exports.AnimationFrameScheduler = AnimationFrameScheduler;
 
 "use strict";
 
-var audit_1 = __webpack_require__(119);
+var audit_1 = __webpack_require__(120);
 exports.audit = audit_1.audit;
 var auditTime_1 = __webpack_require__(327);
 exports.auditTime = auditTime_1.auditTime;
@@ -85873,7 +86010,7 @@ var concat_1 = __webpack_require__(307);
 exports.concat = concat_1.concat;
 var concatAll_1 = __webpack_require__(91);
 exports.concatAll = concatAll_1.concatAll;
-var concatMap_1 = __webpack_require__(115);
+var concatMap_1 = __webpack_require__(116);
 exports.concatMap = concatMap_1.concatMap;
 var concatMapTo_1 = __webpack_require__(308);
 exports.concatMapTo = concatMapTo_1.concatMapTo;
@@ -85883,7 +86020,7 @@ var debounce_1 = __webpack_require__(311);
 exports.debounce = debounce_1.debounce;
 var debounceTime_1 = __webpack_require__(312);
 exports.debounceTime = debounceTime_1.debounceTime;
-var defaultIfEmpty_1 = __webpack_require__(116);
+var defaultIfEmpty_1 = __webpack_require__(117);
 exports.defaultIfEmpty = defaultIfEmpty_1.defaultIfEmpty;
 var delay_1 = __webpack_require__(313);
 exports.delay = delay_1.delay;
@@ -85893,7 +86030,7 @@ var dematerialize_1 = __webpack_require__(310);
 exports.dematerialize = dematerialize_1.dematerialize;
 var distinct_1 = __webpack_require__(315);
 exports.distinct = distinct_1.distinct;
-var distinctUntilChanged_1 = __webpack_require__(117);
+var distinctUntilChanged_1 = __webpack_require__(118);
 exports.distinctUntilChanged = distinctUntilChanged_1.distinctUntilChanged;
 var distinctUntilKeyChanged_1 = __webpack_require__(316);
 exports.distinctUntilKeyChanged = distinctUntilKeyChanged_1.distinctUntilKeyChanged;
@@ -85911,7 +86048,7 @@ var filter_1 = __webpack_require__(94);
 exports.filter = filter_1.filter;
 var finalize_1 = __webpack_require__(321);
 exports.finalize = finalize_1.finalize;
-var find_1 = __webpack_require__(118);
+var find_1 = __webpack_require__(119);
 exports.find = find_1.find;
 var findIndex_1 = __webpack_require__(322);
 exports.findIndex = findIndex_1.findIndex;
@@ -85933,7 +86070,7 @@ var materialize_1 = __webpack_require__(331);
 exports.materialize = materialize_1.materialize;
 var max_1 = __webpack_require__(332);
 exports.max = max_1.max;
-var merge_1 = __webpack_require__(112);
+var merge_1 = __webpack_require__(113);
 exports.merge = merge_1.merge;
 var mergeAll_1 = __webpack_require__(61);
 exports.mergeAll = mergeAll_1.mergeAll;
@@ -85951,7 +86088,7 @@ var multicast_1 = __webpack_require__(34);
 exports.multicast = multicast_1.multicast;
 var observeOn_1 = __webpack_require__(60);
 exports.observeOn = observeOn_1.observeOn;
-var onErrorResumeNext_1 = __webpack_require__(114);
+var onErrorResumeNext_1 = __webpack_require__(115);
 exports.onErrorResumeNext = onErrorResumeNext_1.onErrorResumeNext;
 var pairwise_1 = __webpack_require__(337);
 exports.pairwise = pairwise_1.pairwise;
@@ -85979,7 +86116,7 @@ var retry_1 = __webpack_require__(348);
 exports.retry = retry_1.retry;
 var retryWhen_1 = __webpack_require__(349);
 exports.retryWhen = retryWhen_1.retryWhen;
-var refCount_1 = __webpack_require__(121);
+var refCount_1 = __webpack_require__(122);
 exports.refCount = refCount_1.refCount;
 var sample_1 = __webpack_require__(350);
 exports.sample = sample_1.sample;
@@ -86003,7 +86140,7 @@ var skipUntil_1 = __webpack_require__(358);
 exports.skipUntil = skipUntil_1.skipUntil;
 var skipWhile_1 = __webpack_require__(359);
 exports.skipWhile = skipWhile_1.skipWhile;
-var startWith_1 = __webpack_require__(135);
+var startWith_1 = __webpack_require__(136);
 exports.startWith = startWith_1.startWith;
 /**
  * TODO(https://github.com/ReactiveX/rxjs/issues/2900): Add back subscribeOn once it can be
@@ -86014,19 +86151,19 @@ exports.startWith = startWith_1.startWith;
 // export { subscribeOn } from './subscribeOn';
 var switchAll_1 = __webpack_require__(362);
 exports.switchAll = switchAll_1.switchAll;
-var switchMap_1 = __webpack_require__(122);
+var switchMap_1 = __webpack_require__(123);
 exports.switchMap = switchMap_1.switchMap;
 var switchMapTo_1 = __webpack_require__(363);
 exports.switchMapTo = switchMapTo_1.switchMapTo;
 var take_1 = __webpack_require__(364);
 exports.take = take_1.take;
-var takeLast_1 = __webpack_require__(120);
+var takeLast_1 = __webpack_require__(121);
 exports.takeLast = takeLast_1.takeLast;
 var takeUntil_1 = __webpack_require__(365);
 exports.takeUntil = takeUntil_1.takeUntil;
 var takeWhile_1 = __webpack_require__(366);
 exports.takeWhile = takeWhile_1.takeWhile;
-var tap_1 = __webpack_require__(132);
+var tap_1 = __webpack_require__(133);
 exports.tap = tap_1.tap;
 var throttle_1 = __webpack_require__(77);
 exports.throttle = throttle_1.throttle;
@@ -86038,7 +86175,7 @@ var timeout_1 = __webpack_require__(370);
 exports.timeout = timeout_1.timeout;
 var timeoutWith_1 = __webpack_require__(372);
 exports.timeoutWith = timeoutWith_1.timeoutWith;
-var timestamp_1 = __webpack_require__(123);
+var timestamp_1 = __webpack_require__(124);
 exports.timestamp = timestamp_1.timestamp;
 var toArray_1 = __webpack_require__(373);
 exports.toArray = toArray_1.toArray;
@@ -103183,29 +103320,27 @@ exports.zipAll = zipAll_1.zipAll;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.blankperson = exports.initState = undefined;
+exports.initState = undefined;
 
 var _components = __webpack_require__(62);
 
-var moment = __webpack_require__(1);
-
-
-var blankperson = {
-  emailid: '',
-  firstmid: '',
-  lastname: '',
-  street: '',
-  city: '',
-  st: '',
-  zip: '',
-  role: '',
-  rate: 15.00,
-  ssn: '',
-  w4allow: '',
-  stallow: '',
-  active: true,
-  effective: moment().format('YYYY-MM-D')
-};
+// const blankperson ={
+//   check:false,
+//   emailid:'',
+//   firstmid:'',
+//   lastname: '',
+//   street: '',
+//   city: '',
+//   st:'',
+//   zip: '',
+//   role:'',
+//   rate: 15.00,
+//   ssn:'',
+//   w4allow: '',
+//   stallow:'',
+//   active:true,
+//   effective: moment().format('YYYY-MM-D')
+// }
 
 var initState = {
   test: {
@@ -103218,10 +103353,11 @@ var initState = {
     page: { name: 'Home', params: null }
   },
   eperson: {
-    curperson: blankperson,
+    //curperson: blankperson,
     update: true
   }
-};
+}; //var moment = require('moment');
+
 
 var initialBrowser = function initialBrowser() {
   var ws = window.innerWidth;
@@ -103244,7 +103380,864 @@ var initialBrowser = function initialBrowser() {
 
 initState.responsive = initialBrowser();
 exports.initState = initState;
-exports.blankperson = blankperson;
+
+/***/ }),
+/* 856 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(2);
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+Object.defineProperty(exports, "default", {
+  enumerable: true,
+  get: function get() {
+    return _Checkbox.default;
+  }
+});
+
+var _Checkbox = _interopRequireDefault(__webpack_require__(857));
+
+/***/ }),
+/* 857 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(process) {
+
+var _interopRequireDefault = __webpack_require__(2);
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = exports.styles = void 0;
+
+var _extends2 = _interopRequireDefault(__webpack_require__(6));
+
+var _defineProperty2 = _interopRequireDefault(__webpack_require__(19));
+
+var _objectWithoutProperties2 = _interopRequireDefault(__webpack_require__(8));
+
+var _react = _interopRequireDefault(__webpack_require__(4));
+
+var _propTypes = _interopRequireDefault(__webpack_require__(7));
+
+var _classnames = _interopRequireDefault(__webpack_require__(14));
+
+var _SwitchBase = _interopRequireDefault(__webpack_require__(858));
+
+var _CheckBoxOutlineBlank = _interopRequireDefault(__webpack_require__(861));
+
+var _CheckBox = _interopRequireDefault(__webpack_require__(862));
+
+var _IndeterminateCheckBox = _interopRequireDefault(__webpack_require__(863));
+
+var _helpers = __webpack_require__(46);
+
+var _withStyles = _interopRequireDefault(__webpack_require__(15));
+
+var styles = function styles(theme) {
+  return {
+    /* Styles applied to the root element. */
+    root: {
+      color: theme.palette.text.secondary
+    },
+
+    /* Styles applied to the root element if `checked={true}`. */
+    checked: {},
+
+    /* Styles applied to the root element if `disabled={true}`. */
+    disabled: {},
+
+    /* Styles applied to the root element if `indeterminate={true}`. */
+    indeterminate: {},
+
+    /* Styles applied to the root element if `color="primary"`. */
+    colorPrimary: {
+      '&$checked': {
+        color: theme.palette.primary.main
+      },
+      '&$disabled': {
+        color: theme.palette.action.disabled
+      }
+    },
+
+    /* Styles applied to the root element if `color="secondary"`. */
+    colorSecondary: {
+      '&$checked': {
+        color: theme.palette.secondary.main
+      },
+      '&$disabled': {
+        color: theme.palette.action.disabled
+      }
+    }
+  };
+};
+
+exports.styles = styles;
+
+function Checkbox(props) {
+  var checkedIcon = props.checkedIcon,
+      classes = props.classes,
+      className = props.className,
+      color = props.color,
+      icon = props.icon,
+      indeterminate = props.indeterminate,
+      indeterminateIcon = props.indeterminateIcon,
+      inputProps = props.inputProps,
+      other = (0, _objectWithoutProperties2.default)(props, ["checkedIcon", "classes", "className", "color", "icon", "indeterminate", "indeterminateIcon", "inputProps"]);
+  return _react.default.createElement(_SwitchBase.default, (0, _extends2.default)({
+    type: "checkbox",
+    checkedIcon: indeterminate ? indeterminateIcon : checkedIcon,
+    className: (0, _classnames.default)((0, _defineProperty2.default)({}, classes.indeterminate, indeterminate), className),
+    classes: {
+      root: (0, _classnames.default)(classes.root, classes["color".concat((0, _helpers.capitalize)(color))]),
+      checked: classes.checked,
+      disabled: classes.disabled
+    },
+    inputProps: (0, _extends2.default)({
+      'data-indeterminate': indeterminate
+    }, inputProps),
+    icon: indeterminate ? indeterminateIcon : icon
+  }, other));
+}
+
+Checkbox.propTypes = process.env.NODE_ENV !== "production" ? {
+  /**
+   * If `true`, the component is checked.
+   */
+  checked: _propTypes.default.oneOfType([_propTypes.default.bool, _propTypes.default.string]),
+
+  /**
+   * The icon to display when the component is checked.
+   */
+  checkedIcon: _propTypes.default.node,
+
+  /**
+   * Override or extend the styles applied to the component.
+   * See [CSS API](#css-api) below for more details.
+   */
+  classes: _propTypes.default.object.isRequired,
+
+  /**
+   * @ignore
+   */
+  className: _propTypes.default.string,
+
+  /**
+   * The color of the component. It supports those theme colors that make sense for this component.
+   */
+  color: _propTypes.default.oneOf(['primary', 'secondary', 'default']),
+
+  /**
+   * If `true`, the switch will be disabled.
+   */
+  disabled: _propTypes.default.bool,
+
+  /**
+   * If `true`, the ripple effect will be disabled.
+   */
+  disableRipple: _propTypes.default.bool,
+
+  /**
+   * The icon to display when the component is unchecked.
+   */
+  icon: _propTypes.default.node,
+
+  /**
+   * The id of the `input` element.
+   */
+  id: _propTypes.default.string,
+
+  /**
+   * If `true`, the component appears indeterminate.
+   * This does not set the native input element to indeterminate due
+   * to inconsistent behavior across browsers.
+   * However, we set a `data-indeterminate` attribute on the input.
+   */
+  indeterminate: _propTypes.default.bool,
+
+  /**
+   * The icon to display when the component is indeterminate.
+   */
+  indeterminateIcon: _propTypes.default.node,
+
+  /**
+   * Properties applied to the `input` element.
+   */
+  inputProps: _propTypes.default.object,
+
+  /**
+   * Use that property to pass a ref callback to the native input component.
+   */
+  inputRef: _propTypes.default.oneOfType([_propTypes.default.func, _propTypes.default.object]),
+
+  /**
+   * Callback fired when the state is changed.
+   *
+   * @param {object} event The event source of the callback.
+   * You can pull out the new value by accessing `event.target.checked`.
+   * @param {boolean} checked The `checked` value of the switch
+   */
+  onChange: _propTypes.default.func,
+
+  /**
+   * The input component property `type`.
+   */
+  type: _propTypes.default.string,
+
+  /**
+   * The value of the component.
+   */
+  value: _propTypes.default.string
+} : {};
+Checkbox.defaultProps = {
+  checkedIcon: _react.default.createElement(_CheckBox.default, null),
+  color: 'secondary',
+  icon: _react.default.createElement(_CheckBoxOutlineBlank.default, null),
+  indeterminate: false,
+  indeterminateIcon: _react.default.createElement(_IndeterminateCheckBox.default, null)
+};
+
+var _default = (0, _withStyles.default)(styles, {
+  name: 'MuiCheckbox'
+})(Checkbox);
+
+exports.default = _default;
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
+
+/***/ }),
+/* 858 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(process) {
+
+var _interopRequireDefault = __webpack_require__(2);
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = exports.styles = void 0;
+
+var _extends2 = _interopRequireDefault(__webpack_require__(6));
+
+var _defineProperty2 = _interopRequireDefault(__webpack_require__(19));
+
+var _objectWithoutProperties2 = _interopRequireDefault(__webpack_require__(8));
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__(12));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__(13));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(16));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(17));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__(18));
+
+var _react = _interopRequireDefault(__webpack_require__(4));
+
+var _propTypes = _interopRequireDefault(__webpack_require__(7));
+
+var _classnames = _interopRequireDefault(__webpack_require__(14));
+
+var _withStyles = _interopRequireDefault(__webpack_require__(15));
+
+var _IconButton = _interopRequireDefault(__webpack_require__(859));
+
+// @inheritedComponent IconButton
+var styles = {
+  root: {
+    display: 'inline-flex',
+    alignItems: 'center',
+    transition: 'none',
+    '&:hover': {
+      // Disable the hover effect for the IconButton.
+      backgroundColor: 'transparent'
+    }
+  },
+  checked: {},
+  disabled: {},
+  input: {
+    cursor: 'inherit',
+    position: 'absolute',
+    opacity: 0,
+    width: '100%',
+    height: '100%',
+    top: 0,
+    left: 0,
+    margin: 0,
+    padding: 0
+  }
+};
+/**
+ * @ignore - internal component.
+ */
+
+exports.styles = styles;
+
+var SwitchBase =
+/*#__PURE__*/
+function (_React$Component) {
+  (0, _inherits2.default)(SwitchBase, _React$Component);
+
+  function SwitchBase(props) {
+    var _this;
+
+    (0, _classCallCheck2.default)(this, SwitchBase);
+    _this = (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(SwitchBase).call(this));
+    _this.input = null;
+    _this.isControlled = null;
+    _this.state = {};
+
+    _this.handleFocus = function (event) {
+      if (_this.props.onFocus) {
+        _this.props.onFocus(event);
+      }
+
+      var muiFormControl = _this.context.muiFormControl;
+
+      if (muiFormControl && muiFormControl.onFocus) {
+        muiFormControl.onFocus(event);
+      }
+    };
+
+    _this.handleBlur = function (event) {
+      if (_this.props.onBlur) {
+        _this.props.onBlur(event);
+      }
+
+      var muiFormControl = _this.context.muiFormControl;
+
+      if (muiFormControl && muiFormControl.onBlur) {
+        muiFormControl.onBlur(event);
+      }
+    };
+
+    _this.handleInputChange = function (event) {
+      var checked = event.target.checked;
+
+      if (!_this.isControlled) {
+        _this.setState({
+          checked: checked
+        });
+      }
+
+      if (_this.props.onChange) {
+        _this.props.onChange(event, checked);
+      }
+    };
+
+    _this.isControlled = props.checked != null;
+
+    if (!_this.isControlled) {
+      // not controlled, use internal state
+      _this.state.checked = props.defaultChecked !== undefined ? props.defaultChecked : false;
+    }
+
+    return _this;
+  }
+
+  (0, _createClass2.default)(SwitchBase, [{
+    key: "render",
+    value: function render() {
+      var _classNames;
+
+      var _this$props = this.props,
+          autoFocus = _this$props.autoFocus,
+          checkedProp = _this$props.checked,
+          checkedIcon = _this$props.checkedIcon,
+          classes = _this$props.classes,
+          classNameProp = _this$props.className,
+          disabledProp = _this$props.disabled,
+          icon = _this$props.icon,
+          id = _this$props.id,
+          inputProps = _this$props.inputProps,
+          inputRef = _this$props.inputRef,
+          name = _this$props.name,
+          onBlur = _this$props.onBlur,
+          onChange = _this$props.onChange,
+          onFocus = _this$props.onFocus,
+          readOnly = _this$props.readOnly,
+          required = _this$props.required,
+          tabIndex = _this$props.tabIndex,
+          type = _this$props.type,
+          value = _this$props.value,
+          other = (0, _objectWithoutProperties2.default)(_this$props, ["autoFocus", "checked", "checkedIcon", "classes", "className", "disabled", "icon", "id", "inputProps", "inputRef", "name", "onBlur", "onChange", "onFocus", "readOnly", "required", "tabIndex", "type", "value"]);
+      var muiFormControl = this.context.muiFormControl;
+      var disabled = disabledProp;
+
+      if (muiFormControl) {
+        if (typeof disabled === 'undefined') {
+          disabled = muiFormControl.disabled;
+        }
+      }
+
+      var checked = this.isControlled ? checkedProp : this.state.checked;
+      var hasLabelFor = type === 'checkbox' || type === 'radio';
+      return _react.default.createElement(_IconButton.default, (0, _extends2.default)({
+        component: "span",
+        className: (0, _classnames.default)(classes.root, (_classNames = {}, (0, _defineProperty2.default)(_classNames, classes.checked, checked), (0, _defineProperty2.default)(_classNames, classes.disabled, disabled), _classNames), classNameProp),
+        disabled: disabled,
+        tabIndex: null,
+        role: undefined,
+        onFocus: this.handleFocus,
+        onBlur: this.handleBlur
+      }, other), checked ? checkedIcon : icon, _react.default.createElement("input", (0, _extends2.default)({
+        autoFocus: autoFocus,
+        checked: checked,
+        className: classes.input,
+        disabled: disabled,
+        id: hasLabelFor && id,
+        name: name,
+        onChange: this.handleInputChange,
+        readOnly: readOnly,
+        ref: inputRef,
+        required: required,
+        tabIndex: tabIndex,
+        type: type,
+        value: value
+      }, inputProps)));
+    }
+  }]);
+  return SwitchBase;
+}(_react.default.Component); // NB: If changed, please update Checkbox, Switch and Radio
+// so that the API documentation is updated.
+
+
+SwitchBase.propTypes = process.env.NODE_ENV !== "production" ? {
+  /**
+   * If `true`, the input will be focused during the first mount.
+   */
+  autoFocus: _propTypes.default.bool,
+
+  /**
+   * If `true`, the component is checked.
+   */
+  checked: _propTypes.default.oneOfType([_propTypes.default.bool, _propTypes.default.string]),
+
+  /**
+   * The icon to display when the component is checked.
+   */
+  checkedIcon: _propTypes.default.node.isRequired,
+
+  /**
+   * Override or extend the styles applied to the component.
+   * See [CSS API](#css-api) below for more details.
+   */
+  classes: _propTypes.default.object.isRequired,
+
+  /**
+   * @ignore
+   */
+  className: _propTypes.default.string,
+
+  /**
+   * @ignore
+   */
+  defaultChecked: _propTypes.default.bool,
+
+  /**
+   * If `true`, the switch will be disabled.
+   */
+  disabled: _propTypes.default.bool,
+
+  /**
+   * If `true`, the ripple effect will be disabled.
+   */
+  disableRipple: _propTypes.default.bool,
+
+  /**
+   * The icon to display when the component is unchecked.
+   */
+  icon: _propTypes.default.node.isRequired,
+
+  /**
+   * The id of the `input` element.
+   */
+  id: _propTypes.default.string,
+
+  /**
+   * Attributes applied to the `input` element.
+   */
+  inputProps: _propTypes.default.object,
+
+  /**
+   * Use that property to pass a ref callback to the native input component.
+   */
+  inputRef: _propTypes.default.oneOfType([_propTypes.default.func, _propTypes.default.object]),
+
+  /*
+   * @ignore
+   */
+  name: _propTypes.default.string,
+
+  /**
+   * @ignore
+   */
+  onBlur: _propTypes.default.func,
+
+  /**
+   * Callback fired when the state is changed.
+   *
+   * @param {object} event The event source of the callback.
+   * You can pull out the new value by accessing `event.target.checked`.
+   * @param {boolean} checked The `checked` value of the switch
+   */
+  onChange: _propTypes.default.func,
+
+  /**
+   * @ignore
+   */
+  onFocus: _propTypes.default.func,
+
+  /**
+   * It prevents the user from changing the value of the field
+   * (not from interacting with the field).
+   */
+  readOnly: _propTypes.default.bool,
+
+  /**
+   * If `true`, the input will be required.
+   */
+  required: _propTypes.default.bool,
+
+  /**
+   * @ignore
+   */
+  tabIndex: _propTypes.default.oneOfType([_propTypes.default.number, _propTypes.default.string]),
+
+  /**
+   * The input component property `type`.
+   */
+  type: _propTypes.default.string.isRequired,
+
+  /**
+   * The value of the component.
+   */
+  value: _propTypes.default.string
+} : {};
+SwitchBase.contextTypes = {
+  muiFormControl: _propTypes.default.object
+};
+
+var _default = (0, _withStyles.default)(styles, {
+  name: 'MuiSwitchBase'
+})(SwitchBase);
+
+exports.default = _default;
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
+
+/***/ }),
+/* 859 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(2);
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+Object.defineProperty(exports, "default", {
+  enumerable: true,
+  get: function get() {
+    return _IconButton.default;
+  }
+});
+
+var _IconButton = _interopRequireDefault(__webpack_require__(860));
+
+/***/ }),
+/* 860 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(process) {
+
+var _interopRequireDefault = __webpack_require__(2);
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = exports.styles = void 0;
+
+var _extends2 = _interopRequireDefault(__webpack_require__(6));
+
+var _defineProperty2 = _interopRequireDefault(__webpack_require__(19));
+
+var _objectWithoutProperties2 = _interopRequireDefault(__webpack_require__(8));
+
+var _react = _interopRequireDefault(__webpack_require__(4));
+
+var _propTypes = _interopRequireDefault(__webpack_require__(7));
+
+var _classnames = _interopRequireDefault(__webpack_require__(14));
+
+var _withStyles = _interopRequireDefault(__webpack_require__(15));
+
+var _colorManipulator = __webpack_require__(279);
+
+var _ButtonBase = _interopRequireDefault(__webpack_require__(568));
+
+var _helpers = __webpack_require__(46);
+
+// @inheritedComponent ButtonBase
+var styles = function styles(theme) {
+  return {
+    /* Styles applied to the root element. */
+    root: {
+      textAlign: 'center',
+      flex: '0 0 auto',
+      fontSize: theme.typography.pxToRem(24),
+      padding: 12,
+      borderRadius: '50%',
+      overflow: 'visible',
+      // Explicitly set the default value to solve a bug on IE11.
+      color: theme.palette.action.active,
+      transition: theme.transitions.create('background-color', {
+        duration: theme.transitions.duration.shortest
+      }),
+      '&:hover': {
+        backgroundColor: (0, _colorManipulator.fade)(theme.palette.action.active, theme.palette.action.hoverOpacity),
+        // Reset on touch devices, it doesn't add specificity
+        '@media (hover: none)': {
+          backgroundColor: 'transparent'
+        },
+        '&$disabled': {
+          backgroundColor: 'transparent'
+        }
+      },
+      '&$disabled': {
+        color: theme.palette.action.disabled
+      }
+    },
+
+    /* Styles applied to the root element if `color="inherit"`. */
+    colorInherit: {
+      color: 'inherit'
+    },
+
+    /* Styles applied to the root element if `color="primary"`. */
+    colorPrimary: {
+      color: theme.palette.primary.main,
+      '&:hover': {
+        backgroundColor: (0, _colorManipulator.fade)(theme.palette.primary.main, theme.palette.action.hoverOpacity),
+        // Reset on touch devices, it doesn't add specificity
+        '@media (hover: none)': {
+          backgroundColor: 'transparent'
+        }
+      }
+    },
+
+    /* Styles applied to the root element if `color="secondary"`. */
+    colorSecondary: {
+      color: theme.palette.secondary.main,
+      '&:hover': {
+        backgroundColor: (0, _colorManipulator.fade)(theme.palette.secondary.main, theme.palette.action.hoverOpacity),
+        // Reset on touch devices, it doesn't add specificity
+        '@media (hover: none)': {
+          backgroundColor: 'transparent'
+        }
+      }
+    },
+
+    /* Styles applied to the root element if `disabled={true}`. */
+    disabled: {},
+
+    /* Styles applied to the children container element. */
+    label: {
+      width: '100%',
+      display: 'flex',
+      alignItems: 'inherit',
+      justifyContent: 'inherit'
+    }
+  };
+};
+/**
+ * Refer to the [Icons](/style/icons) section of the documentation
+ * regarding the available icon options.
+ */
+
+
+exports.styles = styles;
+
+function IconButton(props) {
+  var _classNames;
+
+  var children = props.children,
+      classes = props.classes,
+      className = props.className,
+      color = props.color,
+      disabled = props.disabled,
+      other = (0, _objectWithoutProperties2.default)(props, ["children", "classes", "className", "color", "disabled"]);
+  return _react.default.createElement(_ButtonBase.default, (0, _extends2.default)({
+    className: (0, _classnames.default)(classes.root, (_classNames = {}, (0, _defineProperty2.default)(_classNames, classes["color".concat((0, _helpers.capitalize)(color))], color !== 'default'), (0, _defineProperty2.default)(_classNames, classes.disabled, disabled), _classNames), className),
+    centerRipple: true,
+    focusRipple: true,
+    disabled: disabled
+  }, other), _react.default.createElement("span", {
+    className: classes.label
+  }, children));
+}
+
+IconButton.propTypes = process.env.NODE_ENV !== "production" ? {
+  /**
+   * The icon element.
+   */
+  children: _propTypes.default.node,
+
+  /**
+   * Override or extend the styles applied to the component.
+   * See [CSS API](#css-api) below for more details.
+   */
+  classes: _propTypes.default.object.isRequired,
+
+  /**
+   * @ignore
+   */
+  className: _propTypes.default.string,
+
+  /**
+   * The color of the component. It supports those theme colors that make sense for this component.
+   */
+  color: _propTypes.default.oneOf(['default', 'inherit', 'primary', 'secondary']),
+
+  /**
+   * If `true`, the button will be disabled.
+   */
+  disabled: _propTypes.default.bool,
+
+  /**
+   * If `true`, the ripple will be disabled.
+   */
+  disableRipple: _propTypes.default.bool
+} : {};
+IconButton.defaultProps = {
+  color: 'default',
+  disabled: false
+};
+
+var _default = (0, _withStyles.default)(styles, {
+  name: 'MuiIconButton'
+})(IconButton);
+
+exports.default = _default;
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
+
+/***/ }),
+/* 861 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(2);
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireDefault(__webpack_require__(4));
+
+var _pure = _interopRequireDefault(__webpack_require__(558));
+
+var _SvgIcon = _interopRequireDefault(__webpack_require__(563));
+
+var _ref = _react.default.createElement("path", {
+  d: "M19 5v14H5V5h14m0-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"
+});
+
+/**
+ * @ignore - internal component.
+ */
+var CheckBoxOutlineBlank = function CheckBoxOutlineBlank(props) {
+  return _react.default.createElement(_SvgIcon.default, props, _ref);
+};
+
+CheckBoxOutlineBlank = (0, _pure.default)(CheckBoxOutlineBlank);
+CheckBoxOutlineBlank.muiName = 'SvgIcon';
+var _default = CheckBoxOutlineBlank;
+exports.default = _default;
+
+/***/ }),
+/* 862 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(2);
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireDefault(__webpack_require__(4));
+
+var _pure = _interopRequireDefault(__webpack_require__(558));
+
+var _SvgIcon = _interopRequireDefault(__webpack_require__(563));
+
+var _ref = _react.default.createElement("path", {
+  d: "M19 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.11 0 2-.9 2-2V5c0-1.1-.89-2-2-2zm-9 14l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"
+});
+
+/**
+ * @ignore - internal component.
+ */
+var CheckBox = function CheckBox(props) {
+  return _react.default.createElement(_SvgIcon.default, props, _ref);
+};
+
+CheckBox = (0, _pure.default)(CheckBox);
+CheckBox.muiName = 'SvgIcon';
+var _default = CheckBox;
+exports.default = _default;
+
+/***/ }),
+/* 863 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(2);
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireDefault(__webpack_require__(4));
+
+var _pure = _interopRequireDefault(__webpack_require__(558));
+
+var _SvgIcon = _interopRequireDefault(__webpack_require__(563));
+
+var _ref = _react.default.createElement("path", {
+  d: "M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10H7v-2h10v2z"
+});
+
+/**
+ * @ignore - internal component.
+ */
+var IndeterminateCheckBox = function IndeterminateCheckBox(props) {
+  return _react.default.createElement(_SvgIcon.default, props, _ref);
+};
+
+IndeterminateCheckBox = (0, _pure.default)(IndeterminateCheckBox);
+IndeterminateCheckBox.muiName = 'SvgIcon';
+var _default = IndeterminateCheckBox;
+exports.default = _default;
 
 /***/ })
 /******/ ]);

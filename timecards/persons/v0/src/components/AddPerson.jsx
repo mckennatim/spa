@@ -209,7 +209,7 @@ class AddPerson extends React.Component {
         /> 
         <TextField
           id="standard-name"
-          label="Rate: $"
+          label="Hourly Rate or Yearly Salary: $"
           className={classes.textField}
           type="number"
           inputProps={{ min: "15", max: "100", step: "0.25" }}

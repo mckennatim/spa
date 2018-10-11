@@ -6,7 +6,7 @@ import {Pay} from './Pay.jsx'
 import {Nav} from './Nav.jsx'
 import {Dog} from './Dog'
 import {Products} from './Products'
-import {Registered} from './Registered.jsx'
+import {Registered} from '../../../../signup/v0/src/components/Registered.jsx'
 import {pStyle} from '../styles'
 import {loadGithubFollowers} from '../actions/test';
 //import { render } from '../utilities/wfuncs';

@@ -30170,7 +30170,7 @@ var blankperson = {
   vacation: '',
   holiday: '',
   personal: '',
-  effective: moment().format('YYYY-MM-D')
+  effective: moment().format('YYYY-MM-DD')
 };
 
 var initState = {
@@ -58603,93 +58603,93 @@ var Persons = function (_React$Component) {
           _react2.default.createElement(
             'div',
             { style: style.myli.cat },
-            _react2.default.createElement(
-              'table',
-              { style: style.table.table },
-              _react2.default.createElement(
-                'tbody',
-                null,
-                !!haywh && _react2.default.createElement(
-                  'div',
+            _react2.default.createElement('br', null),
+            !!haywh && _react2.default.createElement(
+              'div',
+              null,
+              !nohayded && _react2.default.createElement(
+                'table',
+                { style: style.table.table },
+                _react2.default.createElement(
+                  'tbody',
                   null,
-                  !nohayded && _react2.default.createElement(
-                    'table',
+                  _react2.default.createElement(
+                    'tr',
                     null,
-                    '  ',
                     _react2.default.createElement(
-                      'tbody',
-                      null,
-                      _react2.default.createElement(
-                        'tr',
-                        null,
-                        _react2.default.createElement(
-                          'th',
-                          { style: style.table.th, colSpan: '2' },
-                          'Deductions'
-                        )
-                      ),
-                      _react2.default.createElement(
-                        'tr',
-                        null,
-                        _react2.default.createElement(
-                          'th',
-                          { style: style.table.thtd },
-                          'Emp.'
-                        ),
-                        _react2.default.createElement(
-                          'th',
-                          { style: style.table.thtd },
-                          'Co.'
-                        )
-                      ),
-                      _react2.default.createElement(
-                        'tr',
-                        null,
-                        _react2.default.createElement(
-                          'th',
-                          null,
-                          'Health'
-                        )
-                      ),
-                      _react2.default.createElement(
-                        'tr',
-                        { style: style.table.tr },
-                        _react2.default.createElement(
-                          'td',
-                          { style: style.table.thtd },
-                          aperson.healthemp
-                        ),
-                        _react2.default.createElement(
-                          'td',
-                          { style: style.table.thtd },
-                          aperson.healthco
-                        )
-                      ),
-                      _react2.default.createElement(
-                        'tr',
-                        null,
-                        _react2.default.createElement(
-                          'th',
-                          null,
-                          '401 K'
-                        )
-                      ),
-                      _react2.default.createElement(
-                        'tr',
-                        { style: style.table.tr },
-                        _react2.default.createElement(
-                          'td',
-                          { style: style.table.thtd },
-                          aperson.k401emp
-                        ),
-                        _react2.default.createElement(
-                          'td',
-                          { style: style.table.thtd },
-                          aperson.k401co
-                        )
-                      )
+                      'th',
+                      { style: style.table.th, colSpan: '2' },
+                      'Deductions'
                     )
                   ),
+                  _react2.default.createElement(
+                    'tr',
+                    null,
+                    _react2.default.createElement(
+                      'th',
+                      { style: style.table.thtd },
+                      'Emp.'
+                    ),
+                    _react2.default.createElement(
+                      'th',
+                      { style: style.table.thtd },
+                      'Co.'
+                    )
+                  ),
+                  _react2.default.createElement(
+                    'tr',
+                    null,
+                    _react2.default.createElement(
+                      'th',
+                      null,
+                      'Health'
+                    )
+                  ),
+                  _react2.default.createElement(
+                    'tr',
+                    { style: style.table.tr },
+                    _react2.default.createElement(
+                      'td',
+                      { style: style.table.thtd },
+                      aperson.healthemp
+                    ),
+                    _react2.default.createElement(
+                      'td',
+                      { style: style.table.thtd },
+                      aperson.healthco
+                    )
+                  ),
+                  _react2.default.createElement(
+                    'tr',
+                    null,
+                    _react2.default.createElement(
+                      'th',
+                      null,
+                      '401 K'
+                    )
+                  ),
+                  _react2.default.createElement(
+                    'tr',
+                    { style: style.table.tr },
+                    _react2.default.createElement(
+                      'td',
+                      { style: style.table.thtd },
+                      aperson.k401emp
+                    ),
+                    _react2.default.createElement(
+                      'td',
+                      { style: style.table.thtd },
+                      aperson.k401co
+                    )
+                  )
+                )
+              ),
+              _react2.default.createElement(
+                'table',
+                { style: style.table.table },
+                _react2.default.createElement(
+                  'tbody',
+                  null,
                   _react2.default.createElement(
                     'tr',
                     null,
@@ -58836,85 +58836,85 @@ var Persons = function (_React$Component) {
                     )
                   ),
                   aperson.haylocalwh != 0 && _react2.default.createElement(
-                    'div',
+                    'tr',
                     null,
                     _react2.default.createElement(
-                      'tr',
-                      null,
-                      _react2.default.createElement(
-                        'th',
-                        { style: style.table.th, colSpan: '2' },
-                        'W4 Local'
-                      )
-                    ),
-                    _react2.default.createElement(
-                      'tr',
-                      { style: style.table.tr },
-                      _react2.default.createElement(
-                        'td',
-                        { style: style.table.thtd },
-                        'allow.'
-                      ),
-                      _react2.default.createElement(
-                        'td',
-                        { style: style.table.thtd },
-                        aperson.localallow
-                      )
+                      'th',
+                      { style: style.table.th, colSpan: '2' },
+                      'W4 Local'
                     )
                   ),
-                  !nohayben && _react2.default.createElement(
-                    'div',
+                  aperson.haylocalwh != 0 && _react2.default.createElement(
+                    'tr',
+                    { style: style.table.tr },
+                    _react2.default.createElement(
+                      'td',
+                      { style: style.table.thtd },
+                      'allow.'
+                    ),
+                    _react2.default.createElement(
+                      'td',
+                      { style: style.table.thtd },
+                      aperson.localallow
+                    )
+                  )
+                )
+              ),
+              !nohayben && _react2.default.createElement(
+                'table',
+                { style: style.table.table },
+                _react2.default.createElement(
+                  'tbody',
+                  null,
+                  _react2.default.createElement(
+                    'tr',
                     null,
                     _react2.default.createElement(
-                      'tr',
-                      null,
-                      _react2.default.createElement(
-                        'th',
-                        { style: style.table.th, colSpan: '2' },
-                        'Benefits'
-                      )
+                      'th',
+                      { style: style.table.th, colSpan: '2' },
+                      'Benefits'
+                    )
+                  ),
+                  _react2.default.createElement(
+                    'tr',
+                    { style: style.table.tr },
+                    _react2.default.createElement(
+                      'td',
+                      { style: style.table.thtd },
+                      'holiday'
                     ),
                     _react2.default.createElement(
-                      'tr',
-                      { style: style.table.tr },
-                      _react2.default.createElement(
-                        'td',
-                        { style: style.table.thtd },
-                        'holiday'
-                      ),
-                      _react2.default.createElement(
-                        'td',
-                        { style: style.table.thtd },
-                        aperson.vacation
-                      )
+                      'td',
+                      { style: style.table.thtd },
+                      aperson.vacation
+                    )
+                  ),
+                  _react2.default.createElement(
+                    'tr',
+                    { style: style.table.tr },
+                    _react2.default.createElement(
+                      'td',
+                      { style: style.table.thtd },
+                      'vacation'
                     ),
                     _react2.default.createElement(
-                      'tr',
-                      { style: style.table.tr },
-                      _react2.default.createElement(
-                        'td',
-                        { style: style.table.thtd },
-                        'vacation'
-                      ),
-                      _react2.default.createElement(
-                        'td',
-                        { style: style.table.thtd },
-                        aperson.holiday
-                      )
+                      'td',
+                      { style: style.table.thtd },
+                      aperson.holiday
+                    )
+                  ),
+                  aperson.personal != 0 && _react2.default.createElement(
+                    'tr',
+                    { style: style.table.tr },
+                    _react2.default.createElement(
+                      'td',
+                      { style: style.table.tht },
+                      'personal'
                     ),
-                    aperson.personal != 0 && _react2.default.createElement(
-                      'tr',
-                      { style: style.table.tr },
-                      _react2.default.createElement(
-                        'td',
-                        { style: style.table.tht },
-                        'personal'
-                      ),
-                      _react2.default.createElement(
-                        'td',
-                        { style: style.table.thtd },
-                        aperson.personal
-                      )
+                    _react2.default.createElement(
+                      'td',
+                      { style: style.table.thtd },
+                      aperson.personal
                     )
                   )
                 )
@@ -59900,7 +59900,7 @@ var AddPerson = function (_React$Component) {
           }),
           _react2.default.createElement(_TextField2.default, {
             id: 'standard-name',
-            label: 'Rate: $',
+            label: 'Hourly Rate or Yearly Salary: $',
             className: classes.textField,
             type: 'number',
             inputProps: { min: "15", max: "100", step: "0.25" },

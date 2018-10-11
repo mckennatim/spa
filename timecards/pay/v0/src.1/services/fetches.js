@@ -121,6 +121,28 @@ const postPay=(persons,wk)=>{
   }
 }
 
+const postJobRates=(jcrates)=>{
+  var lsh = ls.getItem();
+  if(geta('lsh.token', lsh)){
+    let url= cfg.url.api+'/payroll/jc/'
+    let options= {
+      headers: {'Authorization': 'Bearer '+ lsh['token'],
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      method: 'POST',
+      body: JSON.stringify({jcrates:jcrates})
+    }  
+    return(
+      fetch(url, options)
+        .then((response)=>response.json())
+    )        
+  }else{
+    let p2 =Promise.resolve({qmessage:'you dont exist! '})
+    return p2
+  }
+}
+
 const putPay=(person)=>{
   console.log('person: ', person)
   var lsh = ls.getItem();
@@ -209,4 +231,4 @@ const deletePay=(person)=>{
   }
 }
 
-export{fetchSettings, fetchPay, postPay, putPay, newPay, deletePay, putCk, fetchCurrent, fetchRates}
+export{fetchSettings, fetchPay, postPay, putPay, newPay, deletePay, putCk, fetchCurrent, fetchRates, postJobRates}

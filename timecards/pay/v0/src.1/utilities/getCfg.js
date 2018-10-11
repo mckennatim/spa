@@ -10,4 +10,22 @@ cfg.url.authqry = authqry
 
 const ls = storageLocal(cfg.superapp)
 
-export{ls, cfg}
+const makeHref=(host,app,rt)=>{
+  let href
+  if(host=='timecards.sitebuilt.net'){
+    href= `../${app}/`
+  }else {
+    href = `../../../${app}/v0/dist/`
+  }
+  if(rt){
+    href+=rt
+  }
+  return href
+}
+
+const drnd = (n) => {
+  return Math.round(n * 100) / 100
+}
+
+export{ls, cfg, makeHref, drnd}
+

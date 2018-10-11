@@ -101,6 +101,7 @@ class TimeCardJar extends React.Component {
   }
 
   reCalcStatus =(modtcard)=>{
+    console.log('modtcard: ', modtcard)
     const {hrs, jchrs, wstat}=modtcard
     let modwstat= {...wstat}
     const wkpuhrs=drnd(hrs.reduce((t,h)=>t+h,0))

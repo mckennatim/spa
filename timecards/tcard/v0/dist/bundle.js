@@ -11822,6 +11822,7 @@ var fetchTcard = function fetchTcard(wk) {
       if (json.message) {
         return { qmessage: json.message };
       } else {
+        console.log('json: ', json);
         var processed = (0, _wfuncs.processDb4app)(json);
         return processed;
       }
@@ -51840,6 +51841,7 @@ var TimeCardJar = function (_React$Component) {
     };
 
     _this.reCalcStatus = function (modtcard) {
+      console.log('modtcard: ', modtcard);
       var _modtcard = modtcard,
           hrs = _modtcard.hrs,
           jchrs = _modtcard.jchrs,

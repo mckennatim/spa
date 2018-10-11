@@ -23,5 +23,9 @@ const makeHref=(host,app,rt)=>{
   return href
 }
 
-export{ls, cfg, makeHref}
+const drnd = (n) => {
+  return Math.round(n * 100) / 100
+}
+
+export{ls, cfg, makeHref, drnd}
 

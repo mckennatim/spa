@@ -30,7 +30,7 @@ const blankperson ={
   vacation: '',
   holiday: '',
   personal: '',
-  effective: moment().format('YYYY-MM-D')
+  effective: moment().format('YYYY-MM-DD')
 }
 
 const initState = {

@@ -1,22 +1,23 @@
-var moment = require('moment');
+//var moment = require('moment');
 import {Home} from './components'
 
-const blankperson ={
-  emailid:'',
-  firstmid:'',
-  lastname: '',
-  street: '',
-  city: '',
-  st:'',
-  zip: '',
-  role:'',
-  rate: 15.00,
-  ssn:'',
-  w4allow: '',
-  stallow:'',
-  active:true,
-  effective: moment().format('YYYY-MM-D')
-}
+// const blankperson ={
+//   check:false,
+//   emailid:'',
+//   firstmid:'',
+//   lastname: '',
+//   street: '',
+//   city: '',
+//   st:'',
+//   zip: '',
+//   role:'',
+//   rate: 15.00,
+//   ssn:'',
+//   w4allow: '',
+//   stallow:'',
+//   active:true,
+//   effective: moment().format('YYYY-MM-D')
+// }
 
 const initState = {
   test: {
@@ -29,7 +30,7 @@ const initState = {
     page: {name: 'Home', params: null}
   },
   eperson: {
-    curperson: blankperson,
+    //curperson: blankperson,
     update: true
   }
 };
@@ -52,4 +53,4 @@ const initialBrowser = () => {
 }
 
 initState.responsive = initialBrowser()
-export {initState, blankperson}
+export {initState}
