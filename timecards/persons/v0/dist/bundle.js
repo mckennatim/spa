@@ -58528,6 +58528,7 @@ var Persons = function (_React$Component) {
         var nohayded = !aperson.healthemp && !aperson.healthco && !aperson.k401emp && !aperson.k401co;
         var nohayben = !aperson.vacation && !aperson.holiday && !aperson.personal;
         var nohayname = !aperson.firstmid && !aperson.lastname;
+        var tybase = aperson.wtype == 'base';
         return _react2.default.createElement(
           'li',
           { key: i, style: style.myli.li },
@@ -58589,6 +58590,12 @@ var Persons = function (_React$Component) {
               'type:',
               aperson.wtype,
               _react2.default.createElement('br', null),
+              tybase && _react2.default.createElement(
+                'div',
+                null,
+                'weekly base pay: ',
+                aperson.weeklybase
+              ),
               !!haywh && _react2.default.createElement(
                 'div',
                 null,
@@ -59643,6 +59650,10 @@ var _FormGroup = __webpack_require__(300);
 
 var _FormGroup2 = _interopRequireDefault(_FormGroup);
 
+var _InputAdornment = __webpack_require__(865);
+
+var _InputAdornment2 = _interopRequireDefault(_InputAdornment);
+
 var _FormControl = __webpack_require__(290);
 
 var _FormControl2 = _interopRequireDefault(_FormControl);
@@ -59671,6 +59682,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 //import classNames from 'classnames';
 // eslint-disable-line no-unused-vars
 // eslint-disable-line 
+// eslint-disable-line no-unused-vars
 // eslint-disable-line no-unused-vars
 // eslint-disable-line no-unused-vars
 // eslint-disable-line no-unused-vars
@@ -59906,7 +59918,14 @@ var AddPerson = function (_React$Component) {
             inputProps: { min: "15", max: "100", step: "0.25" },
             value: curperson.rate,
             onChange: this.txtChanged('rate'),
-            margin: 'dense'
+            margin: 'dense',
+            InputProps: {
+              startAdornment: _react2.default.createElement(
+                _InputAdornment2.default,
+                { position: 'start' },
+                '$'
+              )
+            }
           }),
           _react2.default.createElement(_TextField2.default, {
             id: 'standard-name',
@@ -59937,12 +59956,33 @@ var AddPerson = function (_React$Component) {
               _react2.default.createElement(_FormControlLabel2.default, { disabled: !isPartner, value: 'hourly', control: _react2.default.createElement(_Radio2.default, null), label: 'Hourly' }),
               _react2.default.createElement(_FormControlLabel2.default, { value: 'salary', control: _react2.default.createElement(_Radio2.default, null), label: 'Salary' }),
               _react2.default.createElement(_FormControlLabel2.default, { value: 'salaryne', control: _react2.default.createElement(_Radio2.default, null), label: 'Salary non-exempt' }),
-              _react2.default.createElement(_FormControlLabel2.default, { value: '1099', control: _react2.default.createElement(_Radio2.default, null), label: '1099' })
+              _react2.default.createElement(_FormControlLabel2.default, { value: '1099', control: _react2.default.createElement(_Radio2.default, null), label: '1099' }),
+              curperson.role == 'partner' && _react2.default.createElement(_FormControlLabel2.default, { value: 'base', control: _react2.default.createElement(_Radio2.default, null), label: 'Base Pay' })
             )
           ),
           curperson.wtype != '1099' && _react2.default.createElement(
             'div',
             null,
+            curperson.wtype == 'base' && _react2.default.createElement(
+              'div',
+              null,
+              _react2.default.createElement(_TextField2.default, {
+                id: 'standard-name',
+                label: 'Weekly Base Pay',
+                className: classes.textField,
+                type: 'number',
+                value: curperson.weeklybase,
+                onChange: this.txtChanged('weeklybase'),
+                InputProps: {
+                  startAdornment: _react2.default.createElement(
+                    _InputAdornment2.default,
+                    { position: 'start' },
+                    '$'
+                  )
+                },
+                margin: 'dense'
+              })
+            ),
             _react2.default.createElement(
               _FormControl2.default,
               { component: 'fieldset', className: classes.formControl },
@@ -59985,7 +60025,14 @@ var AddPerson = function (_React$Component) {
                 inputProps: { min: "0", max: "15" },
                 value: curperson.w4add,
                 onChange: this.txtChanged('w4add'),
-                margin: 'dense'
+                margin: 'dense',
+                InputProps: {
+                  startAdornment: _react2.default.createElement(
+                    _InputAdornment2.default,
+                    { position: 'start' },
+                    '$'
+                  )
+                }
               }),
               curperson.haystatewh && _react2.default.createElement(
                 'div',
@@ -60008,7 +60055,14 @@ var AddPerson = function (_React$Component) {
                   inputProps: { min: "0", max: "15" },
                   value: curperson.stadd,
                   onChange: this.txtChanged('stadd'),
-                  margin: 'dense'
+                  margin: 'dense',
+                  InputProps: {
+                    startAdornment: _react2.default.createElement(
+                      _InputAdornment2.default,
+                      { position: 'start' },
+                      '$'
+                    )
+                  }
                 }),
                 _react2.default.createElement(_TextField2.default, {
                   id: 'standard-name',
@@ -60110,7 +60164,14 @@ var AddPerson = function (_React$Component) {
                   type: 'number',
                   value: curperson.healthemp,
                   onChange: this.txtChanged('healthemp'),
-                  margin: 'dense'
+                  margin: 'dense',
+                  InputProps: {
+                    startAdornment: _react2.default.createElement(
+                      _InputAdornment2.default,
+                      { position: 'start' },
+                      '$'
+                    )
+                  }
                 }),
                 _react2.default.createElement(_TextField2.default, {
                   id: 'standard-name',
@@ -60119,7 +60180,14 @@ var AddPerson = function (_React$Component) {
                   type: 'number',
                   value: curperson.healthco,
                   onChange: this.txtChanged('healthco'),
-                  margin: 'dense'
+                  margin: 'dense',
+                  InputProps: {
+                    startAdornment: _react2.default.createElement(
+                      _InputAdornment2.default,
+                      { position: 'start' },
+                      '$'
+                    )
+                  }
                 })
               ),
               _react2.default.createElement(
@@ -60137,7 +60205,14 @@ var AddPerson = function (_React$Component) {
                   type: 'number',
                   value: curperson.k401emp,
                   onChange: this.txtChanged('k401emp'),
-                  margin: 'dense'
+                  margin: 'dense',
+                  InputProps: {
+                    startAdornment: _react2.default.createElement(
+                      _InputAdornment2.default,
+                      { position: 'start' },
+                      '$'
+                    )
+                  }
                 }),
                 _react2.default.createElement(_TextField2.default, {
                   id: 'standard-name',
@@ -60146,7 +60221,14 @@ var AddPerson = function (_React$Component) {
                   type: 'number',
                   value: curperson.k401co,
                   onChange: this.txtChanged('k401co'),
-                  margin: 'dense'
+                  margin: 'dense',
+                  InputProps: {
+                    startAdornment: _react2.default.createElement(
+                      _InputAdornment2.default,
+                      { position: 'start' },
+                      '$'
+                    )
+                  }
                 })
               )
             ),
@@ -104786,6 +104868,154 @@ exports.zipAll = zipAll_1.zipAll;
 }.call(this));
 
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(37), __webpack_require__(146)(module)))
+
+/***/ }),
+/* 865 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(2);
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+Object.defineProperty(exports, "default", {
+  enumerable: true,
+  get: function get() {
+    return _InputAdornment.default;
+  }
+});
+
+var _InputAdornment = _interopRequireDefault(__webpack_require__(866));
+
+/***/ }),
+/* 866 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(process) {
+
+var _interopRequireDefault = __webpack_require__(2);
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = exports.styles = void 0;
+
+var _extends2 = _interopRequireDefault(__webpack_require__(6));
+
+var _defineProperty2 = _interopRequireDefault(__webpack_require__(13));
+
+var _objectWithoutProperties2 = _interopRequireDefault(__webpack_require__(8));
+
+var _react = _interopRequireDefault(__webpack_require__(4));
+
+var _propTypes = _interopRequireDefault(__webpack_require__(7));
+
+var _classnames = _interopRequireDefault(__webpack_require__(12));
+
+var _Typography = _interopRequireDefault(__webpack_require__(575));
+
+var _withStyles = _interopRequireDefault(__webpack_require__(11));
+
+var styles = {
+  /* Styles applied to the root element. */
+  root: {
+    display: 'flex',
+    height: '0.01em',
+    // Fix IE 11 flexbox alignment. To remove at some point.
+    maxHeight: '2em',
+    alignItems: 'center'
+  },
+
+  /* Styles applied to the root element if `variant="filled"` */
+  filled: {
+    '&$positionStart': {
+      marginTop: 16
+    }
+  },
+
+  /* Styles applied to the root element if `position="start"`. */
+  positionStart: {
+    marginRight: 8
+  },
+
+  /* Styles applied to the root element if `position="end"`. */
+  positionEnd: {
+    marginLeft: 8
+  }
+};
+exports.styles = styles;
+
+function InputAdornment(props) {
+  var _classNames;
+
+  var children = props.children,
+      Component = props.component,
+      classes = props.classes,
+      className = props.className,
+      disableTypography = props.disableTypography,
+      position = props.position,
+      variant = props.variant,
+      other = (0, _objectWithoutProperties2.default)(props, ["children", "component", "classes", "className", "disableTypography", "position", "variant"]);
+  return _react.default.createElement(Component, (0, _extends2.default)({
+    className: (0, _classnames.default)(classes.root, (_classNames = {}, (0, _defineProperty2.default)(_classNames, classes.filled, variant === 'filled'), (0, _defineProperty2.default)(_classNames, classes.positionStart, position === 'start'), (0, _defineProperty2.default)(_classNames, classes.positionEnd, position === 'end'), _classNames), className)
+  }, other), typeof children === 'string' && !disableTypography ? _react.default.createElement(_Typography.default, {
+    color: "textSecondary"
+  }, children) : children);
+}
+
+InputAdornment.propTypes = process.env.NODE_ENV !== "production" ? {
+  /**
+   * The content of the component, normally an `IconButton` or string.
+   */
+  children: _propTypes.default.node.isRequired,
+
+  /**
+   * Override or extend the styles applied to the component.
+   * See [CSS API](#css-api) below for more details.
+   */
+  classes: _propTypes.default.object.isRequired,
+
+  /**
+   * @ignore
+   */
+  className: _propTypes.default.string,
+
+  /**
+   * The component used for the root node.
+   * Either a string to use a DOM element or a component.
+   */
+  component: _propTypes.default.oneOfType([_propTypes.default.string, _propTypes.default.func, _propTypes.default.object]),
+
+  /**
+   * If children is a string then disable wrapping in a Typography component.
+   */
+  disableTypography: _propTypes.default.bool,
+
+  /**
+   * The position this adornment should appear relative to the `Input`.
+   */
+  position: _propTypes.default.oneOf(['start', 'end']),
+
+  /**
+   * The variant to use.
+   */
+  variant: _propTypes.default.oneOf(['standard', 'outlined', 'filled'])
+} : {};
+InputAdornment.defaultProps = {
+  component: 'div',
+  disableTypography: false
+};
+
+var _default = (0, _withStyles.default)(styles, {
+  name: 'MuiInputAdornment'
+})(InputAdornment);
+
+exports.default = _default;
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ })
 /******/ ]);

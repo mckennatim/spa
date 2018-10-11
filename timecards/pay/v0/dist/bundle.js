@@ -57848,7 +57848,8 @@ var Pay = function (_React$Component) {
             mfot = 0,
             reg = 0,
             aot = 0,
-            gross = 0;
+            gross = 0,
+            grossAP = 0;
         if (sah > 0) {
           if (ot.sa > 1) {
             saot = (ot.sa - 1) * sah * p.rate;
@@ -57869,13 +57870,19 @@ var Pay = function (_React$Component) {
         reg = hrs * p.rate;
         aot = saot + suot + mfot;
         gross = reg + aot;
+        if (p.weeklybase && p.weeklybase > 0) {
+          if (gross > p.weeklybase) {
+            grossAP = gross - p.weeklybase;
+            gross = p.weeklybase;
+          }
+        }
         var mff = mfhrs > 30 ? 1.5 - 20 / mfhrs : 1;
         var saf = saot > 0 ? ot.sa : mff;
         var suf = suot > 0 ? ot.su : mff;
         var mfrate = (0, _getCfg.drnd)(mff * p.rate);
         var sarate = (0, _getCfg.drnd)(saf * p.rate);
         var surate = (0, _getCfg.drnd)(suf * p.rate);
-        var regot = { reg: reg, mfot: mfot, gross: gross, saot: saot, suot: suot, mff: mff, saf: saf, suf: suf, mfrate: mfrate, sarate: sarate, surate: surate };
+        var regot = { reg: reg, mfot: mfot, gross: gross, grossAP: grossAP, saot: saot, suot: suot, mff: mff, saf: saf, suf: suf, mfrate: mfrate, sarate: sarate, surate: surate };
         return _extends({}, p, { regot: regot });
       });
       _this.setState({ persons: np }, function () {
@@ -57995,7 +58002,7 @@ var Pay = function (_React$Component) {
         ratarr[6] = (0, _getCfg.drnd)(surate * (1 + p.burden.bpercent));
         np.ratearr = ratarr;
         np.emailid = p.emailid;
-        np.wpart = p.wprt;
+        np.wprt = p.wprt;
         p.jcrates = np;
         return p;
       });
@@ -58223,7 +58230,8 @@ var Pay = function (_React$Component) {
       if (p.regot) {
         var _p$regot2 = p.regot,
             reg = _p$regot2.reg,
-            gross = _p$regot2.gross;
+            gross = _p$regot2.gross,
+            grossAP = _p$regot2.grossAP;
 
         var ot = p.regot.mfot + p.regot.saot + p.regot.suot;
         return _react2.default.createElement(
@@ -58258,6 +58266,20 @@ var Pay = function (_React$Component) {
                 'td',
                 { style: style.table.thtd },
                 ot.toFixed(2)
+              )
+            ),
+            grossAP > 0 && _react2.default.createElement(
+              'tr',
+              { style: style.table.tr },
+              _react2.default.createElement(
+                'td',
+                { style: style.table.thtd },
+                'APgross'
+              ),
+              _react2.default.createElement(
+                'td',
+                { style: style.table.thtd },
+                grossAP.toFixed(2)
               )
             ),
             _react2.default.createElement(
@@ -58386,6 +58408,8 @@ var Pay = function (_React$Component) {
               null,
               _react2.default.createElement('br', null),
               aperson.wprt,
+              _react2.default.createElement('br', null),
+              aperson.emailid,
               _react2.default.createElement('br', null),
               _react2.default.createElement(
                 'span',

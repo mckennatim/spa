@@ -74,7 +74,7 @@ class Pay extends React.Component{
       let mfhrs = hrsarr.slice(0,5).reduce((t,h)=>t+h,0)
       let sah = hrsarr[5]
       let suh = hrsarr[6]
-      let saot=0, suot=0 ,mfot=0, reg=0, aot=0, gross=0
+      let saot=0, suot=0 ,mfot=0, reg=0, aot=0, gross=0,grossAP=0
       if(sah>0){
         if(ot.sa>1){
           saot = (ot.sa-1)*sah*p.rate
@@ -95,13 +95,19 @@ class Pay extends React.Component{
       reg = hrs*p.rate
       aot = saot+suot+mfot
       gross=reg+aot
+      if (p.weeklybase && p.weeklybase>0){
+        if (gross > p.weeklybase){
+          grossAP = gross - p.weeklybase
+          gross = p.weeklybase
+        }
+      }
       let mff = mfhrs>30 ? 1.5 - (20/mfhrs) : 1
       let saf = saot>0 ? ot.sa : mff
       let suf = suot>0 ? ot.su :mff
       let mfrate = drnd(mff*p.rate)
       let sarate = drnd(saf*p.rate)
       let surate = drnd(suf*p.rate)
-      const regot = {reg:reg, mfot:mfot, gross:gross, saot:saot, suot:suot, mff:mff, saf:saf, suf:suf, mfrate, sarate, surate}
+      const regot = {reg:reg, mfot:mfot, gross:gross, grossAP: grossAP, saot:saot, suot:suot, mff:mff, saf:saf, suf:suf, mfrate, sarate, surate}
       return {...p, regot}
     })
     this.setState({persons:np},()=>this.calcDeductions())
@@ -200,7 +206,7 @@ class Pay extends React.Component{
       ratarr[6]=drnd(surate*(1+p.burden.bpercent))
       np.ratearr = ratarr
       np.emailid=p.emailid
-      np.wpart=p.wprt
+      np.wprt=p.wprt
       p.jcrates = np
       return p
     })
@@ -446,7 +452,7 @@ class Pay extends React.Component{
 
   renderRegOt = (p)=>{
     if(p.regot){
-      const{reg, gross}=p.regot
+      const{reg, gross, grossAP}=p.regot
       const ot = p.regot.mfot+p.regot.saot+p.regot.suot
       return(
         <table style={style.table.table}><tbody>
@@ -458,6 +464,12 @@ class Pay extends React.Component{
           <td style={style.table.thtd}>o.t.</td>
           <td style={style.table.thtd}>{ot.toFixed(2)}</td>
         </tr>
+        {grossAP>0 && 
+        <tr style={style.table.tr}>
+          <td style={style.table.thtd}>APgross</td>
+          <td style={style.table.thtd}>{grossAP.toFixed(2)}</td>
+        </tr>
+        }
         <tr style={style.table.tr}>
           <th style={style.table.thtd}>gross</th>
           <th style={style.table.thtd}>{gross.toFixed(2)}</th>
@@ -509,7 +521,8 @@ class Pay extends React.Component{
           <div style={style.myli.person}> 
           <input style={style.ckbox} type="checkbox" checked={aperson.check} onChange={this.handleCheck(i)}/> 
             <span><br/>
-              {aperson.wprt}<br/>
+            {aperson.wprt}<br/>
+            {aperson.emailid}<br/>
              <span>{aperson.firstmid} {aperson.lastname}</span> <br/>
               {aperson.street}<br/>
               {aperson.city}, {aperson.st} {aperson.zip}<br/>

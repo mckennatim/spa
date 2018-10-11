@@ -13,6 +13,7 @@ import TextField from '@material-ui/core/TextField';// eslint-disable-line
 import Checkbox from '@material-ui/core/Checkbox';// eslint-disable-line no-unused-vars
 import FormControlLabel from '@material-ui/core/FormControlLabel';// eslint-disable-line no-unused-vars
 import FormGroup from '@material-ui/core/FormGroup';// eslint-disable-line no-unused-vars
+import InputAdornment from '@material-ui/core/InputAdornment';// eslint-disable-line no-unused-vars
 import FormControl from '@material-ui/core/FormControl';// eslint-disable-line no-unused-vars
 import FormLabel from '@material-ui/core/FormLabel';// eslint-disable-line no-unused-vars
 import Radio from '@material-ui/core/Radio';// eslint-disable-line no-unused-vars
@@ -216,6 +217,9 @@ class AddPerson extends React.Component {
           value={curperson.rate}
           onChange={this.txtChanged('rate')}
           margin="dense"
+          InputProps={{
+            startAdornment:<InputAdornment position="start">$</InputAdornment>,
+          }}
         /> 
         <TextField
           id="standard-name"
@@ -238,10 +242,27 @@ class AddPerson extends React.Component {
           <FormControlLabel disabled={!isPartner} value="hourly" control={<Radio />} label="Hourly" />
           <FormControlLabel value="salary" control={<Radio />} label="Salary" />
           <FormControlLabel value="salaryne" control={<Radio />} label="Salary non-exempt" />
-          <FormControlLabel value="1099" control={<Radio />} label="1099"/>        
+          <FormControlLabel value="1099" control={<Radio />} label="1099"/> 
+          {curperson.role=='partner' && 
+          <FormControlLabel value="base" control={<Radio />} label="Base Pay"/>        
+          }       
           </RadioGroup>
         </FormControl >
         {curperson.wtype!='1099' && <div>
+          {curperson.wtype=='base' && <div>
+          <TextField
+          id="standard-name"
+          label="Weekly Base Pay"
+          className={classes.textField}
+          type="number"
+          value={curperson.weeklybase}
+          onChange={this.txtChanged('weeklybase')}
+          InputProps={{
+            startAdornment:<InputAdornment position="start">$</InputAdornment>,
+          }}          
+          margin="dense"
+        />             
+          </div>}
         <FormControl component="fieldset" className={classes.formControl}>
         <FormLabel component="legend">State/Local Witholding</FormLabel>   
         <FormControlLabel
@@ -284,6 +305,9 @@ class AddPerson extends React.Component {
           value={curperson.w4add}
           onChange={this.txtChanged('w4add')}
           margin="dense"
+          InputProps={{
+            startAdornment:<InputAdornment position="start">$</InputAdornment>,
+          }}
         />
         {curperson.haystatewh && <div>
         <TextField
@@ -305,6 +329,9 @@ class AddPerson extends React.Component {
           value={curperson.stadd}
           onChange={this.txtChanged('stadd')}
           margin="dense"
+          InputProps={{
+            startAdornment:<InputAdornment position="start">$</InputAdornment>,
+          }}
         />
         <TextField
           id="standard-name"
@@ -381,6 +408,9 @@ class AddPerson extends React.Component {
                 value={curperson.healthemp}
                 onChange={this.txtChanged('healthemp')}
                 margin="dense"
+                InputProps={{
+                  startAdornment:<InputAdornment position="start">$</InputAdornment>,
+                }}
               /> 
               <TextField
                 id="standard-name"
@@ -390,6 +420,9 @@ class AddPerson extends React.Component {
                 value={curperson.healthco}
                 onChange={this.txtChanged('healthco')}
                 margin="dense"
+                InputProps={{
+                  startAdornment:<InputAdornment position="start">$</InputAdornment>,
+                }}
               /> 
         </FormControl> 
         <FormControl  className={classes.formControl}>
@@ -402,6 +435,9 @@ class AddPerson extends React.Component {
                 value={curperson.k401emp}
                 onChange={this.txtChanged('k401emp')}
                 margin="dense"
+                InputProps={{
+                  startAdornment:<InputAdornment position="start">$</InputAdornment>,
+                }}
               /> 
               <TextField
                 id="standard-name"
@@ -411,6 +447,9 @@ class AddPerson extends React.Component {
                 value={curperson.k401co}
                 onChange={this.txtChanged('k401co')}
                 margin="dense"
+                InputProps={{
+                  startAdornment:<InputAdornment position="start">$</InputAdornment>,
+                }}
               /> 
         </FormControl>       
       </FormControl>             

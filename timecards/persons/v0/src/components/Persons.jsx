@@ -277,7 +277,8 @@ class Persons extends React.Component{
         const haywh = aperson.wtype=='1099' ? 0 : 1
         const nohayded = !aperson.healthemp && !aperson.healthco && !aperson.k401emp && !aperson.k401co
         const nohayben = !aperson.vacation && !aperson.holiday && !aperson.personal  
-        const nohayname = !aperson.firstmid && !aperson.lastname      
+        const nohayname = !aperson.firstmid && !aperson.lastname 
+        const tybase = aperson.wtype=='base'     
         return (
         <li  key={i} style={style.myli.li}>
           <div style={style.myli.person}> 
@@ -296,6 +297,11 @@ class Persons extends React.Component{
               rate: ${aperson.rate}<br/>
               ssn: {aperson.ssn}<br/>
               type:{aperson.wtype}<br/>
+              {tybase && 
+              <div>
+                weekly base pay: {aperson.weeklybase}
+              </div>
+              }
               {!!haywh &&  
               <div>
               state wh:{haystatewh}<br/>
