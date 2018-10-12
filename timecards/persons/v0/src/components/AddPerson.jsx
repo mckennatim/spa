@@ -90,6 +90,13 @@ class AddPerson extends React.Component {
     curperson[field] = e.target.value
     this.props.xmitChange({curperson:curperson});
   } 
+  numChanged = field => e =>{
+    let curperson= this.props.eperson.curperson
+    let val = e.target.value
+    val= val.length==0 ? 0 : val
+    curperson[field] = val
+    this.props.xmitChange({curperson:curperson});
+  } 
   ckChanged = field => e =>{
     let curperson= this.props.eperson.curperson
     curperson[field] = e.target.checked
@@ -293,7 +300,7 @@ class AddPerson extends React.Component {
           type="number"
           inputProps={{ min: "0", max: "15"}}
           value={curperson.w4allow}
-          onChange={this.txtChanged('w4allow')}
+          onChange={this.numChanged('w4allow')}
           margin="dense"
         /> 
         <TextField
@@ -303,7 +310,7 @@ class AddPerson extends React.Component {
           type="number"
           inputProps={{ min: "0", max: "15"}}
           value={curperson.w4add}
-          onChange={this.txtChanged('w4add')}
+          onChange={this.numChanged('w4add')}
           margin="dense"
           InputProps={{
             startAdornment:<InputAdornment position="start">$</InputAdornment>,
@@ -315,9 +322,9 @@ class AddPerson extends React.Component {
           label="State W4 Allowance"
           className={classes.textField}
           type="number"
-          inputProps={{ min: "0", max: "15"}}
+          inputProps={{ min: "0", max: "10"}}
           value={curperson.stallow}
-          onChange={this.txtChanged('stallow')}
+          onChange={this.numChanged('stallow')}
           margin="dense"
         /> 
         <TextField
@@ -325,9 +332,9 @@ class AddPerson extends React.Component {
           label="State Additional Withhold."
           className={classes.textField}
           type="number"
-          inputProps={{ min: "0", max: "15"}}
+          inputProps={{ min: "0", max: "10"}}
           value={curperson.stadd}
-          onChange={this.txtChanged('stadd')}
+          onChange={this.numChanged('stadd')}
           margin="dense"
           InputProps={{
             startAdornment:<InputAdornment position="start">$</InputAdornment>,
@@ -340,7 +347,7 @@ class AddPerson extends React.Component {
           type="number"
           inputProps={{ min: "0", max: "4"}}
           value={curperson.stblind}
-          onChange={this.txtChanged('stblind')}
+          onChange={this.numChanged('stblind')}
           margin="dense"
         />
         </div> } 
@@ -406,7 +413,7 @@ class AddPerson extends React.Component {
                 className={classes.textField}
                 type="number"
                 value={curperson.healthemp}
-                onChange={this.txtChanged('healthemp')}
+                onChange={this.numChanged('healthemp')}
                 margin="dense"
                 InputProps={{
                   startAdornment:<InputAdornment position="start">$</InputAdornment>,
@@ -418,7 +425,7 @@ class AddPerson extends React.Component {
                 className={classes.textField}
                 type="number"
                 value={curperson.healthco}
-                onChange={this.txtChanged('healthco')}
+                onChange={this.numChanged('healthco')}
                 margin="dense"
                 InputProps={{
                   startAdornment:<InputAdornment position="start">$</InputAdornment>,
@@ -433,7 +440,7 @@ class AddPerson extends React.Component {
                 className={classes.textField}
                 type="number"
                 value={curperson.k401emp}
-                onChange={this.txtChanged('k401emp')}
+                onChange={this.numChanged('k401emp')}
                 margin="dense"
                 InputProps={{
                   startAdornment:<InputAdornment position="start">$</InputAdornment>,
@@ -445,7 +452,7 @@ class AddPerson extends React.Component {
                 className={classes.textField}
                 type="number"
                 value={curperson.k401co}
-                onChange={this.txtChanged('k401co')}
+                onChange={this.numChanged('k401co')}
                 margin="dense"
                 InputProps={{
                   startAdornment:<InputAdornment position="start">$</InputAdornment>,
@@ -461,7 +468,7 @@ class AddPerson extends React.Component {
               className={classes.textField}
               type="number"
               value={curperson.vacation}
-              onChange={this.txtChanged('vacation')}
+              onChange={this.numChanged('vacation')}
               margin="dense"
             /> 
             <TextField
@@ -470,7 +477,7 @@ class AddPerson extends React.Component {
               className={classes.textField}
               type="number"
               value={curperson.holiday}
-              onChange={this.txtChanged('holiday')}
+              onChange={this.numChanged('holiday')}
               margin="dense"
             />
             <TextField
@@ -479,7 +486,7 @@ class AddPerson extends React.Component {
               className={classes.textField}
               type="number"
               value={curperson.personal}
-              onChange={this.txtChanged('personal')}
+              onChange={this.numChanged('personal')}
               margin="dense"
             />  
     </FormControl>  

@@ -101,7 +101,7 @@ const putTcardWk=(wkstat)=>{
   }
 }
 const putTcardJc=(aday)=>{
-  const tday = adjDay4db(cfg.firstday, aday)
+  const tday = adjDay4db(ls.getKey('firstday'), aday)
   var lsh = ls.getItem();
   if(geta('lsh.token', lsh)){
     let url= cfg.url.api+'/tcard/updjc'
@@ -123,7 +123,7 @@ const putTcardJc=(aday)=>{
   }
 }
 const putTcardPu=(aday)=>{
-  const tday = adjDay4db(cfg.firstday, aday)
+  const tday = adjDay4db(ls.getKey('firstday'), aday)
   var lsh = ls.getItem();
   if(geta('lsh.token', lsh)){
     let url= cfg.url.api+'/tcard/updpu'
@@ -146,7 +146,7 @@ const putTcardPu=(aday)=>{
 }
 
 const putTcard=(aday)=>{
-  const tday = adjDay4db(cfg.firstday, aday)
+  const tday = adjDay4db(ls.getKey('firstday'), aday)
   var lsh = ls.getItem();
   if(geta('lsh.token', lsh)){
     let url= cfg.url.api+'/tcard/update'
@@ -169,7 +169,7 @@ const putTcard=(aday)=>{
 }
 
 const delTcardPu=(aday)=>{
-  const tday = adjDay4db(cfg.firstday, aday)
+  const tday = adjDay4db(ls.getKey('firstday'), aday)
   var lsh = ls.getItem();
   if(geta('lsh.token', lsh)){
     let url= cfg.url.api+'/tcard/del'
@@ -214,7 +214,7 @@ const sumThing=(arr, fld)=>{
 
 const processDb4app =(res)=>{
   const lsh = ls.getItem();
-  const wkarr = wkendLast(adjWk4app(cfg.firstday, res.wkarr))
+  const wkarr = wkendLast(adjWk4app(ls.getKey('firstday'), res.wkarr))
   const hrs= sumThing(wkarr, 'hrs')
   const jchrs= sumThing(wkarr, 'jchrs')
   return {wkarr, hrs, jchrs, emailid:lsh.email, jobs:res.jobs, wstat:res.wstat}

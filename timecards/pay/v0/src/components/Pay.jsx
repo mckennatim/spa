@@ -141,6 +141,7 @@ class Pay extends React.Component{
         const lkup = fedwh
           .filter((wh)=>wh.singmar==singmar && subj2wh>wh.over && subj2wh<wh.notover)
         tax+=lkup[0].perc*subj2wh + w4add
+        tax = tax>0 ? tax : 0
       }
       return tax
     }
@@ -151,23 +152,28 @@ class Pay extends React.Component{
       }else{
         const hoh = p.sthoh ? strates.hohded : 0
         const blind = p.stblind ? strates.blided : 0
-        stSubj2tax = p.ded.taxablegross - strates.allow*p.stallow -hoh - blind - ssmed
-        sttax = stSubj2tax*strates.rate + p.stadd
+        const allow = p.stallow ? p.stallow : 1 
+        stSubj2tax = p.ded.taxablegross - strates.allow*allow -hoh - blind - ssmed
+        sttax = stSubj2tax*strates.rate + p.staddtax
+        sttax = sttax>0 ? sttax : 0
       }
       return sttax  
-    }    
+    } 
     const {persons, rates} = this.state
     const{fedr,fedwh, strates} =rates
     const whp = persons.map((p)=>{
-      const{taxablegross, gross}=p.ded
-      const subj2wh = p.w4exempt ? 0 : taxablegross-(fedr.allow*p.w4allow)
-      const ss = taxablegross*fedr.ssw
-      const medi = taxablegross*fedr.mediw
-      const singmar = p.marital=='married' ? 'married' : 'single'
-      const fedtax = lookupFedTax(fedwh, singmar, 'weekly', subj2wh, p.w4add)
-      const sttax =  calcStateTax(p, strates, ss+medi)
-      const net = gross-fedtax-ss -medi - sttax
-      p.wh={gross:gross, taxablegross:taxablegross, ss:drnd(ss), medi:drnd(medi), fedtax:drnd(fedtax), sttax:drnd(sttax), net:drnd(net)}
+      if(p.wtype!='1099'){
+        const{taxablegross, gross}=p.ded
+        const subj2wh = p.w4exempt ? 0 : taxablegross-(fedr.allow*p.w4allow)
+        const ss = taxablegross*fedr.ssw
+        const medi = taxablegross*fedr.mediw
+        const meda = 0
+        const singmar = p.marital=='married' ? 'married' : 'single'
+        const fedtax = lookupFedTax(fedwh, singmar, 'weekly', subj2wh, p.w4add)
+        const sttax =  calcStateTax(p, strates, ss+medi)
+        const net = gross-fedtax-ss -medi - sttax
+        p.wh={gross:gross, taxablegross:taxablegross, ss:drnd(ss), medi:drnd(medi), meda:drnd(meda), fedtax:drnd(fedtax), sttax:drnd(sttax), net:drnd(net)}
+      }
       return p
     })
     this.setState({persons:whp},()=>this.calcBurden())
@@ -177,20 +183,22 @@ class Pay extends React.Component{
     const {persons, rates} = this.state
     const{fedr, cosr} =rates
     const burper = persons.map((p)=>{
-      const{ gross}=p.ded
-      const ss = drnd(gross*fedr.sse)
-      const medi = drnd(gross*fedr.medie)
-      let health = p.healthco>0 ? drnd(p.healthco*12.0/50) : 0
-      let k401 = p.k401co>0 ? drnd(p.k401co*12.0/50) : 0
-      let vaca = p.vacation>0 ? drnd(p.vacation/250*gross) : 0
-      let holi = p.holiday>0 ? drnd(p.holiday/250*gross) : 0
-      let pers = p.personal>0 ? drnd(p.personal/250*gross) : 0
-      let suta = drnd(cosr.stuirate*gross)
-      let comp = drnd(cosr.wcrate*gross)
-      let futa = drnd(fedr.futa*gross)
-      let tburden = drnd(ss+medi+health+k401+vaca+holi+pers+suta+comp+futa)
-      let bpercent = drnd(tburden/gross*10)/10
-      p.burden={gross,ss,medi,health,k401,vaca,holi,pers,suta,futa,tburden, bpercent}
+      if(p.wtype!='1099'){
+        const{ gross}=p.ded
+        const ss = drnd(gross*fedr.sse)
+        const medi = drnd(gross*fedr.medie)
+        let health = p.healthco>0 ? drnd(p.healthco*12.0/50) : 0
+        let k401 = p.k401co>0 ? drnd(p.k401co*12.0/50) : 0
+        let vaca = p.vacation>0 ? drnd(p.vacation/250*gross) : 0
+        let holi = p.holiday>0 ? drnd(p.holiday/250*gross) : 0
+        let pers = p.personal>0 ? drnd(p.personal/250*gross) : 0
+        let suta = drnd(cosr.stuirate*gross)
+        let comp = drnd(cosr.wcrate*gross)
+        let futa = drnd(fedr.futa*gross)
+        let tburden = drnd(ss+medi+health+k401+vaca+holi+pers+suta+comp+futa)
+        let bpercent = drnd(tburden/gross*10)/10
+        p.burden={gross,ss,medi,health,k401,vaca,holi,pers,suta,futa,comp,tburden, bpercent}
+      }
       return p
     })
     this.setState({persons:burper},()=>this.calcCostPerHrPerDay())
@@ -201,9 +209,13 @@ class Pay extends React.Component{
     const coper = persons.map((p)=>{
       let np = {}
       const {sarate, surate, mfrate} =p.regot
-      let ratarr = new Array(7).fill(drnd(mfrate*(1+p.burden.bpercent)))
-      ratarr[5]=drnd(sarate*(1+p.burden.bpercent))
-      ratarr[6]=drnd(surate*(1+p.burden.bpercent))
+      let burperc = 0
+      if(p.burden &&  p.burden.bpercent){
+        burperc = p.burden.bpercent
+      }
+      let ratarr = new Array(7).fill(drnd(mfrate*(1+burperc)))
+      ratarr[5]=drnd(sarate*(1+burperc))
+      ratarr[6]=drnd(surate*(1+burperc))
       np.ratearr = ratarr
       np.emailid=p.emailid
       np.wprt=p.wprt
@@ -223,6 +235,138 @@ class Pay extends React.Component{
       })
     console.log('jper: ', jper)  
     postJobRates(jper)
+    this.apply2gl()
+  }
+
+  apply2gl=()=>{
+    const{persons}=this.state
+    let journal = [] 
+    persons
+      .filter((p)=>p.check)
+      .map((p)=>{
+        let blentry={account:'', wdprt:p.wprt, someid:p.emailid, job:'', cat:'', date:moment().format('YYYY-MM-DD'), somenum: '', debit:'', credit:'',coid:p.coid}
+        let e ={...blentry}
+        e.account ='a6010-gross'
+        e.debit=p.regot.gross
+        journal.push(e)
+
+        let net = p.regot.gross
+        
+        if (p.regot.grossAP && p.regot.grossAP>0){
+          e ={...blentry}
+          e.account ='a2200-grossAP'
+          e.credit=p.regot.grossAP
+          journal.push(e)
+
+          e ={...blentry}
+          e.account ='a6010-gross'
+          e.debit=p.regot.grossAP
+          journal.push(e)
+        }
+        if (p.wh){
+          e ={...blentry}
+          e.cat='worker'
+          e.account ='a2010-SS'
+          e.credit=p.wh.ss
+          journal.push(e)
+
+          e ={...blentry}
+          e.cat='worker'
+          e.account ='a2020-medi'
+          e.credit=p.wh.medi
+          journal.push(e)
+          e ={...blentry}
+          e.cat='worker'
+          e.account ='a2020-meda'
+          e.credit=p.wh.meda
+          journal.push(e)
+
+          e ={...blentry}
+          e.cat='worker'
+          e.account ='a2050-fedWh'
+          e.credit=p.wh.fedtax
+          journal.push(e)
+          e ={...blentry}
+          e.cat='co'
+          e.account ='a2060-stWh'
+          e.credit=p.wh.sttax
+          journal.push(e)  
+          
+          net = p.wh.net
+        }
+        e ={...blentry}
+        e.account ='a1010-cash'
+        e.credit=net
+        journal.push(e)
+        if (p.burden){
+          e ={...blentry}
+          e.account ='a6020-burden'
+          e.debit=p.burden.tburden
+          journal.push(e)
+
+          e ={...blentry}
+          e.cat='co'
+          e.account ='a2010-SS'
+          e.credit=p.burden.ss
+          journal.push(e)
+
+          e ={...blentry}
+          e.cat='co'
+          e.account ='a2020-medi'
+          e.credit=p.burden.medi
+          journal.push(e)
+
+          if (p.burden.futa>0){
+            e ={...blentry}
+            e.account ='a2080-FUTA'
+            e.credit=p.burden.futa
+            journal.push(e)
+          }
+          if (p.burden.suta>0){
+            e ={...blentry}
+            e.account ='a2090-SUTA'
+            e.credit=p.burden.suta
+            journal.push(e)
+          }
+          if (p.burden.comp>0){
+            e ={...blentry}
+            e.account ='a2100-comp'
+            e.credit=p.burden.comp
+            journal.push(e)
+          }
+          if (p.burden.k401>0){
+            e ={...blentry}
+            e.account ='a2110-401K'
+            e.credit=p.burden.k401
+            journal.push(e)
+          }
+          if (p.burden.health>0){
+            e ={...blentry}
+            e.account ='a2120-health'
+            e.credit=p.burden.health
+            journal.push(e)
+          }
+          if (p.burden.holi>0){
+            e ={...blentry}
+            e.account ='a2130-holiday'
+            e.credit=p.burden.holi
+            journal.push(e)
+          }
+          if (p.burden.vaca>0){
+            e ={...blentry}
+            e.account ='a2140-vacation'
+            e.credit=p.burden.vaca
+            journal.push(e)
+          }
+          if (p.burden.pers>0){
+            e ={...blentry}
+            e.account ='a2150-personal'
+            e.credit=p.burden.pers
+            journal.push(e)
+          }
+        }
+      })
+    console.log('journal: ', journal)      
   }
 
   getCurrent=(persons)=>{
@@ -478,13 +622,35 @@ class Pay extends React.Component{
       )
     }
   }
+  renderDed = (p)=>{
+    if(p.ded && (p.ded.healthded>0 || p.ded.k401ded>0)){
+
+      return (
+        <table style={style.table.table}><tbody>
+        <tr><th style={style.table.col2} colSpan="2">Deductions</th></tr>  
+        <tr style={style.table.tr}>
+          <td style={style.table.thtd}>health</td>
+          <td style={style.table.thtd}>{p.ded.healthded.toFixed(2)}</td>
+        </tr>
+        <tr style={style.table.tr}>
+          <td style={style.table.thtd}>401K</td>
+          <td style={style.table.thtd}>{p.ded.k401ded.toFixed(2)}</td>
+        </tr>
+        <tr style={style.table.tr}>
+          <th style={style.table.thtd}>taxable</th>
+          <th style={style.table.thtd}>{p.ded.taxablegross.toFixed(2)}</th>
+        </tr>
+        </tbody></table>  
+      )
+    }
+  }
 
   renderWh = (p)=>{
     if(p.wh){
 
       return (
         <table style={style.table.table}><tbody>
-        <tr><th colSpan="2">deductions</th></tr>  
+        <tr><th style={style.table.col2} colSpan="2">Taxes</th></tr>  
         <tr style={style.table.tr}>
           <td style={style.table.thtd}>ssi</td>
           <td style={style.table.thtd}>{p.wh.ss.toFixed(2)}</td>
@@ -510,12 +676,15 @@ class Pay extends React.Component{
     }
   }
 
+
+
   renderPay=()=>{
     let {persons}=this.state
     const rpersons = persons
       .map((aperson, i)=>{
         const regot = this.renderRegOt(aperson)
         const wh = this.renderWh(aperson)
+        const dedu = this.renderDed(aperson)
         return (
         <li  key={i} style={style.myli.li}>
           <div style={style.myli.person}> 
@@ -526,13 +695,16 @@ class Pay extends React.Component{
              <span>{aperson.firstmid} {aperson.lastname}</span> <br/>
               {aperson.street}<br/>
               {aperson.city}, {aperson.st} {aperson.zip}<br/>
+              worker type: {aperson.wtype}
             </span>
+
           </div>
           <div style={style.myli.cat}>
             <span>  
             
             ${aperson.rate} x {aperson.hrs}hrs<br/>
             {regot}
+            {dedu}
             {wh}
             </span>
           </div>
@@ -719,6 +891,9 @@ const style = {
       padding: '0px',
       margin: '0px',
       textAlign:'right'
+    },
+    col2:{
+      textAlign:'left'
     }
   },
   ckbox:{
