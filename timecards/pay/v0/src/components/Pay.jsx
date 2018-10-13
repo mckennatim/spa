@@ -1,10 +1,12 @@
 import React from 'react'// eslint-disable-line no-unused-vars
 var moment = require('moment');
-import {router} from '../app'
+// import {router} from '../app'
 import {mapClass2Element} from '../hoc/mapClass2Element'
-import {fetchPay, postPay, fetchSettings, fetchRates, postJobRates} from '../services/fetches'
-import{adjWdprtDn, padWk} from  '../../../../common/v0/src/utilities/reroo'
-import { setEdit, setKeyVal} from '../actions/personacts';
+// import {fetchPay, postPay, fetchSettings, fetchRates, postJobRates, postJournal} from '../services/fetches'
+import {fetchPay, fetchSettings, fetchRates, postJobRates, postJournal} from '../services/fetches'
+// import{adjWdprtDn, padWk} from  '../../../../common/v0/src/utilities/reroo'
+// import { setEdit, setKeyVal} from '../actions/personacts';
+import { setKeyVal} from '../actions/personacts';
 import {makeHref,drnd} from '../utilities/getCfg'
 import Checkbox from '@material-ui/core/Checkbox';// eslint-disable-line no-unused-vars
 
@@ -233,9 +235,22 @@ class Pay extends React.Component{
       .map((p)=>{
         return p.jcrates
       })
-    console.log('jper: ', jper)  
     postJobRates(jper)
+    this.setAsPaid()
     this.apply2gl()
+  }
+
+  setAsPaid=()=>{
+    const nstate = {...this.state}
+    const perpa= nstate.persons.map((p)=>{
+      const np = {...p}
+      if (np.check){
+        console.log('in pcheck')
+        np.status='paid'
+      }
+      return np
+    })
+    this.setState({persons:perpa},()=>console.log('this.state: ', this.state))   
   }
 
   apply2gl=()=>{
@@ -244,12 +259,11 @@ class Pay extends React.Component{
     persons
       .filter((p)=>p.check)
       .map((p)=>{
-        let blentry={account:'', wdprt:p.wprt, someid:p.emailid, job:'', cat:'', date:moment().format('YYYY-MM-DD'), somenum: '', debit:'', credit:'',coid:p.coid}
+        let blentry={account:'', wdprt:p.wprt, someid:p.emailid, job:'', cat:'', date:moment().format('YYYY-MM-DD'), somenum: 0, debit:0, credit:0}
         let e ={...blentry}
         e.account ='a6010-gross'
         e.debit=p.regot.gross
         journal.push(e)
-
         let net = p.regot.gross
         
         if (p.regot.grossAP && p.regot.grossAP>0){
@@ -275,23 +289,28 @@ class Pay extends React.Component{
           e.account ='a2020-medi'
           e.credit=p.wh.medi
           journal.push(e)
-          e ={...blentry}
-          e.cat='worker'
-          e.account ='a2020-meda'
-          e.credit=p.wh.meda
-          journal.push(e)
+          if (p.wh.meda>0){
+            e ={...blentry}
+            e.cat='worker'
+            e.account ='a2020-meda'
+            e.credit=p.wh.meda
+            journal.push(e)
+          }
 
-          e ={...blentry}
-          e.cat='worker'
-          e.account ='a2050-fedWh'
-          e.credit=p.wh.fedtax
-          journal.push(e)
-          e ={...blentry}
-          e.cat='co'
-          e.account ='a2060-stWh'
-          e.credit=p.wh.sttax
-          journal.push(e)  
-          
+          if (p.wh.fedtax>0){
+            e ={...blentry}
+            e.cat='worker'
+            e.account ='a2050-fedWh'
+            e.credit=p.wh.fedtax
+            journal.push(e)
+          }
+          if (p.wh.sttax>0){
+            e ={...blentry}
+            e.cat='worker'
+            e.account ='a2060-stWh'
+            e.credit=p.wh.sttax
+            journal.push(e)  
+          }
           net = p.wh.net
         }
         e ={...blentry}
@@ -304,18 +323,20 @@ class Pay extends React.Component{
           e.debit=p.burden.tburden
           journal.push(e)
 
-          e ={...blentry}
-          e.cat='co'
-          e.account ='a2010-SS'
-          e.credit=p.burden.ss
-          journal.push(e)
-
-          e ={...blentry}
-          e.cat='co'
-          e.account ='a2020-medi'
-          e.credit=p.burden.medi
-          journal.push(e)
-
+          if (p.burden.ss>0){
+            e ={...blentry}
+            e.cat='co'
+            e.account ='a2010-SS'
+            e.credit=p.burden.ss
+            journal.push(e)
+          }
+          if (p.burden.medi>0){
+            e ={...blentry}
+            e.cat='co'
+            e.account ='a2020-medi'
+            e.credit=p.burden.medi
+            journal.push(e)
+          }
           if (p.burden.futa>0){
             e ={...blentry}
             e.account ='a2080-FUTA'
@@ -364,9 +385,28 @@ class Pay extends React.Component{
             e.credit=p.burden.pers
             journal.push(e)
           }
+          e ={...blentry}
+          e.account ='a6020-burden'
+          e.credit=p.burden.tburden
+          journal.push(e)
+
+          e ={...blentry}
+          e.account ='a6010-gross'
+          e.credit=p.regot.gross
+          journal.push(e)
         }
       })
-    console.log('journal: ', journal)      
+    // const perpa= persons.map((p)=>{
+    //   const np = {...p}
+    //   if (np.check){
+    //     console.log('in pcheck')
+    //     np.status='paid'
+    //   }
+    //   return np
+    // })
+    // console.log('perpa: ', perpa)
+    // this.setState({persons:perpa},()=>console.log('this.state: ', this.state)) 
+    postJournal(journal)    
   }
 
   getCurrent=(persons)=>{
@@ -383,187 +423,187 @@ class Pay extends React.Component{
     return cperson.slice(1)
   }  
 
-  filtAct = ()=>setKeyVal({filt:'active'});
-  filtInAct = ()=>setKeyVal({filt:'inactive'});
-  filtAll = ()=>setKeyVal({filt:'all'});
+  // filtAct = ()=>setKeyVal({filt:'active'});
+  // filtInAct = ()=>setKeyVal({filt:'inactive'});
+  // filtAll = ()=>setKeyVal({filt:'all'});
 
-  dfiltCurrent = ()=>setKeyVal({dfilt:'current'});
-  dfiltFuture = ()=>setKeyVal({dfilt:'future'});
-  dfiltHistory = ()=>setKeyVal({dfilt:'history'});
-  dfiltAll = ()=>setKeyVal({dfilt:'all'});
+  // dfiltCurrent = ()=>setKeyVal({dfilt:'current'});
+  // dfiltFuture = ()=>setKeyVal({dfilt:'future'});
+  // dfiltHistory = ()=>setKeyVal({dfilt:'history'});
+  // dfiltAll = ()=>setKeyVal({dfilt:'all'});
   
   
-  fact = (person)=>person.active==true
-  finact = (person)=>person.active==false
-  fall = ()=>true
+  // fact = (person)=>person.active==true
+  // finact = (person)=>person.active==false
+  // fall = ()=>true
 
-  afilt = (person)=>{
-    switch (this.props.eperson.filt) {
-      case 'all':
-        return this.fall(person) 
-      case 'active':
-        return this.fact(person) 
-      case 'inactive':
-        return this.finact(person) 
-      default:
-        return this.fall()
-    }
-  }
+  // afilt = (person)=>{
+  //   switch (this.props.eperson.filt) {
+  //     case 'all':
+  //       return this.fall(person) 
+  //     case 'active':
+  //       return this.fact(person) 
+  //     case 'inactive':
+  //       return this.finact(person) 
+  //     default:
+  //       return this.fall()
+  //   }
+  // }
 
-  efilt = (person)=>{
-    person.effective = person.effective ? person.effective.split('T')[0] : null
-    const cdate = moment().format("YYYY-MM-DD")
-    switch (this.props.eperson.dfilt) {
-      case 'all':
-        return true 
-      case 'current':
-        return true
-      case 'history':
-        return person.effective && person.effective<=cdate
-      case 'future':
-        return person.effective && person.effective>cdate
-      default:
-        return this.fall()
-    }
-  }
+  // efilt = (person)=>{
+  //   person.effective = person.effective ? person.effective.split('T')[0] : null
+  //   const cdate = moment().format("YYYY-MM-DD")
+  //   switch (this.props.eperson.dfilt) {
+  //     case 'all':
+  //       return true 
+  //     case 'current':
+  //       return true
+  //     case 'history':
+  //       return person.effective && person.effective<=cdate
+  //     case 'future':
+  //       return person.effective && person.effective>cdate
+  //     default:
+  //       return this.fall()
+  //   }
+  // }
 
-  cfilt = (persons)=>{
-    if(this.props.eperson.dfilt=='current') {
-      persons = this.getCurrent(persons)
-    }
-    return persons
-  }
+  // cfilt = (persons)=>{
+  //   if(this.props.eperson.dfilt=='current') {
+  //     persons = this.getCurrent(persons)
+  //   }
+  //   return persons
+  // }
 
-  getwk = ()=>{
-    this.alterPayYdate(this.state.wk)  
-  }
-  buzz=()=>{
-    console.log('buzz()')
-    window.navigator.vibrate(100)
-  }
-  getwk0 = ()=>{
-    this.alterPayYdate(0)  
-  }
+  // getwk = ()=>{
+  //   this.alterPayYdate(this.state.wk)  
+  // }
+  // buzz=()=>{
+  //   console.log('buzz()')
+  //   window.navigator.vibrate(100)
+  // }
+  // getwk0 = ()=>{
+  //   this.alterPayYdate(0)  
+  // }
 
-  alterPayYdate = (wk)=>{
-    fetchPay(wk)
-    .then((res)=>{
-      const dddMMDD = this.alterDddMMDD(this.state.wk) 
-      this.setState({persons: res.persons, dddMMDD},()=>{})
+  // alterPayYdate = (wk)=>{
+  //   fetchPay(wk)
+  //   .then((res)=>{
+  //     const dddMMDD = this.alterDddMMDD(this.state.wk) 
+  //     this.setState({persons: res.persons, dddMMDD},()=>{})
 
-    })
-  }
+  //   })
+  // }
 
-  alterDddMMDD=(wk)=>{
-    let wdprt = `${this.state.yr}-W${padWk(wk)}-${this.state.firstday}`
-    wdprt = adjWdprtDn(this.state.firstday, wdprt)
-    return moment(wdprt).format("ddd MM/DD")
-  }
+  // alterDddMMDD=(wk)=>{
+  //   let wdprt = `${this.state.yr}-W${padWk(wk)}-${this.state.firstday}`
+  //   wdprt = adjWdprtDn(this.state.firstday, wdprt)
+  //   return moment(wdprt).format("ddd MM/DD")
+  // }
 
-  sav2wk = ()=>{
-    this.buzz()
-    console.log('save2week')
-    let wk = this.state.wk
-    if(wk===undefined || wk==0){
-      window.alert('please select a week')
-      return
-    } 
-    const persons = this.state.persons
-      .filter((j)=>j.active)
-      .map((j)=>{return {person: j.person, category: j.category,   active: j.active*1, idx: j.idx, week:wk}})
-    postPay(persons, wk)
-      .then(()=>{
-        console.log('done saving')
-      })
-  }
+  // sav2wk = ()=>{
+  //   this.buzz()
+  //   console.log('save2week')
+  //   let wk = this.state.wk
+  //   if(wk===undefined || wk==0){
+  //     window.alert('please select a week')
+  //     return
+  //   } 
+  //   const persons = this.state.persons
+  //     .filter((j)=>j.active)
+  //     .map((j)=>{return {person: j.person, category: j.category,   active: j.active*1, idx: j.idx, week:wk}})
+  //   postPay(persons, wk)
+  //     .then(()=>{
+  //       console.log('done saving')
+  //     })
+  // }
 
-  editPerson=(j)=>{
-    console.log('j: ', j)
-    setEdit(j)
-    setKeyVal({update:true})
-    // router.navigate('/addperson?idx='+j.idx);
-    router.navigate('/addperson');
-  }
-  chwk=(e)=>{
-    let val =e.target.value
-    if(val>0 && val<=52){
-      const dddMMDD = this.alterDddMMDD(val) 
-      this.setState({wk:val, dddMMDD},()=>console.log('this.state: ', this.state))
-    }
-  }
-  chyr=(e)=>{
-    let val =e.target.value
-    if(val>2017 && val<=2051){
-      console.log('val: ', val)
-      this.setState({yr:val})
-    }
-  }
+  // editPerson=(j)=>{
+  //   console.log('j: ', j)
+  //   setEdit(j)
+  //   setKeyVal({update:true})
+  //   // router.navigate('/addperson?idx='+j.idx);
+  //   router.navigate('/addperson');
+  // }
+  // chwk=(e)=>{
+  //   let val =e.target.value
+  //   if(val>0 && val<=52){
+  //     const dddMMDD = this.alterDddMMDD(val) 
+  //     this.setState({wk:val, dddMMDD},()=>console.log('this.state: ', this.state))
+  //   }
+  // }
+  // chyr=(e)=>{
+  //   let val =e.target.value
+  //   if(val>2017 && val<=2051){
+  //     console.log('val: ', val)
+  //     this.setState({yr:val})
+  //   }
+  // }
 
-  setStatBkg=()=>{
-    let sta ={...style.he.but}
-    let ac = {...sta.ac}
-    let ia = {...sta.ia}
-    let al = {...sta.al}
-    let cu = {...sta.cu}
-    let fu = {...sta.fu}
-    let hi = {...sta.hi}
-    let da = {...sta.da}
-    const norm = 'whitesmoke'
-    const hili = '#99CCCC'
-    const st = this.props.eperson.filt
-    switch(st){
-      case 'all':
-        al.background = hili
-        ia.background = norm
-        ac.background = norm
-      break;
-      case 'active':
-        al.background = norm
-        ia.background = norm
-        ac.background = hili
-      break;
-      case 'inactive':
-        al.background = norm
-        ia.background = hili
-        ac.background = norm
-      break;
-    }
-    const dst = this.props.eperson.dfilt
-    switch(dst){
-      case 'all':
-        da.background = hili
-        cu.background = norm
-        fu.background = norm
-        hi.background = norm
-      break;
-      case 'current':
-        da.background = norm
-        fu.background = norm
-        hi.background = norm
-        cu.background = hili
-      break;
-      case 'future':
-        hi.background = norm
-        da.background = norm
-        fu.background = hili
-        cu.background = norm
-      break;
-      case 'history':
-        da.background = norm
-        hi.background = hili
-        cu.background = norm
-        fu.background = norm
-      break;
-    }
-    sta.ac =ac
-    sta.ia =ia
-    sta.al =al 
-    sta.cu =cu 
-    sta.fu =fu 
-    sta.hi =hi 
-    sta.da =da 
-    return sta
-  }
+  // setStatBkg=()=>{
+  //   let sta ={...style.he.but}
+  //   let ac = {...sta.ac}
+  //   let ia = {...sta.ia}
+  //   let al = {...sta.al}
+  //   let cu = {...sta.cu}
+  //   let fu = {...sta.fu}
+  //   let hi = {...sta.hi}
+  //   let da = {...sta.da}
+  //   const norm = 'whitesmoke'
+  //   const hili = '#99CCCC'
+  //   const st = this.props.eperson.filt
+  //   switch(st){
+  //     case 'all':
+  //       al.background = hili
+  //       ia.background = norm
+  //       ac.background = norm
+  //     break;
+  //     case 'active':
+  //       al.background = norm
+  //       ia.background = norm
+  //       ac.background = hili
+  //     break;
+  //     case 'inactive':
+  //       al.background = norm
+  //       ia.background = hili
+  //       ac.background = norm
+  //     break;
+  //   }
+  //   const dst = this.props.eperson.dfilt
+  //   switch(dst){
+  //     case 'all':
+  //       da.background = hili
+  //       cu.background = norm
+  //       fu.background = norm
+  //       hi.background = norm
+  //     break;
+  //     case 'current':
+  //       da.background = norm
+  //       fu.background = norm
+  //       hi.background = norm
+  //       cu.background = hili
+  //     break;
+  //     case 'future':
+  //       hi.background = norm
+  //       da.background = norm
+  //       fu.background = hili
+  //       cu.background = norm
+  //     break;
+  //     case 'history':
+  //       da.background = norm
+  //       hi.background = hili
+  //       cu.background = norm
+  //       fu.background = norm
+  //     break;
+  //   }
+  //   sta.ac =ac
+  //   sta.ia =ia
+  //   sta.al =al 
+  //   sta.cu =cu 
+  //   sta.fu =fu 
+  //   sta.hi =hi 
+  //   sta.da =da 
+  //   return sta
+  // }
 
   getQuery=()=>{
     const params = this.props.cambio.page.params
@@ -679,36 +719,37 @@ class Pay extends React.Component{
 
 
   renderPay=()=>{
+    console.log('re-rendering pay')
     let {persons}=this.state
     const rpersons = persons
       .map((aperson, i)=>{
-        const regot = this.renderRegOt(aperson)
-        const wh = this.renderWh(aperson)
-        const dedu = this.renderDed(aperson)
-        return (
-        <li  key={i} style={style.myli.li}>
-          <div style={style.myli.person}> 
-          <input style={style.ckbox} type="checkbox" checked={aperson.check} onChange={this.handleCheck(i)}/> 
-            <span><br/>
-            {aperson.wprt}<br/>
-            {aperson.emailid}<br/>
-             <span>{aperson.firstmid} {aperson.lastname}</span> <br/>
-              {aperson.street}<br/>
-              {aperson.city}, {aperson.st} {aperson.zip}<br/>
-              worker type: {aperson.wtype}
-            </span>
-
-          </div>
-          <div style={style.myli.cat}>
-            <span>  
-            
-            ${aperson.rate} x {aperson.hrs}hrs<br/>
-            {regot}
-            {dedu}
-            {wh}
-            </span>
-          </div>
-        </li >)
+        if(aperson.status=='approved'){
+          const regot = this.renderRegOt(aperson)
+          const wh = this.renderWh(aperson)
+          const dedu = this.renderDed(aperson)
+          return (
+          <li  key={i} style={style.myli.li}>
+            <div style={style.myli.person}> 
+            <input style={style.ckbox} type="checkbox" checked={aperson.check} onChange={this.handleCheck(i)}/> 
+              <span><br/>
+              {aperson.wprt}<br/>
+              {aperson.emailid}<br/>
+               <span>{aperson.firstmid} {aperson.lastname}</span> <br/>
+                {aperson.street}<br/>
+                {aperson.city}, {aperson.st} {aperson.zip}<br/>
+                worker type: {aperson.wtype}
+              </span>
+            </div>
+            <div style={style.myli.cat}>
+              <span>  
+              ${aperson.rate} x {aperson.hrs}hrs<br/>
+              {regot}
+              {dedu}
+              {wh}
+              </span>
+            </div>
+          </li >)
+        }
     })
     return(
       <ul style={style.myli.ul}>
@@ -721,22 +762,22 @@ class Pay extends React.Component{
     const{persons }=this.state
     if (persons){
       this.getQuery()
-      const actstyle = this.setStatBkg()
+      // const actstyle = this.setStatBkg()
       const rndrdpersons = this.renderPay()
       return(
         <div >
           <div style={style.he}>
             <div> 
-                <button style={actstyle.ac} onClick={this.filtAct}>active</button>
+                {/* <button style={actstyle.ac} onClick={this.filtAct}>active</button>
                 <button style={actstyle.ia} onClick={this.filtInAct}>inact</button>
                 <button style={actstyle.al} onClick={this.filtAll}>all</button>
-                <br/>
+                <br/> */}
                 <span >
                   <input style={style.ckbox} type="checkbox" checked={this.state.checkall} onChange={this.handleCheckAll}/> 
-                  <button style={actstyle.cu} onClick={this.dfiltCurrent}>current</button>
-                  <button style={actstyle.fu} onClick={this.dfiltFuture}>future</button>
-                  <button style={actstyle.hi} onClick={this.paySelected}>Pay Selected</button>
-                  <button style={actstyle.da} onClick={this.dfiltAll}>all</button>
+                  {/* <button style={actstyle.cu} onClick={this.dfiltCurrent}>current</button>
+                  <button style={actstyle.fu} onClick={this.dfiltFuture}>future</button> */}
+                  <button style={style.he.but.hi} onClick={this.paySelected}>Pay Selected</button>
+                  {/* <button style={actstyle.da} onClick={this.dfiltAll}>all</button> */}
 
                 </span>
             </div>

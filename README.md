@@ -21,6 +21,11 @@ https://accountinginfocus.com/financial-accounting/liabilities-financial-account
 https://www.seyfarth.com/dir_docs/publications/neht01120810.pdf ma tax law
 https://www.seyfarth.com/dir_docs/publications/neht01120810.pdf
 https://www.michigan.gov/mdcs/0,4614,7-147-6879_19184_21557-234596--,00.html
+
+
+https://github.com/MrRio/jsPDF printing at precise locations
+
+### 108-tc-pay-gl-journal
 ### 108-tc-persons-pay-jcrate-grossAP
 TODO save the gl
 ### 107-tc-pay-payroll-addappid

@@ -57828,13 +57828,9 @@ var _react = __webpack_require__(4);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _app = __webpack_require__(80);
-
 var _mapClass2Element = __webpack_require__(98);
 
 var _fetches = __webpack_require__(419);
-
-var _reroo = __webpack_require__(423);
 
 var _personacts = __webpack_require__(425);
 
@@ -57854,6 +57850,12 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 // eslint-disable-line no-unused-vars
 var moment = __webpack_require__(1);
+// import {router} from '../app'
+
+// import {fetchPay, postPay, fetchSettings, fetchRates, postJobRates, postJournal} from '../services/fetches'
+
+// import{adjWdprtDn, padWk} from  '../../../../common/v0/src/utilities/reroo'
+// import { setEdit, setKeyVal} from '../actions/personacts';
 
 // eslint-disable-line no-unused-vars
 
@@ -58107,9 +58109,22 @@ var Pay = function (_React$Component) {
       }).map(function (p) {
         return p.jcrates;
       });
-      console.log('jper: ', jper);
       (0, _fetches.postJobRates)(jper);
+      _this.setAsPaid();
       _this.apply2gl();
+    }, _this.setAsPaid = function () {
+      var nstate = _extends({}, _this.state);
+      var perpa = nstate.persons.map(function (p) {
+        var np = _extends({}, p);
+        if (np.check) {
+          console.log('in pcheck');
+          np.status = 'paid';
+        }
+        return np;
+      });
+      _this.setState({ persons: perpa }, function () {
+        return console.log('this.state: ', _this.state);
+      });
     }, _this.apply2gl = function () {
       var persons = _this.state.persons;
 
@@ -58117,12 +58132,11 @@ var Pay = function (_React$Component) {
       persons.filter(function (p) {
         return p.check;
       }).map(function (p) {
-        var blentry = { account: '', wdprt: p.wprt, someid: p.emailid, job: '', cat: '', date: moment().format('YYYY-MM-DD'), somenum: '', debit: '', credit: '', coid: p.coid };
+        var blentry = { account: '', wdprt: p.wprt, someid: p.emailid, job: '', cat: '', date: moment().format('YYYY-MM-DD'), somenum: 0, debit: 0, credit: 0 };
         var e = _extends({}, blentry);
         e.account = 'a6010-gross';
         e.debit = p.regot.gross;
         journal.push(e);
-
         var net = p.regot.gross;
 
         if (p.regot.grossAP && p.regot.grossAP > 0) {
@@ -58148,23 +58162,28 @@ var Pay = function (_React$Component) {
           e.account = 'a2020-medi';
           e.credit = p.wh.medi;
           journal.push(e);
-          e = _extends({}, blentry);
-          e.cat = 'worker';
-          e.account = 'a2020-meda';
-          e.credit = p.wh.meda;
-          journal.push(e);
+          if (p.wh.meda > 0) {
+            e = _extends({}, blentry);
+            e.cat = 'worker';
+            e.account = 'a2020-meda';
+            e.credit = p.wh.meda;
+            journal.push(e);
+          }
 
-          e = _extends({}, blentry);
-          e.cat = 'worker';
-          e.account = 'a2050-fedWh';
-          e.credit = p.wh.fedtax;
-          journal.push(e);
-          e = _extends({}, blentry);
-          e.cat = 'co';
-          e.account = 'a2060-stWh';
-          e.credit = p.wh.sttax;
-          journal.push(e);
-
+          if (p.wh.fedtax > 0) {
+            e = _extends({}, blentry);
+            e.cat = 'worker';
+            e.account = 'a2050-fedWh';
+            e.credit = p.wh.fedtax;
+            journal.push(e);
+          }
+          if (p.wh.sttax > 0) {
+            e = _extends({}, blentry);
+            e.cat = 'worker';
+            e.account = 'a2060-stWh';
+            e.credit = p.wh.sttax;
+            journal.push(e);
+          }
           net = p.wh.net;
         }
         e = _extends({}, blentry);
@@ -58177,18 +58196,20 @@ var Pay = function (_React$Component) {
           e.debit = p.burden.tburden;
           journal.push(e);
 
-          e = _extends({}, blentry);
-          e.cat = 'co';
-          e.account = 'a2010-SS';
-          e.credit = p.burden.ss;
-          journal.push(e);
-
-          e = _extends({}, blentry);
-          e.cat = 'co';
-          e.account = 'a2020-medi';
-          e.credit = p.burden.medi;
-          journal.push(e);
-
+          if (p.burden.ss > 0) {
+            e = _extends({}, blentry);
+            e.cat = 'co';
+            e.account = 'a2010-SS';
+            e.credit = p.burden.ss;
+            journal.push(e);
+          }
+          if (p.burden.medi > 0) {
+            e = _extends({}, blentry);
+            e.cat = 'co';
+            e.account = 'a2020-medi';
+            e.credit = p.burden.medi;
+            journal.push(e);
+          }
           if (p.burden.futa > 0) {
             e = _extends({}, blentry);
             e.account = 'a2080-FUTA';
@@ -58237,9 +58258,28 @@ var Pay = function (_React$Component) {
             e.credit = p.burden.pers;
             journal.push(e);
           }
+          e = _extends({}, blentry);
+          e.account = 'a6020-burden';
+          e.credit = p.burden.tburden;
+          journal.push(e);
+
+          e = _extends({}, blentry);
+          e.account = 'a6010-gross';
+          e.credit = p.regot.gross;
+          journal.push(e);
         }
       });
-      console.log('journal: ', journal);
+      // const perpa= persons.map((p)=>{
+      //   const np = {...p}
+      //   if (np.check){
+      //     console.log('in pcheck')
+      //     np.status='paid'
+      //   }
+      //   return np
+      // })
+      // console.log('perpa: ', perpa)
+      // this.setState({persons:perpa},()=>console.log('this.state: ', this.state)) 
+      (0, _fetches.postJournal)(journal);
     }, _this.getCurrent = function (persons) {
       var cdate = moment().format('YYYY-MM-DD');
       var cperson = persons.filter(function (person) {
@@ -58252,173 +58292,6 @@ var Pay = function (_React$Component) {
         return t;
       }, [{ emailid: 'dog' }]);
       return cperson.slice(1);
-    }, _this.filtAct = function () {
-      return (0, _personacts.setKeyVal)({ filt: 'active' });
-    }, _this.filtInAct = function () {
-      return (0, _personacts.setKeyVal)({ filt: 'inactive' });
-    }, _this.filtAll = function () {
-      return (0, _personacts.setKeyVal)({ filt: 'all' });
-    }, _this.dfiltCurrent = function () {
-      return (0, _personacts.setKeyVal)({ dfilt: 'current' });
-    }, _this.dfiltFuture = function () {
-      return (0, _personacts.setKeyVal)({ dfilt: 'future' });
-    }, _this.dfiltHistory = function () {
-      return (0, _personacts.setKeyVal)({ dfilt: 'history' });
-    }, _this.dfiltAll = function () {
-      return (0, _personacts.setKeyVal)({ dfilt: 'all' });
-    }, _this.fact = function (person) {
-      return person.active == true;
-    }, _this.finact = function (person) {
-      return person.active == false;
-    }, _this.fall = function () {
-      return true;
-    }, _this.afilt = function (person) {
-      switch (_this.props.eperson.filt) {
-        case 'all':
-          return _this.fall(person);
-        case 'active':
-          return _this.fact(person);
-        case 'inactive':
-          return _this.finact(person);
-        default:
-          return _this.fall();
-      }
-    }, _this.efilt = function (person) {
-      person.effective = person.effective ? person.effective.split('T')[0] : null;
-      var cdate = moment().format("YYYY-MM-DD");
-      switch (_this.props.eperson.dfilt) {
-        case 'all':
-          return true;
-        case 'current':
-          return true;
-        case 'history':
-          return person.effective && person.effective <= cdate;
-        case 'future':
-          return person.effective && person.effective > cdate;
-        default:
-          return _this.fall();
-      }
-    }, _this.cfilt = function (persons) {
-      if (_this.props.eperson.dfilt == 'current') {
-        persons = _this.getCurrent(persons);
-      }
-      return persons;
-    }, _this.getwk = function () {
-      _this.alterPayYdate(_this.state.wk);
-    }, _this.buzz = function () {
-      console.log('buzz()');
-      window.navigator.vibrate(100);
-    }, _this.getwk0 = function () {
-      _this.alterPayYdate(0);
-    }, _this.alterPayYdate = function (wk) {
-      (0, _fetches.fetchPay)(wk).then(function (res) {
-        var dddMMDD = _this.alterDddMMDD(_this.state.wk);
-        _this.setState({ persons: res.persons, dddMMDD: dddMMDD }, function () {});
-      });
-    }, _this.alterDddMMDD = function (wk) {
-      var wdprt = _this.state.yr + '-W' + (0, _reroo.padWk)(wk) + '-' + _this.state.firstday;
-      wdprt = (0, _reroo.adjWdprtDn)(_this.state.firstday, wdprt);
-      return moment(wdprt).format("ddd MM/DD");
-    }, _this.sav2wk = function () {
-      _this.buzz();
-      console.log('save2week');
-      var wk = _this.state.wk;
-      if (wk === undefined || wk == 0) {
-        window.alert('please select a week');
-        return;
-      }
-      var persons = _this.state.persons.filter(function (j) {
-        return j.active;
-      }).map(function (j) {
-        return { person: j.person, category: j.category, active: j.active * 1, idx: j.idx, week: wk };
-      });
-      (0, _fetches.postPay)(persons, wk).then(function () {
-        console.log('done saving');
-      });
-    }, _this.editPerson = function (j) {
-      console.log('j: ', j);
-      (0, _personacts.setEdit)(j);
-      (0, _personacts.setKeyVal)({ update: true });
-      // router.navigate('/addperson?idx='+j.idx);
-      _app.router.navigate('/addperson');
-    }, _this.chwk = function (e) {
-      var val = e.target.value;
-      if (val > 0 && val <= 52) {
-        var dddMMDD = _this.alterDddMMDD(val);
-        _this.setState({ wk: val, dddMMDD: dddMMDD }, function () {
-          return console.log('this.state: ', _this.state);
-        });
-      }
-    }, _this.chyr = function (e) {
-      var val = e.target.value;
-      if (val > 2017 && val <= 2051) {
-        console.log('val: ', val);
-        _this.setState({ yr: val });
-      }
-    }, _this.setStatBkg = function () {
-      var sta = _extends({}, style.he.but);
-      var ac = _extends({}, sta.ac);
-      var ia = _extends({}, sta.ia);
-      var al = _extends({}, sta.al);
-      var cu = _extends({}, sta.cu);
-      var fu = _extends({}, sta.fu);
-      var hi = _extends({}, sta.hi);
-      var da = _extends({}, sta.da);
-      var norm = 'whitesmoke';
-      var hili = '#99CCCC';
-      var st = _this.props.eperson.filt;
-      switch (st) {
-        case 'all':
-          al.background = hili;
-          ia.background = norm;
-          ac.background = norm;
-          break;
-        case 'active':
-          al.background = norm;
-          ia.background = norm;
-          ac.background = hili;
-          break;
-        case 'inactive':
-          al.background = norm;
-          ia.background = hili;
-          ac.background = norm;
-          break;
-      }
-      var dst = _this.props.eperson.dfilt;
-      switch (dst) {
-        case 'all':
-          da.background = hili;
-          cu.background = norm;
-          fu.background = norm;
-          hi.background = norm;
-          break;
-        case 'current':
-          da.background = norm;
-          fu.background = norm;
-          hi.background = norm;
-          cu.background = hili;
-          break;
-        case 'future':
-          hi.background = norm;
-          da.background = norm;
-          fu.background = hili;
-          cu.background = norm;
-          break;
-        case 'history':
-          da.background = norm;
-          hi.background = hili;
-          cu.background = norm;
-          fu.background = norm;
-          break;
-      }
-      sta.ac = ac;
-      sta.ia = ia;
-      sta.al = al;
-      sta.cu = cu;
-      sta.fu = fu;
-      sta.hi = hi;
-      sta.da = da;
-      return sta;
     }, _this.getQuery = function () {
       var params = _this.props.cambio.page.params;
       if (params && params.query == 'rerender') {
@@ -58675,66 +58548,69 @@ var Pay = function (_React$Component) {
         );
       }
     }, _this.renderPay = function () {
+      console.log('re-rendering pay');
       var persons = _this.state.persons;
 
       var rpersons = persons.map(function (aperson, i) {
-        var regot = _this.renderRegOt(aperson);
-        var wh = _this.renderWh(aperson);
-        var dedu = _this.renderDed(aperson);
-        return _react2.default.createElement(
-          'li',
-          { key: i, style: style.myli.li },
-          _react2.default.createElement(
-            'div',
-            { style: style.myli.person },
-            _react2.default.createElement('input', { style: style.ckbox, type: 'checkbox', checked: aperson.check, onChange: _this.handleCheck(i) }),
+        if (aperson.status == 'approved') {
+          var regot = _this.renderRegOt(aperson);
+          var wh = _this.renderWh(aperson);
+          var dedu = _this.renderDed(aperson);
+          return _react2.default.createElement(
+            'li',
+            { key: i, style: style.myli.li },
             _react2.default.createElement(
-              'span',
-              null,
-              _react2.default.createElement('br', null),
-              aperson.wprt,
-              _react2.default.createElement('br', null),
-              aperson.emailid,
-              _react2.default.createElement('br', null),
+              'div',
+              { style: style.myli.person },
+              _react2.default.createElement('input', { style: style.ckbox, type: 'checkbox', checked: aperson.check, onChange: _this.handleCheck(i) }),
               _react2.default.createElement(
                 'span',
                 null,
-                aperson.firstmid,
+                _react2.default.createElement('br', null),
+                aperson.wprt,
+                _react2.default.createElement('br', null),
+                aperson.emailid,
+                _react2.default.createElement('br', null),
+                _react2.default.createElement(
+                  'span',
+                  null,
+                  aperson.firstmid,
+                  ' ',
+                  aperson.lastname
+                ),
                 ' ',
-                aperson.lastname
-              ),
-              ' ',
-              _react2.default.createElement('br', null),
-              aperson.street,
-              _react2.default.createElement('br', null),
-              aperson.city,
-              ', ',
-              aperson.st,
-              ' ',
-              aperson.zip,
-              _react2.default.createElement('br', null),
-              'worker type: ',
-              aperson.wtype
-            )
-          ),
-          _react2.default.createElement(
-            'div',
-            { style: style.myli.cat },
+                _react2.default.createElement('br', null),
+                aperson.street,
+                _react2.default.createElement('br', null),
+                aperson.city,
+                ', ',
+                aperson.st,
+                ' ',
+                aperson.zip,
+                _react2.default.createElement('br', null),
+                'worker type: ',
+                aperson.wtype
+              )
+            ),
             _react2.default.createElement(
-              'span',
-              null,
-              '$',
-              aperson.rate,
-              ' x ',
-              aperson.hrs,
-              'hrs',
-              _react2.default.createElement('br', null),
-              regot,
-              dedu,
-              wh
+              'div',
+              { style: style.myli.cat },
+              _react2.default.createElement(
+                'span',
+                null,
+                '$',
+                aperson.rate,
+                ' x ',
+                aperson.hrs,
+                'hrs',
+                _react2.default.createElement('br', null),
+                regot,
+                dedu,
+                wh
+              )
             )
-          )
-        );
+          );
+        }
       });
       return _react2.default.createElement(
         'ul',
@@ -58753,6 +58629,189 @@ var Pay = function (_React$Component) {
       // this.dwk = document.getElementById("wk")
       // console.log('moment().format("YYY-MM-DD): ', moment().format("YYYY-MM-DD"))
     }
+
+    // filtAct = ()=>setKeyVal({filt:'active'});
+    // filtInAct = ()=>setKeyVal({filt:'inactive'});
+    // filtAll = ()=>setKeyVal({filt:'all'});
+
+    // dfiltCurrent = ()=>setKeyVal({dfilt:'current'});
+    // dfiltFuture = ()=>setKeyVal({dfilt:'future'});
+    // dfiltHistory = ()=>setKeyVal({dfilt:'history'});
+    // dfiltAll = ()=>setKeyVal({dfilt:'all'});
+
+
+    // fact = (person)=>person.active==true
+    // finact = (person)=>person.active==false
+    // fall = ()=>true
+
+    // afilt = (person)=>{
+    //   switch (this.props.eperson.filt) {
+    //     case 'all':
+    //       return this.fall(person) 
+    //     case 'active':
+    //       return this.fact(person) 
+    //     case 'inactive':
+    //       return this.finact(person) 
+    //     default:
+    //       return this.fall()
+    //   }
+    // }
+
+    // efilt = (person)=>{
+    //   person.effective = person.effective ? person.effective.split('T')[0] : null
+    //   const cdate = moment().format("YYYY-MM-DD")
+    //   switch (this.props.eperson.dfilt) {
+    //     case 'all':
+    //       return true 
+    //     case 'current':
+    //       return true
+    //     case 'history':
+    //       return person.effective && person.effective<=cdate
+    //     case 'future':
+    //       return person.effective && person.effective>cdate
+    //     default:
+    //       return this.fall()
+    //   }
+    // }
+
+    // cfilt = (persons)=>{
+    //   if(this.props.eperson.dfilt=='current') {
+    //     persons = this.getCurrent(persons)
+    //   }
+    //   return persons
+    // }
+
+    // getwk = ()=>{
+    //   this.alterPayYdate(this.state.wk)  
+    // }
+    // buzz=()=>{
+    //   console.log('buzz()')
+    //   window.navigator.vibrate(100)
+    // }
+    // getwk0 = ()=>{
+    //   this.alterPayYdate(0)  
+    // }
+
+    // alterPayYdate = (wk)=>{
+    //   fetchPay(wk)
+    //   .then((res)=>{
+    //     const dddMMDD = this.alterDddMMDD(this.state.wk) 
+    //     this.setState({persons: res.persons, dddMMDD},()=>{})
+
+    //   })
+    // }
+
+    // alterDddMMDD=(wk)=>{
+    //   let wdprt = `${this.state.yr}-W${padWk(wk)}-${this.state.firstday}`
+    //   wdprt = adjWdprtDn(this.state.firstday, wdprt)
+    //   return moment(wdprt).format("ddd MM/DD")
+    // }
+
+    // sav2wk = ()=>{
+    //   this.buzz()
+    //   console.log('save2week')
+    //   let wk = this.state.wk
+    //   if(wk===undefined || wk==0){
+    //     window.alert('please select a week')
+    //     return
+    //   } 
+    //   const persons = this.state.persons
+    //     .filter((j)=>j.active)
+    //     .map((j)=>{return {person: j.person, category: j.category,   active: j.active*1, idx: j.idx, week:wk}})
+    //   postPay(persons, wk)
+    //     .then(()=>{
+    //       console.log('done saving')
+    //     })
+    // }
+
+    // editPerson=(j)=>{
+    //   console.log('j: ', j)
+    //   setEdit(j)
+    //   setKeyVal({update:true})
+    //   // router.navigate('/addperson?idx='+j.idx);
+    //   router.navigate('/addperson');
+    // }
+    // chwk=(e)=>{
+    //   let val =e.target.value
+    //   if(val>0 && val<=52){
+    //     const dddMMDD = this.alterDddMMDD(val) 
+    //     this.setState({wk:val, dddMMDD},()=>console.log('this.state: ', this.state))
+    //   }
+    // }
+    // chyr=(e)=>{
+    //   let val =e.target.value
+    //   if(val>2017 && val<=2051){
+    //     console.log('val: ', val)
+    //     this.setState({yr:val})
+    //   }
+    // }
+
+    // setStatBkg=()=>{
+    //   let sta ={...style.he.but}
+    //   let ac = {...sta.ac}
+    //   let ia = {...sta.ia}
+    //   let al = {...sta.al}
+    //   let cu = {...sta.cu}
+    //   let fu = {...sta.fu}
+    //   let hi = {...sta.hi}
+    //   let da = {...sta.da}
+    //   const norm = 'whitesmoke'
+    //   const hili = '#99CCCC'
+    //   const st = this.props.eperson.filt
+    //   switch(st){
+    //     case 'all':
+    //       al.background = hili
+    //       ia.background = norm
+    //       ac.background = norm
+    //     break;
+    //     case 'active':
+    //       al.background = norm
+    //       ia.background = norm
+    //       ac.background = hili
+    //     break;
+    //     case 'inactive':
+    //       al.background = norm
+    //       ia.background = hili
+    //       ac.background = norm
+    //     break;
+    //   }
+    //   const dst = this.props.eperson.dfilt
+    //   switch(dst){
+    //     case 'all':
+    //       da.background = hili
+    //       cu.background = norm
+    //       fu.background = norm
+    //       hi.background = norm
+    //     break;
+    //     case 'current':
+    //       da.background = norm
+    //       fu.background = norm
+    //       hi.background = norm
+    //       cu.background = hili
+    //     break;
+    //     case 'future':
+    //       hi.background = norm
+    //       da.background = norm
+    //       fu.background = hili
+    //       cu.background = norm
+    //     break;
+    //     case 'history':
+    //       da.background = norm
+    //       hi.background = hili
+    //       cu.background = norm
+    //       fu.background = norm
+    //     break;
+    //   }
+    //   sta.ac =ac
+    //   sta.ia =ia
+    //   sta.al =al 
+    //   sta.cu =cu 
+    //   sta.fu =fu 
+    //   sta.hi =hi 
+    //   sta.da =da 
+    //   return sta
+    // }
+
   }, {
     key: 'render',
     value: function render() {
@@ -58760,7 +58819,7 @@ var Pay = function (_React$Component) {
 
       if (persons) {
         this.getQuery();
-        var actstyle = this.setStatBkg();
+        // const actstyle = this.setStatBkg()
         var rndrdpersons = this.renderPay();
         return _react2.default.createElement(
           'div',
@@ -58772,44 +58831,13 @@ var Pay = function (_React$Component) {
               'div',
               null,
               _react2.default.createElement(
-                'button',
-                { style: actstyle.ac, onClick: this.filtAct },
-                'active'
-              ),
-              _react2.default.createElement(
-                'button',
-                { style: actstyle.ia, onClick: this.filtInAct },
-                'inact'
-              ),
-              _react2.default.createElement(
-                'button',
-                { style: actstyle.al, onClick: this.filtAll },
-                'all'
-              ),
-              _react2.default.createElement('br', null),
-              _react2.default.createElement(
                 'span',
                 null,
                 _react2.default.createElement('input', { style: style.ckbox, type: 'checkbox', checked: this.state.checkall, onChange: this.handleCheckAll }),
                 _react2.default.createElement(
                   'button',
-                  { style: actstyle.cu, onClick: this.dfiltCurrent },
-                  'current'
-                ),
-                _react2.default.createElement(
-                  'button',
-                  { style: actstyle.fu, onClick: this.dfiltFuture },
-                  'future'
-                ),
-                _react2.default.createElement(
-                  'button',
-                  { style: actstyle.hi, onClick: this.paySelected },
+                  { style: style.he.but.hi, onClick: this.paySelected },
                   'Pay Selected'
-                ),
-                _react2.default.createElement(
-                  'button',
-                  { style: actstyle.da, onClick: this.dfiltAll },
-                  'all'
                 )
               )
             )
@@ -59010,7 +59038,7 @@ var style = {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.postJobRates = exports.fetchRates = exports.fetchCurrent = exports.putCk = exports.deletePay = exports.newPay = exports.putPay = exports.postPay = exports.fetchPay = exports.fetchSettings = undefined;
+exports.postJournal = exports.postJobRates = exports.fetchRates = exports.fetchCurrent = exports.putCk = exports.deletePay = exports.newPay = exports.putPay = exports.postPay = exports.fetchPay = exports.fetchSettings = undefined;
 
 var _getCfg = __webpack_require__(99);
 
@@ -59124,6 +59152,7 @@ var postPay = function postPay(persons, wk) {
 };
 
 var postJobRates = function postJobRates(jcrates) {
+  console.log('jcrates: ', jcrates);
   var lsh = _getCfg.ls.getItem();
   if ((0, _wfuncs.geta)('lsh.token', lsh)) {
     var url = _getCfg.cfg.url.api + '/payroll/jc/';
@@ -59137,6 +59166,28 @@ var postJobRates = function postJobRates(jcrates) {
     };
     return fetch(url, options).then(function (response) {
       return response.json();
+    });
+  } else {
+    var p2 = Promise.resolve({ qmessage: 'you dont exist! ' });
+    return p2;
+  }
+};
+
+var postJournal = function postJournal(journal) {
+  var lsh = _getCfg.ls.getItem();
+  if ((0, _wfuncs.geta)('lsh.token', lsh)) {
+    var url = _getCfg.cfg.url.api + '/payroll/gl/';
+    var options = {
+      headers: { 'Authorization': 'Bearer ' + lsh['token'],
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
+      },
+      method: 'POST',
+      body: JSON.stringify({ journal: journal })
+    };
+    return fetch(url, options).then(function (response) {
+      console.log('response: ', response);
+      //response.json()
     });
   } else {
     var p2 = Promise.resolve({ qmessage: 'you dont exist! ' });
@@ -59238,6 +59289,7 @@ exports.putCk = putCk;
 exports.fetchCurrent = fetchCurrent;
 exports.fetchRates = fetchRates;
 exports.postJobRates = postJobRates;
+exports.postJournal = postJournal;
 
 /***/ }),
 /* 420 */
@@ -59299,90 +59351,7 @@ var storageLocal = function storageLocal(itemName) {
 exports.storageLocal = storageLocal;
 
 /***/ }),
-/* 423 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-var moment = __webpack_require__(1);
-
-var processDb4app = function processDb4app(firstday, emailid, res) {
-  var wkarr = wkendLast(adjWk4app(firstday, res.wkarr));
-  var hrs = sumThing(wkarr, 'hrs');
-  var jchrs = sumThing(wkarr, 'jchrs');
-  return { wkarr: wkarr, hrs: hrs, jchrs: jchrs, emailid: emailid, jobs: res.jobs, wstat: res.wstat };
-};
-
-var adjDay4db = function adjDay4db(firstday, rec) {
-  var d = _extends({}, rec);
-  if (firstday != 1 && d.wdprt.slice(-1) >= firstday) {
-    console.log('it is greater: ');
-    d.wdprt = moment(d.wdprt).add(7, "days").format("YYYY-[W]WW-E");
-  }
-  return d;
-};
-var adjWdprtDn = function adjWdprtDn(firstday, wdprt) {
-  var mowdprt = moment(wdprt);
-  var nwdprt = mowdprt.format("YYYY-[W]WW-E");
-  if (firstday > 4 && wdprt.slice(-1) >= firstday) {
-    nwdprt = mowdprt.subtract(7, "days").format("YYYY-[W]WW-E");
-  }
-  return nwdprt;
-};
-
-var padWk = function padWk(wk) {
-  return wk.toString().padStart(2, '0');
-};
-
-exports.processDb4app = processDb4app;
-exports.adjDay4db = adjDay4db;
-exports.adjWdprtDn = adjWdprtDn;
-exports.padWk = padWk;
-
-
-var adjWk4app = function adjWk4app(firstday, wkarr) {
-  var appwkarr = wkarr.map(function (d) {
-    if (firstday > 4 && d.wdprt.slice(-1) >= firstday) {
-      d.wdprt = moment(d.wdprt).subtract(7, "days").format("YYYY-[W]WW-E");
-    }
-    return d;
-  }).sort(function (a, b) {
-    return a.wdprt > b.wdprt;
-  });
-  return appwkarr;
-};
-
-var wkendLast = function wkendLast(apwa) {
-  for (var i = 6; i <= 7; i++) {
-    var fi = apwa.findIndex(function (a) {
-      return a.wdprt.slice(-1) == i;
-    });
-    var rec = apwa[fi];
-    apwa.splice(fi, 1);
-    apwa.push(rec);
-  }
-  var napwa = apwa.map(function (wa, i) {
-    wa.idx = i;
-    return wa;
-  });
-  return napwa;
-};
-
-var sumThing = function sumThing(arr, fld) {
-  var narr = arr.map(function (a) {
-    return a[fld];
-  });
-  return narr;
-};
-
-/***/ }),
+/* 423 */,
 /* 424 */
 /***/ (function(module, exports, __webpack_require__) {
 
