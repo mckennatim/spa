@@ -1,6 +1,6 @@
 import{responsive}from './responsive'
 import{cambio}from './cambio'
-import{newco}from './personred'
+import{newco}from './shareduce'
 
 function test(state, action) {
   switch (action.type) {

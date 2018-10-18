@@ -2,6 +2,7 @@ import React from 'react'// eslint-disable-line no-unused-vars
 import {mapClass2Element} from '../hoc/mapClass2Element'
 import{fetchApps} from '../services/fetches'
 import {ls, cfg, makeHref} from '../utilities/getCfg'
+import  { setKeyVal} from '../actions/shared'
 
 class UrApps extends React.Component{
   active='mabibi or buttler'
@@ -10,21 +11,36 @@ class UrApps extends React.Component{
     this.getApps()
   }  
   getApps(){
+    // console.log('in getApps')
     fetchApps()
       .then((res)=>{
+        // console.log('res: ', res)
+        if(res[0].role=='partner'){
+          setKeyVal({ispartner:true})
+        }
         const apps = res.map((r)=>r.appid)
-        this.setState({apps:apps, emailid: res[0].emailid, coid:res[0].coid,role:res[0].role, goodtil:res[0].goodtil })
+        this.setState({apps:apps, emailid: res[0].emailid, coid:res[0].coid,role:res[0].role, goodtil:res[0].goodtil }, ()=>console.log('this.state: ', this.state))
         console.log('res: ', res)
       })
+  }
+
+  getQuery=()=>{
+    const params = this.props.cambio.page.params
+    if(params && params.query =='rerender'){
+      location.replace('#urapps')
+      setTimeout(()=>{
+        this.getApps()
+      },300)     
+    }
   }
 
   renderApps=()=>{
     const {apps, host}=this.state
     const ra = apps
-      .filter((a)=>a!='signup' && a!='books')
+      .filter((a)=>a!='signup' && a!='books' && a!='co')
       .map((a,i)=>{
       const href = makeHref(host,a)
-      console.log('href: ', href)
+      // console.log('href: ', href)
       const img = `img/${a}.png`
       return(
         <li  key={i} style={style.myli.li}>
@@ -47,7 +63,7 @@ class UrApps extends React.Component{
   }
 
   render(){
-    console.log('ls.getToken ? true : false: ', ls.getToken ? true : false)
+    // console.log('ls.getToken ? true : false: ', ls.getToken ? true : false)
     if(this.state && this.state.apps && ls.getToken()){
       const {emailid, role, goodtil, coid}=this.state
       const renderedapps = this.renderApps()

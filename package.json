@@ -16,6 +16,8 @@
     "flow": "0.2.3",
     "history": "4.7.2",
     "immutable": "3.8.2",
+    "jspdf": "^1.4.1",
+    "jspdf-autotable": "^2.3.5",
     "lazy-ass": "1.6.0",
     "lodash": "^4.17.10",
     "markdown-loader": "4.0.0",

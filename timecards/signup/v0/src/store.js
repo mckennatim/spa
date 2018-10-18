@@ -20,7 +20,7 @@ const blankperson ={
 }
 
 const co ={
-  goodtil:moment().add(30, 'days').format('YYYY-MM-DD'),
+  goodtil:'',
   coid:'',
   name:'',
   street:'',
@@ -39,6 +39,9 @@ const cosr ={
     sa:1,
     su:1
   },
+  otrate:1.5,
+  sarate:1,
+  surate:1,
   effective: moment().format('YYYY-MM-DD')
 }
 
@@ -53,6 +56,7 @@ const initState = {
     page: {name: 'Home', params: null}
   },
   newco: {
+    ispartner:false,
     person: blankperson,
     co: co,
     cosr: cosr

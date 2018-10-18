@@ -8,7 +8,10 @@ import {fetchPay, fetchSettings, fetchRates, postJobRates, postJournal} from '..
 // import { setEdit, setKeyVal} from '../actions/personacts';
 import { setKeyVal} from '../actions/personacts';
 import {makeHref,drnd} from '../utilities/getCfg'
-import Checkbox from '@material-ui/core/Checkbox';// eslint-disable-line no-unused-vars
+// import Checkbox from '@material-ui/core/Checkbox';// eslint-disable-line no-unused-vars
+import jsPDF from 'jspdf'
+require('jspdf-autotable');
+// console.log('jsPDF: ', jsPDF)
 
 class Pay extends React.Component{
   Pay='mabibi sufvhs'
@@ -235,9 +238,9 @@ class Pay extends React.Component{
       .map((p)=>{
         return p.jcrates
       })
-    postJobRates(jper)
-    this.setAsPaid()
-    this.apply2gl()
+    //postJobRates(jper)
+    // this.setAsPaid()
+    // this.apply2gl()
   }
 
   setAsPaid=()=>{
@@ -409,6 +412,74 @@ class Pay extends React.Component{
     postJournal(journal)    
   }
 
+  createPayPdf=()=>{
+    console.log('increatepay.pdf: ')
+    let doc = new jsPDF({
+      orientation:'p', 
+      unit: 'pt', 
+      format: 'letter'
+    });
+    const pt = (n)=>Math.round(n*72)
+    const{persons}=this.state
+    let cnt=-1
+    persons
+      .map((p,idx)=>{
+        if(p.check){
+          cnt+=1
+          const ot=p.regot.mfot+ p.regot.saot+p.regot.suot
+          let regotc = ["", ""];
+          let regotd = [
+            ["hours", p.hrs],
+            ["rate", 	p.rate],
+            ["regular", p.regot.reg],
+            ["overtime", ot],
+            ["gross payable", p.regot.grossAP],
+            ["gross", p.regot.gross]
+          ];
+          let columns = ["Taxes", ""];
+          let data = [
+            ["ssi", p.wh.ss.toString()],
+            ["medicare", 	p.wh.medi],
+            ["fed wh", p.wh.fedtax],
+            ["st wh", p.wh.sttax],
+            ["netpay", p.wh.net]
+          ];
+          if(cnt>0){doc.addPage()}
+          doc.setFontSize(16)
+          doc.text(moment().format('MM/DD/YY'), pt(6.85), pt(.9))
+          doc.text(`${idx} ... ${p.firstmid} ${p.lastname}`, pt(1.5), pt(1.4))
+          doc.text(`\$${p.wh.net}`, pt(6.85), pt(1.4))
+          doc.text('Four Hundred Fifty Four and 12/100', 100, 138)
+          doc.setFontSize(12)
+          doc.text('for 2018-W23', 60, 194)
+          doc.autoTable(regotc, regotd,{
+            startY: 300, 
+            showHeader: 'firstPage',
+            margin: {right: 107},
+            tableWidth: 150,
+            theme: 'grid',
+            styles:{
+              //halign:'right'
+            }
+          });
+          doc.autoTable(columns, data,{
+            startY: doc.autoTable.previous.finalY, 
+            showHeader: 'firstPage',
+            margin: {right: 107},
+            tableWidth: 150,
+            theme: 'grid',
+            styles:{
+              //halign:'right'
+            }
+          });
+
+          doc.text('dog and cats together', 60, doc.autoTable.previous.finalY + 100)
+        }
+    })
+    //doc.autoPrint()
+    doc.save('pay.pdf')
+  }
+
   getCurrent=(persons)=>{
     const cdate = moment().format('YYYY-MM-DD')
     const cperson = persons
@@ -422,188 +493,6 @@ class Pay extends React.Component{
       },[{emailid:'dog'}])
     return cperson.slice(1)
   }  
-
-  // filtAct = ()=>setKeyVal({filt:'active'});
-  // filtInAct = ()=>setKeyVal({filt:'inactive'});
-  // filtAll = ()=>setKeyVal({filt:'all'});
-
-  // dfiltCurrent = ()=>setKeyVal({dfilt:'current'});
-  // dfiltFuture = ()=>setKeyVal({dfilt:'future'});
-  // dfiltHistory = ()=>setKeyVal({dfilt:'history'});
-  // dfiltAll = ()=>setKeyVal({dfilt:'all'});
-  
-  
-  // fact = (person)=>person.active==true
-  // finact = (person)=>person.active==false
-  // fall = ()=>true
-
-  // afilt = (person)=>{
-  //   switch (this.props.eperson.filt) {
-  //     case 'all':
-  //       return this.fall(person) 
-  //     case 'active':
-  //       return this.fact(person) 
-  //     case 'inactive':
-  //       return this.finact(person) 
-  //     default:
-  //       return this.fall()
-  //   }
-  // }
-
-  // efilt = (person)=>{
-  //   person.effective = person.effective ? person.effective.split('T')[0] : null
-  //   const cdate = moment().format("YYYY-MM-DD")
-  //   switch (this.props.eperson.dfilt) {
-  //     case 'all':
-  //       return true 
-  //     case 'current':
-  //       return true
-  //     case 'history':
-  //       return person.effective && person.effective<=cdate
-  //     case 'future':
-  //       return person.effective && person.effective>cdate
-  //     default:
-  //       return this.fall()
-  //   }
-  // }
-
-  // cfilt = (persons)=>{
-  //   if(this.props.eperson.dfilt=='current') {
-  //     persons = this.getCurrent(persons)
-  //   }
-  //   return persons
-  // }
-
-  // getwk = ()=>{
-  //   this.alterPayYdate(this.state.wk)  
-  // }
-  // buzz=()=>{
-  //   console.log('buzz()')
-  //   window.navigator.vibrate(100)
-  // }
-  // getwk0 = ()=>{
-  //   this.alterPayYdate(0)  
-  // }
-
-  // alterPayYdate = (wk)=>{
-  //   fetchPay(wk)
-  //   .then((res)=>{
-  //     const dddMMDD = this.alterDddMMDD(this.state.wk) 
-  //     this.setState({persons: res.persons, dddMMDD},()=>{})
-
-  //   })
-  // }
-
-  // alterDddMMDD=(wk)=>{
-  //   let wdprt = `${this.state.yr}-W${padWk(wk)}-${this.state.firstday}`
-  //   wdprt = adjWdprtDn(this.state.firstday, wdprt)
-  //   return moment(wdprt).format("ddd MM/DD")
-  // }
-
-  // sav2wk = ()=>{
-  //   this.buzz()
-  //   console.log('save2week')
-  //   let wk = this.state.wk
-  //   if(wk===undefined || wk==0){
-  //     window.alert('please select a week')
-  //     return
-  //   } 
-  //   const persons = this.state.persons
-  //     .filter((j)=>j.active)
-  //     .map((j)=>{return {person: j.person, category: j.category,   active: j.active*1, idx: j.idx, week:wk}})
-  //   postPay(persons, wk)
-  //     .then(()=>{
-  //       console.log('done saving')
-  //     })
-  // }
-
-  // editPerson=(j)=>{
-  //   console.log('j: ', j)
-  //   setEdit(j)
-  //   setKeyVal({update:true})
-  //   // router.navigate('/addperson?idx='+j.idx);
-  //   router.navigate('/addperson');
-  // }
-  // chwk=(e)=>{
-  //   let val =e.target.value
-  //   if(val>0 && val<=52){
-  //     const dddMMDD = this.alterDddMMDD(val) 
-  //     this.setState({wk:val, dddMMDD},()=>console.log('this.state: ', this.state))
-  //   }
-  // }
-  // chyr=(e)=>{
-  //   let val =e.target.value
-  //   if(val>2017 && val<=2051){
-  //     console.log('val: ', val)
-  //     this.setState({yr:val})
-  //   }
-  // }
-
-  // setStatBkg=()=>{
-  //   let sta ={...style.he.but}
-  //   let ac = {...sta.ac}
-  //   let ia = {...sta.ia}
-  //   let al = {...sta.al}
-  //   let cu = {...sta.cu}
-  //   let fu = {...sta.fu}
-  //   let hi = {...sta.hi}
-  //   let da = {...sta.da}
-  //   const norm = 'whitesmoke'
-  //   const hili = '#99CCCC'
-  //   const st = this.props.eperson.filt
-  //   switch(st){
-  //     case 'all':
-  //       al.background = hili
-  //       ia.background = norm
-  //       ac.background = norm
-  //     break;
-  //     case 'active':
-  //       al.background = norm
-  //       ia.background = norm
-  //       ac.background = hili
-  //     break;
-  //     case 'inactive':
-  //       al.background = norm
-  //       ia.background = hili
-  //       ac.background = norm
-  //     break;
-  //   }
-  //   const dst = this.props.eperson.dfilt
-  //   switch(dst){
-  //     case 'all':
-  //       da.background = hili
-  //       cu.background = norm
-  //       fu.background = norm
-  //       hi.background = norm
-  //     break;
-  //     case 'current':
-  //       da.background = norm
-  //       fu.background = norm
-  //       hi.background = norm
-  //       cu.background = hili
-  //     break;
-  //     case 'future':
-  //       hi.background = norm
-  //       da.background = norm
-  //       fu.background = hili
-  //       cu.background = norm
-  //     break;
-  //     case 'history':
-  //       da.background = norm
-  //       hi.background = hili
-  //       cu.background = norm
-  //       fu.background = norm
-  //     break;
-  //   }
-  //   sta.ac =ac
-  //   sta.ia =ia
-  //   sta.al =al 
-  //   sta.cu =cu 
-  //   sta.fu =fu 
-  //   sta.hi =hi 
-  //   sta.da =da 
-  //   return sta
-  // }
 
   getQuery=()=>{
     const params = this.props.cambio.page.params
@@ -727,8 +616,9 @@ class Pay extends React.Component{
           const regot = this.renderRegOt(aperson)
           const wh = this.renderWh(aperson)
           const dedu = this.renderDed(aperson)
+          const lid = 'li'+i
           return (
-          <li  key={i} style={style.myli.li}>
+          <li id={lid} key={i} style={style.myli.li}>
             <div style={style.myli.person}> 
             <input style={style.ckbox} type="checkbox" checked={aperson.check} onChange={this.handleCheck(i)}/> 
               <span><br/>
@@ -768,10 +658,11 @@ class Pay extends React.Component{
         <div >
           <div style={style.he}>
             <div> 
-                {/* <button style={actstyle.ac} onClick={this.filtAct}>active</button>
+                <button style={style.he.but.hi} onClick={this.createPayPdf}>print Paychecks</button><br/>
+                {/* 
                 <button style={actstyle.ia} onClick={this.filtInAct}>inact</button>
                 <button style={actstyle.al} onClick={this.filtAll}>all</button>
-                <br/> */}
+                 */}
                 <span >
                   <input style={style.ckbox} type="checkbox" checked={this.state.checkall} onChange={this.handleCheckAll}/> 
                   {/* <button style={actstyle.cu} onClick={this.dfiltCurrent}>current</button>

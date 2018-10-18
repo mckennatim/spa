@@ -13,7 +13,7 @@ window.onblur = ()=>{
 }
 
 Observable.fromEvent(window, 'resize')
-  .debounceTime(300)
+  .debounceTime(600)
   .subscribe(()=>setDeviceType(window.innerWidth));
 
 const container = document.getElementById('app');

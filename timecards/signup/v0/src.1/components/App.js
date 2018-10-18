@@ -14,7 +14,8 @@ class App extends React.Component{
   componentDidMount (){
   }
   loadNav(){
-    return Nav(this.props)
+    return this.props.cambio.page.name=='Splash' ? '' : Nav(this.props)
+    //return Nav(this.props)
   }
 
   showRt(rtpg){
@@ -31,10 +32,10 @@ class App extends React.Component{
     
     return(
       <div>
-        <div style={style.he}>
-          <span>timecards - signup  </span>
+        {/* <div style={style.he}>
+          <span>timecards - signup  </span> */}
           {this.loadNav()}
-        </div>
+        {/* </div> */}
         <div style={style.container}>
         {this.showPage().map((el,i)=>{
           return <div style={style.content} key={i}>{el}</div>

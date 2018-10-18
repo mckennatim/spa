@@ -4,7 +4,7 @@ import {ls, cfg} from '../utilities/getCfg'
 import {mapClass2Element} from '../hoc/mapClass2Element'
 // import {fetchCtoken, fetchCoids} from '../../../../common/v0/src/services/fetches'
 import {postUniCoid, fetchCtoken, fetchCoids} from '../services/fetches'
-import {setKeyVal} from '../actions/personacts';
+import {setKeyVal} from '../actions/shared';
 import TextField from '@material-ui/core/TextField';// eslint-disable-line no-unused-vars
 import Button from '@material-ui/core/Button';// eslint-disable-line no-unused-vars
 import PropTypes from 'prop-types';
@@ -46,7 +46,7 @@ const styles = theme => ({
 });
 
 class Registered extends React.Component {
-  state = {newco:this.props.newco, newup:'update', showbut:false, errorcoid:''}
+  state = {newco:this.props.newco, newup:'update', showbut:false, errorcoid:'', settingup:false}
   myRef = React.createRef();
 
   componentDidMount() {
@@ -66,12 +66,23 @@ class Registered extends React.Component {
       fetchCoids(mobj)
       .then((res)=>{
         console.log('res: ', res)
-        if(res.qmessage){
-          this.setState({renderwhat: 'message', message: res.qmessage})
+        if(res.binfo.message){
+          if (res.binfo.message=='authorized but unknown user in signup'){
+            ls.removeItem()
+            let nco ={...this.state.newco}
+            nco.person = mobj.email
+            console.log('nco: ', nco)
+            this.setState({renderwhat: 'createcoid', message: res.binfo.message, newco:nco, ttoken:mobj.token})
+          }else{
+            console.log('res.binfo.message: ', res.binfo.message)
+            this.setState({renderwhat: 'message', message: res.binfo.message})
+          }
         }
         if(res.coid &&  res.coid.length==1){
           this.getCtoken(mobj.token, res.coid[0])
-        }else{
+        }else if(res.coid &&  res.coid.length==0){
+          console.log('what to do if coids = []')
+        }else if(res.coid &&  res.coid.length>0){
           this.setState({renderwhat: 'coids', cos:res.coid, token:mobj.token})
         }
       }) 
@@ -100,9 +111,11 @@ class Registered extends React.Component {
       })
   }  
   selectRender=(renderwhat)=>{
+    // console.log('renderwhat: ', renderwhat)
     switch (renderwhat) {
       case 'message':
-        console.log('rendering message')
+        console.log('in selectRender message')
+        console.log('this.renderMessage: ', this.renderMessage())
         return this.renderMessage()
       case 'goregister':
         return this.renderGoRegister()
@@ -121,14 +134,18 @@ class Registered extends React.Component {
     const {newco,ttoken}=this.state
     const{coid}=newco.co
     const{emailid}=newco.person
-    console.log('Math.floor(Date.now())+30*(24*60*60*1000): ', new Date(Math.floor(Date.now())+30*(24*60*60*1000)).toLocaleDateString())
+    // console.log('Math.floor(Date.now())+30*(24*60*60*1000): ', new Date(Math.floor(Date.now())+30*(24*60*60*1000)).toLocaleDateString())
     postUniCoid({emailid, coid},ttoken)
       .then((res)=>{
         console.log('res: ', res)
         if(res.result){
           console.log('res.token: ', res.token)
           ls.setItem({email:res.emailid, token:res.token})
+          this.setState({errorcoid:'', showbut:false, settingup:true})
+        }else if(res.message=="coid already exists, try another"){
+          this.setState({errorcoid:res.message, showbut:false})
         }
+      
       })
   }
 
@@ -155,6 +172,10 @@ class Registered extends React.Component {
     })
   }
 
+  gotoApps=()=>{
+    location = '#urapps'
+  }
+
   renderCkBut=(showbut)=>{
     const { classes } = this.props;
     if(showbut){
@@ -168,22 +189,42 @@ class Registered extends React.Component {
           {buttext}
         </Button>
       )
+    }else if(this.state.settingup){
+      return(
+        <div>
+          <h4>hello</h4>
+          <p>Ok setting you up with emailid = {this.state.newco.person} and coid = {this.state.newco.co.coid} until {this.state.newco.co.goodtil} At this point it would be good to add some more details about your company; its name, adresss, overtime policy, workmen's comp and state unemployment rates. Next step after that would be to add people to your company using the persons app. Or you could just dive in and check out any of the apps. </p>
+          
+          <Button
+          variant="contained" 
+          color="primary" 
+          className={classes.button} 
+          onClick={this.gotoApps}>
+            Go To Apps
+          </Button>
+
+        </div>
+      )
     }
 
   }
 
   renderTryCoid=()=>{
+    // console.log('this.state: ', this.state)
+    // console.log('this.state.newco.person: ', this.state.newco.person)
     const {coid} = this.state.newco.co
-    const {emailid} = this.state.newco.person
+    const emailid = this.state.newco.person
+    // console.log('emailid: ', emailid)
     const { classes } = this.props;
     return(
       <div>
+        <p>We have no record of this emailid on any machine. You are welcome to become a beta tester. You will be registered for a month but will be able to extend</p>
       <h4>Choose a Company ID</h4>
-      <p>Enter a company id that starts with a letter and contains just letters and numbers, no spaces or special characters, at least 6 characters and less than 12. It just needs to be unique and identifiable by you, you won't need to remember it since your company is tied to your email id</p> 
+      <p>Enter a company id that starts with a letter and contains just letters and numbers, no spaces or special characters, at least 6 characters and less than 12. It just needs to be unique and identifiable by you, you won't need to remember it since your company is tied to your email id {emailid}</p> 
       <TextField
         id="standard-disabled"
         label="Email Id"
-        defaultValue={emailid}
+        value={emailid}
         className={classes.textField}
         margin="normal"
         InputProps={{
@@ -240,8 +281,13 @@ class Registered extends React.Component {
    }
   }
   renderMessage=()=>{
+    const {message} = this.state
+    // console.log('this.state.message: ', this.state.message)
     if(this.state.message=='You are not authorized for this app for any active business'){
-     console.log('render message ')
+    //  console.log('render message ')
+      ls.removeItem()
+    }
+    if (message=='authorized but unknown user in signup'){
       ls.removeItem()
     }
     return(
@@ -255,11 +301,13 @@ class Registered extends React.Component {
 
   render() {
     const{renderwhat, showbut}=this.state 
-    console.log('showbut: ', showbut)
+    // console.log('showbut: ', showbut)
     const renderthis = this.selectRender(renderwhat)
+    // console.log('renderthis: ', renderthis)
     const renderckbut =  this.renderCkBut(showbut)
     return (
       <div style={style.he}>
+      <h4>in registered signup render </h4>
         {renderthis}
         {renderckbut}
         

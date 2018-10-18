@@ -9,15 +9,14 @@ const routing = ()=>{
   router = new Navigo(cfg.root, cfg.useHash);
   router
     .on({
-      'products': ()=> {switchPage({name: 'Products', params: null});} ,
-      'products/:id': (params)=>{switchPage({name: 'Products', params: params});},
       'about': ()=>{switchPage({name: 'About', params: null});},
-      'dog': ()=>{switchPage({name: 'Dog', params: null});},
-      'cat': ()=>{switchPage({name: 'Cat', params: null});},
       'company': (params,query)=>{switchPage({name: 'Company', params: {...params, query: query}});},
+      'blank': (params,query)=>{switchPage({name: 'Blank', params: {...params, query: query}});},
+      'splash': (params,query)=>{switchPage({name: 'Splash', params: {...params, query: query}});},
+      'urapps': (params,query)=>{switchPage({name: 'UrApps', params: {...params, query: query}});},
       'addcompany': (params,query)=>{switchPage({name: 'AddCompany', params: {...params, query: query}});},
       'registered': (params, query)=> {switchPage({name: 'Registered', params: {...params, query: query}});} ,
-      '*': ()=>{switchPage({name: 'About', params: null});}
+      '*': ()=>{switchPage({name: 'Splash', params: null});}
     })
     .resolve();
   return router

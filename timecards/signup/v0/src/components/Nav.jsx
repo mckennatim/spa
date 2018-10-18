@@ -1,26 +1,32 @@
 import React from 'react' // eslint-disable-line no-unused-vars
 import {cfg} from '../utilities/getCfg'
-import { setKeyVal } from '../actions/personacts';
-import {blankperson} from '../store'
+// import { setKeyVal } from '../actions/personacts';
+// import {blankperson} from '../store'
 
 console.log('cfg.url.authqry: ', cfg.url.authqry)
 
-const Nav = () =>{
+const Nav = (props) =>{
+  console.log('props: ', props)
 
-  const setU=()=>{
-    setKeyVal({update:false, curperson:blankperson})
-  }
+  // const setU=()=>{
+  //   setKeyVal({update:false, curperson:blankperson})
+  // }
   return (
-    <div style={style} id="menu"> 
-      <ul>
-        <li style={style.li}><a style={style.a} href={cfg.url.authqry}>register</a></li>
-        <li style={style.li}><a style={style.a} href="about" data-navigo>about</a></li>
-        <li style={style.li}><a style={style.a} href="urapps" data-navigo>apps</a></li>
-        <li style={style.li}><a style={style.a} href="companys" data-navigo>company</a></li>
-        <li style={style.li}><a style={style.a} href="addcompany"  onClick={setU}data-navigo>addcompany</a></li>
-        <div></div>
-      </ul>
-    </div>
+    <div style={style.he}>
+    <span>timecards - signup  </span>
+      <div style={style} id="menu"> 
+        <ul>
+          <li style={style.li}><a style={style.a} href="#splash" data-navigo>home</a></li>
+          <li style={style.li}><a style={style.a} href={cfg.url.authqry}>register</a></li>
+          <li style={style.li}><a style={style.a} href="#about" data-navigo>about</a></li>
+          <li style={style.li}><a style={style.a} href="#urapps" data-navigo>apps</a></li>
+          {props.newco.ispartner && 
+          <li style={style.li}><a style={style.a} href="#company" data-navigo>company</a></li>
+          }
+          <div></div>
+        </ul>
+      </div>
+     </div> 
   )
 }
 export {Nav}

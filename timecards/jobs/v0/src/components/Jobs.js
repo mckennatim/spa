@@ -193,9 +193,7 @@ class Jobs extends React.Component{
       setTimeout(()=>{
         this.getJobs()
       },300)     
-      
     }
-    
   }
 
   handleOnFocus=()=>{
