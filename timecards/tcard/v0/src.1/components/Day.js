@@ -95,8 +95,13 @@ class Day extends React.Component {// eslint-disable-line no-unused-vars
     )
   }
   render() { 
+    //console.log('this.props.jobs: ', this.props.jobs)
+    
     const tin= 'tin'+this.props.data.idx
     const {data, jobs}=this.props
+    if(this.props.jobs.length==0){
+      // console.log('Days render if jobs.length==0')
+    }
     const {hrs, jcost, jchrs, wdprt}=data
     const punch = this.setPunch()
     const inoutList = this.renderIoList(data)
@@ -116,7 +121,7 @@ class Day extends React.Component {// eslint-disable-line no-unused-vars
           <input style={style.punchclock.input} id={tin} type="time" defaultValue={now} onChange={this.props.mobile && this.appendTime}/><br/>
         </div>
         {inoutList}
-        <JobCost jcost={jcost} jchrs={jchrs} puhrs={hrs} jobs={jobs} wdprt={wdprt} jcChanges={this.handleJcChanges}/>
+        <JobCost jcost={jcost} jchrs={jchrs} puhrs={hrs} jobs={jobs} hayjobs={this.props.hayjobs} wdprt={wdprt} jcChanges={this.handleJcChanges}/>
       </div>
      );
   }

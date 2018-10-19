@@ -11822,7 +11822,7 @@ var fetchTcard = function fetchTcard(wk) {
       if (json.message) {
         return { qmessage: json.message };
       } else {
-        console.log('json: ', json);
+        // console.log('json: ', json)
         var processed = (0, _wfuncs.processDb4app)(json);
         return processed;
       }
@@ -51784,6 +51784,7 @@ var TimeCardJar = function (_React$Component) {
           //window.alert(res.qmessage)
         } else {
           _getCfg.ls.modItem('firstday', res.firstday);
+          // console.log('res: ', res)
         }
       });
     };
@@ -51807,26 +51808,44 @@ var TimeCardJar = function (_React$Component) {
       var wkarr = modtcard.wkarr.slice();
       var idx = chobj.idx;
       if (cmd == 'iopu') {
+        if (modtcard.jobs.length == 0) {
+          var jchrs = modtcard.jchrs.slice();
+          console.log('idx: ', idx, 'has jobslength of 0 and hrs of ', chobj.hrs);
+          console.log('wkarr[idx].jchrs: ', wkarr[idx].jchrs);
+          wkarr[idx].jchrs = chobj.hrs;
+          var jcentry = [{ job: 'labor expense', cat: 'general', hrs: chobj.hrs }];
+          wkarr[idx].jcost = jcentry;
+          jchrs[idx] = chobj.hrs;
+          modtcard.jchrs = jchrs;
+          modtcard.wstat.status = 'no job hrs changed';
+          var rec = {
+            wdprt: wkarr[idx].wdprt,
+            jcost: jcentry,
+            emailid: modtcard.emailid
+          };
+          (0, _fetches.putTcardJc)(rec);
+        }
         var hrs = modtcard.hrs.slice();
         hrs[idx] = chobj.hrs;
         wkarr[idx].hrs = chobj.hrs;
         wkarr[idx].inout = chobj.inout;
         modtcard.wkarr = wkarr;
         modtcard.hrs = hrs;
+        console.log('modtcard: ', modtcard);
         modtcard = _this.reCalcStatus(modtcard);
       }
       if (cmd == 'jcost') {
-        var jchrs = modtcard.jchrs.slice();
+        var _jchrs = modtcard.jchrs.slice();
         var njcost = chobj.jcost.slice();
         // njcost=[{ job: "105 Green St", cat: null, hrs: 2 }]
         var sumhrs = (0, _wfuncs.drnd)(njcost.reduce(function (t, j) {
           return j.hrs + t;
         }, 0));
-        jchrs[idx] = sumhrs;
+        _jchrs[idx] = sumhrs;
         wkarr[idx].jcost = njcost;
         wkarr[idx].jchrs = sumhrs;
         modtcard.wkarr = wkarr;
-        modtcard.jchrs = jchrs;
+        modtcard.jchrs = _jchrs;
         modtcard = _this.reCalcStatus(modtcard);
       }
       if (cmd == 'submit') {
@@ -51835,7 +51854,7 @@ var TimeCardJar = function (_React$Component) {
         modtcard.wstat = modwstat;
         _this.setState({ showsub: false });
       }
-      console.log('modtcard.wstat: ', modtcard.wstat);
+      // console.log('modtcard.wstat: ', modtcard.wstat)
       (0, _fetches.putTcardWk)(modtcard.wstat);
       _this.setState({ tcard: modtcard });
     };
@@ -51861,11 +51880,16 @@ var TimeCardJar = function (_React$Component) {
         return t + j;
       }, 0);
       var status = modwstat.status;
+      console.log('status: ', status);
       var showsub = void 0,
           blabel = void 0;
       if (st < 7 || wkpuhrs == 0) {
         status = 'inprocess';
         showsub = false;
+      } else if (status == 'no job hrs changed') {
+        status = 'ready';
+        showsub = true;
+        blabel = 'submit';
       } else if (status == 'submitted' || status == 'approved' || status == 'paid') {
         showsub = false;
       } else {
@@ -51881,7 +51905,7 @@ var TimeCardJar = function (_React$Component) {
 
     _this.renderTimecard = function () {
       if (_this.state.gottcard) {
-        return _react2.default.createElement(_TimeCard.TimeCard, { week: _this.state.week, yr: _this.state.yr, tcard: _this.state.tcard, ismobile: _this.props.responsive.ismobile, showsub: _this.state.showsub, blabel: _this.state.blabel, tcardChanges: _this.handleTcardChanges, weekChanged: _this.handleWeekChanged });
+        return _react2.default.createElement(_TimeCard.TimeCard, { week: _this.state.week, yr: _this.state.yr, tcard: _this.state.tcard, ismobile: _this.props.responsive.ismobile, showsub: _this.state.showsub, blabel: _this.state.blabel, hayjobs: _this.state.hayjobs, tcardChanges: _this.handleTcardChanges, weekChanged: _this.handleWeekChanged });
       } else {
         return _react2.default.createElement(
           'div',
@@ -51930,8 +51954,15 @@ var TimeCardJar = function (_React$Component) {
           _this2.setState({ qmessage: res.qmessage });
           //window.alert(res.qmessage)
         } else {
+          var hayjobs = true;
           res = _this2.reCalcStatus(res);
-          _this2.setState({ tcard: res, gottcard: true, showsub: _this2.setShowSub(res) });
+          if (res.jobs.length == 0) {
+            console.log('TimeCardJar getTimecard jobs.length ==0');
+            hayjobs = false;
+          }
+          _this2.setState({ tcard: res, gottcard: true, showsub: _this2.setShowSub(res), hayjobs: hayjobs }, function () {
+            return console.log('this.state: ', _this2.state);
+          });
         }
       });
     }
@@ -52039,7 +52070,7 @@ var TimeCard = function (_React$Component) {
           jobs = _this$props$tcard.jobs;
 
       var rd = wkarr.map(function (d) {
-        return _react2.default.createElement(_Day.Day, { key: d.idx, data: d, ismobile: _this.props.ismobile, week: week, jobs: jobs, dayChanges: _this.handleDayChanges });
+        return _react2.default.createElement(_Day.Day, { key: d.idx, data: d, ismobile: _this.props.ismobile, week: week, hayjobs: _this.props.hayjobs, jobs: jobs, dayChanges: _this.handleDayChanges });
       });
       return rd;
     };
@@ -52049,11 +52080,12 @@ var TimeCard = function (_React$Component) {
 
   _createClass(TimeCard, [{
     key: 'componentDidMount',
-    value: function componentDidMount() {}
+    value: function componentDidMount() {
+      // console.log('this.props: ', this.props)
+    }
   }, {
     key: 'render',
     value: function render() {
-      console.log('in tcard timecard');
       if (this.props.tcard) {
         var _props = this.props,
             week = _props.week,
@@ -52339,10 +52371,16 @@ var Day = function (_React$Component) {
   }, {
     key: 'render',
     value: function render() {
+      //console.log('this.props.jobs: ', this.props.jobs)
+
       var tin = 'tin' + this.props.data.idx;
       var _props = this.props,
           data = _props.data,
           jobs = _props.jobs;
+
+      if (this.props.jobs.length == 0) {
+        // console.log('Days render if jobs.length==0')
+      }
       var hrs = data.hrs,
           jcost = data.jcost,
           jchrs = data.jchrs,
@@ -52395,7 +52433,7 @@ var Day = function (_React$Component) {
           _react2.default.createElement('br', null)
         ),
         inoutList,
-        _react2.default.createElement(_JobCost.JobCost, { jcost: jcost, jchrs: jchrs, puhrs: hrs, jobs: jobs, wdprt: wdprt, jcChanges: this.handleJcChanges })
+        _react2.default.createElement(_JobCost.JobCost, { jcost: jcost, jchrs: jchrs, puhrs: hrs, jobs: jobs, hayjobs: this.props.hayjobs, wdprt: wdprt, jcChanges: this.handleJcChanges })
       );
     }
   }]);
@@ -52937,7 +52975,8 @@ var JobCost = function (_React$Component) {
     }, _this.renderList = function () {
       var aninput = _this.renderInput();
       if (_this.props.jobs.length == 0) {
-        _this.props.jobs.push({ job: 'yo boss - no job list', category: 'for this week' });
+        //console.log('jobcost render list hay no jobs')
+        //this.props.jobs.push({job:'general labor expense', category:'no job costs'})
       }
       if (_this.state.showjobs) {
         var jl = _this.props.jobs.map(function (j, i) {
@@ -53061,6 +53100,7 @@ var JobCost = function (_React$Component) {
   _createClass(JobCost, [{
     key: 'render',
     value: function render() {
+      console.log('this.state: ', this.state);
       var showjobs = this.state.showjobs; // eslint-disable-line no-unused-vars
 
       var _props = this.props,
@@ -53078,7 +53118,7 @@ var JobCost = function (_React$Component) {
         _react2.default.createElement(
           'div',
           { style: style.clear.div },
-          _react2.default.createElement(
+          this.props.hayjobs && _react2.default.createElement(
             'button',
             { style: style.clear.add, onClick: this.showJobs },
             'toggle job'
@@ -53088,7 +53128,7 @@ var JobCost = function (_React$Component) {
             { wdprt: wdprt, onClick: this.clearPunch },
             'clear punchlist'
           ),
-          _react2.default.createElement(
+          this.props.hayjobs && _react2.default.createElement(
             'button',
             { onClick: this.deleteJcost },
             'clear jobcosts'

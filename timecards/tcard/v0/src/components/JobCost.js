@@ -59,7 +59,8 @@ class JobCost extends React.Component {
   renderList =()=>{
     const aninput =this.renderInput()
     if(this.props.jobs.length==0){
-      this.props.jobs.push({job:'yo boss - no job list', category:'for this week'})
+      //console.log('jobcost render list hay no jobs')
+      //this.props.jobs.push({job:'general labor expense', category:'no job costs'})
     }
     if(this.state.showjobs){
       const jl = this.props.jobs.map((j,i)=>{
@@ -123,6 +124,7 @@ class JobCost extends React.Component {
   }
 
   render() {
+    console.log('this.state: ', this.state)
     const {showjobs}=this.state// eslint-disable-line no-unused-vars
     const {jchrs, jcost, puhrs, wdprt}= this.props 
     const jcosts = this.renderJcost(jcost)
@@ -131,9 +133,13 @@ class JobCost extends React.Component {
       <div style={style.jcbox} >
         {jcosts}
         <div style={style.clear.div}>
+          {this.props.hayjobs &&
           <button style={style.clear.add} onClick={this.showJobs}>toggle job</button>
+          }
           <button wdprt={wdprt} onClick={this.clearPunch}>clear punchlist</button>
+          {this.props.hayjobs &&
           <button onClick={this.deleteJcost}>clear jobcosts</button>
+          }
         </div>
         <div style={style.calc.div}>
           <span style={style.clear.unal}>

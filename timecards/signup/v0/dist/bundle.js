@@ -59478,6 +59478,11 @@ var Company = function (_React$Component) {
                     className: classes.button,
                     onClick: this.updateCompany },
                   'Update Company'
+                ),
+                this.state.isupdated && _react2.default.createElement(
+                  'i',
+                  { className: 'material-icons', style: { fontSize: '60px', color: 'green' } },
+                  'done'
                 )
               )
             )

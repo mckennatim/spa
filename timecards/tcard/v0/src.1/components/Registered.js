@@ -18,7 +18,6 @@ class Registered extends React.Component {
   componentDidMount() {
     const query= this.props.cambio.page.params.query;
     var mobj = parseQuery(query)
-    console.log('mobj: ', mobj) 
     if (mobj.message){
       const message = decodeURI(mobj.message) + ' Check with your employer to see if you can access this app. Or start your own ' 
       this.setState({renderwhat: 'message', message: message})
@@ -26,7 +25,6 @@ class Registered extends React.Component {
       setTcEmail({tcemail:mobj.email})
       fetchCoids(mobj)
       .then((res)=>{
-        console.log('res: ', res)
         if(res.qmessage){
           this.setState({renderwhat: 'message', message: res.qmessage})
         }
@@ -41,17 +39,15 @@ class Registered extends React.Component {
 
   clickCoid=(e)=>{
     const idx =e.target.getAttribute('idx')
-    const coid = this.state.cos[idx]
-    this.getCtoken(this.state.token,coid)
+    const co = this.state.cos[idx]
+    this.getCtoken(this.state.token,co)
   }
 
-  getCtoken=(token,coid)=>{
-    console.log('this.props.ejob.task: ', this.props.ejob.task)
-    fetchCtoken(token,coid)
+  getCtoken=(token,co)=>{
+    fetchCtoken(token,co)
       .then((res)=>{
-        console.log('res: ', res)
         ls.setItem({email: res.binfo.emailid, token:res.token})
-        location.replace('#jobs')
+        location.replace('#tcard')
       })
   }  
 
@@ -67,8 +63,8 @@ class Registered extends React.Component {
         <span>You are registered on this app for multiple businesses. Select which on you want to be logged in at. This app will remeber your last business selection. To switch later, just <a href={cfg.url.authqry}>register</a> again then select another business</span>
         <h4>Select a business/org/entity </h4>
         <ul style={style.myli.ul}>
-          {this.state.cos.map((coid,i)=>(
-            <li style={style.myli.li} key={i} idx={i} onClick={this.clickCoid}>{coid} </li>
+          {this.state.cos.map((co,i)=>(
+            <li style={style.myli.li} key={i} idx={i} onClick={this.clickCoid}>{co.coid} as {co.role} </li>
           ))}
         </ul>
       </div>
@@ -85,7 +81,6 @@ class Registered extends React.Component {
   selectRender=(renderwhat)=>{
     switch (renderwhat) {
       case 'message':
-        console.log('rendering message')
         return this.renderMessage()
       case 'coids':
         return this.renderCoids()
@@ -96,9 +91,7 @@ class Registered extends React.Component {
     }
   }
   render() {
-    const{cos,renderwhat}=this.state 
-    console.log('renderwhat: ', renderwhat)
-    console.log('cos: ', cos)
+    const{renderwhat}=this.state 
     const renderthis = this.selectRender(renderwhat)
     return (
       <div >

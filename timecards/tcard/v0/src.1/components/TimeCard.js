@@ -7,7 +7,7 @@ class TimeCard extends React.Component{
     super(props)
   }
   componentDidMount(){
-
+    // console.log('this.props: ', this.props)
   }   
   setStatBkg=()=>{
     let sta ={...style.he.st.txtsp}
@@ -41,14 +41,13 @@ class TimeCard extends React.Component{
     const {wkarr, jobs}=this.props.tcard;
     const rd = wkarr.map((d)=>{
       return(
-        <Day key={d.idx} data={d} ismobile={this.props.ismobile} week={week} jobs={jobs} dayChanges={this.handleDayChanges}/>
+        <Day key={d.idx} data={d} ismobile={this.props.ismobile} week={week} hayjobs={this.props.hayjobs} jobs={jobs} dayChanges={this.handleDayChanges}/>
       )
     })
     return rd
   }
 
   render(){
-    console.log('in tcard timecard')
     if(this.props.tcard){  
       const{week, showsub, blabel, tcard}=this.props
       const {wstat, hrs, emailid}=tcard;

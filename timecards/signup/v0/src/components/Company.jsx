@@ -292,6 +292,9 @@ class Company extends React.Component {
                 onClick={this.updateCompany}>
               Update Company
               </Button>
+              {this.state.isupdated && 
+              <i className="material-icons" style={{fontSize:'60px', color:'green'}}>done</i>
+              }
             </div>
           </form>
           </div>

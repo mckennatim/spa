@@ -24,6 +24,28 @@ https://www.michigan.gov/mdcs/0,4614,7-147-6879_19184_21557-234596--,00.html
 
 
 https://github.com/MrRio/jsPDF printing at precise locations
+
+
+### 110-tc-feature-nojobs
+#### How does tcard work?
+Timecards is wrapped in TimecardsJar whose job is to have all the user changes perculate to it and then pass them down to components Day and Jobcost.
+
+Timecards gets settings and timecards from the fetches->server and puts them into state. TimecardsJar also handles changes coming from user interaction in Timecards(changeWeek, submit), Day(iopu), or JobCost(iopu, jcost). 
+
+TimecardsJar.getTimeCard sets `hayjobs` to false if there are no jobs for the week. `!nohayjobs` turns off the `toggle jobs` and `clearjobcosts ` buttons in `JobCosts` since they don't apply. TimecardsJar.handleTcardChanges.oupu intercepts the case wher jobs.length==0 and bypasses the normal process of forcing worker to reconcile punchio hours to jcost hrs. It does this by filling in an wkarr[idx](that days entry)  with the following: jcost = `[{job:'labor expense', cat:'general', hrs:chobj.hrs}]`, jchrs = chobj.hrs and sets modtcatd.wstat.status to 'no job hrs changed' which toggles back to `ready` in recalcStatus(). There is still one jobcost record for that person and day and every time there is a change in iopu with nojobs, the hrs of the rec is updated
+
+          const rec = {
+            wdprt:wkarr[idx].wdprt,
+            jcost:jcentry,
+            emailid:modtcard.emailid
+          }
+          putTcardJc(rec)
+
+no servers have been harmed in this feature addition
+### 110-tc-todo
+
+fix tcard oktcard to allow general payroll expense when jobs don't exist
+
 ### 109-tc-signup
 ### 108-tc-pay-beta
 ### 108-tc-pay-gl-journal

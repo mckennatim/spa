@@ -4,7 +4,7 @@ import {geta, processDb4app, adjDay4db} from '../utilities/wfuncs'
 const fetchSettings=()=>{
   var lsh = ls.getItem();
   if(geta('lsh.token', lsh)){
-    let url= cfg.url.api+'/payroll/settings'
+    let url= cfg.url.api+'/tcard/settings'
     let options= {headers: {'Authorization': 'Bearer '+ lsh['token']}}
     return(
       fetch(url, options)
@@ -37,8 +37,8 @@ const fetchTcard=(wk)=>{
           if(json.message){
             return {qmessage: json.message}
           }else{
+            // console.log('json: ', json)
             const processed= processDb4app(json)
-            console.log('processed: ', processed)
             return processed
           }
         })
