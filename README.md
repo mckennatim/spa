@@ -24,6 +24,13 @@ https://www.michigan.gov/mdcs/0,4614,7-147-6879_19184_21557-234596--,00.html
 
 
 https://github.com/MrRio/jsPDF printing at precise locations
+### 113-oktcard-submitted
+Submitted tracks status via TcChanges 'submit' ->reCalcStatus if/else -> updateSubmittedStatus
+### 112-oktcard-firstday
+how is firstday set?
+
+fetchSettings gets firstday from co and puts in in ls.firstday. In fetches fetchWhoTcard.processDb4app adjusts the week for the app and put*.adjDay4db puts it back on the server.
+
 
 
 ### 110-tc-feature-nojobs

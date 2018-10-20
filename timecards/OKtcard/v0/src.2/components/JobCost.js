@@ -6,6 +6,7 @@ class JobCost extends React.Component {
 
 
   showJobs = ()=>{
+    console.log('this.props.jobs: ', this.props.jobs)
     let sh = this.state.showjobs ? false : true
     this.setState({showjobs:sh})
   }
@@ -15,6 +16,7 @@ class JobCost extends React.Component {
   }
 
   inpKey =(e)=>{
+    console.log('event: ', e.keyCode)
     if(e.keyCode==13){
       const val = drnd(e.target.value)
       const idx = e.target.parentElement.getAttribute('ix')
@@ -41,6 +43,7 @@ class JobCost extends React.Component {
   
   addSome=(e)=>{
     this.setState({hrsleft: drnd(this.props.puhrs-this.props.jchrs)})
+    console.log('adding: ', e.target.getAttribute('ix'))
     this.setState({showon:e.target.getAttribute('ix')})
   }
 
@@ -59,8 +62,7 @@ class JobCost extends React.Component {
   renderList =()=>{
     const aninput =this.renderInput()
     if(this.props.jobs.length==0){
-      //console.log('jobcost render list hay no jobs')
-      //this.props.jobs.push({job:'general labor expense', category:'no job costs'})
+      this.props.jobs.push({job:'yo boss - no job list', category:'for this week'})
     }
     if(this.state.showjobs){
       const jl = this.props.jobs.map((j,i)=>{
@@ -95,7 +97,9 @@ class JobCost extends React.Component {
   }
 
   renderJcost =(jcost)=>{
+    
     const hili = this.alterHili()
+
     return(
     <div >
     <table style={style.table.table}><tbody>
@@ -130,13 +134,9 @@ class JobCost extends React.Component {
       <div style={style.jcbox} >
         {jcosts}
         <div style={style.clear.div}>
-          {this.props.hayjobs &&
           <button style={style.clear.add} onClick={this.showJobs}>toggle job</button>
-          }
           <button wdprt={wdprt} onClick={this.clearPunch}>clear punchlist</button>
-          {this.props.hayjobs &&
           <button onClick={this.deleteJcost}>clear jobcosts</button>
-          }
         </div>
         <div style={style.calc.div}>
           <span style={style.clear.unal}>

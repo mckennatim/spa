@@ -41380,13 +41380,34 @@ var OKtcard = function (_React$Component) {
       blabel: 'yyyy'
     };
 
+    _this.handleWeekChanged = function (wk) {
+      console.log(wk, ' only works in timecards, choose from above instead');
+    };
+
+    _this.getSettings = function () {
+      (0, _fetches.fetchSettings)().then(function (res) {
+        if (res.qmessage) {
+          console.log('res.qmessage: ', res.qmessage);
+          _this.setState({ qmessage: res.qmessage });
+          //window.alert(res.qmessage)
+        } else {
+          _getCfg.ls.modItem('firstday', res.firstday);
+          // console.log('res: ', res)
+        }
+      });
+    };
+
     _this.getSubmitted = function () {
       (0, _fetches.fetchSubmitted)().then(function (res) {
         if (res.qmessage) {
           console.log('res.qmessage: ', res.qmessage);
           _this.setState({ qmessage: res.qmessage });
         } else {
-          _this.setState({ submitted: res });
+          var nres = res.map(function (r) {
+            r.isapproved = false;
+            return r;
+          });
+          _this.setState({ submitted: nres });
         }
       });
     };
@@ -41401,8 +41422,12 @@ var OKtcard = function (_React$Component) {
           console.log('res.qmessage: ', res.qmessage);
           _this.setState({ qmessage: res.qmessage });
         } else {
+          var hayjobs = true;
           res = _this.reCalcStatus(res);
-          _this.setState({ tcard: res, gottcard: true });
+          if (res.jobs.length == 0) {
+            hayjobs = false;
+          }
+          _this.setState({ tcard: res, gottcard: true, hayjobs: hayjobs });
         }
       });
     };
@@ -41420,6 +41445,23 @@ var OKtcard = function (_React$Component) {
       var wkarr = modtcard.wkarr.slice();
       var idx = chobj.idx;
       if (cmd == 'iopu') {
+        if (modtcard.jobs.length == 0) {
+          var jchrs = modtcard.jchrs.slice();
+          console.log('idx: ', idx, 'has jobslength of 0 and hrs of ', chobj.hrs);
+          console.log('wkarr[idx].jchrs: ', wkarr[idx].jchrs);
+          wkarr[idx].jchrs = chobj.hrs;
+          var jcentry = [{ job: 'labor expense', cat: 'general', hrs: chobj.hrs }];
+          wkarr[idx].jcost = jcentry;
+          jchrs[idx] = chobj.hrs;
+          modtcard.jchrs = jchrs;
+          modtcard.wstat.status = 'no job hrs changed';
+          var rec = {
+            wdprt: wkarr[idx].wdprt,
+            jcost: jcentry,
+            emailid: modtcard.emailid
+          };
+          (0, _fetches.putTcardJc)(rec);
+        }
         var hrs = modtcard.hrs.slice();
         hrs[idx] = chobj.hrs;
         wkarr[idx].hrs = chobj.hrs;
@@ -41429,34 +41471,34 @@ var OKtcard = function (_React$Component) {
         modtcard = _this.reCalcStatus(modtcard);
       }
       if (cmd == 'jcost') {
-        var jchrs = modtcard.jchrs.slice();
+        var _jchrs = modtcard.jchrs.slice();
         var njcost = chobj.jcost.slice();
         // njcost=[{ job: "105 Green St", cat: null, hrs: 2 }]
         var sumhrs = (0, _wfuncs.drnd)(njcost.reduce(function (t, j) {
           return j.hrs + t;
         }, 0));
-        jchrs[idx] = sumhrs;
+        _jchrs[idx] = sumhrs;
         wkarr[idx].jcost = njcost;
         wkarr[idx].jchrs = sumhrs;
         modtcard.wkarr = wkarr;
-        modtcard.jchrs = jchrs;
+        modtcard.jchrs = _jchrs;
         modtcard = _this.reCalcStatus(modtcard);
       }
       if (cmd == 'submit') {
-        var modwstat = _extends({}, modtcard.wstat);
-        var blabel = _this.state.blabel;
-
-        console.log('blabel: ', blabel);
-        if (blabel == 'approve') {
-          console.log('in blabel===approve');
-          modwstat.status = 'approved';
-          _this.setState({ showsub: false });
-        } else if (blabel == 'submit') {
-          modwstat.status = chobj.status;
-          _this.setState({ showsub: false });
-        }
-        modtcard.wstat = modwstat;
-        console.log('modtcard.wstat 1: ', modtcard.wstat);
+        // let modwstat= {...modtcard.wstat}
+        // const {blabel} =this.state
+        // console.log('blabel: ', blabel)
+        // console.log('chobj: ', chobj)
+        // if(blabel=='approve'){
+        //   console.log('in blabel===approve')
+        //   modwstat.status='approved'
+        //   this.setState({showsub:false})
+        // }else if(blabel=='submit') {
+        //   modwstat.status=chobj.status
+        //   this.setState({showsub:false})
+        // }
+        // modtcard.wstat=modwstat
+        // console.log('modtcard.wstat 1: ', modtcard.wstat)
         modtcard = _this.reCalcStatus(modtcard);
       }
       console.log('modtcard.wstat 2: ', modtcard.wstat);
@@ -41465,19 +41507,21 @@ var OKtcard = function (_React$Component) {
     };
 
     _this.reCalcStatus = function (modtcard) {
-      console.log('modtcard: ', modtcard);
       var _modtcard = modtcard,
           hrs = _modtcard.hrs,
           jchrs = _modtcard.jchrs,
           wstat = _modtcard.wstat;
 
       var modwstat = _extends({}, wstat);
+      var oldstat = modwstat.status;
       var wkpuhrs = (0, _wfuncs.drnd)(hrs.reduce(function (t, h) {
         return t + h;
       }, 0));
       var wkjchrs = (0, _wfuncs.drnd)(jchrs.reduce(function (t, h) {
         return t + h;
       }, 0)); // eslint-disable-line no-unused-vars
+      var blabel = _this.state.blabel;
+
       var st = hrs //[1,0,1,0,1,1,1]
       .map(function (h, i) {
         return h == jchrs[i];
@@ -41486,37 +41530,67 @@ var OKtcard = function (_React$Component) {
       }, 0);
       var status = modwstat.status;
       var showsub = void 0,
-          blabel = void 0;
-      console.log('st: ', st);
-      if (st < 7 || wkpuhrs == 0) {
-        status = 'inprocess';
+          nblabel = void 0;
+      if (blabel == 'approve') {
+        status = 'approved';
         showsub = false;
       } else if (status == 'submitted') {
         showsub = true;
-        blabel = 'approve';
-      } else if (status == 'approved' || status == 'paid') {
+        nblabel = 'approve';
+      } else if (blabel == 'submit') {
+        status = 'submitted';
+        nblabel = 'approve';
+        showsub = true;
+      } else if (st < 7 || wkpuhrs == 0) {
+        status = 'inprocess';
+        showsub = false;
+      } else if (status == 'paid') {
         showsub = false;
       } else {
         status = 'ready';
         showsub = true;
-        blabel = 'submit';
+        nblabel = 'submit';
       }
-
       modwstat = _extends({}, modwstat, { status: status, hrs: wkpuhrs });
+      _this.updateSubmittedStatus(oldstat, modwstat);
       modtcard = _extends({}, modtcard, { wstat: modwstat });
-      _this.setState({ showsub: showsub, blabel: blabel });
+      _this.setState({ showsub: showsub, blabel: nblabel });
       return modtcard;
     };
 
+    _this.updateSubmittedStatus = function (oldstat, wstat) {
+      console.log('wstat.status: ', wstat.status);
+      console.log('oldstat: ', oldstat);
+      if (wstat.status != oldstat) {
+        // console.log('this.state.submitted: ', this.state.submitted)
+        var sarr = _this.state.submitted.slice();
+        var nsarr = sarr.map(function (r) {
+          if (r.emailid == wstat.emailid && r.wprt == wstat.wprt) {
+            r.status = wstat.status;
+            if (r.status == 'approved') {
+              r.isapproved = true;
+            }
+          }
+          return r;
+        });
+        _this.setState({ submitted: nsarr, statuschanged: true });
+      }
+    };
+
     _this.renderSubmitted = function (subm) {
+      var statuschanged = _this.state.statuschanged;
+
+      console.log('statuschanged: ', statuschanged);
+      console.log('subm: ', subm);
       if (subm.length > 0) {
         return _react2.default.createElement(
           'ul',
           { style: style.subm.ul },
           subm.map(function (s, i) {
+            var sty = s.isapproved ? style.subm.hili : style.subm.li;
             return _react2.default.createElement(
               'li',
-              { key: i, style: style.subm.li, ix: i, onClick: _this.getWhosTcard },
+              { key: i, style: sty, ix: i, onClick: _this.getWhosTcard },
               _react2.default.createElement(
                 'div',
                 { ix: i, style: style.subm.li.id },
@@ -41527,6 +41601,11 @@ var OKtcard = function (_React$Component) {
                 'div',
                 { ix: i, style: style.subm.li.id },
                 s.emailid
+              ),
+              s.isapproved && _react2.default.createElement(
+                'i',
+                { className: 'material-icons', style: { fontSize: '20px', color: 'green' } },
+                'done'
               ),
               _react2.default.createElement(
                 'div',
@@ -41564,11 +41643,10 @@ var OKtcard = function (_React$Component) {
     };
 
     _this.renderTimecard = function () {
-      console.log('this.state: ', _this.state);
       var gottcard = _this.state.gottcard;
 
       if (gottcard) {
-        return _react2.default.createElement(_TimeCard.TimeCard, { week: _this.state.week, yr: _this.state.yr, tcard: _this.state.tcard, ismobile: _this.props.responsive.ismobile, showsub: _this.state.showsub, blabel: _this.state.blabel, tcardChanges: _this.handleTcardChanges });
+        return _react2.default.createElement(_TimeCard.TimeCard, { week: _this.state.week, yr: _this.state.yr, tcard: _this.state.tcard, ismobile: _this.props.responsive.ismobile, showsub: _this.state.showsub, blabel: _this.state.blabel, hayjobs: _this.state.hayjobs, tcardChanges: _this.handleTcardChanges, weekChanged: _this.handleWeekChanged });
       }
     };
 
@@ -41578,63 +41656,9 @@ var OKtcard = function (_React$Component) {
   _createClass(OKtcard, [{
     key: 'componentDidMount',
     value: function componentDidMount() {
+      this.getSettings();
       this.getSubmitted(this.state.week);
     }
-
-    // handleTcardChanges=(cmd,chobj)=>{
-    //   console.log('chobj: ', chobj)
-    //   console.log('this state.tcard: ', this.state.tcard)
-    //   let modtcard = {...this.state.tcard}
-    //   let wkarr = modtcard.wkarr.slice()
-    //   const idx = chobj.idx
-    //   if (cmd=='iopu'){
-    //     let hrs =  modtcard.hrs.slice()
-    //     hrs[idx] = chobj.hrs
-    //     console.log('hrs: ', hrs)
-    //     wkarr[idx].hrs = chobj.hrs
-    //     wkarr[idx].inout =chobj.inout
-    //     modtcard.wkarr = wkarr
-    //     modtcard.hrs = hrs
-    //   }
-    //   if (cmd=='jcost'){
-    //     let jchrs =  modtcard.jchrs.slice()
-    //     const njcost = chobj.jcost.slice()
-    //     // njcost=[{ job: "105 Green St", cat: null, hrs: 2 }]
-    //     const sumhrs = drnd(njcost.reduce((t,j)=>j.hrs+t, 0))
-    //     jchrs[idx]=sumhrs
-    //     wkarr[idx].jcost=njcost
-    //     wkarr[idx].jchrs=sumhrs
-    //     modtcard.wkarr = wkarr
-    //     modtcard.jchrs = jchrs
-    //   }
-    //   this.changeTcard(modtcard)
-    // }
-    // changeTcard =(modtcard)=>{
-    //   const {hrs, jchrs, wstat}=modtcard
-    //   let modwstat= {...wstat}
-    //   console.log('hrs array: ', hrs)
-    //   console.log('jchrs array: ', jchrs)
-    //   const wkpuhrs=drnd(hrs.reduce((t,h)=>t+h,0))
-    //   const wkjchrs= drnd(jchrs.reduce((t,h)=>t+h,0))// eslint-disable-line no-unused-vars
-    //   const st = hrs //[1,0,1,0,1,1,1]
-    //     .map((h,i)=>h==jchrs[i])
-    //     .reduce((t,j)=>t+j,0)
-    //   let status
-    //   let showsub
-    //   if(st<7 || wkpuhrs==0){
-    //     status = 'inprocess'
-    //     showsub=false
-    //   }else{
-    //     status = 'ready'
-    //     showsub=true
-    //   }
-    //   modwstat={...modwstat, status:status, hrs:wkpuhrs}
-    //   putTcardWk(modwstat)
-    //   modtcard={...modtcard,wstat:modwstat, showsub}
-    //   console.log('modtcard: ', modtcard)
-    //   this.setState({tcard:modtcard})
-    // }
-
   }, {
     key: 'render',
     value: function render() {
@@ -41688,7 +41712,7 @@ var style = {
     padding: '4px'
   },
   he: {
-    height: '60px',
+    height: '20px',
     background: 'grey',
     title: {
       float: 'right'
@@ -41715,6 +41739,12 @@ var style = {
       stat: {
         float: 'right'
       }
+    },
+    hili: {
+      overflow: 'hidden',
+      padding: '6px',
+      border: '1px solid',
+      background: '#9eea9d'
     }
   }
 };
@@ -41781,7 +41811,8 @@ var TimeCard = function (_React$Component) {
     };
 
     _this.clickSubmit = function () {
-      _this.props.tcardChanges('submit', { showsub: false, status: 'submitted' });
+      _this.props.tcardChanges('submit', { showsub: false, status: 'submitted', blabel: _this.props.blabel });
+      //console.log('this.props.blabel: ', this.props.blabel)
     };
 
     _this.renderDays = function () {
@@ -41791,7 +41822,7 @@ var TimeCard = function (_React$Component) {
           jobs = _this$props$tcard.jobs;
 
       var rd = wkarr.map(function (d) {
-        return _react2.default.createElement(_Day.Day, { key: d.idx, data: d, ismobile: _this.props.ismobile, week: week, jobs: jobs, dayChanges: _this.handleDayChanges });
+        return _react2.default.createElement(_Day.Day, { key: d.idx, data: d, ismobile: _this.props.ismobile, week: week, hayjobs: _this.props.hayjobs, jobs: jobs, dayChanges: _this.handleDayChanges });
       });
       return rd;
     };
@@ -41801,11 +41832,12 @@ var TimeCard = function (_React$Component) {
 
   _createClass(TimeCard, [{
     key: 'componentDidMount',
-    value: function componentDidMount() {}
+    value: function componentDidMount() {
+      // console.log('this.props: ', this.props)
+    }
   }, {
     key: 'render',
     value: function render() {
-      console.log('in tcard timecard');
       if (this.props.tcard) {
         var _props = this.props,
             week = _props.week,
@@ -42091,10 +42123,16 @@ var Day = function (_React$Component) {
   }, {
     key: 'render',
     value: function render() {
+      //console.log('this.props.jobs: ', this.props.jobs)
+
       var tin = 'tin' + this.props.data.idx;
       var _props = this.props,
           data = _props.data,
           jobs = _props.jobs;
+
+      if (this.props.jobs.length == 0) {
+        // console.log('Days render if jobs.length==0')
+      }
       var hrs = data.hrs,
           jcost = data.jcost,
           jchrs = data.jchrs,
@@ -42147,7 +42185,7 @@ var Day = function (_React$Component) {
           _react2.default.createElement('br', null)
         ),
         inoutList,
-        _react2.default.createElement(_JobCost.JobCost, { jcost: jcost, jchrs: jchrs, puhrs: hrs, jobs: jobs, wdprt: wdprt, jcChanges: this.handleJcChanges })
+        _react2.default.createElement(_JobCost.JobCost, { jcost: jcost, jchrs: jchrs, puhrs: hrs, jobs: jobs, hayjobs: this.props.hayjobs, wdprt: wdprt, jcChanges: this.handleJcChanges })
       );
     }
   }]);
@@ -42326,7 +42364,7 @@ var fetchTcard = function fetchTcard(wk) {
       if (json.message) {
         return { qmessage: json.message };
       } else {
-        console.log('json: ', json);
+        // console.log('json: ', json)
         var processed = (0, _wfuncs.processDb4app)(json);
         return processed;
       }
@@ -43089,7 +43127,8 @@ var JobCost = function (_React$Component) {
     }, _this.renderList = function () {
       var aninput = _this.renderInput();
       if (_this.props.jobs.length == 0) {
-        _this.props.jobs.push({ job: 'yo boss - no job list', category: 'for this week' });
+        //console.log('jobcost render list hay no jobs')
+        //this.props.jobs.push({job:'general labor expense', category:'no job costs'})
       }
       if (_this.state.showjobs) {
         var jl = _this.props.jobs.map(function (j, i) {
@@ -43137,9 +43176,7 @@ var JobCost = function (_React$Component) {
         );
       }
     }, _this.renderJcost = function (jcost) {
-
       var hili = _this.alterHili();
-
       return _react2.default.createElement(
         'div',
         null,
@@ -43230,7 +43267,7 @@ var JobCost = function (_React$Component) {
         _react2.default.createElement(
           'div',
           { style: style.clear.div },
-          _react2.default.createElement(
+          this.props.hayjobs && _react2.default.createElement(
             'button',
             { style: style.clear.add, onClick: this.showJobs },
             'toggle job'
@@ -43240,7 +43277,7 @@ var JobCost = function (_React$Component) {
             { wdprt: wdprt, onClick: this.clearPunch },
             'clear punchlist'
           ),
-          _react2.default.createElement(
+          this.props.hayjobs && _react2.default.createElement(
             'button',
             { onClick: this.deleteJcost },
             'clear jobcosts'
@@ -43410,7 +43447,7 @@ exports.mapClass2Element = mapClass2Element;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.delTcardPu = exports.putTcardWk = exports.putTcardJc = exports.putTcardPu = exports.putTcard = exports.fetchTcard = exports.fetchSubmitted = exports.fetchWhoTcard = undefined;
+exports.delTcardPu = exports.putTcardWk = exports.putTcardJc = exports.putTcardPu = exports.putTcard = exports.fetchTcard = exports.fetchSubmitted = exports.fetchWhoTcard = exports.fetchSettings = undefined;
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
@@ -43421,6 +43458,27 @@ var _wfuncs = __webpack_require__(13);
 var moment = __webpack_require__(0);
 
 
+var fetchSettings = function fetchSettings() {
+  var lsh = _getCfg.ls.getItem();
+  if ((0, _wfuncs.geta)('lsh.token', lsh)) {
+    var url = _getCfg.cfg.url.api + '/tcard/settings';
+    var options = { headers: { 'Authorization': 'Bearer ' + lsh['token'] } };
+    return fetch(url, options).then(function (response) {
+      return response.json();
+    }).then(function (json) {
+      if (json.message) {
+        return { qmessage: json.message + ' - perhaps you need to register' };
+      } else {
+        return json[0];
+      }
+    }).catch(function (e) {
+      return { qmessage: e.message + 'fetchSettings- perhaps you need to register' };
+    });
+  } else {
+    var p2 = Promise.resolve({ qmessage: 'you dont exist! - perhaps you need to register' });
+    return p2;
+  }
+};
 var fetchSubmitted = function fetchSubmitted() {
   var lsh = _getCfg.ls.getItem();
   if ((0, _wfuncs.geta)('lsh.token', lsh)) {
@@ -43510,7 +43568,7 @@ var putTcardWk = function putTcardWk(wkstat) {
   }
 };
 var putTcardJc = function putTcardJc(aday) {
-  var tday = adjDay4db(_getCfg.cfg.firstday, aday);
+  var tday = adjDay4db(_getCfg.ls.getKey('firstday'), aday);
   var lsh = _getCfg.ls.getItem();
   if ((0, _wfuncs.geta)('lsh.token', lsh)) {
     var url = _getCfg.cfg.url.api + '/tcard/updjc';
@@ -43531,7 +43589,7 @@ var putTcardJc = function putTcardJc(aday) {
   }
 };
 var putTcardPu = function putTcardPu(aday) {
-  var tday = adjDay4db(_getCfg.cfg.firstday, aday);
+  var tday = adjDay4db(_getCfg.ls.getKey('firstday'), aday);
   var lsh = _getCfg.ls.getItem();
   if ((0, _wfuncs.geta)('lsh.token', lsh)) {
     var url = _getCfg.cfg.url.api + '/tcard/updpu';
@@ -43553,7 +43611,7 @@ var putTcardPu = function putTcardPu(aday) {
 };
 
 var putTcard = function putTcard(aday) {
-  var tday = adjDay4db(_getCfg.cfg.firstday, aday);
+  var tday = adjDay4db(_getCfg.ls.getKey('firstday'), aday);
   var lsh = _getCfg.ls.getItem();
   if ((0, _wfuncs.geta)('lsh.token', lsh)) {
     var url = _getCfg.cfg.url.api + '/tcard/update';
@@ -43575,7 +43633,7 @@ var putTcard = function putTcard(aday) {
 };
 
 var delTcardPu = function delTcardPu(aday) {
-  var tday = adjDay4db(_getCfg.cfg.firstday, aday);
+  var tday = adjDay4db(_getCfg.ls.getKey('firstday'), aday);
   var lsh = _getCfg.ls.getItem();
   if ((0, _wfuncs.geta)('lsh.token', lsh)) {
     var url = _getCfg.cfg.url.api + '/tcard/del';
@@ -43596,6 +43654,7 @@ var delTcardPu = function delTcardPu(aday) {
   }
 };
 
+exports.fetchSettings = fetchSettings;
 exports.fetchWhoTcard = fetchWhoTcard;
 exports.fetchSubmitted = fetchSubmitted;
 exports.fetchTcard = fetchTcard;
@@ -43631,7 +43690,7 @@ var sumThing = function sumThing(arr, fld) {
 
 var processDb4app = function processDb4app(res) {
   var lsh = _getCfg.ls.getItem();
-  var wkarr = wkendLast(adjWk4app(_getCfg.cfg.firstday, res.wkarr));
+  var wkarr = wkendLast(adjWk4app(_getCfg.ls.getKey('firstday'), res.wkarr));
   var hrs = sumThing(wkarr, 'hrs');
   var jchrs = sumThing(wkarr, 'jchrs');
   return { wkarr: wkarr, hrs: hrs, jchrs: jchrs, emailid: lsh.email, jobs: res.jobs, wstat: res.wstat };

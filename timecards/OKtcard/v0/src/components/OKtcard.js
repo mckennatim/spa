@@ -1,9 +1,9 @@
 import React from 'react';
 import {TimeCard} from '../../../../tcard/v0/src/components/TimeCard'// eslint-disable-line no-unused-vars
 import {mapClass2Element} from '../hoc/mapClass2Element'
-import {fetchSubmitted, fetchWhoTcard, putTcardWk} from '../services/fetches'
+import {fetchSubmitted, fetchWhoTcard, putTcardWk, putTcardJc, fetchSettings} from '../services/fetches'
 import {drnd} from '../utilities/wfuncs'
-import {makeHref} from '../utilities/getCfg'
+import {ls, makeHref} from '../utilities/getCfg'
 
 class OKtcard extends React.Component {
   constructor(props){
@@ -18,7 +18,26 @@ class OKtcard extends React.Component {
   }
 
   componentDidMount(){
+    this.getSettings()
     this.getSubmitted(this.state.week)
+  }
+
+  handleWeekChanged = (wk)=>{
+    console.log(wk,' only works in timecards, choose from above instead')
+  }
+
+  getSettings=()=>{
+    fetchSettings() 
+      .then((res)=>{
+        if (res.qmessage){
+          console.log('res.qmessage: ', res.qmessage)
+          this.setState({qmessage:res.qmessage})
+          //window.alert(res.qmessage)
+        }else{        
+          ls.modItem('firstday', res.firstday)
+          // console.log('res: ', res)
+        }
+    })
   }
 
   getSubmitted=()=>{
@@ -28,7 +47,11 @@ class OKtcard extends React.Component {
           console.log('res.qmessage: ', res.qmessage)
           this.setState({qmessage:res.qmessage})
         }else{
-          this.setState({submitted:res})
+          const nres= res.map((r)=>{
+            r.isapproved=false
+            return r
+          })
+          this.setState({submitted:nres})
         }
       })
   }
@@ -44,8 +67,12 @@ class OKtcard extends React.Component {
         console.log('res.qmessage: ', res.qmessage)
         this.setState({qmessage:res.qmessage})
       }else{
+        let hayjobs=true
         res = this.reCalcStatus(res)
-        this.setState({tcard:res, gottcard:true})
+        if(res.jobs.length==0){
+          hayjobs=false
+        }        
+        this.setState({tcard:res, gottcard:true, hayjobs})
       }
     })
   }
@@ -62,6 +89,23 @@ class OKtcard extends React.Component {
     let wkarr = modtcard.wkarr.slice()
     const idx = chobj.idx
     if (cmd=='iopu'){
+      if(modtcard.jobs.length==0){
+        let jchrs =  modtcard.jchrs.slice()
+        console.log('idx: ', idx, 'has jobslength of 0 and hrs of ', chobj.hrs)
+        console.log('wkarr[idx].jchrs: ', wkarr[idx].jchrs)
+        wkarr[idx].jchrs=chobj.hrs
+        const jcentry = [{job:'labor expense', cat:'general', hrs:chobj.hrs}]
+        wkarr[idx].jcost=jcentry
+        jchrs[idx]=chobj.hrs
+        modtcard.jchrs = jchrs
+        modtcard.wstat.status = 'no job hrs changed'
+        const rec = {
+          wdprt:wkarr[idx].wdprt,
+          jcost:jcentry,
+          emailid:modtcard.emailid
+        }
+        putTcardJc(rec)
+      }      
       let hrs =  modtcard.hrs.slice()
       hrs[idx] = chobj.hrs
       wkarr[idx].hrs = chobj.hrs
@@ -83,19 +127,20 @@ class OKtcard extends React.Component {
       modtcard = this.reCalcStatus(modtcard)
     }
     if(cmd=='submit'){
-      let modwstat= {...modtcard.wstat}
-      const {blabel} =this.state
-      console.log('blabel: ', blabel)
-      if(blabel=='approve'){
-        console.log('in blabel===approve')
-        modwstat.status='approved'
-        this.setState({showsub:false})
-      }else if(blabel=='submit') {
-        modwstat.status=chobj.status
-        this.setState({showsub:false})
-      }
-      modtcard.wstat=modwstat
-      console.log('modtcard.wstat 1: ', modtcard.wstat)
+      // let modwstat= {...modtcard.wstat}
+      // const {blabel} =this.state
+      // console.log('blabel: ', blabel)
+      // console.log('chobj: ', chobj)
+      // if(blabel=='approve'){
+      //   console.log('in blabel===approve')
+      //   modwstat.status='approved'
+      //   this.setState({showsub:false})
+      // }else if(blabel=='submit') {
+      //   modwstat.status=chobj.status
+      //   this.setState({showsub:false})
+      // }
+      // modtcard.wstat=modwstat
+      // console.log('modtcard.wstat 1: ', modtcard.wstat)
       modtcard = this.reCalcStatus(modtcard)
     }
     console.log('modtcard.wstat 2: ', modtcard.wstat)
@@ -104,100 +149,79 @@ class OKtcard extends React.Component {
   }
 
   reCalcStatus =(modtcard)=>{
-    console.log('modtcard: ', modtcard)
     const {hrs, jchrs, wstat}=modtcard
     let modwstat= {...wstat}
+    const oldstat=modwstat.status
     const wkpuhrs=drnd(hrs.reduce((t,h)=>t+h,0))
     const wkjchrs= drnd(jchrs.reduce((t,h)=>t+h,0))// eslint-disable-line no-unused-vars
+    const{blabel}=this.state
     const st = hrs //[1,0,1,0,1,1,1]
       .map((h,i)=>h==jchrs[i])
       .reduce((t,j)=>t+j,0)
       let status=modwstat.status
-    let showsub, blabel 
-    console.log('st: ', st)
-    if(st<7 || wkpuhrs==0){
-      status = 'inprocess'
+    let showsub, nblabel 
+    if(blabel=='approve'){
+      status='approved'
       showsub=false
     }else if(status=='submitted'){
       showsub=true
-      blabel='approve'
-    }else if(status=='approved' || status=='paid'){
+      nblabel='approve'
+    }else if(blabel=='submit') {
+      status='submitted'
+      nblabel='approve'
+      showsub=true
+    } else if(st<7 || wkpuhrs==0){
+      status = 'inprocess'
+      showsub=false
+    }else if(status=='paid'){
       showsub=false
     }else{
       status = 'ready'
       showsub=true
-      blabel= 'submit'
+      nblabel= 'submit'
     }
-    
     modwstat={...modwstat, status:status, hrs:wkpuhrs}
+    this.updateSubmittedStatus(oldstat,modwstat)
     modtcard={...modtcard, wstat:modwstat}
-    this.setState({showsub, blabel})
+    this.setState({showsub, blabel:nblabel})
     return modtcard
   }
 
-  // handleTcardChanges=(cmd,chobj)=>{
-  //   console.log('chobj: ', chobj)
-  //   console.log('this state.tcard: ', this.state.tcard)
-  //   let modtcard = {...this.state.tcard}
-  //   let wkarr = modtcard.wkarr.slice()
-  //   const idx = chobj.idx
-  //   if (cmd=='iopu'){
-  //     let hrs =  modtcard.hrs.slice()
-  //     hrs[idx] = chobj.hrs
-  //     console.log('hrs: ', hrs)
-  //     wkarr[idx].hrs = chobj.hrs
-  //     wkarr[idx].inout =chobj.inout
-  //     modtcard.wkarr = wkarr
-  //     modtcard.hrs = hrs
-  //   }
-  //   if (cmd=='jcost'){
-  //     let jchrs =  modtcard.jchrs.slice()
-  //     const njcost = chobj.jcost.slice()
-  //     // njcost=[{ job: "105 Green St", cat: null, hrs: 2 }]
-  //     const sumhrs = drnd(njcost.reduce((t,j)=>j.hrs+t, 0))
-  //     jchrs[idx]=sumhrs
-  //     wkarr[idx].jcost=njcost
-  //     wkarr[idx].jchrs=sumhrs
-  //     modtcard.wkarr = wkarr
-  //     modtcard.jchrs = jchrs
-  //   }
-  //   this.changeTcard(modtcard)
-  // }
-  // changeTcard =(modtcard)=>{
-  //   const {hrs, jchrs, wstat}=modtcard
-  //   let modwstat= {...wstat}
-  //   console.log('hrs array: ', hrs)
-  //   console.log('jchrs array: ', jchrs)
-  //   const wkpuhrs=drnd(hrs.reduce((t,h)=>t+h,0))
-  //   const wkjchrs= drnd(jchrs.reduce((t,h)=>t+h,0))// eslint-disable-line no-unused-vars
-  //   const st = hrs //[1,0,1,0,1,1,1]
-  //     .map((h,i)=>h==jchrs[i])
-  //     .reduce((t,j)=>t+j,0)
-  //   let status
-  //   let showsub
-  //   if(st<7 || wkpuhrs==0){
-  //     status = 'inprocess'
-  //     showsub=false
-  //   }else{
-  //     status = 'ready'
-  //     showsub=true
-  //   }
-  //   modwstat={...modwstat, status:status, hrs:wkpuhrs}
-  //   putTcardWk(modwstat)
-  //   modtcard={...modtcard,wstat:modwstat, showsub}
-  //   console.log('modtcard: ', modtcard)
-  //   this.setState({tcard:modtcard})
-  // }
+  updateSubmittedStatus = (oldstat,wstat)=>{
+    console.log('wstat.status: ', wstat.status)
+    console.log('oldstat: ', oldstat)
+    if(wstat.status!=oldstat){
+      // console.log('this.state.submitted: ', this.state.submitted)
+      let sarr  = this.state.submitted.slice()
+      let nsarr = sarr.map((r)=>{
+        if(r.emailid==wstat.emailid && r.wprt==wstat.wprt){
+          r.status=wstat.status
+          if (r.status=='approved'){
+            r.isapproved=true
+          }
+        }
+        return r
+      })
+      this.setState({submitted:nsarr, statuschanged:true}) 
+    }
+  }
 
   renderSubmitted=(subm)=>{
+    const{statuschanged}=this.state
+    console.log('statuschanged: ', statuschanged)
+    console.log('subm: ', subm)
     if(subm.length>0){
     return(
       <ul style={style.subm.ul}>
         {subm.map((s,i)=>{
+          const sty = s.isapproved ? style.subm.hili : style.subm.li
           return(
-            <li key={i} style={style.subm.li} ix={i} onClick={this.getWhosTcard}>
+            <li key={i} style={sty} ix={i} onClick={this.getWhosTcard}>
               <div ix={i} style={style.subm.li.id}>{s.wprt}: </div>
               <div ix={i} style={style.subm.li.id}>{s.emailid}</div>
+              {s.isapproved && 
+              <i className="material-icons" style={{fontSize:'20px', color:'green'}}>done</i>
+              }
               <div ix={i} style={style.subm.li.stat}>{s.status}</div>
             </li>
           )
@@ -215,11 +239,10 @@ class OKtcard extends React.Component {
   } 
   
   renderTimecard = ()=>{
-    console.log('this.state: ', this.state)
     const{gottcard} =this.state
     if(gottcard){
       return (
-        <TimeCard week={this.state.week} yr={this.state.yr} tcard={this.state.tcard} ismobile={this.props.responsive.ismobile} showsub={this.state.showsub} blabel={this.state.blabel} tcardChanges={this.handleTcardChanges}/>
+        <TimeCard week={this.state.week} yr={this.state.yr} tcard={this.state.tcard} ismobile={this.props.responsive.ismobile} showsub={this.state.showsub} blabel={this.state.blabel} hayjobs={this.state.hayjobs} tcardChanges={this.handleTcardChanges} weekChanged={this.handleWeekChanged}/>
       )
     }
   }
@@ -256,7 +279,7 @@ let style={
     padding: '4px'
   } ,
   he:{
-    height:'60px',
+    height:'20px',
     background:'grey',
     title:{
       float: 'right'
@@ -283,6 +306,12 @@ let style={
       stat: {
         float: 'right'
       }
+    },
+    hili:{
+      overflow:'hidden',
+      padding: '6px',
+      border:'1px solid',
+      background: '#9eea9d'
     }
   }
 }

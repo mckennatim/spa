@@ -114,6 +114,7 @@ class TimeCardJar extends React.Component {
       modtcard = this.reCalcStatus(modtcard)
     }
     if(cmd=='submit'){
+      //console.log('chobj: ', chobj)
       let modwstat= {...modtcard.wstat}
       modwstat.status=chobj.status
       modtcard.wstat=modwstat

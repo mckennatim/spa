@@ -51849,6 +51849,7 @@ var TimeCardJar = function (_React$Component) {
         modtcard = _this.reCalcStatus(modtcard);
       }
       if (cmd == 'submit') {
+        //console.log('chobj: ', chobj)
         var modwstat = _extends({}, modtcard.wstat);
         modwstat.status = chobj.status;
         modtcard.wstat = modwstat;
@@ -52060,7 +52061,8 @@ var TimeCard = function (_React$Component) {
     };
 
     _this.clickSubmit = function () {
-      _this.props.tcardChanges('submit', { showsub: false, status: 'submitted' });
+      _this.props.tcardChanges('submit', { showsub: false, status: 'submitted', blabel: _this.props.blabel });
+      //console.log('this.props.blabel: ', this.props.blabel)
     };
 
     _this.renderDays = function () {
@@ -53024,9 +53026,7 @@ var JobCost = function (_React$Component) {
         );
       }
     }, _this.renderJcost = function (jcost) {
-
       var hili = _this.alterHili();
-
       return _react2.default.createElement(
         'div',
         null,
@@ -53100,7 +53100,6 @@ var JobCost = function (_React$Component) {
   _createClass(JobCost, [{
     key: 'render',
     value: function render() {
-      console.log('this.state: ', this.state);
       var showjobs = this.state.showjobs; // eslint-disable-line no-unused-vars
 
       var _props = this.props,

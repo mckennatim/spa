@@ -1,17 +1,38 @@
 import React from 'react' // eslint-disable-line no-unused-vars
-import {mStyle} from '../styles'
-import {cfg} from '../utilities/getCfg'
+import {cfg, makeHref} from '../utilities/getCfg'
 
+console.log('cfg.url.authqry: ', cfg.url.authqry)
 
-const Nav = () =>(
-    <div id="menu"> 
-    <ul>
-      <li style={mStyle.li}><a style={mStyle.a} href={cfg.url.authqry}>register</a></li>
-      <li style={mStyle.li}><a style={mStyle.a} href="about" data-navigo>about</a></li>
-      <li style={mStyle.li}><a style={mStyle.a} href="oktcard" data-navigo>OKtcard</a></li>
-      <li style={mStyle.li}><a style={mStyle.a} href={cfg.url.jobs}>jobs</a></li>
+const Nav = () =>{
+  const host =window.location.hostname
+  const href = makeHref(host, 'signup', '#urapps')
+  return (
+    <div style={style} id="menu"> 
+      <ul>
+        {/*
+        <li style={style.li}><a style={style.a} href={cfg.url.authqry}>register</a></li>
+        */}
+
+      <li style={style.li}><a style={style.a} href={href}>apps</a></li>
+      <li style={style.li}><a style={style.a} href="about" data-navigo>about</a></li>
+      <li style={style.li}><a style={style.a} href="oktcard" data-navigo>OKtcard</a></li>
+      <li style={style.li}><a style={style.a} href={cfg.url.jobs}>jobs</a></li>
     </ul>
     </div>
   )
+}
 export {Nav}
 
+let style={
+  background: 'white',
+  li:{
+    display: 'inline',
+    padding: '2px',
+    paddingRight: '4px',
+    background: 'whitesmoke'
+  },
+  a:{
+    textDecoration: 'none',
+    color: 'green'    
+  }
+}

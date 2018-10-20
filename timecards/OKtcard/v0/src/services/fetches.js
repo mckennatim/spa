@@ -2,6 +2,30 @@ var moment = require('moment');
 import {ls, cfg} from '../utilities/getCfg'
 import {geta} from '../utilities/wfuncs'
 
+const fetchSettings=()=>{
+  var lsh = ls.getItem();
+  if(geta('lsh.token', lsh)){
+    let url= cfg.url.api+'/tcard/settings'
+    let options= {headers: {'Authorization': 'Bearer '+ lsh['token']}}
+    return(
+      fetch(url, options)
+        .then((response)=>response.json())
+        .then((json)=>{
+          if(json.message){
+            return {qmessage: json.message+' - perhaps you need to register'}
+          }else{
+            return json[0]
+          }
+        })
+        .catch((e)=>{
+          return {qmessage: e.message+'fetchSettings- perhaps you need to register'}
+        })
+      )         
+  }else{
+    let p2 =Promise.resolve({qmessage:'you dont exist! - perhaps you need to register'})
+    return p2
+  }
+}
 const fetchSubmitted =()=>{
   const lsh = ls.getItem();
   if(geta('lsh.token', lsh)){
@@ -191,7 +215,7 @@ const delTcardPu=(aday)=>{
   }
 }
 
-export{fetchWhoTcard, fetchSubmitted, fetchTcard, putTcard, putTcardPu, putTcardJc, putTcardWk, delTcardPu}
+export{fetchSettings, fetchWhoTcard, fetchSubmitted, fetchTcard, putTcard, putTcardPu, putTcardJc, putTcardWk, delTcardPu}
 
 const wkendLast = (apwa)=>{
   for(var i = 6; i<=7;i++ ){

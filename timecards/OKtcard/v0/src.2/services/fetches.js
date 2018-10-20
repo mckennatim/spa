@@ -2,35 +2,13 @@ var moment = require('moment');
 import {ls, cfg} from '../utilities/getCfg'
 import {geta} from '../utilities/wfuncs'
 
-const fetchSettings=()=>{
-  var lsh = ls.getItem();
-  if(geta('lsh.token', lsh)){
-    let url= cfg.url.api+'/tcard/settings'
-    let options= {headers: {'Authorization': 'Bearer '+ lsh['token']}}
-    return(
-      fetch(url, options)
-        .then((response)=>response.json())
-        .then((json)=>{
-          if(json.message){
-            return {qmessage: json.message+' - perhaps you need to register'}
-          }else{
-            return json[0]
-          }
-        })
-        .catch((e)=>{
-          return {qmessage: e.message+'fetchSettings- perhaps you need to register'}
-        })
-      )         
-  }else{
-    let p2 =Promise.resolve({qmessage:'you dont exist! - perhaps you need to register'})
-    return p2
-  }
-}
 const fetchSubmitted =()=>{
   const lsh = ls.getItem();
   if(geta('lsh.token', lsh)){
-    let url= cfg.url.api+'/OKtcard/submitted'
+    let url= cfg.url.api+'/payroll/submitted'
     let options= {headers: {'Authorization': 'Bearer '+ lsh['token']}}
+  
+    console.log('in fetch geta')
     return(
       fetch(url, options)
         .then((response)=>response.json())
@@ -46,14 +24,14 @@ const fetchSubmitted =()=>{
         })
       )         
   }else{
-    let p2 =Promise.resolve({qmessage:'you dont exist or you have expired. Try re -registering'})
+    let p2 =Promise.resolve({qmessage:'you dont exist! '})
     return p2
   }  
 }
 const fetchWhoTcard=(wkstat)=>{
   const lsh = ls.getItem();
   if(geta('lsh.token', lsh)){
-    let url= cfg.url.api+'/OKtcard/tcard/'+wkstat.wprt+'/'+wkstat.emailid
+    let url= cfg.url.api+'/payroll/tcard/'+wkstat.wprt+'/'+wkstat.emailid
     let options= {
       headers: {'Authorization': 'Bearer '+ lsh['token']}
     }
@@ -125,7 +103,7 @@ const putTcardWk=(wkstat)=>{
   }
 }
 const putTcardJc=(aday)=>{
-  const tday = adjDay4db(ls.getKey('firstday'), aday)
+  const tday = adjDay4db(cfg.firstday, aday)
   var lsh = ls.getItem();
   if(geta('lsh.token', lsh)){
     let url= cfg.url.api+'/tcard/updjc'
@@ -147,7 +125,7 @@ const putTcardJc=(aday)=>{
   }
 }
 const putTcardPu=(aday)=>{
-  const tday = adjDay4db(ls.getKey('firstday'), aday)
+  const tday = adjDay4db(cfg.firstday, aday)
   var lsh = ls.getItem();
   if(geta('lsh.token', lsh)){
     let url= cfg.url.api+'/tcard/updpu'
@@ -170,7 +148,7 @@ const putTcardPu=(aday)=>{
 }
 
 const putTcard=(aday)=>{
-  const tday = adjDay4db(ls.getKey('firstday'), aday)
+  const tday = adjDay4db(cfg.firstday, aday)
   var lsh = ls.getItem();
   if(geta('lsh.token', lsh)){
     let url= cfg.url.api+'/tcard/update'
@@ -193,7 +171,7 @@ const putTcard=(aday)=>{
 }
 
 const delTcardPu=(aday)=>{
-  const tday = adjDay4db(ls.getKey('firstday'), aday)
+  const tday = adjDay4db(cfg.firstday, aday)
   var lsh = ls.getItem();
   if(geta('lsh.token', lsh)){
     let url= cfg.url.api+'/tcard/del'
@@ -215,7 +193,7 @@ const delTcardPu=(aday)=>{
   }
 }
 
-export{fetchSettings, fetchWhoTcard, fetchSubmitted, fetchTcard, putTcard, putTcardPu, putTcardJc, putTcardWk, delTcardPu}
+export{fetchWhoTcard, fetchSubmitted, fetchTcard, putTcard, putTcardPu, putTcardJc, putTcardWk, delTcardPu}
 
 const wkendLast = (apwa)=>{
   for(var i = 6; i<=7;i++ ){
@@ -238,7 +216,7 @@ const sumThing=(arr, fld)=>{
 
 const processDb4app =(res)=>{
   const lsh = ls.getItem();
-  const wkarr = wkendLast(adjWk4app(ls.getKey('firstday'), res.wkarr))
+  const wkarr = wkendLast(adjWk4app(cfg.firstday, res.wkarr))
   const hrs= sumThing(wkarr, 'hrs')
   const jchrs= sumThing(wkarr, 'jchrs')
   return {wkarr, hrs, jchrs, emailid:lsh.email, jobs:res.jobs, wstat:res.wstat}

@@ -34,7 +34,8 @@ class TimeCard extends React.Component{
   }
 
   clickSubmit =()=>{
-    this.props.tcardChanges('submit',{showsub: false,status:'submitted'})
+    this.props.tcardChanges('submit',{showsub: false,status:'submitted', blabel:this.props.blabel})
+    //console.log('this.props.blabel: ', this.props.blabel)
   }
   renderDays=()=>{
     const {week}=this.props;
