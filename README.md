@@ -24,6 +24,8 @@ https://www.michigan.gov/mdcs/0,4614,7-147-6879_19184_21557-234596--,00.html
 
 
 https://github.com/MrRio/jsPDF printing at precise locations
+### 114-pay
+signup needs 2 ways one with lstoken one without
 ### 113-oktcard-submitted
 Submitted tracks status via TcChanges 'submit' ->reCalcStatus if/else -> updateSubmittedStatus
 ### 112-oktcard-firstday

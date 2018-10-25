@@ -78,16 +78,19 @@ class Registered extends React.Component {
             this.setState({renderwhat: 'message', message: res.binfo.message})
           }
         }
-        if(res.coid &&  res.coid.length==1){
-          this.getCtoken(mobj.token, res.coid[0])
-        }else if(res.coid &&  res.coid.length==0){
+        // if(res.coid &&  res.coid.length==1){
+        //   this.getCtoken(mobj.token, res.coid[0])
+        // }else if(res.coid &&  res.coid.length==0){
+        if(res.coid &&  res.coid.length==0){
           console.log('what to do if coids = []')
         }else if(res.coid &&  res.coid.length>0){
           this.setState({renderwhat: 'coids', cos:res.coid, token:mobj.token})
         }
       }) 
     }else if(ls.getItem()){
-      location.replace('#urapps')
+      console.log('used to jump to apps: ')
+      
+      //location.replace('#urapps')
     }
     let tid = this.refs.coidref
     console.log('tid: ', tid)
@@ -145,7 +148,6 @@ class Registered extends React.Component {
         }else if(res.message=="coid already exists, try another"){
           this.setState({errorcoid:res.message, showbut:false})
         }
-      
       })
   }
 
@@ -174,6 +176,16 @@ class Registered extends React.Component {
 
   gotoApps=()=>{
     location = '#urapps'
+  }
+
+  addNew=(co)=>{
+    console.log('co: ', co)
+    console.log('ths.state.cos: ', this.state.cos)
+    console.log('this.state.newco: ', this.state.newco)
+    let nnewco = {...this.state.newco}
+    nnewco.person=this.state.cos[0].emailid
+    this.setState({newco:nnewco, shownew:true})
+    // this.setState({shownew:true})
   }
 
   renderCkBut=(showbut)=>{
@@ -218,7 +230,9 @@ class Registered extends React.Component {
     const { classes } = this.props;
     return(
       <div>
+        {!this.state.shownew && 
         <p>We have no record of this emailid on any machine. You are welcome to become a beta tester. You will be registered for a month but will be able to extend</p>
+        }
       <h4>Choose a Company ID</h4>
       <p>Enter a company id that starts with a letter and contains just letters and numbers, no spaces or special characters, at least 6 characters and less than 12. It just needs to be unique and identifiable by you, you won't need to remember it since your company is tied to your email id {emailid}</p> 
       <TextField
@@ -265,6 +279,11 @@ class Registered extends React.Component {
     )
   }
   renderCoids=()=>{
+    if (this.state.shownew){
+      console.log('should shjow new')
+      console.log('this.state: ', this.state)
+      console.log('this.props: ', this.props)
+    }
     if(this.state.cos){
     return(
       <div style={style.he}>
@@ -276,6 +295,8 @@ class Registered extends React.Component {
             <li style={style.myli.li} key={i} idx={i} onClick={this.clickCoid}>{co.coid} as {co.role} </li>
           ))}
         </ul>
+        <button onClick={this.addNew}>or add a new company</button>
+        {this.state.shownew  && this.renderTryCoid()}
       </div>
     )
    }

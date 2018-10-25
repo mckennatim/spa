@@ -3,7 +3,7 @@ var moment = require('moment');
 // import {router} from '../app'
 import {mapClass2Element} from '../hoc/mapClass2Element'
 // import {fetchPay, postPay, fetchSettings, fetchRates, postJobRates, postJournal} from '../services/fetches'
-import {fetchPay, fetchSettings, fetchRates, postJobRates, postJournal} from '../services/fetches'
+import {fetchPay, fetchSettings, fetchRates, postJournal} from '../services/fetches'
 // import{adjWdprtDn, padWk} from  '../../../../common/v0/src/utilities/reroo'
 // import { setEdit, setKeyVal} from '../actions/personacts';
 import { setKeyVal} from '../actions/personacts';
@@ -28,7 +28,7 @@ class Pay extends React.Component{
   dwk=null
 
   componentDidMount(){
-    this.getSettings()
+    //this.getSettings()
     //this.getRates()
     this.getPay()
     // this.dwk = document.getElementById("wk")
@@ -43,8 +43,14 @@ class Pay extends React.Component{
           this.setState({qmessage:res.qmessage})
          // window.alert(res.qmessage)
         }else{
-          this.setState({firstday: res.firstday},()=>{
-            setKeyVal({coid: res.coid, qmessage:res.qmessage, task:'pay',ot:JSON.parse(res.ot), firstday:res.firstday, wcrate:res.wcrate, stuirate:res.stuirate})
+          console.log('res: ', res)
+          console.log('JSON.parse(res.ot): ', JSON.parse(res.ot))
+          // this.setState({firstday: res.firstday},()=>{
+          //   setKeyVal({coid: res.coid, qmessage:res.qmessage, task:'pay',ot:JSON.parse(res.ot), firstday:res.firstday, wcrate:res.wcrate, stuirate:res.stuirate})
+          // })
+          this.setState({cosr:res, firstday: res.firstday},()=>{
+            setKeyVal({coid: res.coid, qmessage:res.qmessage, task:'pay', ot:{}, firstday:res.firstday, wcrate:res.wcrate, stuirate:res.stuirate})
+            console.log('this.state: ', this.state)
           })
         }
       })
@@ -56,6 +62,7 @@ class Pay extends React.Component{
         if (res.qmessage){
           window.alert(res.qmessage)
         }else{
+          console.log('this.res: ', this.res)
           this.setState({rates:res},()=>this.calcGross())
         }
       })
@@ -64,6 +71,7 @@ class Pay extends React.Component{
   getPay=()=>{
     fetchPay()
     .then((res)=>{
+      console.log('res: ', res)
       const isPartner = res.binfo.role=='partner' ? true : false
       setKeyVal({role:res.binfo.role, emailid:res.binfo.emailid, isPartner:isPartner})
       this.setState({persons: res.persons},()=>this.getRates())
@@ -71,8 +79,8 @@ class Pay extends React.Component{
   }
  
   calcGross =() =>{
-    const {ot} = this.props.eperson
-    const {persons} = this.state
+    const {persons, rates} = this.state
+    const{cosr}=rates
     const np = persons.map((p)=>{
       let hrs = p.hrs
       const hrsarr = JSON.parse(p.hrsarr)
@@ -81,21 +89,21 @@ class Pay extends React.Component{
       let suh = hrsarr[6]
       let saot=0, suot=0 ,mfot=0, reg=0, aot=0, gross=0,grossAP=0
       if(sah>0){
-        if(ot.sa>1){
-          saot = (ot.sa-1)*sah*p.rate
+        if(cosr.sarate>1){
+          saot = (cosr.sarate-1)*sah*p.rate
         }else{
           mfhrs = mfhrs+sah
         }
       }
       if(suh>0){
-        if(ot.su>1){
-          suot = (ot.su-1)*suh*p.rate
+        if(cosr.surate>1){
+          suot = (cosr.surate-1)*suh*p.rate
         }else{
           mfhrs = mfhrs+suh
         }
       }
-      if(ot.over40>1 && mfhrs>40 ){
-        mfot = (ot.over40-1)*(mfhrs-40)*p.rate
+      if(cosr.otrate>1 && mfhrs>40 ){
+        mfot = (cosr.otrate-1)*(mfhrs-40)*p.rate
       }
       reg = hrs*p.rate
       aot = saot+suot+mfot
@@ -107,8 +115,8 @@ class Pay extends React.Component{
         }
       }
       let mff = mfhrs>30 ? 1.5 - (20/mfhrs) : 1
-      let saf = saot>0 ? ot.sa : mff
-      let suf = suot>0 ? ot.su :mff
+      let saf = saot>0 ? cosr.sarate : mff
+      let suf = suot>0 ? cosr.surate :mff
       let mfrate = drnd(mff*p.rate)
       let sarate = drnd(saf*p.rate)
       let surate = drnd(suf*p.rate)
@@ -138,7 +146,11 @@ class Pay extends React.Component{
       })
       this.setState({persons:dedpers},()=>this.calcWh())
   }
-  
+
+  getStateRates=(st)=>{
+    console.log('getting rates for ', st)
+  }
+
   calcWh=()=>{
     const lookupFedTax=(fedwh, singmar,period, subj2wh, w4add)=>{
       let tax = 0
@@ -151,18 +163,31 @@ class Pay extends React.Component{
       return tax
     }
     const calcStateTax = (p, strates, ssmed)=>{
-      let sttax, stSubj2tax
-      if(p.student || p.ded.taxablegross<strates.nowhbelow){
-        sttax=0
-      }else{
-        const hoh = p.sthoh ? strates.hohded : 0
-        const blind = p.stblind ? strates.blided : 0
-        const allow = p.stallow ? p.stallow : 1 
-        stSubj2tax = p.ded.taxablegross - strates.allow*allow -hoh - blind - ssmed
-        sttax = stSubj2tax*strates.rate + p.staddtax
-        sttax = sttax>0 ? sttax : 0
+      console.log('in calcStateTax')
+      console.log('strates: ', strates)
+      console.log('state ', p.st, strates.st)
+      if(p.st!=strates.st){
+        strates=this.getStateRates(p.st)
       }
-      return sttax  
+      switch(p.st) {
+        case "MA":
+          let sttax, stSubj2tax
+          if(p.student || p.ded.taxablegross<strates.nowhbelow){
+            sttax=0
+          }else{
+            const hoh = p.sthoh ? strates.hohded : 0
+            const blind = p.stblind ? strates.blided : 0
+            const allow = p.stallow ? p.stallow : 1 
+            stSubj2tax = p.ded.taxablegross - strates.allow*allow -hoh - blind - ssmed
+            sttax = stSubj2tax*strates.rate + p.stadd
+            console.log('p.staddtax: ', p.stadd)
+            sttax = sttax>0 ? sttax : 0
+          }
+          return sttax
+        default:  
+          window.alert('We arent set up for '+p.st)
+          return 0
+      }
     } 
     const {persons, rates} = this.state
     const{fedr,fedwh, strates} =rates
@@ -233,7 +258,7 @@ class Pay extends React.Component{
 
   paySelected = ()=>{
     const{persons}=this.state
-    const jper = persons
+    persons
       .filter((p)=>p.check)
       .map((p)=>{
         return p.jcrates
@@ -430,7 +455,7 @@ class Pay extends React.Component{
           let regotc = ["", ""];
           let regotd = [
             ["hours", p.hrs],
-            ["rate", 	p.rate],
+            ["rate", p.rate],
             ["regular", p.regot.reg],
             ["overtime", ot],
             ["gross payable", p.regot.grossAP],
@@ -439,7 +464,7 @@ class Pay extends React.Component{
           let columns = ["Taxes", ""];
           let data = [
             ["ssi", p.wh.ss.toString()],
-            ["medicare", 	p.wh.medi],
+            ["medicare", p.wh.medi],
             ["fed wh", p.wh.fedtax],
             ["st wh", p.wh.sttax],
             ["netpay", p.wh.net]
@@ -608,7 +633,7 @@ class Pay extends React.Component{
 
 
   renderPay=()=>{
-    console.log('re-rendering pay')
+    // console.log('re-rendering pay')
     let {persons}=this.state
     const rpersons = persons
       .map((aperson, i)=>{
@@ -649,9 +674,10 @@ class Pay extends React.Component{
   }
 
   render(){
+    // console.log('this.state: ', this.state)
     const{persons }=this.state
     if (persons){
-      this.getQuery()
+      //this.getQuery()
       // const actstyle = this.setStatBkg()
       const rndrdpersons = this.renderPay()
       return(

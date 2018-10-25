@@ -289,8 +289,8 @@ class Persons extends React.Component{
               {!nohayname && <div>
              <span>{aperson.firstmid} {aperson.lastname}</span> <br/>
               {aperson.street}<br/>
-              {aperson.city}, {aperson.st} {aperson.zip}<br/>
               </div> }
+              {aperson.city}, {aperson.st} {aperson.zip}<br/>
               role: {aperson.role}<br/>
               effective: {date}<br/>
               active: {active}<br/>

@@ -69,7 +69,7 @@ class AddJob extends React.Component {
       <Form>
         <legend>Add or Update Job</legend>
         <Input placeholder="Job" value={curjob.job} onChange={this.jobChanged}/>
-        <Input placeholder="Categories- comma separated or null" value={curjob.categories} onChange={this.catChanged}/>
+        <Input placeholder="Categories- comma separated or null " value={curjob.categories} onChange={this.catChanged}/>
         <Button variant="raised" onClick={this.updateJob}>{newup}</Button>
         <Button onClick={this.delJob}>delete</Button>
       </Form>

@@ -41615,6 +41615,16 @@ var OKtcard = function (_React$Component) {
             );
           })
         );
+      } else if (subm.length == 0) {
+        return _react2.default.createElement(
+          'div',
+          { style: style.outer },
+          _react2.default.createElement(
+            'p',
+            null,
+            'No submitted timecards needing approval. Nothing to do here.'
+          )
+        );
       } else {
         return _react2.default.createElement(
           'div',

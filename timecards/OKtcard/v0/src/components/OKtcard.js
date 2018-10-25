@@ -228,7 +228,13 @@ class OKtcard extends React.Component {
         })}
       </ul>
       )
-    }else{
+    }else if(subm.length==0){
+      return(
+        <div style={style.outer}>
+          <p>No submitted timecards needing approval. Nothing to do here.</p>
+        </div>
+      )
+    }else {
       return(
         <div style={style.outer}>
           <p>Message from server: {this.state.qmessage}. </p><br/> <p> The link below will take you home where you will be asked to re-register. This will take you to a list of apps you can use in your company. If you are registered in more than one company, you can choose your company first. <a href={makeHref(location.hostname, 'signup', '#urapps')} >HOME</a></p> 

@@ -263,6 +263,7 @@ class AddPerson extends React.Component {
           className={classes.textField}
           type="number"
           value={curperson.weeklybase}
+          helperText="< $10000"
           onChange={this.txtChanged('weeklybase')}
           InputProps={{
             startAdornment:<InputAdornment position="start">$</InputAdornment>,

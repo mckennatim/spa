@@ -30,7 +30,13 @@ class Splash extends React.Component{
   renderGoTo=()=>{
     if(this.state.isreg){
       return(
+      <div>
         <button onClick={this.gotoUrApps}>this machine is registerd,go to your apps</button>
+        <p>
+            or you can add a new company 
+        </p> <br/>
+        <button onClick={this.goSignUp}>add another company</button><br/><br/>
+      </div>
       )
     }else{
       return(
