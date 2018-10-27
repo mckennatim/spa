@@ -6,7 +6,6 @@ import {Pay} from './Pay.jsx'
 import {Nav} from './Nav.jsx'
 import {Dog} from './Dog'
 import {Products} from './Products'
-import {Registered} from '../../../../signup/v0/src/components/Registered.jsx'
 import {pStyle} from '../styles'
 import {loadGithubFollowers} from '../actions/test';
 //import { render } from '../utilities/wfuncs';
@@ -80,4 +79,4 @@ const multi =[
 //['watch', 'phone', 'phoneL', 'tablet', 'tabletL', 'laptop']
 const panes= [1,1,2,2,3,3,4]
 
-export {Active, Pay, Cat, About, Products,Home, Dog, App, Nav, Registered, multi, panes}
+export {Active, Pay, Cat, About, Products,Home, Dog, App, Nav, multi, panes}

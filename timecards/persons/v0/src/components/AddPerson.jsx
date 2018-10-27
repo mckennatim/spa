@@ -165,11 +165,13 @@ class AddPerson extends React.Component {
           margin="dense"
         />
         <TextField
+          required
           id="standard-name"
           label="St"
           className={classes.textField}
           value={curperson.st}
           onChange={this.txtChanged('st')}
+          helperText='use the 2 letter abreviation'
           margin="dense"
         /> 
         <TextField

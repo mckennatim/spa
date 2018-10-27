@@ -109,7 +109,7 @@ class Pay extends React.Component{
       aot = saot+suot+mfot
       gross=reg+aot
       if (p.weeklybase && p.weeklybase>0){
-        if (gross > p.weeklybase){
+        if (gross > p.weeklybase && p.wtype=='base'){
           grossAP = gross - p.weeklybase
           gross = p.weeklybase
         }
@@ -203,6 +203,8 @@ class Pay extends React.Component{
         const sttax =  calcStateTax(p, strates, ss+medi)
         const net = gross-fedtax-ss -medi - sttax
         p.wh={gross:gross, taxablegross:taxablegross, ss:drnd(ss), medi:drnd(medi), meda:drnd(meda), fedtax:drnd(fedtax), sttax:drnd(sttax), net:drnd(net)}
+      }else{
+        p.wh={gross:p.regot.gross, net:p.regot.gross}
       }
       return p
     })
@@ -264,8 +266,8 @@ class Pay extends React.Component{
         return p.jcrates
       })
     //postJobRates(jper)
-    // this.setAsPaid()
-    // this.apply2gl()
+    this.setAsPaid()
+    this.apply2gl()
   }
 
   setAsPaid=()=>{
@@ -437,6 +439,46 @@ class Pay extends React.Component{
     postJournal(journal)    
   }
 
+  inWords=(dec)=>{
+    const lookup = ['', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine']
+    const tens = ['', '', 'twenty', 'thirty', 'forty', 'fifty', 'sixty', 'seventy', 'eighty', 'ninety']
+    const teens = ['', 'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen', 'seventeen', 'eighteen', 'nineteen']
+    const str = dec.toFixed(2)
+    const arr = str.split('.')
+    const cents = arr[1]
+    const dolls = arr[0].split("").map((d)=>parseInt(d))
+    const len = dolls.length
+    let isteens=false
+    let dolstr = dolls.reduce((s,d,i)=>{
+      let pos = len-i
+      switch(pos){
+        case 4:
+          return s + lookup[d] + ' thousand '
+        case 3:
+          return s + lookup[d] + ' hundred '  
+        case 2:
+          if(d==1){isteens=true} 
+          if(d==0){s=s.slice(0,-1)}
+          return s + tens[d]+ ' '
+        case 1:
+          if (isteens){
+            s=s.slice(0,-1)
+            return s + teens[d]
+          } else if(d==0){
+            s=s.slice(0,-1)
+            return s
+          }else {
+            return s + lookup[d]
+          }
+        default:
+          return s  
+      }
+    },"")
+    dolstr= dolstr.replace(/^[a-z]/, (c)=>c.toUpperCase())+' dollars and ' +cents+'/100'
+    console.log('dolstr: ', dolstr)
+    return dolstr
+  }
+
   createPayPdf=()=>{
     console.log('increatepay.pdf: ')
     let doc = new jsPDF({
@@ -446,10 +488,13 @@ class Pay extends React.Component{
     });
     const pt = (n)=>Math.round(n*72)
     const{persons}=this.state
+    console.log('persons: ', persons)
     let cnt=-1
     persons
       .map((p,idx)=>{
+        // console.log('p: ', p)
         if(p.check){
+          this.inWords(p.wh.net)
           cnt+=1
           const ot=p.regot.mfot+ p.regot.saot+p.regot.suot
           let regotc = ["", ""];
@@ -462,19 +507,26 @@ class Pay extends React.Component{
             ["gross", p.regot.gross]
           ];
           let columns = ["Taxes", ""];
-          let data = [
-            ["ssi", p.wh.ss.toString()],
-            ["medicare", p.wh.medi],
-            ["fed wh", p.wh.fedtax],
-            ["st wh", p.wh.sttax],
-            ["netpay", p.wh.net]
-          ];
+          let whdata  
+          if (p.wtype!='1099'){
+            whdata = [
+              ["ssi", p.wh.ss.toString()],
+              ["medicare", p.wh.medi],
+              ["fed wh", p.wh.fedtax],
+              ["st wh", p.wh.sttax],
+              ["netpay", p.wh.net]
+            ];
+          }else {
+            whdata = [
+              ["netpay", p.wh.net]
+            ];
+          }
           if(cnt>0){doc.addPage()}
           doc.setFontSize(16)
           doc.text(moment().format('MM/DD/YY'), pt(6.85), pt(.9))
-          doc.text(`${idx} ... ${p.firstmid} ${p.lastname}`, pt(1.5), pt(1.4))
+          doc.text(`${p.firstmid} ${p.lastname}`, pt(1.5), pt(1.4))
           doc.text(`\$${p.wh.net}`, pt(6.85), pt(1.4))
-          doc.text('Four Hundred Fifty Four and 12/100', 100, 138)
+          doc.text(this.inWords(p.wh.net), 100, 138)
           doc.setFontSize(12)
           doc.text('for 2018-W23', 60, 194)
           doc.autoTable(regotc, regotd,{
@@ -487,7 +539,7 @@ class Pay extends React.Component{
               //halign:'right'
             }
           });
-          doc.autoTable(columns, data,{
+          doc.autoTable(columns, whdata,{
             startY: doc.autoTable.previous.finalY, 
             showHeader: 'firstPage',
             margin: {right: 107},
@@ -501,7 +553,7 @@ class Pay extends React.Component{
           doc.text('dog and cats together', 60, doc.autoTable.previous.finalY + 100)
         }
     })
-    //doc.autoPrint()
+    doc.autoPrint()
     doc.save('pay.pdf')
   }
 
@@ -600,7 +652,7 @@ class Pay extends React.Component{
   }
 
   renderWh = (p)=>{
-    if(p.wh){
+    if(p.wh && p.wtype!='1099'){
 
       return (
         <table style={style.table.table}><tbody>

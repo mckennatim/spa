@@ -32,7 +32,6 @@ var router=routing()
 export{router}
 
 function ckIsMobile(){
-
   const os = getMobileOperatingSystem() 
   let mobile=false
   if(os=='Android'){

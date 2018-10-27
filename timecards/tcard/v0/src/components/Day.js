@@ -117,8 +117,10 @@ class Day extends React.Component {// eslint-disable-line no-unused-vars
           <span style={style.hrs.span}>{hrs}</span>
         </div>
         <div style={style.punchclock.container}>
-          <button style={style.punchclock.button} onClick={!this.props.ismobile && this.appendTime}>punch {punch}</button><br/>
-          <input style={style.punchclock.input} id={tin} type="time" defaultValue={now} onChange={this.props.mobile && this.appendTime}/><br/>
+          <button style={style.punchclock.button} onClick={this.appendTime}>punch {punch}</button><br/>
+          <input style={style.punchclock.input} id={tin} type="time" defaultValue={now} onChange={this.props.ismobile ? this.appendTime : undefined}/><br/>
+          {/* <button style={style.punchclock.button} onClick={this.appendTime}>punch {punch}</button><br/>
+          <input style={style.punchclock.input} id={tin} type="time" defaultValue={now} onChange={this.props.ismobile && this.appendTime}/><br/> */}
         </div>
         {inoutList}
         <JobCost jcost={jcost} jchrs={jchrs} puhrs={hrs} jobs={jobs} hayjobs={this.props.hayjobs} wdprt={wdprt} jcChanges={this.handleJcChanges}/>

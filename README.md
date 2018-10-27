@@ -10,6 +10,19 @@ https://cloudinary.com/console/welcome
 json2form
 https://github.com/mozilla-services/react-jsonschema-form
 
+## update package json to new versions of all node modules
+npm install -g npm-check-updates
+then run it:
+
+    ncu -u
+
+this will upgrade all the version hints in the package.json file, to dependencies and devDependencies, so npm can install the new major version.
+
+You are now ready to run the update:
+
+    npm update
+    npm install
+
 ncheckalldddd
 ## tags
 https://gridbyexample.com/examples/example13/
@@ -24,6 +37,9 @@ https://www.michigan.gov/mdcs/0,4614,7-147-6879_19184_21557-234596--,00.html
 
 
 https://github.com/MrRio/jsPDF printing at precise locations
+### 115-pay-OKtcard
+inWords(dec), fixed OKtimecards
+TODO get accrued ssi and gross
 ### 114-pay
 signup needs 2 ways one with lstoken one without
 ### 113-oktcard-submitted

@@ -4,7 +4,6 @@ import {App} from './App'
 import {TimeCardJar} from './TimeCardJar'
 import {Nav} from './Nav'
 import {Dog} from './Dog'
-import {Registered} from './Registered'
 import {pStyle} from '../styles'
 import {loadGithubFollowers} from '../actions/test';// eslint-disable-line no-unused-vars
 // import { render } from '../utilities/wfuncs';
@@ -66,4 +65,4 @@ const multi =[{
 //['watch', 'phone', 'phoneL', 'tablet', 'tabletL', 'laptop']
 const panes= [1,1,2,2,3,3,4]
 
-export {TimeCardJar, Cat, About, Home, Dog, App, Nav, Registered, multi, panes}
+export {TimeCardJar, Cat, About, Home, Dog, App, Nav, multi, panes}

@@ -84,7 +84,7 @@ class Registered extends React.Component {
         if(res.coid &&  res.coid.length==0){
           console.log('what to do if coids = []')
         }else if(res.coid &&  res.coid.length>0){
-          this.setState({renderwhat: 'coids', cos:res.coid, token:mobj.token})
+          this.setState({renderwhat: 'coids', cos:res.coid, ttoken:mobj.token})
         }
       }) 
     }else if(ls.getItem()){
@@ -99,7 +99,7 @@ class Registered extends React.Component {
   clickCoid=(e)=>{
     const idx =e.target.getAttribute('idx')
     const co = this.state.cos[idx]
-    this.getCtoken(this.state.token, co)
+    this.getCtoken(this.state.ttoken, co)
   }
 
   getCtoken=(token,co)=>{
@@ -137,18 +137,20 @@ class Registered extends React.Component {
     const {newco,ttoken}=this.state
     const{coid}=newco.co
     const{emailid}=newco.person
+    console.log('newco: ', newco)
+    console.log('ttoken: ', ttoken)
     // console.log('Math.floor(Date.now())+30*(24*60*60*1000): ', new Date(Math.floor(Date.now())+30*(24*60*60*1000)).toLocaleDateString())
     postUniCoid({emailid, coid},ttoken)
-      .then((res)=>{
-        console.log('res: ', res)
-        if(res.result){
-          console.log('res.token: ', res.token)
-          ls.setItem({email:res.emailid, token:res.token})
-          this.setState({errorcoid:'', showbut:false, settingup:true})
-        }else if(res.message=="coid already exists, try another"){
-          this.setState({errorcoid:res.message, showbut:false})
-        }
-      })
+    .then((res)=>{
+      console.log('res: ', res)
+      if(res.result){
+        console.log('res.token: ', res.token)
+        ls.setItem({email:res.emailid, token:res.token})
+        this.setState({errorcoid:'', showbut:false, settingup:true})
+      }else if(res.message=="coid already exists, try another"){
+        this.setState({errorcoid:res.message, showbut:false})
+      }
+    })
   }
 
   ckIfFree=(coid)=>{
@@ -205,7 +207,7 @@ class Registered extends React.Component {
       return(
         <div>
           <h4>hello</h4>
-          <p>Ok setting you up with emailid = {this.state.newco.person} and coid = {this.state.newco.co.coid} until {this.state.newco.co.goodtil} At this point it would be good to add some more details about your company; its name, adresss, overtime policy, workmen's comp and state unemployment rates. Next step after that would be to add people to your company using the persons app. Or you could just dive in and check out any of the apps. </p>
+          <p>Ok setting you up with emailid = {this.state.newco.person} and coid = {this.state.newco.co.coid} until {this.state.newco.co.goodtil} At this point it would be good to add some more details about your <a href="#company">company</a> ; its name, adresss, overtime policy, workmen's comp and state unemployment rates. Next step after that would be to add people to your company using the persons app. Ther you can add your w4 details as well. Or you could just dive in and check out any of the apps. </p>
           
           <Button
           variant="contained" 

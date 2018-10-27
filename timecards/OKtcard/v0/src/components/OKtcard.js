@@ -68,11 +68,13 @@ class OKtcard extends React.Component {
         this.setState({qmessage:res.qmessage})
       }else{
         let hayjobs=true
-        res = this.reCalcStatus(res)
+        //res = this.reCalcStatus(res)
+        //console.log('res: ', res)
         if(res.jobs.length==0){
           hayjobs=false
-        }        
-        this.setState({tcard:res, gottcard:true, hayjobs})
+        }
+        res.idx=idx        
+        this.setState({tcard:res, gottcard:true, hayjobs, showsub:true, blabel:'approve'})
       }
     })
   }
@@ -127,20 +129,20 @@ class OKtcard extends React.Component {
       modtcard = this.reCalcStatus(modtcard)
     }
     if(cmd=='submit'){
-      // let modwstat= {...modtcard.wstat}
-      // const {blabel} =this.state
-      // console.log('blabel: ', blabel)
-      // console.log('chobj: ', chobj)
-      // if(blabel=='approve'){
-      //   console.log('in blabel===approve')
-      //   modwstat.status='approved'
-      //   this.setState({showsub:false})
-      // }else if(blabel=='submit') {
-      //   modwstat.status=chobj.status
-      //   this.setState({showsub:false})
-      // }
-      // modtcard.wstat=modwstat
-      // console.log('modtcard.wstat 1: ', modtcard.wstat)
+      let modwstat= {...modtcard.wstat}
+      const {blabel} =this.state
+      console.log('blabel: ', blabel)
+      console.log('chobj: ', chobj)
+      if(blabel=='approve'){
+        console.log('in blabel===approve')
+        modwstat.status='approved'
+        this.setState({showsub:false})
+      }else if(blabel=='submit') {
+        modwstat.status=chobj.status
+        this.setState({showsub:false})
+      }
+      modtcard.wstat=modwstat
+      console.log('modtcard.wstat 1: ', modtcard.wstat)
       modtcard = this.reCalcStatus(modtcard)
     }
     console.log('modtcard.wstat 2: ', modtcard.wstat)
@@ -154,32 +156,44 @@ class OKtcard extends React.Component {
     const oldstat=modwstat.status
     const wkpuhrs=drnd(hrs.reduce((t,h)=>t+h,0))
     const wkjchrs= drnd(jchrs.reduce((t,h)=>t+h,0))// eslint-disable-line no-unused-vars
-    const{blabel}=this.state
+    //const{blabel}=this.state
     const st = hrs //[1,0,1,0,1,1,1]
       .map((h,i)=>h==jchrs[i])
       .reduce((t,j)=>t+j,0)
-      let status=modwstat.status
+    let status=modwstat.status
     let showsub, nblabel 
-    if(blabel=='approve'){
-      status='approved'
+    console.log('st: ', st)
+    // if(blabel=='approve'){
+    //   status='approved'
+    //   showsub=false
+    // }else 
+
+    // }else if(blabel=='submit') {
+    //   status='submitted'
+    //   nblabel='approve'
+    //   showsub=true
+    // } 
+    if(st<7 || wkpuhrs==0){
+      status = 'inprocess'
       showsub=false
+      console.log('st: ', st)
+      console.log('status: ', status)
+    }else if(status=='paid'){
+      showsub=false
+    }else if (status=='ready'){
+      showsub=true
+      nblabel= 'submit'
     }else if(status=='submitted'){
       showsub=true
       nblabel='approve'
-    }else if(blabel=='submit') {
-      status='submitted'
-      nblabel='approve'
-      showsub=true
-    } else if(st<7 || wkpuhrs==0){
-      status = 'inprocess'
+    }else if(status=='approved'){
       showsub=false
-    }else if(status=='paid'){
-      showsub=false
-    }else{
-      status = 'ready'
+    }else if (status=='inprocess'){
+      status='ready'
       showsub=true
-      nblabel= 'submit'
+      nblabel='submit'
     }
+    console.log('status: ', status)
     modwstat={...modwstat, status:status, hrs:wkpuhrs}
     this.updateSubmittedStatus(oldstat,modwstat)
     modtcard={...modtcard, wstat:modwstat}
@@ -190,7 +204,7 @@ class OKtcard extends React.Component {
   updateSubmittedStatus = (oldstat,wstat)=>{
     console.log('wstat.status: ', wstat.status)
     console.log('oldstat: ', oldstat)
-    if(wstat.status!=oldstat){
+    //if(true){
       // console.log('this.state.submitted: ', this.state.submitted)
       let sarr  = this.state.submitted.slice()
       let nsarr = sarr.map((r)=>{
@@ -198,15 +212,18 @@ class OKtcard extends React.Component {
           r.status=wstat.status
           if (r.status=='approved'){
             r.isapproved=true
+          }else{
+            r.isapproved=false
           }
         }
         return r
       })
       this.setState({submitted:nsarr, statuschanged:true}) 
-    }
+    //}
   }
 
   renderSubmitted=(subm)=>{
+    console.log('thsi.state.tcard.idx: ', this.state)
     const{statuschanged}=this.state
     console.log('statuschanged: ', statuschanged)
     console.log('subm: ', subm)

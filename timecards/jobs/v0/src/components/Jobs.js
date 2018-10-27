@@ -212,7 +212,7 @@ class Jobs extends React.Component{
               <input type="number" defaultValue="2018" style={style.he.yr} onChange={this.chyr}/> 
               wk 
               <input type="number" value={wk} onChange={this.chwk} style={style.he.wk}/> 
-              starting on {dddMMDD}
+              starting on {dddMMDD} 
               <img className="btn" style={style.he.img} src="icons/job-search.png" alt="jobs" onClick={this.getwk0} onKeyDown={this.buzz()}/>
             </div>
             <div> 

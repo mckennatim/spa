@@ -4,7 +4,6 @@ import {App} from './App'
 import {OKtcard} from './OKtcard'
 import {Nav} from './Nav'
 import {Dog} from './Dog'
-import {Registered} from './Registered'
 import {pStyle} from '../styles'
 // import { render } from '../utilities/wfuncs';
 import {mapClass2Element} from '../hoc/mapClass2Element'
@@ -65,4 +64,4 @@ const multi =[{
 //['watch', 'phone', 'phoneL', 'tablet', 'tabletL', 'laptop']
 const panes= [1,1,2,2,3,3,4]
 
-export {OKtcard, Cat, About, Home, Dog, App, Nav, Registered, multi, panes}
+export {OKtcard, Cat, About, Home, Dog, App, Nav, multi, panes}

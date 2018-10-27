@@ -7,7 +7,7 @@ const blankperson ={
   lastname: '',
   street: '',
   city: '',
-  st:'',
+  st:'MA',
   zip: '',
   role:'worker',
   active:true,
