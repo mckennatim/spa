@@ -3,7 +3,7 @@ var moment = require('moment');
 // import {router} from '../app'
 import {mapClass2Element} from '../hoc/mapClass2Element'
 // import {fetchPay, postPay, fetchSettings, fetchRates, postJobRates, postJournal} from '../services/fetches'
-import {fetchPay, fetchSettings, fetchRates, postJournal} from '../services/fetches'
+import {fetchPay, fetchRates, postJournal, postJobRates} from '../services/fetches'
 // import{adjWdprtDn, padWk} from  '../../../../common/v0/src/utilities/reroo'
 // import { setEdit, setKeyVal} from '../actions/personacts';
 import { setKeyVal} from '../actions/personacts';
@@ -12,17 +12,16 @@ import {makeHref,drnd} from '../utilities/getCfg'
 import jsPDF from 'jspdf'
 require('jspdf-autotable');
 // console.log('jsPDF: ', jsPDF)
+import {ls} from '../utilities/getCfg'
 
 class Pay extends React.Component{
   Pay='mabibi sufvhs'
   state={
     notpersons: [{person: 'duck', id: 99, effective:'2018-01-01T14:12'}],
     wk: moment().week(),
-    filt: 'all',
-    dfilt: 'all',
     yr: moment().format('YYYY'),
     dddMMDD:'',
-    firstday:3
+    firstday: ls.getKey('firstday')
   }
 
   dwk=null
@@ -35,26 +34,26 @@ class Pay extends React.Component{
     // console.log('moment().format("YYY-MM-DD): ', moment().format("YYYY-MM-DD"))
   }  
 
-  getSettings=()=>{
-    fetchSettings()     
-      .then((res)=>{
-        if (res.qmessage){
-          console.log('res.qmessage: ', res.qmessage)
-          this.setState({qmessage:res.qmessage})
-         // window.alert(res.qmessage)
-        }else{
-          console.log('res: ', res)
-          console.log('JSON.parse(res.ot): ', JSON.parse(res.ot))
-          // this.setState({firstday: res.firstday},()=>{
-          //   setKeyVal({coid: res.coid, qmessage:res.qmessage, task:'pay',ot:JSON.parse(res.ot), firstday:res.firstday, wcrate:res.wcrate, stuirate:res.stuirate})
-          // })
-          this.setState({cosr:res, firstday: res.firstday},()=>{
-            setKeyVal({coid: res.coid, qmessage:res.qmessage, task:'pay', ot:{}, firstday:res.firstday, wcrate:res.wcrate, stuirate:res.stuirate})
-            console.log('this.state: ', this.state)
-          })
-        }
-      })
-  }
+  // getSettings=()=>{
+  //   fetchSettings()     
+  //     .then((res)=>{
+  //       if (res.qmessage){
+  //         console.log('res.qmessage: ', res.qmessage)
+  //         this.setState({qmessage:res.qmessage})
+  //        // window.alert(res.qmessage)
+  //       }else{
+  //         console.log('res: ', res)
+  //         console.log('JSON.parse(res.ot): ', JSON.parse(res.ot))
+  //         // this.setState({firstday: res.firstday},()=>{
+  //         //   setKeyVal({coid: res.coid, qmessage:res.qmessage, task:'pay',ot:JSON.parse(res.ot), firstday:res.firstday, wcrate:res.wcrate, stuirate:res.stuirate})
+  //         // })
+  //         this.setState({cosr:res, firstday: res.firstday},()=>{
+  //           setKeyVal({coid: res.coid, qmessage:res.qmessage, task:'pay', ot:{}, firstday:res.firstday, wcrate:res.wcrate, stuirate:res.stuirate})
+  //           console.log('this.state: ', this.state)
+  //         })
+  //       }
+  //     })
+  // }
 
   getRates=()=>{
     fetchRates()     
@@ -62,7 +61,6 @@ class Pay extends React.Component{
         if (res.qmessage){
           window.alert(res.qmessage)
         }else{
-          console.log('this.res: ', this.res)
           this.setState({rates:res},()=>this.calcGross())
         }
       })
@@ -71,18 +69,33 @@ class Pay extends React.Component{
   getPay=()=>{
     fetchPay()
     .then((res)=>{
-      console.log('res: ', res)
       const isPartner = res.binfo.role=='partner' ? true : false
       setKeyVal({role:res.binfo.role, emailid:res.binfo.emailid, isPartner:isPartner})
       this.setState({persons: res.persons},()=>this.getRates())
     })    
   }
+
+  calcPaydate = (wprt)=>{
+    const{firstday}=this.state
+    let wdprt = wprt+'-'+firstday
+    if (firstday!=1 && wdprt.slice(-1)>=firstday){
+      wdprt= moment(wdprt).subtract(7, "days").format("YYYY-[W]WW-E")
+    }
+    let paydate = moment(wdprt).add(7, "days").format("YYYY-MM-DD")
+    return paydate
+  }
  
   calcGross =() =>{
     const {persons, rates} = this.state
     const{cosr}=rates
+    let{otrate, sarate, surate}=cosr
+    otrate = otrate<1 ? 1 : otrate
+    sarate = sarate<1 ? 1 :sarate
+    surate =surate<1 ? 1 : surate
     const np = persons.map((p)=>{
+      p.paydate=this.calcPaydate(p.wprt)
       let hrs = p.hrs
+      
       const hrsarr = JSON.parse(p.hrsarr)
       let mfhrs = hrsarr.slice(0,5).reduce((t,h)=>t+h,0)
       let sah = hrsarr[5]
@@ -90,20 +103,20 @@ class Pay extends React.Component{
       let saot=0, suot=0 ,mfot=0, reg=0, aot=0, gross=0,grossAP=0
       if(sah>0){
         if(cosr.sarate>1){
-          saot = (cosr.sarate-1)*sah*p.rate
+          saot = (sarate-1)*sah*p.rate
         }else{
           mfhrs = mfhrs+sah
         }
       }
       if(suh>0){
-        if(cosr.surate>1){
-          suot = (cosr.surate-1)*suh*p.rate
+        if(surate>1){
+          suot = (surate-1)*suh*p.rate
         }else{
           mfhrs = mfhrs+suh
         }
       }
-      if(cosr.otrate>1 && mfhrs>40 ){
-        mfot = (cosr.otrate-1)*(mfhrs-40)*p.rate
+      if(otrate>1 && mfhrs>40 ){
+        mfot = (otrate-1)*(mfhrs-40)*p.rate
       }
       reg = hrs*p.rate
       aot = saot+suot+mfot
@@ -114,13 +127,13 @@ class Pay extends React.Component{
           gross = p.weeklybase
         }
       }
-      let mff = mfhrs>30 ? 1.5 - (20/mfhrs) : 1
-      let saf = saot>0 ? cosr.sarate : mff
-      let suf = suot>0 ? cosr.surate :mff
-      let mfrate = drnd(mff*p.rate)
-      let sarate = drnd(saf*p.rate)
-      let surate = drnd(suf*p.rate)
-      const regot = {reg:reg, mfot:mfot, gross:gross, grossAP: grossAP, saot:saot, suot:suot, mff:mff, saf:saf, suf:suf, mfrate, sarate, surate}
+      let mff = mfhrs<=40 ? 1 : ((p.rate*mfhrs+(mfhrs-40)*p.rate*(1-otrate))/mfhrs)/p.rate
+      let saf = saot>0 ? sarate : mff
+      let suf = suot>0 ? surate :mff
+      let mfperhr = drnd(mfhrs<=40 ? p.rate : (p.rate*mfhrs+(mfhrs-40)*p.rate*(1-otrate))/mfhrs)
+      let saperhr = drnd(saf*p.rate)
+      let superhr = drnd(suf*p.rate)
+      const regot = {reg:reg, mfot:mfot, gross:gross, grossAP: grossAP, saot:saot, suot:suot, mff:mff, saf:saf, suf:suf, mfrate:mfperhr, sarate:saperhr, surate:superhr}
       return {...p, regot}
     })
     this.setState({persons:np},()=>this.calcDeductions())
@@ -147,9 +160,6 @@ class Pay extends React.Component{
       this.setState({persons:dedpers},()=>this.calcWh())
   }
 
-  getStateRates=(st)=>{
-    console.log('getting rates for ', st)
-  }
 
   calcWh=()=>{
     const lookupFedTax=(fedwh, singmar,period, subj2wh, w4add)=>{
@@ -163,9 +173,9 @@ class Pay extends React.Component{
       return tax
     }
     const calcStateTax = (p, strates, ssmed)=>{
-      console.log('in calcStateTax')
-      console.log('strates: ', strates)
-      console.log('state ', p.st, strates.st)
+      // console.log('in calcStateTax')
+      // console.log('strates: ', strates)
+      // console.log('state ', p.st, strates.st)
       if(p.st!=strates.st){
         strates=this.getStateRates(p.st)
       }
@@ -180,7 +190,7 @@ class Pay extends React.Component{
             const allow = p.stallow ? p.stallow : 1 
             stSubj2tax = p.ded.taxablegross - strates.allow*allow -hoh - blind - ssmed
             sttax = stSubj2tax*strates.rate + p.stadd
-            console.log('p.staddtax: ', p.stadd)
+            // console.log('p.staddtax: ', p.stadd)
             sttax = sttax>0 ? sttax : 0
           }
           return sttax
@@ -216,7 +226,7 @@ class Pay extends React.Component{
     const{fedr, cosr} =rates
     const burper = persons.map((p)=>{
       if(p.wtype!='1099'){
-        const{ gross}=p.ded
+        const{ gross, grossAP}=p.regot
         const ss = drnd(gross*fedr.sse)
         const medi = drnd(gross*fedr.medie)
         let health = p.healthco>0 ? drnd(p.healthco*12.0/50) : 0
@@ -228,7 +238,7 @@ class Pay extends React.Component{
         let comp = drnd(cosr.wcrate*gross)
         let futa = drnd(fedr.futa*gross)
         let tburden = drnd(ss+medi+health+k401+vaca+holi+pers+suta+comp+futa)
-        let bpercent = drnd(tburden/gross*10)/10
+        let bpercent = (tburden+gross+grossAP)/(gross+grossAP)
         p.burden={gross,ss,medi,health,k401,vaca,holi,pers,suta,futa,comp,tburden, bpercent}
       }
       return p
@@ -241,31 +251,49 @@ class Pay extends React.Component{
     const coper = persons.map((p)=>{
       let np = {}
       const {sarate, surate, mfrate} =p.regot
-      let burperc = 0
+      let burperc = 1
       if(p.burden &&  p.burden.bpercent){
         burperc = p.burden.bpercent
       }
-      let ratarr = new Array(7).fill(drnd(mfrate*(1+burperc)))
-      ratarr[5]=drnd(sarate*(1+burperc))
-      ratarr[6]=drnd(surate*(1+burperc))
+      let ratarr = new Array(7).fill(drnd(mfrate*burperc*10)/10)
+      ratarr[5]=drnd(sarate*+burperc*10)/10
+      ratarr[6]=drnd(surate*burperc*10)/10
       np.ratearr = ratarr
       np.emailid=p.emailid
       np.wprt=p.wprt
+      np.paydate=p.paydate
       p.jcrates = np
       return p
     })
-    this.setState({persons:coper},()=>console.log('this.state: ', this.state))
-    
+    this.setState({persons:coper})
   }
+
+  calcC=()=>{
+    console.log('this.state: ', this.state)
+    const {persons} = this.state
+    persons.map((p)=>{
+      let{hrsarr}=p
+      hrsarr= JSON.parse(hrsarr)
+      const{gross,grossAP, mff, saf, suf}=p.regot
+      const burden = p.burden ? p.burden.tburden : 0
+      const tcost = gross + grossAP + burden
+      p.burden ? console.log('p.burden.bpercent: ', p.burden.bpercent, tcost/(gross+grossAP)) : console.log('no burden')
+      console.log('p.regot: ', p.regot)
+      console.log('hrsarr: ', hrsarr)
+      console.log('gross+AP ', gross+grossAP, 'tcost: ', tcost, 'mff ', mff, 'saf ', saf, 'suf ', suf, 'bp ', burden/tcost)
+    })    
+  }
+
 
   paySelected = ()=>{
     const{persons}=this.state
-    persons
+    const jper = persons
       .filter((p)=>p.check)
       .map((p)=>{
         return p.jcrates
       })
-    //postJobRates(jper)
+    console.log('jper: ', jper)  
+    postJobRates(jper)
     this.setAsPaid()
     this.apply2gl()
   }
@@ -275,7 +303,6 @@ class Pay extends React.Component{
     const perpa= nstate.persons.map((p)=>{
       const np = {...p}
       if (np.check){
-        console.log('in pcheck')
         np.status='paid'
       }
       return np
@@ -289,7 +316,7 @@ class Pay extends React.Component{
     persons
       .filter((p)=>p.check)
       .map((p)=>{
-        let blentry={account:'', wdprt:p.wprt, someid:p.emailid, job:'', cat:'', date:moment().format('YYYY-MM-DD'), somenum: 0, debit:0, credit:0}
+        let blentry={account:'', wdprt:p.wprt, someid:p.emailid, job:'', cat:'', date:p.paydate, somenum: 0, debit:0, credit:0}
         let e ={...blentry}
         e.account ='a6010-gross'
         e.debit=p.regot.gross
@@ -308,17 +335,20 @@ class Pay extends React.Component{
           journal.push(e)
         }
         if (p.wh){
-          e ={...blentry}
-          e.cat='worker'
-          e.account ='a2010-SS'
-          e.credit=p.wh.ss
-          journal.push(e)
-
-          e ={...blentry}
-          e.cat='worker'
-          e.account ='a2020-medi'
-          e.credit=p.wh.medi
-          journal.push(e)
+          if(p.wh.ss>0){
+            e ={...blentry}
+            e.cat='worker'
+            e.account ='a2010-SS'
+            e.credit=p.wh.ss
+            journal.push(e)
+          }
+          if(p.wh.medi>0){
+            e ={...blentry}
+            e.cat='worker'
+            e.account ='a2020-medi'
+            e.credit=p.wh.medi
+            journal.push(e)
+          }
           if (p.wh.meda>0){
             e ={...blentry}
             e.cat='worker'
@@ -415,14 +445,22 @@ class Pay extends React.Component{
             e.credit=p.burden.pers
             journal.push(e)
           }
+        }
+      /*THESE ENTRIES UNBALANCE THE LEDGER balanced by postJobRates*/
+        e ={...blentry}
+        e.account ='a6010-gross'
+        e.credit=p.regot.gross
+        journal.push(e)
+        if (p.burden){
           e ={...blentry}
           e.account ='a6020-burden'
           e.credit=p.burden.tburden
           journal.push(e)
-
+        }
+        if (p.regot.grossAP && p.regot.grossAP>0){
           e ={...blentry}
-          e.account ='a6010-gross'
-          e.credit=p.regot.gross
+          e.account ='a2200-grossAP'
+          e.credit=p.regot.grossAP
           journal.push(e)
         }
       })
@@ -435,7 +473,8 @@ class Pay extends React.Component{
     //   return np
     // })
     // console.log('perpa: ', perpa)
-    // this.setState({persons:perpa},()=>console.log('this.state: ', this.state)) 
+    // this.setState({persons:perpa},()=>console.log('this.state: ', this.state))  
+    console.log('journal: ', journal)  
     postJournal(journal)    
   }
 
@@ -488,10 +527,10 @@ class Pay extends React.Component{
     });
     const pt = (n)=>Math.round(n*72)
     const{persons}=this.state
-    console.log('persons: ', persons)
+    // console.log('persons: ', persons)
     let cnt=-1
     persons
-      .map((p,idx)=>{
+      .map((p)=>{
         // console.log('p: ', p)
         if(p.check){
           this.inWords(p.wh.net)
@@ -586,8 +625,7 @@ class Pay extends React.Component{
     let nstate = {...this.state}
     const persons=nstate.persons.slice()
     persons[idx].check=e.target.checked
-    console.log('persons: ', persons)
-    this.setState({persons}, ()=>console.log('this.state: ', this.state))
+    this.setState({persons})
   }
 
   handleCheckAll = (e) =>{
@@ -726,7 +764,6 @@ class Pay extends React.Component{
   }
 
   render(){
-    // console.log('this.state: ', this.state)
     const{persons }=this.state
     if (persons){
       //this.getQuery()
@@ -736,7 +773,8 @@ class Pay extends React.Component{
         <div >
           <div style={style.he}>
             <div> 
-                <button style={style.he.but.hi} onClick={this.createPayPdf}>print Paychecks</button><br/>
+            <button style={style.he.but.hi} onClick={this.createPayPdf}>print Paychecks</button><br/>
+            <button style={style.he.but.hi} onClick={this.calcC}>calcC</button><br/>
                 {/* 
                 <button style={actstyle.ia} onClick={this.filtInAct}>inact</button>
                 <button style={actstyle.al} onClick={this.filtAll}>all</button>

@@ -113,7 +113,15 @@ class AddPerson extends React.Component {
     const drec = {emailid:curperson.emailid, effective:curperson.effective}
     console.log('drec: ', drec)
     deletePerson(drec)
-    router.navigate('/persons?rerender');
+      .then((res)=>{
+        console.log('res: ', res)
+        if(res.message=='person deleted for effective data'){
+          router.navigate('/persons?rerender');
+        }else{
+          
+          window.alert.message(res.message)
+        }
+      })
   }
 
   render() { 

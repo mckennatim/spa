@@ -163,6 +163,7 @@ class Persons extends React.Component{
 
   editPerson=(j)=>{
     console.log('j: ', j)
+    j.emailid=j.email
     setEdit(j)
     setKeyVal({update:true})
     // router.navigate('/addperson?idx='+j.idx);
@@ -285,7 +286,7 @@ class Persons extends React.Component{
             <span style={style.myli.idxsp} onClick={this.editPerson.bind(null, aperson)}><i style={style.myli.icon} className="material-icons">edit</i></span>   <br/>
                   
             <span>
-              {aperson.emailid}<br/>
+              {aperson.email}<br/>
               {!nohayname && <div>
              <span>{aperson.firstmid} {aperson.lastname}</span> <br/>
               {aperson.street}<br/>

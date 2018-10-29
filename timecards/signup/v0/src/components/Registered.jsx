@@ -233,7 +233,7 @@ class Registered extends React.Component {
     return(
       <div>
         {!this.state.shownew && 
-        <p>We have no record of this emailid on any machine. You are welcome to become a beta tester. You will be registered for a month but will be able to extend</p>
+        <p>We have no record of this emailid on any machine as active in any company. Maybe your company is past its renewal date. You are welcome to become a beta tester. You will be registered for a month but will be able to extend</p>
         }
       <h4>Choose a Company ID</h4>
       <p>Enter a company id that starts with a letter and contains just letters and numbers, no spaces or special characters, at least 6 characters and less than 12. It just needs to be unique and identifiable by you, you won't need to remember it since your company is tied to your email id {emailid}</p> 
@@ -270,7 +270,7 @@ class Registered extends React.Component {
     return(
       <div>
       <h4>Register or Find out more </h4>
-      <p>There is no record of you on this device. Perhaps there was and it expired. Could you hit <a href="#register">'register'</a>  to let this app know who you are? Are you new to this application? Press <a href="#about">'about'</a>  for a little more information about the on-boarding process. </p> 
+      <p>There is no record of you on this device. Perhaps there was and your credentials expired. Could you hit <a href="#register">'register'</a>  to let this app know who you are? Are you new to this application? Press <a href="#about">'about'</a>  for a little more information about the on-boarding process. </p> 
       </div>
     )
   }

@@ -37,6 +37,9 @@ https://www.michigan.gov/mdcs/0,4614,7-147-6879_19184_21557-234596--,00.html
 
 
 https://github.com/MrRio/jsPDF printing at precise locations
+### 115-persons
+What happens when you are deleting the last person record for a person? Should you takeout rolewho too and obliterate them? Can partners oblitereate each other or only themselves. What happens when the last partner wants to obliterate themself? Can hr obliterate any partner?
+
 ### 115-pay-OKtcard
 inWords(dec), fixed OKtimecards
 TODO get accrued ssi and gross
@@ -137,6 +140,10 @@ Each weeks payroll expense can be zeroed by crediting payrol expense and distrib
 What is it? 
 
 https://s3-us-west-2.amazonaws.com/courses-images-archive-read-only/wp-content/uploads/sites/1430/2016/03/04031427/job-cost-flow.pdf
+###
+
+https://www.youtube.com/watch?v=GHTrsUtmQTo video on having a form bacground for jspdf
+
 
 ### 104-timecards-pay-net
 Data created by calcs is

@@ -178,6 +178,7 @@ const fetchCompany=()=>{
 // }
 const postCompany=(newco)=>{
   var lsh = ls.getItem();
+  ls.modItem('firstday', newco.firstday)
   if(geta('lsh.token', lsh)){
     let url= cfg.url.api+'/co/co'
     let options= {

@@ -184,6 +184,26 @@ const deletePerson=(person)=>{
     return p2
   }
 }
-
-export{fetchSettings, fetchPersons, postPersons, putPerson, newPerson, deletePerson, putCk, fetchCurrent
+const obliteratePerson=(person)=>{
+  var lsh = ls.getItem();
+  if(geta('lsh.token', lsh)){
+    let url= cfg.url.api+'/persons/obliterate'
+    let options= {
+      headers: {'Authorization': 'Bearer '+ lsh['token'],
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      method: 'DELETE',
+      body: JSON.stringify({person:person})
+    }  
+    return(
+      fetch(url, options)
+        .then((response)=>response.json())
+    )        
+  }else{
+    let p2 =Promise.resolve({qmessage:'you dont exist! '})
+    return p2
+  }
 }
+
+export{fetchSettings, fetchPersons, postPersons, putPerson, newPerson, deletePerson, putCk, fetchCurrent, obliteratePerson}

@@ -58,7 +58,6 @@ const fetchPay=()=>{
       fetch(url, options)
         .then((response)=>response.json())
         .then((json)=>{
-          console.log('json: ', json)
           if(json.message){
             return {qmessage: json.message}
           }else{
@@ -258,3 +257,4 @@ const deletePay=(person)=>{
 }
 
 export{fetchSettings, fetchPay, postPay, putPay, newPay, deletePay, putCk, fetchCurrent, fetchRates, postJobRates, postJournal}
+
