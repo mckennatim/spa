@@ -73,6 +73,30 @@ const fetchPay=()=>{
     return p2
   }
 }
+const fetchAccrued=()=>{
+  var lsh = ls.getItem();
+  if(geta('lsh.token', lsh)){
+    let url= cfg.url.api+'/payroll/accrued/'
+    let options= {headers: {'Authorization': 'Bearer '+ lsh['token']}}
+    return(
+      fetch(url, options)
+        .then((response)=>response.json())
+        .then((json)=>{
+          if(json.message){
+            return {qmessage: json.message}
+          }else{
+            return json
+          }
+        })
+        .catch((e)=>{
+          return {qmessage: e.message}
+        })
+      )         
+  }else{
+    let p2 =Promise.resolve({qmessage:'you do not seem to be known on this device '})
+    return p2
+  }
+}
 const fetchCurrent=()=>{
   var lsh = ls.getItem();
   if(geta('lsh.token', lsh)){
@@ -157,10 +181,7 @@ const postJournal=(journal)=>{
     }  
     return(
       fetch(url, options)
-        .then((response)=>{
-          console.log('response: ', response)
-          //response.json()
-        })
+        .then((response)=>response.json())
     )        
   }else{
     let p2 =Promise.resolve({qmessage:'you dont exist! '})
@@ -256,5 +277,5 @@ const deletePay=(person)=>{
   }
 }
 
-export{fetchSettings, fetchPay, postPay, putPay, newPay, deletePay, putCk, fetchCurrent, fetchRates, postJobRates, postJournal}
+export{fetchSettings, fetchPay, fetchAccrued, postPay, putPay, newPay, deletePay, putCk, fetchCurrent, fetchRates, postJobRates, postJournal}
 

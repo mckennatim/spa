@@ -252,7 +252,7 @@ const adjWk4app =(firstday, wkarr)=>{
       }
       return d
     })
-    .sort((a,b)=>a.wdprt > b.wdprt)
+    .sort((a,b)=>a.wdprt>b.wdprt ? 1 : -1)
   return appwkarr
 }
 

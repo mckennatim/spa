@@ -46,7 +46,10 @@ hours4job
 costs4jobs
 
 https://github.com/MrRio/jsPDF printing at precise locations
-### 116-signup-clickCoid-reg/ctoken/:coid/:role
+### 117-pay-getAccrued
+Got Accrued everything into pay's state. Next is to check for limits on witholding
+
+### 116-signup-clickCoid-reg_ctoken_coid_role
 WATCH OUT FOR SOURCECONTROL IN VSCODE-KEEP IT OFF
 somehow firstday wasn't getting set when clicking on coid in coid list
 

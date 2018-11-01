@@ -57,8 +57,15 @@ class TimeCardJar extends React.Component {
   }
 
   handleWeekChanged = (wk)=>{
+    // console.log('this.state.week: ', this.state.week)
+    // console.log('typeof wk: ', typeof wk)
+    // console.log('wk.includes("+"): ', wk.includes("+"))
+    wk = wk.includes("+") ? (this.state.week*1+1).toString() : wk
+    wk = wk.includes("-") ? (this.state.week*1-1).toString() : wk
     this.setState({week:wk})
-    this.getTimeCard(wk)
+    if (wk*1>0 && wk*1<53){
+      this.getTimeCard(wk)
+    }
   }
 
   setShowSub =(tcard)=>{

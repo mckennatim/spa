@@ -3,7 +3,7 @@ var moment = require('moment');
 // import {router} from '../app'
 import {mapClass2Element} from '../hoc/mapClass2Element'
 // import {fetchPay, postPay, fetchSettings, fetchRates, postJobRates, postJournal} from '../services/fetches'
-import {fetchPay, fetchRates, postJournal, postJobRates} from '../services/fetches'
+import {fetchPay, fetchRates, fetchAccrued, postJournal, postJobRates} from '../services/fetches'
 // import{adjWdprtDn, padWk} from  '../../../../common/v0/src/utilities/reroo'
 // import { setEdit, setKeyVal} from '../actions/personacts';
 import { setKeyVal} from '../actions/personacts';
@@ -21,7 +21,8 @@ class Pay extends React.Component{
     wk: moment().week(),
     yr: moment().format('YYYY'),
     dddMMDD:'',
-    firstday: ls.getKey('firstday')
+    firstday: ls.getKey('firstday'),
+    waiting: true
   }
 
   dwk=null
@@ -29,7 +30,7 @@ class Pay extends React.Component{
   componentDidMount(){
     //this.getSettings()
     //this.getRates()
-    this.getPay()
+    this.getAccrued()
     // this.dwk = document.getElementById("wk")
     // console.log('moment().format("YYY-MM-DD): ', moment().format("YYYY-MM-DD"))
   }  
@@ -54,16 +55,12 @@ class Pay extends React.Component{
   //       }
   //     })
   // }
-
-  getRates=()=>{
-    fetchRates()     
-      .then((res)=>{
-        if (res.qmessage){
-          window.alert(res.qmessage)
-        }else{
-          this.setState({rates:res},()=>this.calcGross())
-        }
-      })
+  getAccrued=()=>{
+    fetchAccrued()
+    .then((res)=>{
+      console.log('res: ', res)
+      this.setState({accrued:res}, ()=>this.getPay())
+    })
   }
 
   getPay=()=>{
@@ -74,6 +71,17 @@ class Pay extends React.Component{
       this.setState({persons: res.persons},()=>this.getRates())
     })    
   }
+
+  getRates=()=>{
+    fetchRates()     
+      .then((res)=>{
+        if (res.qmessage){
+          window.alert(res.qmessage)
+        }else{
+          this.setState({rates:res},()=>this.calcGross())
+        }
+      })
+  }  
 
   calcPaydate = (wprt)=>{
     const{firstday}=this.state
@@ -121,6 +129,7 @@ class Pay extends React.Component{
       if(otrate>1 && mfhrs>40 ){
         mfot = (otrate-1)*(mfhrs-40)*p.rate
       }
+      console.log('mfhrs: ', mfhrs)
       reg = hrs*p.rate
       aot = saot+suot+mfot
       gross=reg+aot
@@ -268,7 +277,9 @@ class Pay extends React.Component{
       p.jcrates = np
       return p
     })
-    this.setState({persons:coper})
+    this.setState({persons:coper, waiting:false}, ()=>{
+      console.log('this.state: ', this.state)
+    })
   }
 
   calcC=()=>{
@@ -296,8 +307,7 @@ class Pay extends React.Component{
         return p.jcrates
       })
     console.log('jper: ', jper)  
-    postJobRates(jper)
-    this.setAsPaid()
+    postJobRates(jper)    
     this.apply2gl()
   }
 
@@ -478,7 +488,19 @@ class Pay extends React.Component{
     // console.log('perpa: ', perpa)
     // this.setState({persons:perpa},()=>console.log('this.state: ', this.state))  
     console.log('journal: ', journal)  
-    postJournal(journal)    
+    postJournal(journal)
+      .then((res)=>{
+        const tribal = res.tribal[0]
+        console.log(tribal)
+        const roundingerror = drnd(tribal.debit-tribal.credit)
+        console.log('tribal.debit: ', tribal.debit, )
+        console.log('roundingerror: ', roundingerror)
+        const trbastr = `Trial Balance debit: \$${tribal.debit}, credit: \$${tribal.credit}, rounding error:\$${roundingerror}. If more than +/-$1.00 then there is a problem`
+        console.log('trbastr: ', trbastr)
+        window.alert(trbastr)
+        console.log('this.state: ', this.state)
+        this.setAsPaid()
+      })   
   }
 
   inWords=(dec)=>{
@@ -767,43 +789,51 @@ class Pay extends React.Component{
   }
 
   render(){
-    const{persons }=this.state
-    if (persons){
-      //this.getQuery()
-      // const actstyle = this.setStatBkg()
-      const rndrdpersons = this.renderPay()
-      return(
-        <div >
-          <div style={style.he}>
-            <div> 
-            <button style={style.he.but.hi} onClick={this.createPayPdf}>print Paychecks</button><br/>
-            <button style={style.he.but.hi} onClick={this.calcC}>calcC</button><br/>
-                {/* 
-                <button style={actstyle.ia} onClick={this.filtInAct}>inact</button>
-                <button style={actstyle.al} onClick={this.filtAll}>all</button>
-                 */}
-                <span >
-                  <input style={style.ckbox} type="checkbox" checked={this.state.checkall} onChange={this.handleCheckAll}/> 
-                  {/* <button style={actstyle.cu} onClick={this.dfiltCurrent}>current</button>
-                  <button style={actstyle.fu} onClick={this.dfiltFuture}>future</button> */}
-                  <button style={style.he.but.hi} onClick={this.paySelected}>Pay Selected</button>
-                  {/* <button style={actstyle.da} onClick={this.dfiltAll}>all</button> */}
-
-                </span>
+    if(!this.state.waitng){
+      const{persons }=this.state
+      if (persons){
+        //this.getQuery()
+        // const actstyle = this.setStatBkg()
+        const rndrdpersons = this.renderPay()
+        return(
+          <div >
+            <div style={style.he}>
+              <div> 
+              <button style={style.he.but.hi} onClick={this.createPayPdf}>print Paychecks</button><br/>
+              <button style={style.he.but.hi} onClick={this.calcC}>calcC</button><br/>
+                  {/* 
+                  <button style={actstyle.ia} onClick={this.filtInAct}>inact</button>
+                  <button style={actstyle.al} onClick={this.filtAll}>all</button>
+                   */}
+                  <span >
+                    <input style={style.ckbox} type="checkbox" checked={this.state.checkall} onChange={this.handleCheckAll}/> 
+                    {/* <button style={actstyle.cu} onClick={this.dfiltCurrent}>current</button>
+                    <button style={actstyle.fu} onClick={this.dfiltFuture}>future</button> */}
+                    <button style={style.he.but.hi} onClick={this.paySelected}>Pay Selected</button>
+                    {/* <button style={actstyle.da} onClick={this.dfiltAll}>all</button> */}
+  
+                  </span>
+              </div>
+            </div>
+            <div style={style.myli.od}> 
+              {rndrdpersons}
             </div>
           </div>
-          <div style={style.myli.od}> 
-            {rndrdpersons}
+        )
+      }else{
+        return(
+          <div style={style.he}>
+            <p>Message from server: {this.state.qmessage}. </p><br/> <p> The link below will take you home where you will be asked to re-register. This will take you to a list of apps you can use in your company. If you are registered in more than one company, you can choose your company first. <a href={makeHref(location.hostname, 'signup', '#urapps')} >HOME</a></p> 
+            
           </div>
-        </div>
-      )
+          )
+      }
     }else{
       return(
         <div style={style.he}>
-          <p>Message from server: {this.state.qmessage}. </p><br/> <p> The link below will take you home where you will be asked to re-register. This will take you to a list of apps you can use in your company. If you are registered in more than one company, you can choose your company first. <a href={makeHref(location.hostname, 'signup', '#urapps')} >HOME</a></p> 
-          
+          <h1>WAITING</h1>
         </div>
-        )
+      )
     }
   }
 }

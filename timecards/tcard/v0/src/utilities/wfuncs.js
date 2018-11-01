@@ -104,14 +104,17 @@ const sumThing=(arr, fld)=>{
 
 
 const adjWk4app =(firstday, wkarr)=>{
-  const appwkarr= wkarr
+  let appwkarr= wkarr
     .map((d)=>{
       if (firstday!=1 && d.wdprt.slice(-1)>=firstday){
         d.wdprt= moment(d.wdprt).subtract(7, "days").format("YYYY-[W]WW-E")
       }
       return d
     })
-    .sort((a,b)=>a.wdprt > b.wdprt)
+    .sort((a,b)=>{
+      //console.log( b.wdprt, '>', a.wdprt, '=', a.wdprt < b.wdprt)
+      return a.wdprt < b.wdprt ? -1 : 1
+    })
   return appwkarr
 }
 
