@@ -32,10 +32,11 @@ class Persons extends React.Component{
   getSettings=()=>{
     fetchSettings()     
       .then((res)=>{
-        if (res.qmessage){
+        console.log('res: ', res)
+        if (res && res.qmessage){
           console.log('res.qmessage: ', res.qmessage)
           this.setState({qmessage:res.qmessage})
-        }else{
+        }else if(res){
           this.setState({firstday: res.firstday},()=>{
             setKeyVal({coid: res.coid, qmessage:res.qmessage, task:'persons'})
           })
@@ -112,6 +113,7 @@ class Persons extends React.Component{
   }
 
   cfilt = (persons)=>{
+    console.log('in cfilt')
     if(this.props.eperson.dfilt=='current') {
       persons = this.getCurrent(persons)
     }
@@ -164,10 +166,13 @@ class Persons extends React.Component{
   editPerson=(j)=>{
     console.log('j: ', j)
     j.emailid=j.email
-    setEdit(j)
-    setKeyVal({update:true})
-    // router.navigate('/addperson?idx='+j.idx);
-    router.navigate('/addperson');
+    if(j.role=='partner' && this.props.eperson.role=='hr'){
+      window.alert('only partners can edit partners')
+    }else{
+      setEdit(j)
+      setKeyVal({update:true})
+      router.navigate('/addperson');
+    }
   }
   chwk=(e)=>{
     let val =e.target.value

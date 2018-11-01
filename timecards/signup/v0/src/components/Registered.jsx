@@ -103,13 +103,13 @@ class Registered extends React.Component {
   }
 
   getCtoken=(token,co)=>{
-    //console.log('this.props.ejob.task: ', this.props.ejob.task)
+    console.log('co: ', co)
     fetchCtoken(token,co)
       .then((res)=>{
         console.log('res: ', res)
         const isPartner = res.role=='partner' ? true : false
         setKeyVal({role:res.role, emailid:res.binfo.emailid, isPartner:isPartner})
-        ls.setItem({email: res.binfo.emailid, token:res.token})
+        ls.setItem({email: res.binfo.emailid, firstday:res.firstday, token:res.token})
         location.replace('#urapps')
       })
   }  

@@ -1,7 +1,9 @@
 import React from 'react';
+var moment = require('moment');
+import {makeHref} from '../utilities/getCfg'
 import {router} from '../app'
 import {mapClass2Element} from '../hoc/mapClass2Element'
-import { putPerson, deletePerson } from '../services/fetches';
+import { putPerson, deletePerson, obliteratePerson } from '../services/fetches';
 import {fetchTokdata} from '../../../../common/v0/src/services/fetches'
 import {setKeyVal} from '../actions/personacts';
 //import {setKeyVal} from '../actions/personacts';
@@ -62,7 +64,7 @@ const styles = theme => ({
 });
 
 class AddPerson extends React.Component {
-  state = {eperson:this.props.eperson, newup:'update'}
+  state = {eperson:this.props.eperson, newup:'update', istokdata:true}
 
   componentDidMount() {
     this.setState({eperson:this.props.eperson})
@@ -73,6 +75,9 @@ class AddPerson extends React.Component {
     fetchTokdata()
     .then((res)=>{
       console.log('res: ', res)
+      if(res.qmessage){
+        this.setState({istokdata:false})
+      }
       const isPartner = res.binfo.role=='partner' ? true : false
       setKeyVal({role:res.binfo.role, emailid:res.binfo.emailid, isPartner:isPartner})
     })  
@@ -85,7 +90,16 @@ class AddPerson extends React.Component {
     putPerson(curperson)
     router.navigate('/persons?rerender')
   }
+  makeToday =()=>{
+    let curperson= this.props.eperson.curperson
+    console.log('curperson: ', curperson)
+    curperson.effective=moment().format('YYYY-MM-DD')
+    this.props.xmitChange({curperson:curperson});
+  }
+
   txtChanged = field => e =>{
+    console.log('txtChanged')
+    console.log('field, e: ', field, e)
     let curperson= this.props.eperson.curperson
     curperson[field] = e.target.value
     this.props.xmitChange({curperson:curperson});
@@ -118,13 +132,43 @@ class AddPerson extends React.Component {
         if(res.message=='person deleted for effective data'){
           router.navigate('/persons?rerender');
         }else{
-          
-          window.alert.message(res.message)
+          const{role,emailid, curperson}=this.props.eperson
+          console.log('else last man standing')
+          console.log('role: ', role, )
+          console.log('this.props.eperson.curperson: ', this.props)
+          console.log('wtf')
+          if(curperson.role== 'partner' && emailid==curperson.emailid){
+            let mess = 'Deleting yourself puts you out of the company completely. Only another partner can let you back in. Click OK to completely lose your access or CANCEL if you would like to stay'
+            if(window.confirm(mess)){
+              console.log('BYE BYE. See you partner')
+              obliteratePerson(drec)
+                .then(()=>{
+                  router.navigate('/persons?rerender');
+                })
+            }else{
+              console.log('Still here')
+            }
+          }else if(curperson.role== 'partner' && curperson.emailid!=emailid){
+            let mess = 'Partners can only be deleted by themselves. Talk to your partner'
+            window.alert(mess)
+          }else{
+            let mess='You are attempting to delete the last of the effective date records for this person. Deleting will wipe this person off your personel records. Consider editing this record to make the person "inactive". That will preserve basic info like name address and w4 entries, allowing you to produce W2 or 1099 forms at the end of the year. Inactive workers can no longer log in to the system. Press OK to permanently delete. Oterwise CANCEL then modify the "active" field' 
+            if(window.confirm(mess)){
+              console.log('BYE BYE person')
+              obliteratePerson(drec)
+                .then(()=>{
+                  router.navigate('/persons?rerender');
+                })              
+            }else{
+              console.log('Maybe just make inactive')
+            }
+          }
         }
       })
   }
 
   render() { 
+    if(this.state.istokdata){
     const { classes } = this.props;
     const{curperson, update, isPartner}=this.props.eperson
     const newup = update ? 'udpate' : 'new'
@@ -216,6 +260,16 @@ class AddPerson extends React.Component {
           />
           </RadioGroup>
         </FormControl>
+        <div style={astyles.inner.but}>
+          <Button 
+            size="small"
+            variant="contained" 
+            color="primary" 
+            className={classes.button} 
+            onClick={this.makeToday}>
+          Make Effective Today
+          </Button>
+        </div>
         <TextField
           id="standard-name"
           label="Effective Date"
@@ -256,7 +310,7 @@ class AddPerson extends React.Component {
             onChange={this.txtChanged('wtype')}
             row={true}
           >
-          <FormControlLabel disabled={!isPartner} value="hourly" control={<Radio />} label="Hourly" />
+          <FormControlLabel value="hourly" control={<Radio />} label="Hourly" />
           <FormControlLabel value="salary" control={<Radio />} label="Salary" />
           <FormControlLabel value="salaryne" control={<Radio />} label="Salary non-exempt" />
           <FormControlLabel value="1099" control={<Radio />} label="1099"/> 
@@ -521,6 +575,14 @@ class AddPerson extends React.Component {
        </form>
       </div>
       );
+    }else{
+      return(
+        <div style={astyles.outer.div}>
+          <p>Your registration data is not here. The link below will take you home where you will be asked to re-register. This will take you to a list of apps you can use in your company. If you are registered in more than one company, you can choose your company first. <a href={makeHref(location.hostname, 'signup', '#urapps')} >HOME</a></p> 
+          
+        </div>
+      )
+    }
   }
 }
 

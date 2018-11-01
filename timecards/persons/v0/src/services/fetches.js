@@ -10,6 +10,7 @@ const fetchSettings=()=>{
       fetch(url, options)
         .then((response)=>response.json())
         .then((json)=>{
+          console.log('json: ', json)
           if(json.message){
             return {qmessage: json.message}
           }else{

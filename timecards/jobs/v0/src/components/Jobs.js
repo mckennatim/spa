@@ -85,7 +85,7 @@ class Jobs extends React.Component{
   }
   buzz=()=>{
     console.log('buzz()')
-    window.navigator.vibrate(100)
+    //window.navigator.vibrate(100)
   }
   getwk0 = ()=>{
     this.alterJobsYdate(0)  
@@ -284,7 +284,7 @@ const style = {
       background: 'silver'
     },
     wk:{
-      width:'36px',
+      width:'44px',
       background: 'whitesmoke'
     },
     img:{

@@ -78,10 +78,13 @@ class Pay extends React.Component{
   calcPaydate = (wprt)=>{
     const{firstday}=this.state
     let wdprt = wprt+'-'+firstday
+    console.log('wdprt: ', wdprt)
     if (firstday!=1 && wdprt.slice(-1)>=firstday){
       wdprt= moment(wdprt).subtract(7, "days").format("YYYY-[W]WW-E")
+      console.log('wdprt: ', wdprt)
     }
     let paydate = moment(wdprt).add(7, "days").format("YYYY-MM-DD")
+    console.log('paydate: ', paydate)
     return paydate
   }
  
@@ -127,10 +130,10 @@ class Pay extends React.Component{
           gross = p.weeklybase
         }
       }
-      let mff = mfhrs<=40 ? 1 : ((p.rate*mfhrs+(mfhrs-40)*p.rate*(1-otrate))/mfhrs)/p.rate
+      let mff = mfhrs<=40 ? 1 : ((p.rate*mfhrs+(mfhrs-40)*p.rate*(otrate-1))/mfhrs)/p.rate
       let saf = saot>0 ? sarate : mff
       let suf = suot>0 ? surate :mff
-      let mfperhr = drnd(mfhrs<=40 ? p.rate : (p.rate*mfhrs+(mfhrs-40)*p.rate*(1-otrate))/mfhrs)
+      let mfperhr = drnd(mfhrs<=40 ? p.rate : (p.rate*mfhrs+(mfhrs-40)*p.rate*(otrate-1))/mfhrs)
       let saperhr = drnd(saf*p.rate)
       let superhr = drnd(suf*p.rate)
       const regot = {reg:reg, mfot:mfot, gross:gross, grossAP: grossAP, saot:saot, suot:suot, mff:mff, saf:saf, suf:suf, mfrate:mfperhr, sarate:saperhr, surate:superhr}

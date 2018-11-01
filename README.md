@@ -36,7 +36,20 @@ https://www.seyfarth.com/dir_docs/publications/neht01120810.pdf
 https://www.michigan.gov/mdcs/0,4614,7-147-6879_19184_21557-234596--,00.html
 
 
+https://www.accountingcapital.com/basic-accounting/three-golden-rules-of-accounting/
+https://www.accountingcapital.com/books-and-accounts/what-is-adjusted-trial-balance/
+
+timecards4jobs
+
+hours4job
+
+costs4jobs
+
 https://github.com/MrRio/jsPDF printing at precise locations
+### 116-signup-clickCoid-reg/ctoken/:coid/:role
+WATCH OUT FOR SOURCECONTROL IN VSCODE-KEEP IT OFF
+somehow firstday wasn't getting set when clicking on coid in coid list
+
 ### 115-persons
 What happens when you are deleting the last person record for a person? Should you takeout rolewho too and obliterate them? Can partners oblitereate each other or only themselves. What happens when the last partner wants to obliterate themself? Can hr obliterate any partner?
 
