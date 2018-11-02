@@ -38,6 +38,8 @@ https://www.michigan.gov/mdcs/0,4614,7-147-6879_19184_21557-234596--,00.html
 
 https://www.accountingcapital.com/basic-accounting/three-golden-rules-of-accounting/
 https://www.accountingcapital.com/books-and-accounts/what-is-adjusted-trial-balance/
+https://strategiccfo.com/standard-chart-of-accounts/
+http://www.quickbooks-training.net/standard-chart-accounts-account-types/
 
 timecards4jobs
 
@@ -46,6 +48,12 @@ hours4job
 costs4jobs
 
 https://github.com/MrRio/jsPDF printing at precise locations
+
+a5010-COGS + a6000-labor  = a6010-gross + a6060-burden
+
+##
+### 189-pay-burden-net-ot
+left todo wages 1099, net, fed, state, local, medi, meda
 ### 188-pay-fix-gl
 grossAp + gross + burden = COGS
 ### 117-pay-getAccrued

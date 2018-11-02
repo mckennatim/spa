@@ -148,7 +148,7 @@ class Pay extends React.Component{
       let mfperhr = drnd(mfhrs<=40 ? p.rate : (p.rate*mfhrs+(mfhrs-40)*p.rate*(otrate-1))/mfhrs)
       let saperhr = drnd(saf*p.rate)
       let superhr = drnd(suf*p.rate)
-      const regot = {reg:reg, mfot:mfot, gross:gross, grossAP: grossAP, saot:saot, suot:suot, mff:mff, saf:saf, suf:suf, mfrate:mfperhr, sarate:saperhr, surate:superhr}
+      const regot = {reg:reg, mfot:mfot, gross:gross, grossAP: grossAP, ot:aot, saot:saot, suot:suot, mff:mff, saf:saf, suf:suf, mfrate:mfperhr, sarate:saperhr, surate:superhr}
       return {...p, regot}
     })
     this.setState({persons:np},()=>this.calcDeductions())
@@ -220,14 +220,23 @@ class Pay extends React.Component{
       if(p.wtype!='1099'){
         const ssYtd = this.lookupAccrued(p.emailid, 'a2010-SS')/2
         const mediYtd = this.lookupAccrued(p.emailid, 'a2020-medi')/2
-        const grossYtd = this.lookupAccrued(p.emailid, 'a2020-medi')/2
+        const netYtd = this.lookupAccrued(p.emailid, 'a1010-cash')
+        const k401Ytd = this.lookupAccrued(p.emailid, 'a2110-401K')
+        const healthYtd = this.lookupAccrued(p.emailid, 'a2120-health')
+        const holidayYtd = this.lookupAccrued(p.emailid, 'a2130-holiday')
+        const vacationYtd = this.lookupAccrued(p.emailid, 'a2140-vacation')
+        const personalYtd = this.lookupAccrued(p.emailid, 'a2150-personal')
+        const grossTotYtd = this.lookupAccrued(p.emailid, 'a6010-gross')
+        const grossAPYtd = this.lookupAccrued(p.emailid, 'a2200-grossAP')
+        const grossYtd = grossTotYtd - grossAPYtd
+        p.accrued = {ssYtd, mediYtd, netYtd, k401Ytd, healthYtd, holidayYtd, vacationYtd, personalYtd, grossTotYtd, grossAPYtd, grossYtd}
         const{taxablegross, gross}=p.ded
         const subj2wh = p.w4exempt ? 0 : taxablegross-(fedr.allow*p.w4allow)
         let ss = taxablegross*fedr.ssw
         let medi = taxablegross*fedr.mediw
         const ssmed = ssYtd + mediYtd >= strates.ficasub ? 0 : ss+medi //no fica ded over 2000
 
-        const meda = 0
+        const meda = grossYtd > fedr.mediexcess ? taxablegross*fedr.mediadd : 0
         const singmar = p.marital=='married' ? 'married' : 'single'
         const fedtax = lookupFedTax(fedwh, singmar, 'weekly', subj2wh, p.w4add)
         const sttax =  calcStateTax(p, strates, ssmed)
@@ -246,6 +255,7 @@ class Pay extends React.Component{
     const{fedr, cosr} =rates
     const burper = persons.map((p)=>{
       if(p.wtype!='1099'){
+        const{grossYtd}=p.accrued
         const{ gross, grossAP}=p.regot
         const ss = drnd(gross*fedr.sse)
         const medi = drnd(gross*fedr.medie)
@@ -256,7 +266,7 @@ class Pay extends React.Component{
         let pers = p.personal>0 ? drnd(p.personal/250*gross) : 0
         let suta = drnd(cosr.stuirate*gross)
         let comp = drnd(cosr.wcrate*gross)
-        let futa = drnd(fedr.futa*gross)
+        let futa = grossYtd > fedr.futa4first ? 0 : drnd(fedr.futa*gross)
         let tburden = drnd(ss+medi+health+k401+vaca+holi+pers+suta+comp+futa)
         let bpercent = (tburden+gross+grossAP)/(gross+grossAP)
         p.burden={gross,ss,medi,health,k401,vaca,holi,pers,suta,futa,comp,tburden, bpercent}
@@ -476,34 +486,54 @@ class Pay extends React.Component{
             journal.push(e)
           }
         }
-      /*THESE ENTRIES UNBALANCE THE LEDGER balanced by postJobRates*/
+      /*THESE ENTRIES UNBALANCE THE LEDGER balanced by postJobRates   reg+ot=gross+grossAP*/
         e ={...blentry}
-        e.account ='a6010-gross'
-        e.credit=p.regot.gross
+        e.account ='a6011-reg'
+        e.credit=p.regot.reg
+        journal.push(e)
+        e ={...blentry}
+        e.account ='a6012-ot'
+        e.credit=p.regot.ot
         journal.push(e)
         if (p.burden){
-          e ={...blentry}
-          e.account ='a6020-burden'
-          e.credit=p.burden.tburden
-          journal.push(e)
+          // e ={...blentry}
+          // e.account ='a6020-burden'
+          // e.credit=p.burden.tburden
+          // journal.push(e)
+          if (p.burden.ss>0 || p.burden.medi>0 ){
+            e ={...blentry}
+            e.cat='co'
+            e.account ='a6021-FICA'
+            e.credit=p.burden.ss+p.burden.medi
+            journal.push(e)
+          }
+          if (p.burden.futa>0 || p.burden.suta>0 || p.burden.comp>0){
+            e ={...blentry}
+            e.account ='a6022-insurance'
+            e.credit=p.burden.futa + p.burden.suta + p.burden.comp
+            journal.push(e)
+          }
+          if (p.burden.k401>0){
+            e ={...blentry}
+            e.account ='a6023-401K'
+            e.credit=p.burden.k401
+            journal.push(e)
+          }
+          if (p.burden.health>0){
+            e ={...blentry}
+            e.account ='a6024-health'
+            e.credit=p.burden.health
+            journal.push(e)
+          }
+          if (p.burden.holi>0 || p.burden.vaca>0 || p.burden.pers>0 ){
+            e ={...blentry}
+            e.account ='a6025-PTO'
+            e.credit=p.burden.holi + p.burden.vaca + p.burden.pers
+            journal.push(e)
+          }
         }
-        if (p.regot.grossAP && p.regot.grossAP>0){
-          e ={...blentry}
-          e.account ='a6010-gross'
-          e.credit=p.regot.grossAP
-          journal.push(e)
-        }
+        /* wages expense  */
       })
-    // const perpa= persons.map((p)=>{
-    //   const np = {...p}
-    //   if (np.check){
-    //     console.log('in pcheck')
-    //     np.status='paid'
-    //   }
-    //   return np
-    // })
-    // console.log('perpa: ', perpa)
-    // this.setState({persons:perpa},()=>console.log('this.state: ', this.state))  
     console.log('journal: ', journal)  
     postJournal(journal)
       .then((res)=>{
@@ -683,7 +713,7 @@ class Pay extends React.Component{
   renderRegOt = (p)=>{
     if(p.regot){
       const{reg, gross, grossAP}=p.regot
-      const ot = p.regot.mfot+p.regot.saot+p.regot.suot
+      const ot = p.regot.ot
       return(
         <table style={style.table.table}><tbody>
         <tr style={style.table.tr}>
