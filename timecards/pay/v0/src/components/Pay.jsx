@@ -59,7 +59,10 @@ class Pay extends React.Component{
     fetchAccrued()
     .then((res)=>{
       console.log('res: ', res)
-      this.setState({accrued:res}, ()=>this.getPay())
+      this.setState({accrued:res}, ()=>{
+        this.getPay()
+        console.log(this.lookupAccrued('mckenn.tim@gmail.com', 'a2010-S'))
+      })
     })
   }
 
@@ -215,14 +218,19 @@ class Pay extends React.Component{
     const{fedr,fedwh, strates} =rates
     const whp = persons.map((p)=>{
       if(p.wtype!='1099'){
+        const ssYtd = this.lookupAccrued(p.emailid, 'a2010-SS')/2
+        const mediYtd = this.lookupAccrued(p.emailid, 'a2020-medi')/2
+        const grossYtd = this.lookupAccrued(p.emailid, 'a2020-medi')/2
         const{taxablegross, gross}=p.ded
         const subj2wh = p.w4exempt ? 0 : taxablegross-(fedr.allow*p.w4allow)
-        const ss = taxablegross*fedr.ssw
-        const medi = taxablegross*fedr.mediw
+        let ss = taxablegross*fedr.ssw
+        let medi = taxablegross*fedr.mediw
+        const ssmed = ssYtd + mediYtd >= strates.ficasub ? 0 : ss+medi //no fica ded over 2000
+
         const meda = 0
         const singmar = p.marital=='married' ? 'married' : 'single'
         const fedtax = lookupFedTax(fedwh, singmar, 'weekly', subj2wh, p.w4add)
-        const sttax =  calcStateTax(p, strates, ss+medi)
+        const sttax =  calcStateTax(p, strates, ssmed)
         const net = gross-fedtax-ss -medi - sttax
         p.wh={gross:gross, taxablegross:taxablegross, ss:drnd(ss), medi:drnd(medi), meda:drnd(meda), fedtax:drnd(fedtax), sttax:drnd(sttax), net:drnd(net)}
       }else{
@@ -280,6 +288,15 @@ class Pay extends React.Component{
     this.setState({persons:coper, waiting:false}, ()=>{
       console.log('this.state: ', this.state)
     })
+  }
+
+  lookupAccrued=(emailid, account)=>{
+    const{accrued}=this.state
+    const found = accrued.find((a)=>{
+      return a.someid == emailid && a.account == account
+    })
+    //console.log('found: ', found)
+    return found ? found.credit : 0
   }
 
   calcC=()=>{
@@ -472,7 +489,7 @@ class Pay extends React.Component{
         }
         if (p.regot.grossAP && p.regot.grossAP>0){
           e ={...blentry}
-          e.account ='a2200-grossAP'
+          e.account ='a6010-gross'
           e.credit=p.regot.grossAP
           journal.push(e)
         }
@@ -499,7 +516,7 @@ class Pay extends React.Component{
         console.log('trbastr: ', trbastr)
         window.alert(trbastr)
         console.log('this.state: ', this.state)
-        this.setAsPaid()
+        // this.setAsPaid()
       })   
   }
 

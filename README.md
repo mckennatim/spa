@@ -46,6 +46,8 @@ hours4job
 costs4jobs
 
 https://github.com/MrRio/jsPDF printing at precise locations
+### 188-pay-fix-gl
+grossAp + gross + burden = COGS
 ### 117-pay-getAccrued
 Got Accrued everything into pay's state. Next is to check for limits on witholding
 
