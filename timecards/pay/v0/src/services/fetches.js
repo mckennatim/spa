@@ -167,7 +167,7 @@ const postJobRates=(jcrates)=>{
   }
 }
 
-const postJournal=(journal)=>{
+const postJournal=(jplus)=>{
   var lsh = ls.getItem();
   if(geta('lsh.token', lsh)){
     let url= cfg.url.api+'/payroll/gl/'
@@ -177,7 +177,7 @@ const postJournal=(journal)=>{
         'Content-Type': 'application/json',
       },
       method: 'POST',
-      body: JSON.stringify({journal:journal})
+      body: JSON.stringify(jplus)
     }  
     return(
       fetch(url, options)

@@ -51929,13 +51929,10 @@ var Pay = function (_React$Component) {
       var firstday = _this.state.firstday;
 
       var wdprt = wprt + '-' + firstday;
-      console.log('wdprt: ', wdprt);
       if (firstday != 1 && wdprt.slice(-1) >= firstday) {
         wdprt = moment(wdprt).subtract(7, "days").format("YYYY-[W]WW-E");
-        console.log('wdprt: ', wdprt);
       }
       var paydate = moment(wdprt).add(7, "days").format("YYYY-MM-DD");
-      console.log('paydate: ', paydate);
       return paydate;
     }, _this.calcGross = function () {
       var _this$state = _this.state,
@@ -51952,54 +51949,60 @@ var Pay = function (_React$Component) {
       var np = persons.map(function (p) {
         p.paydate = _this.calcPaydate(p.wprt);
         var hrs = p.hrs;
-
         var hrsarr = JSON.parse(p.hrsarr);
-        var mfhrs = hrsarr.slice(0, 5).reduce(function (t, h) {
-          return t + h;
-        }, 0);
-        var sah = hrsarr[5];
-        var suh = hrsarr[6];
         var saot = 0,
             suot = 0,
             mfot = 0,
             reg = 0,
             aot = 0,
             gross = 0,
-            grossAP = 0;
-        if (sah > 0) {
-          if (cosr.sarate > 1) {
-            saot = (sarate - 1) * sah * p.rate;
-          } else {
-            mfhrs = mfhrs + sah;
+            grossAP = 0,
+            regot = void 0;
+        if (p.wtype != '1099') {
+          var mfhrs = hrsarr.slice(0, 5).reduce(function (t, h) {
+            return t + h;
+          }, 0);
+          var sah = hrsarr[5];
+          var suh = hrsarr[6];
+          if (sah > 0) {
+            if (cosr.sarate > 1) {
+              saot = (sarate - 1) * sah * p.rate;
+            } else {
+              mfhrs = mfhrs + sah;
+            }
           }
-        }
-        if (suh > 0) {
-          if (surate > 1) {
-            suot = (surate - 1) * suh * p.rate;
-          } else {
-            mfhrs = mfhrs + suh;
+          if (suh > 0) {
+            if (surate > 1) {
+              suot = (surate - 1) * suh * p.rate;
+            } else {
+              mfhrs = mfhrs + suh;
+            }
           }
-        }
-        if (otrate > 1 && mfhrs > 40) {
-          mfot = (otrate - 1) * (mfhrs - 40) * p.rate;
-        }
-        console.log('mfhrs: ', mfhrs);
-        reg = hrs * p.rate;
-        aot = saot + suot + mfot;
-        gross = reg + aot;
-        if (p.weeklybase && p.weeklybase > 0) {
-          if (gross > p.weeklybase && p.wtype == 'base') {
-            grossAP = gross - p.weeklybase;
-            gross = p.weeklybase;
+          if (otrate > 1 && mfhrs > 40) {
+            mfot = (otrate - 1) * (mfhrs - 40) * p.rate;
           }
+          reg = hrs * p.rate;
+          aot = saot + suot + mfot;
+          gross = reg + aot;
+          if (p.weeklybase && p.weeklybase > 0) {
+            if (gross > p.weeklybase && p.wtype == 'base') {
+              grossAP = gross - p.weeklybase;
+              gross = p.weeklybase;
+            }
+          }
+          var mff = mfhrs <= 40 ? 1 : (p.rate * mfhrs + (mfhrs - 40) * p.rate * (otrate - 1)) / mfhrs / p.rate;
+          var saf = saot > 0 ? sarate : mff;
+          var suf = suot > 0 ? surate : mff;
+          var mfperhr = (0, _getCfg.drnd)(mfhrs <= 40 ? p.rate : (p.rate * mfhrs + (mfhrs - 40) * p.rate * (otrate - 1)) / mfhrs);
+          var saperhr = (0, _getCfg.drnd)(saf * p.rate);
+          var superhr = (0, _getCfg.drnd)(suf * p.rate);
+          regot = { reg: reg, mfot: mfot, gross: gross, grossAP: grossAP, ot: aot, saot: saot, suot: suot, mff: mff, saf: saf, suf: suf, mfrate: mfperhr, sarate: saperhr, surate: superhr };
+        } else {
+          reg = (0, _getCfg.drnd)(hrs * p.rate);
+          gross = reg;
+          var hrrate = (0, _getCfg.drnd)(reg / hrs);
+          regot = { reg: reg, mfot: mfot, gross: gross, grossAP: grossAP, ot: 0, saot: 0, suot: 0, mff: 1, saf: 1, suf: 1, mfrate: hrrate, sarate: hrrate, surate: hrrate };
         }
-        var mff = mfhrs <= 40 ? 1 : (p.rate * mfhrs + (mfhrs - 40) * p.rate * (otrate - 1)) / mfhrs / p.rate;
-        var saf = saot > 0 ? sarate : mff;
-        var suf = suot > 0 ? surate : mff;
-        var mfperhr = (0, _getCfg.drnd)(mfhrs <= 40 ? p.rate : (p.rate * mfhrs + (mfhrs - 40) * p.rate * (otrate - 1)) / mfhrs);
-        var saperhr = (0, _getCfg.drnd)(saf * p.rate);
-        var superhr = (0, _getCfg.drnd)(suf * p.rate);
-        var regot = { reg: reg, mfot: mfot, gross: gross, grossAP: grossAP, ot: aot, saot: saot, suot: suot, mff: mff, saf: saf, suf: suf, mfrate: mfperhr, sarate: saperhr, surate: superhr };
         return _extends({}, p, { regot: regot });
       });
       _this.setState({ persons: np }, function () {
@@ -52013,16 +52016,19 @@ var Pay = function (_React$Component) {
       .map(function (p) {
         var hded = 0;
         var kded = 0;
-        if (p.healthemp > 0) {
-          hded = p.healthemp * 12.0 / 50;
+        if (p.wtype != '1099') {
+          if (p.healthemp > 0) {
+            hded = p.healthemp * 12.0 / 50;
+          }
+          if (p.k401emp > 0) {
+            kded = p.k401emp * 12.0 / 50;
+          }
+          var taxablegross = p.regot.gross - hded - kded;
+          p.ded = { gross: (0, _getCfg.drnd)(p.regot.gross), healthded: (0, _getCfg.drnd)(hded), k401ded: (0, _getCfg.drnd)(kded), taxablegross: (0, _getCfg.drnd)(taxablegross) };
+        } else {
+          p.ded = { gross: (0, _getCfg.drnd)(p.regot.gross), healthded: (0, _getCfg.drnd)(hded), k401ded: (0, _getCfg.drnd)(kded), taxablegross: (0, _getCfg.drnd)(p.regot.gross) };
         }
-        if (p.k401emp > 0) {
-          kded = p.k401emp * 12.0 / 50;
-        }
-        var taxablegross = p.regot.gross - hded - kded;
-        p.ded = { gross: (0, _getCfg.drnd)(p.regot.gross), healthded: (0, _getCfg.drnd)(hded), k401ded: (0, _getCfg.drnd)(kded), taxablegross: (0, _getCfg.drnd)(taxablegross)
-          // console.log('p.ded: ', p.ded)
-        };return p;
+        return p;
       });
       _this.setState({ persons: dedpers }, function () {
         return _this.calcWh();
@@ -52076,18 +52082,22 @@ var Pay = function (_React$Component) {
 
       var whp = persons.map(function (p) {
         if (p.wtype != '1099') {
-          var ssYtd = _this.lookupAccrued(p.emailid, 'a2010-SS') / 2;
-          var mediYtd = _this.lookupAccrued(p.emailid, 'a2020-medi') / 2;
-          var netYtd = _this.lookupAccrued(p.emailid, 'a1010-cash');
-          var k401Ytd = _this.lookupAccrued(p.emailid, 'a2110-401K');
-          var healthYtd = _this.lookupAccrued(p.emailid, 'a2120-health');
+          var hrsYtd = _this.lookupHrs(p.emailid);
+          var ssYtd = _this.lookupAccrued(p.emailid, 'a6036-SS');
+          var mediYtd = _this.lookupAccrued(p.emailid, 'a6037-medi');
+          var stYtd = _this.lookupAccrued(p.emailid, 'a2050-stWh');
+          var fedYtd = _this.lookupAccrued(p.emailid, 'a2050-fedWh');
+          var netYtd = _this.lookupAccrued(p.emailid, 'a6032-net');
+          var regYtd = _this.lookupAccrued(p.emailid, 'a6011-reg');
+          var otYtd = _this.lookupAccrued(p.emailid, 'a6012-ot');
+          var grossYtd = regYtd + otYtd;
+          var k401Ytd = _this.lookupAccrued(p.emailid, 'a6023-401K');
+          var healthYtd = _this.lookupAccrued(p.emailid, 'a6024-health');
           var holidayYtd = _this.lookupAccrued(p.emailid, 'a2130-holiday');
           var vacationYtd = _this.lookupAccrued(p.emailid, 'a2140-vacation');
           var personalYtd = _this.lookupAccrued(p.emailid, 'a2150-personal');
-          var grossTotYtd = _this.lookupAccrued(p.emailid, 'a6010-gross');
           var grossAPYtd = _this.lookupAccrued(p.emailid, 'a2200-grossAP');
-          var grossYtd = grossTotYtd - grossAPYtd;
-          p.accrued = { ssYtd: ssYtd, mediYtd: mediYtd, netYtd: netYtd, k401Ytd: k401Ytd, healthYtd: healthYtd, holidayYtd: holidayYtd, vacationYtd: vacationYtd, personalYtd: personalYtd, grossTotYtd: grossTotYtd, grossAPYtd: grossAPYtd, grossYtd: grossYtd };
+          p.accrued = { hrsYtd: hrsYtd, stYtd: stYtd, fedYtd: fedYtd, ssYtd: ssYtd, mediYtd: mediYtd, netYtd: netYtd, regYtd: regYtd, otYtd: otYtd, grossYtd: grossYtd, k401Ytd: k401Ytd, healthYtd: healthYtd, holidayYtd: holidayYtd, vacationYtd: vacationYtd, personalYtd: personalYtd, grossAPYtd: grossAPYtd };
           var _p$ded = p.ded,
               taxablegross = _p$ded.taxablegross,
               gross = _p$ded.gross;
@@ -52101,7 +52111,7 @@ var Pay = function (_React$Component) {
           var singmar = p.marital == 'married' ? 'married' : 'single';
           var fedtax = lookupFedTax(fedwh, singmar, 'weekly', subj2wh, p.w4add);
           var sttax = calcStateTax(p, strates, ssmed);
-          var net = gross - fedtax - ss - medi - sttax;
+          var net = taxablegross - fedtax - ss - medi - sttax;
           p.wh = { gross: gross, taxablegross: taxablegross, ss: (0, _getCfg.drnd)(ss), medi: (0, _getCfg.drnd)(medi), meda: (0, _getCfg.drnd)(meda), fedtax: (0, _getCfg.drnd)(fedtax), sttax: (0, _getCfg.drnd)(sttax), net: (0, _getCfg.drnd)(net) };
         } else {
           p.wh = { gross: p.regot.gross, net: p.regot.gross };
@@ -52124,14 +52134,15 @@ var Pay = function (_React$Component) {
           var _p$regot = p.regot,
               gross = _p$regot.gross,
               grossAP = _p$regot.grossAP;
+          var taxablegross = p.wh.taxablegross;
 
-          var ss = (0, _getCfg.drnd)(gross * fedr.sse);
-          var medi = (0, _getCfg.drnd)(gross * fedr.medie);
+          var ss = (0, _getCfg.drnd)(taxablegross * fedr.sse);
+          var medi = (0, _getCfg.drnd)(taxablegross * fedr.medie);
           var health = p.healthco > 0 ? (0, _getCfg.drnd)(p.healthco * 12.0 / 50) : 0;
           var k401 = p.k401co > 0 ? (0, _getCfg.drnd)(p.k401co * 12.0 / 50) : 0;
-          var vaca = p.vacation > 0 ? (0, _getCfg.drnd)(p.vacation / 250 * gross) : 0;
-          var holi = p.holiday > 0 ? (0, _getCfg.drnd)(p.holiday / 250 * gross) : 0;
-          var pers = p.personal > 0 ? (0, _getCfg.drnd)(p.personal / 250 * gross) : 0;
+          var vaca = p.vacation > 0 ? (0, _getCfg.drnd)(p.vacation / 250 * p.hrs + p.rate) : 0;
+          var holi = p.holiday > 0 ? (0, _getCfg.drnd)(p.holiday / 250 * p.hrs * p.rate) : 0;
+          var pers = p.personal > 0 ? (0, _getCfg.drnd)(p.personal / 250 * p.hrs * p.rate) : 0;
           var suta = (0, _getCfg.drnd)(cosr.stuirate * gross);
           var comp = (0, _getCfg.drnd)(cosr.wcrate * gross);
           var futa = grossYtd > fedr.futa4first ? 0 : (0, _getCfg.drnd)(fedr.futa * gross);
@@ -52178,7 +52189,15 @@ var Pay = function (_React$Component) {
         return a.someid == emailid && a.account == account;
       });
       //console.log('found: ', found)
-      return found ? found.credit : 0;
+      return found ? found.credit - found.debit : 0;
+    }, _this.lookupHrs = function (emailid) {
+      var accrued = _this.state.accrued;
+
+      var found = accrued.find(function (a) {
+        return a.someid == emailid && a.account == 'a5010-COGS';
+      });
+      //console.log('found: ', found)
+      return found ? found.hrs : 0;
     }, _this.calcC = function () {
       console.log('this.state: ', _this.state);
       var persons = _this.state.persons;
@@ -52202,15 +52221,18 @@ var Pay = function (_React$Component) {
         console.log('gross+AP ', gross + grossAP, 'tcost: ', tcost, 'mff ', mff, 'saf ', saf, 'suf ', suf, 'bp ', burden / tcost);
       });
     }, _this.paySelected = function () {
-      var persons = _this.state.persons;
-
-      var jper = persons.filter(function (p) {
-        return p.check;
-      }).map(function (p) {
-        return p.jcrates;
-      });
-      console.log('jper: ', jper);
-      (0, _fetches.postJobRates)(jper);
+      // const{persons}=this.state
+      // const jper = persons
+      //   .filter((p)=>p.check)
+      //   .map((p)=>{
+      //     return p.jcrates
+      //   })
+      // console.log('jper: ', jper)  
+      // postJobRates(jper)
+      // .then((res)=>{
+      //   console.log('res: ', res)
+      //   this.apply2gl()
+      // })    
       _this.apply2gl();
     }, _this.setAsPaid = function () {
       var nstate = _extends({}, _this.state);
@@ -52227,10 +52249,11 @@ var Pay = function (_React$Component) {
     }, _this.apply2gl = function () {
       var persons = _this.state.persons;
 
-      var journal = [];
+
       persons.filter(function (p) {
         return p.check;
       }).map(function (p) {
+        var journal = [];
         var blentry = { account: '', wdprt: p.wprt, someid: p.emailid, job: '', cat: '', date: p.paydate, somenum: 0, debit: 0, credit: 0 };
         var e = _extends({}, blentry);
         e.account = 'a6010-gross';
@@ -52330,18 +52353,30 @@ var Pay = function (_React$Component) {
             e.credit = p.burden.comp;
             journal.push(e);
           }
-          if (p.burden.k401 > 0) {
+          if (p.burden.k401 > 0 || p.ded.k401ded > 0) {
             e = _extends({}, blentry);
             e.account = 'a2110-401K';
-            e.credit = p.burden.k401;
+            e.credit = p.burden.k401 + p.ded.k401ded;
             journal.push(e);
           }
-          if (p.burden.health > 0) {
+          if (p.burden.health > 0 || p.ded.healthded > 0) {
             e = _extends({}, blentry);
             e.account = 'a2120-health';
-            e.credit = p.burden.health;
+            e.credit = p.burden.health + p.ded.healthded;
             journal.push(e);
           }
+          // if (p.ded.k401ded>0){
+          //   e ={...blentry}
+          //   e.account ='a2110-401K'
+          //   e.debit=p.ded.k401ded
+          //   journal.push(e)
+          // }
+          // if (p.ded.healthded>0){
+          //   e ={...blentry}
+          //   e.account ='a2120-health'
+          //   e.debit=p.ded.healthded
+          //   journal.push(e)
+          // }          
           if (p.burden.holi > 0) {
             e = _extends({}, blentry);
             e.account = 'a2130-holiday';
@@ -52361,46 +52396,121 @@ var Pay = function (_React$Component) {
             journal.push(e);
           }
         }
-        /*THESE ENTRIES UNBALANCE THE LEDGER balanced by postJobRates*/
+        /*THESE ENTRIES UNBALANCE THE LEDGER balanced by postJobRates   reg+ot=gross+grossAP*/
         e = _extends({}, blentry);
-        e.account = 'a6010-gross';
-        e.credit = p.regot.gross;
+        e.account = 'a6011-reg';
+        e.credit = p.regot.reg;
         journal.push(e);
+        if (p.regot.ot > 0) {
+          e = _extends({}, blentry);
+          e.account = 'a6012-ot';
+          e.credit = p.regot.ot;
+          journal.push(e);
+        }
         if (p.burden) {
+          if (p.burden.ss > 0 || p.burden.medi > 0) {
+            e = _extends({}, blentry);
+            e.cat = 'co';
+            e.account = 'a6021-FICA';
+            e.credit = p.burden.ss + p.burden.medi;
+            journal.push(e);
+          }
+          if (p.burden.futa > 0 || p.burden.suta > 0 || p.burden.comp > 0) {
+            e = _extends({}, blentry);
+            e.account = 'a6022-insurance';
+            e.credit = p.burden.futa + p.burden.suta + p.burden.comp;
+            journal.push(e);
+          }
+          if (p.burden.k401 > 0) {
+            e = _extends({}, blentry);
+            e.account = 'a6023-401K';
+            e.credit = p.burden.k401;
+            journal.push(e);
+          }
+          if (p.burden.health > 0) {
+            e = _extends({}, blentry);
+            e.account = 'a6024-health';
+            e.credit = p.burden.health;
+            journal.push(e);
+          }
+          if (p.burden.holi > 0 || p.burden.vaca > 0 || p.burden.pers > 0) {
+            e = _extends({}, blentry);
+            e.account = 'a6025-PTO';
+            e.credit = p.burden.holi + p.burden.vaca + p.burden.pers;
+            journal.push(e);
+          }
+        }
+        /* wages expense  */
+        e = _extends({}, blentry);
+        e.account = 'a6030-wages';
+        e.debit = p.wh.gross;
+        journal.push(e);
+        if (p.wtype == '1099') {
           e = _extends({}, blentry);
-          e.account = 'a6020-burden';
-          e.credit = p.burden.tburden;
+          e.account = 'a6031-1099';
+          e.credit = p.wh.net;
+          journal.push(e);
+        } else {
+          e = _extends({}, blentry);
+          e.account = 'a6032-net';
+          e.credit = p.wh.net;
           journal.push(e);
         }
-        if (p.regot.grossAP && p.regot.grossAP > 0) {
+        if (p.wh.fedtax > 0) {
           e = _extends({}, blentry);
-          e.account = 'a6010-gross';
-          e.credit = p.regot.grossAP;
+          e.account = 'a6033-fed';
+          e.credit = p.wh.fedtax;
           journal.push(e);
         }
-      });
-      // const perpa= persons.map((p)=>{
-      //   const np = {...p}
-      //   if (np.check){
-      //     console.log('in pcheck')
-      //     np.status='paid'
-      //   }
-      //   return np
-      // })
-      // console.log('perpa: ', perpa)
-      // this.setState({persons:perpa},()=>console.log('this.state: ', this.state))  
-      console.log('journal: ', journal);
-      (0, _fetches.postJournal)(journal).then(function (res) {
-        var tribal = res.tribal[0];
-        console.log(tribal);
-        var roundingerror = (0, _getCfg.drnd)(tribal.debit - tribal.credit);
-        console.log('tribal.debit: ', tribal.debit);
-        console.log('roundingerror: ', roundingerror);
-        var trbastr = 'Trial Balance debit: $' + tribal.debit + ', credit: $' + tribal.credit + ', rounding error:$' + roundingerror + '. If more than +/-$1.00 then there is a problem';
-        console.log('trbastr: ', trbastr);
-        window.alert(trbastr);
-        console.log('this.state: ', _this.state);
-        // this.setAsPaid()
+        if (p.wh.sttax > 0) {
+          e = _extends({}, blentry);
+          e.account = 'a6034-state';
+          e.credit = p.wh.sttax;
+          journal.push(e);
+        }
+        if (p.wh.ss > 0) {
+          e = _extends({}, blentry);
+          e.account = 'a6036-SS';
+          e.credit = p.wh.ss;
+          journal.push(e);
+        }
+        if (p.wh.medi > 0) {
+          e = _extends({}, blentry);
+          e.account = 'a6037-medi';
+          e.credit = p.wh.medi;
+          journal.push(e);
+        }
+        if (p.wh.meda > 0) {
+          e = _extends({}, blentry);
+          e.account = 'a6038-meda';
+          e.credit = p.wh.meda;
+          journal.push(e);
+        }
+        if (p.ded.healthded > 0 || p.ded.k401ded > 0) {
+          e = _extends({}, blentry);
+          e.account = 'a6039-dedu';
+          e.credit = p.ded.healthded + p.ded.k401ded;
+          journal.push(e);
+        }
+        console.log('journal: ', journal);
+        (0, _fetches.postJobRates)(p.jcrates).then(function () {
+          (0, _fetches.postJournal)({ journal: journal, emailid: p.emailid, paydate: p.paydate }).then(function (res) {
+            console.log('res: ', res);
+            var tribal = res.tribal[0];
+            tribal.date = tribal.date.split('T')[0];
+            console.log(tribal);
+            var roundingerror = (0, _getCfg.drnd)(tribal.debit - tribal.credit);
+            console.log('tribal.debit: ', tribal.debit);
+            console.log('roundingerror: ', roundingerror);
+            var trbastr = 'Trial Balance for ' + tribal.someid + ' on ' + tribal.date + ' is debit: $' + tribal.debit + ', credit: $' + tribal.credit + ', rounding error:$' + roundingerror + '. If more than +/-$1.00 then there is a problem';
+            console.log('trbastr: ', trbastr);
+            if (Math.abs(roundingerror) > 1) {
+              window.alert(trbastr);
+            }
+            console.log('this.state: ', _this.state);
+            _this.setAsPaid();
+          });
+        });
       });
     }, _this.inWords = function (dec) {
       var lookup = ['', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'];
@@ -52556,6 +52666,12 @@ var Pay = function (_React$Component) {
             reg = _p$regot4.reg,
             gross = _p$regot4.gross,
             grossAP = _p$regot4.grossAP;
+        var _p$accrued = p.accrued,
+            hrsYtd = _p$accrued.hrsYtd,
+            regYtd = _p$accrued.regYtd,
+            otYtd = _p$accrued.otYtd,
+            grossYtd = _p$accrued.grossYtd,
+            grossAPYtd = _p$accrued.grossAPYtd;
 
         var ot = p.regot.ot;
         return _react2.default.createElement(
@@ -52567,6 +52683,40 @@ var Pay = function (_React$Component) {
             _react2.default.createElement(
               'tr',
               { style: style.table.tr },
+              _react2.default.createElement('td', { style: style.table.thtd }),
+              _react2.default.createElement(
+                'th',
+                { style: style.table.thtd },
+                'current'
+              ),
+              _react2.default.createElement(
+                'th',
+                { style: style.table.thtd },
+                'YTD'
+              )
+            ),
+            _react2.default.createElement(
+              'tr',
+              { style: style.table.tr },
+              _react2.default.createElement(
+                'td',
+                { style: style.table.thtd },
+                'hrs.'
+              ),
+              _react2.default.createElement(
+                'th',
+                { style: style.table.thtd },
+                p.hrs.toFixed(2)
+              ),
+              _react2.default.createElement(
+                'td',
+                { style: style.table.thtd },
+                (p.hrs + hrsYtd).toFixed(2)
+              )
+            ),
+            p.wtype != '1099' && _react2.default.createElement(
+              'tr',
+              { style: style.table.tr },
               _react2.default.createElement(
                 'td',
                 { style: style.table.thtd },
@@ -52576,9 +52726,14 @@ var Pay = function (_React$Component) {
                 'td',
                 { style: style.table.thtd },
                 reg.toFixed(2)
+              ),
+              _react2.default.createElement(
+                'td',
+                { style: style.table.thtd },
+                (reg + regYtd).toFixed(2)
               )
             ),
-            _react2.default.createElement(
+            p.wtype != '1099' && _react2.default.createElement(
               'tr',
               { style: style.table.tr },
               _react2.default.createElement(
@@ -52590,9 +52745,14 @@ var Pay = function (_React$Component) {
                 'td',
                 { style: style.table.thtd },
                 ot.toFixed(2)
+              ),
+              _react2.default.createElement(
+                'td',
+                { style: style.table.thtd },
+                (ot + otYtd).toFixed(2)
               )
             ),
-            grossAP > 0 && _react2.default.createElement(
+            (grossAP > 0 || grossAPYtd > 0) && _react2.default.createElement(
               'tr',
               { style: style.table.tr },
               _react2.default.createElement(
@@ -52604,6 +52764,11 @@ var Pay = function (_React$Component) {
                 'td',
                 { style: style.table.thtd },
                 grossAP.toFixed(2)
+              ),
+              _react2.default.createElement(
+                'td',
+                { style: style.table.thtd },
+                (grossAP + grossAPYtd).toFixed(2)
               )
             ),
             _react2.default.createElement(
@@ -52618,13 +52783,21 @@ var Pay = function (_React$Component) {
                 'th',
                 { style: style.table.thtd },
                 gross.toFixed(2)
+              ),
+              _react2.default.createElement(
+                'th',
+                { style: style.table.thtd },
+                (gross + grossYtd).toFixed(2)
               )
             )
           )
         );
       }
     }, _this.renderDed = function (p) {
-      if (p.ded && (p.ded.healthded > 0 || p.ded.k401ded > 0)) {
+      if (p.ded && p.wtype != '1099' && (p.ded.healthded > 0 || p.ded.k401ded > 0)) {
+        var _p$accrued2 = p.accrued,
+            healthYtd = _p$accrued2.healthYtd,
+            k401Ytd = _p$accrued2.k401Ytd;
 
         return _react2.default.createElement(
           'table',
@@ -52653,6 +52826,11 @@ var Pay = function (_React$Component) {
                 'td',
                 { style: style.table.thtd },
                 p.ded.healthded.toFixed(2)
+              ),
+              _react2.default.createElement(
+                'td',
+                { style: style.table.thtd },
+                (p.ded.healthded + healthYtd).toFixed(2)
               )
             ),
             _react2.default.createElement(
@@ -52667,6 +52845,11 @@ var Pay = function (_React$Component) {
                 'td',
                 { style: style.table.thtd },
                 p.ded.k401ded.toFixed(2)
+              ),
+              _react2.default.createElement(
+                'td',
+                { style: style.table.thtd },
+                (p.ded.k401ded + k401Ytd).toFixed(2)
               )
             ),
             _react2.default.createElement(
@@ -52688,6 +52871,12 @@ var Pay = function (_React$Component) {
       }
     }, _this.renderWh = function (p) {
       if (p.wh && p.wtype != '1099') {
+        var _p$accrued3 = p.accrued,
+            ssYtd = _p$accrued3.ssYtd,
+            mediYtd = _p$accrued3.mediYtd,
+            fedYtd = _p$accrued3.fedYtd,
+            stYtd = _p$accrued3.stYtd,
+            netYtd = _p$accrued3.netYtd;
 
         return _react2.default.createElement(
           'table',
@@ -52716,6 +52905,11 @@ var Pay = function (_React$Component) {
                 'td',
                 { style: style.table.thtd },
                 p.wh.ss.toFixed(2)
+              ),
+              _react2.default.createElement(
+                'td',
+                { style: style.table.thtd },
+                (p.wh.ss + ssYtd).toFixed(2)
               )
             ),
             _react2.default.createElement(
@@ -52730,6 +52924,11 @@ var Pay = function (_React$Component) {
                 'td',
                 { style: style.table.thtd },
                 p.wh.medi.toFixed(2)
+              ),
+              _react2.default.createElement(
+                'td',
+                { style: style.table.thtd },
+                (p.wh.medi + mediYtd).toFixed(2)
               )
             ),
             _react2.default.createElement(
@@ -52744,6 +52943,11 @@ var Pay = function (_React$Component) {
                 'td',
                 { style: style.table.thtd },
                 p.wh.fedtax.toFixed(2)
+              ),
+              _react2.default.createElement(
+                'td',
+                { style: style.table.thtd },
+                (+fedYtd).toFixed(2)
               )
             ),
             _react2.default.createElement(
@@ -52758,6 +52962,11 @@ var Pay = function (_React$Component) {
                 'td',
                 { style: style.table.thtd },
                 p.wh.sttax.toFixed(2)
+              ),
+              _react2.default.createElement(
+                'td',
+                { style: style.table.thtd },
+                (p.wh.sttax + stYtd).toFixed(2)
               )
             ),
             _react2.default.createElement(
@@ -52772,6 +52981,97 @@ var Pay = function (_React$Component) {
                 'th',
                 { style: style.table.thtd },
                 p.wh.net.toFixed(2)
+              ),
+              _react2.default.createElement(
+                'th',
+                { style: style.table.thtd },
+                (p.wh.net + netYtd).toFixed(2)
+              )
+            )
+          )
+        );
+      }
+    }, _this.renderBen = function (p) {
+      var _p$accrued4 = p.accrued,
+          holidayYtd = _p$accrued4.holidayYtd,
+          personalYtd = _p$accrued4.personalYtd,
+          vacationYtd = _p$accrued4.vacationYtd;
+      var _p$burden = p.burden,
+          holi = _p$burden.holi,
+          vaca = _p$burden.vaca,
+          pers = _p$burden.pers;
+
+      if (p.wtype != '1099' && (holidayYtd != 0 || personalYtd != 0 || vacationYtd != 0)) {
+        return _react2.default.createElement(
+          'table',
+          { style: style.table.table },
+          _react2.default.createElement(
+            'tbody',
+            null,
+            _react2.default.createElement(
+              'tr',
+              null,
+              _react2.default.createElement(
+                'th',
+                { style: style.table.col2, colSpan: '2' },
+                'Benefit Hrs Accrued'
+              )
+            ),
+            _react2.default.createElement(
+              'tr',
+              { style: style.table.tr },
+              _react2.default.createElement(
+                'td',
+                { style: style.table.thtd },
+                'holiday'
+              ),
+              _react2.default.createElement(
+                'td',
+                { style: style.table.thtd },
+                (holi / p.rate).toFixed(2)
+              ),
+              _react2.default.createElement(
+                'td',
+                { style: style.table.thtd },
+                ((holi + holidayYtd) / p.rate).toFixed(2)
+              )
+            ),
+            _react2.default.createElement(
+              'tr',
+              { style: style.table.tr },
+              _react2.default.createElement(
+                'td',
+                { style: style.table.thtd },
+                'vacation'
+              ),
+              _react2.default.createElement(
+                'td',
+                { style: style.table.thtd },
+                (vaca / p.rate).toFixed(2)
+              ),
+              _react2.default.createElement(
+                'td',
+                { style: style.table.thtd },
+                ((vaca + vacationYtd) / p.rate).toFixed(2)
+              )
+            ),
+            _react2.default.createElement(
+              'tr',
+              { style: style.table.tr },
+              _react2.default.createElement(
+                'td',
+                { style: style.table.thtd },
+                'personal'
+              ),
+              _react2.default.createElement(
+                'td',
+                { style: style.table.thtd },
+                (pers / p.rate).toFixed(2)
+              ),
+              _react2.default.createElement(
+                'td',
+                { style: style.table.thtd },
+                ((pers + personalYtd) / p.rate).toFixed(2)
               )
             )
           )
@@ -52786,6 +53086,7 @@ var Pay = function (_React$Component) {
           var regot = _this.renderRegOt(aperson);
           var wh = _this.renderWh(aperson);
           var dedu = _this.renderDed(aperson);
+          var ben = _this.renderBen(aperson);
           var lid = 'li' + i;
           return _react2.default.createElement(
             'li',
@@ -52799,6 +53100,8 @@ var Pay = function (_React$Component) {
                 null,
                 _react2.default.createElement('br', null),
                 aperson.wprt,
+                _react2.default.createElement('br', null),
+                aperson.paydate,
                 _react2.default.createElement('br', null),
                 aperson.emailid,
                 _react2.default.createElement('br', null),
@@ -52829,15 +53132,14 @@ var Pay = function (_React$Component) {
               _react2.default.createElement(
                 'span',
                 null,
-                '$',
+                'rate: $',
                 aperson.rate,
-                ' x ',
-                aperson.hrs,
-                'hrs',
+                '/hr',
                 _react2.default.createElement('br', null),
                 regot,
                 dedu,
-                wh
+                wh,
+                ben
               )
             )
           );
@@ -52885,7 +53187,9 @@ var Pay = function (_React$Component) {
   }, {
     key: 'render',
     value: function render() {
-      if (!this.state.waitng) {
+      var waiting = this.state.waiting;
+
+      if (!waiting) {
         var persons = this.state.persons;
 
         if (persons) {
@@ -52963,7 +53267,7 @@ var Pay = function (_React$Component) {
           _react2.default.createElement(
             'h1',
             null,
-            'WAITING'
+            'THINKING'
           )
         );
       }
@@ -53287,7 +53591,7 @@ var postJobRates = function postJobRates(jcrates) {
   }
 };
 
-var postJournal = function postJournal(journal) {
+var postJournal = function postJournal(jplus) {
   var lsh = _getCfg.ls.getItem();
   if ((0, _wfuncs.geta)('lsh.token', lsh)) {
     var url = _getCfg.cfg.url.api + '/payroll/gl/';
@@ -53297,7 +53601,7 @@ var postJournal = function postJournal(journal) {
         'Content-Type': 'application/json'
       },
       method: 'POST',
-      body: JSON.stringify({ journal: journal })
+      body: JSON.stringify(jplus)
     };
     return fetch(url, options).then(function (response) {
       return response.json();
@@ -84119,4 +84423,4 @@ exports.initState = initState;
 
 /***/ })
 /******/ ]);
-//# sourceMappingURL=main.6f6fde765f637b3b47e6.js.map
+//# sourceMappingURL=main.c37e7cc57df5a498404c.js.map

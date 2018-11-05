@@ -89,13 +89,10 @@ class Pay extends React.Component{
   calcPaydate = (wprt)=>{
     const{firstday}=this.state
     let wdprt = wprt+'-'+firstday
-    console.log('wdprt: ', wdprt)
     if (firstday!=1 && wdprt.slice(-1)>=firstday){
       wdprt= moment(wdprt).subtract(7, "days").format("YYYY-[W]WW-E")
-      console.log('wdprt: ', wdprt)
     }
     let paydate = moment(wdprt).add(7, "days").format("YYYY-MM-DD")
-    console.log('paydate: ', paydate)
     return paydate
   }
  
@@ -109,46 +106,51 @@ class Pay extends React.Component{
     const np = persons.map((p)=>{
       p.paydate=this.calcPaydate(p.wprt)
       let hrs = p.hrs
-      
       const hrsarr = JSON.parse(p.hrsarr)
-      let mfhrs = hrsarr.slice(0,5).reduce((t,h)=>t+h,0)
-      let sah = hrsarr[5]
-      let suh = hrsarr[6]
-      let saot=0, suot=0 ,mfot=0, reg=0, aot=0, gross=0,grossAP=0
-      if(sah>0){
-        if(cosr.sarate>1){
-          saot = (sarate-1)*sah*p.rate
-        }else{
-          mfhrs = mfhrs+sah
+      let saot=0, suot=0 ,mfot=0, reg=0, aot=0, gross=0,grossAP=0, regot:{}
+      if(p.wtype!='1099'){
+        let mfhrs = hrsarr.slice(0,5).reduce((t,h)=>t+h,0)
+        let sah = hrsarr[5]
+        let suh = hrsarr[6]
+        if(sah>0){
+          if(cosr.sarate>1){
+            saot = (sarate-1)*sah*p.rate
+          }else{
+            mfhrs = mfhrs+sah
+          }
         }
-      }
-      if(suh>0){
-        if(surate>1){
-          suot = (surate-1)*suh*p.rate
-        }else{
-          mfhrs = mfhrs+suh
+        if(suh>0){
+          if(surate>1){
+            suot = (surate-1)*suh*p.rate
+          }else{
+            mfhrs = mfhrs+suh
+          }
         }
-      }
-      if(otrate>1 && mfhrs>40 ){
-        mfot = (otrate-1)*(mfhrs-40)*p.rate
-      }
-      console.log('mfhrs: ', mfhrs)
-      reg = hrs*p.rate
-      aot = saot+suot+mfot
-      gross=reg+aot
-      if (p.weeklybase && p.weeklybase>0){
-        if (gross > p.weeklybase && p.wtype=='base'){
-          grossAP = gross - p.weeklybase
-          gross = p.weeklybase
+        if(otrate>1 && mfhrs>40 ){
+          mfot = (otrate-1)*(mfhrs-40)*p.rate
         }
+        reg = hrs*p.rate
+        aot = saot+suot+mfot
+        gross=reg+aot
+        if (p.weeklybase && p.weeklybase>0){
+          if (gross > p.weeklybase && p.wtype=='base'){
+            grossAP = gross - p.weeklybase
+            gross = p.weeklybase
+          }
+        }
+        let mff = mfhrs<=40 ? 1 : ((p.rate*mfhrs+(mfhrs-40)*p.rate*(otrate-1))/mfhrs)/p.rate
+        let saf = saot>0 ? sarate : mff
+        let suf = suot>0 ? surate :mff
+        let mfperhr = drnd(mfhrs<=40 ? p.rate : (p.rate*mfhrs+(mfhrs-40)*p.rate*(otrate-1))/mfhrs)
+        let saperhr = drnd(saf*p.rate)
+        let superhr = drnd(suf*p.rate)
+        regot = {reg, mfot, gross, grossAP: grossAP, ot:aot, saot:saot, suot:suot, mff:mff, saf:saf, suf:suf, mfrate:mfperhr, sarate:saperhr, surate:superhr}
+      }else{
+        reg = drnd(hrs*p.rate)
+        gross = reg
+        let hrrate = drnd(reg/hrs)
+        regot = {reg:reg, mfot:mfot, gross:gross, grossAP, ot:0, saot:0, suot:0, mff:1, saf:1, suf:1, mfrate:hrrate, sarate:hrrate, surate:hrrate}
       }
-      let mff = mfhrs<=40 ? 1 : ((p.rate*mfhrs+(mfhrs-40)*p.rate*(otrate-1))/mfhrs)/p.rate
-      let saf = saot>0 ? sarate : mff
-      let suf = suot>0 ? surate :mff
-      let mfperhr = drnd(mfhrs<=40 ? p.rate : (p.rate*mfhrs+(mfhrs-40)*p.rate*(otrate-1))/mfhrs)
-      let saperhr = drnd(saf*p.rate)
-      let superhr = drnd(suf*p.rate)
-      const regot = {reg:reg, mfot:mfot, gross:gross, grossAP: grossAP, ot:aot, saot:saot, suot:suot, mff:mff, saf:saf, suf:suf, mfrate:mfperhr, sarate:saperhr, surate:superhr}
       return {...p, regot}
     })
     this.setState({persons:np},()=>this.calcDeductions())
@@ -161,15 +163,18 @@ class Pay extends React.Component{
       .map((p)=>{
         let hded=0
         let kded=0
-        if(p.healthemp>0){
-          hded = p.healthemp*12.0/50
+        if(p.wtype!='1099'){
+          if(p.healthemp>0){
+            hded = p.healthemp*12.0/50
+          }
+          if(p.k401emp>0){
+            kded = p.k401emp*12.0/50
+          }
+          const taxablegross = p.regot.gross - hded - kded
+          p.ded = {gross:drnd(p.regot.gross), healthded:drnd(hded), k401ded:drnd(kded), taxablegross:drnd(taxablegross) }
+        }else{
+          p.ded = {gross:drnd(p.regot.gross), healthded:drnd(hded), k401ded:drnd(kded), taxablegross:drnd(p.regot.gross) }
         }
-        if(p.k401emp>0){
-          kded = p.k401emp*12.0/50
-        }
-        const taxablegross = p.regot.gross - hded - kded
-        p.ded = {gross:drnd(p.regot.gross), healthded:drnd(hded), k401ded:drnd(kded), taxablegross:drnd(taxablegross) }
-        // console.log('p.ded: ', p.ded)
         return p
       })
       this.setState({persons:dedpers},()=>this.calcWh())
@@ -218,18 +223,22 @@ class Pay extends React.Component{
     const{fedr,fedwh, strates} =rates
     const whp = persons.map((p)=>{
       if(p.wtype!='1099'){
-        const ssYtd = this.lookupAccrued(p.emailid, 'a2010-SS')/2
-        const mediYtd = this.lookupAccrued(p.emailid, 'a2020-medi')/2
-        const netYtd = this.lookupAccrued(p.emailid, 'a1010-cash')
-        const k401Ytd = this.lookupAccrued(p.emailid, 'a2110-401K')
-        const healthYtd = this.lookupAccrued(p.emailid, 'a2120-health')
+        const hrsYtd = this.lookupHrs(p.emailid)
+        const ssYtd = this.lookupAccrued(p.emailid, 'a6036-SS')
+        const mediYtd = this.lookupAccrued(p.emailid, 'a6037-medi')
+        const stYtd = this.lookupAccrued(p.emailid, 'a2050-stWh')
+        const fedYtd = this.lookupAccrued(p.emailid, 'a2050-fedWh')
+        const netYtd = this.lookupAccrued(p.emailid, 'a6032-net')
+        const regYtd = this.lookupAccrued(p.emailid, 'a6011-reg')
+        const otYtd = this.lookupAccrued(p.emailid, 'a6012-ot')
+        const grossYtd = regYtd + otYtd
+        const k401Ytd = this.lookupAccrued(p.emailid, 'a6023-401K')
+        const healthYtd = this.lookupAccrued(p.emailid, 'a6024-health')
         const holidayYtd = this.lookupAccrued(p.emailid, 'a2130-holiday')
         const vacationYtd = this.lookupAccrued(p.emailid, 'a2140-vacation')
         const personalYtd = this.lookupAccrued(p.emailid, 'a2150-personal')
-        const grossTotYtd = this.lookupAccrued(p.emailid, 'a6010-gross')
         const grossAPYtd = this.lookupAccrued(p.emailid, 'a2200-grossAP')
-        const grossYtd = grossTotYtd - grossAPYtd
-        p.accrued = {ssYtd, mediYtd, netYtd, k401Ytd, healthYtd, holidayYtd, vacationYtd, personalYtd, grossTotYtd, grossAPYtd, grossYtd}
+        p.accrued = {hrsYtd, stYtd, fedYtd, ssYtd, mediYtd, netYtd, regYtd, otYtd, grossYtd, k401Ytd, healthYtd, holidayYtd, vacationYtd, personalYtd, grossAPYtd}
         const{taxablegross, gross}=p.ded
         const subj2wh = p.w4exempt ? 0 : taxablegross-(fedr.allow*p.w4allow)
         let ss = taxablegross*fedr.ssw
@@ -240,7 +249,7 @@ class Pay extends React.Component{
         const singmar = p.marital=='married' ? 'married' : 'single'
         const fedtax = lookupFedTax(fedwh, singmar, 'weekly', subj2wh, p.w4add)
         const sttax =  calcStateTax(p, strates, ssmed)
-        const net = gross-fedtax-ss -medi - sttax
+        const net = taxablegross-fedtax-ss -medi - sttax
         p.wh={gross:gross, taxablegross:taxablegross, ss:drnd(ss), medi:drnd(medi), meda:drnd(meda), fedtax:drnd(fedtax), sttax:drnd(sttax), net:drnd(net)}
       }else{
         p.wh={gross:p.regot.gross, net:p.regot.gross}
@@ -257,13 +266,14 @@ class Pay extends React.Component{
       if(p.wtype!='1099'){
         const{grossYtd}=p.accrued
         const{ gross, grossAP}=p.regot
-        const ss = drnd(gross*fedr.sse)
-        const medi = drnd(gross*fedr.medie)
+        const{taxablegross}=p.wh
+        const ss = drnd(taxablegross*fedr.sse)
+        const medi = drnd(taxablegross*fedr.medie)
         let health = p.healthco>0 ? drnd(p.healthco*12.0/50) : 0
         let k401 = p.k401co>0 ? drnd(p.k401co*12.0/50) : 0
-        let vaca = p.vacation>0 ? drnd(p.vacation/250*gross) : 0
-        let holi = p.holiday>0 ? drnd(p.holiday/250*gross) : 0
-        let pers = p.personal>0 ? drnd(p.personal/250*gross) : 0
+        let vaca = p.vacation>0 ? drnd(p.vacation/250*p.hrs*p.rate) : 0
+        let holi = p.holiday>0 ? drnd(p.holiday/250*p.hrs*p.rate) : 0
+        let pers = p.personal>0 ? drnd(p.personal/250*p.hrs*p.rate) : 0
         let suta = drnd(cosr.stuirate*gross)
         let comp = drnd(cosr.wcrate*gross)
         let futa = grossYtd > fedr.futa4first ? 0 : drnd(fedr.futa*gross)
@@ -306,7 +316,16 @@ class Pay extends React.Component{
       return a.someid == emailid && a.account == account
     })
     //console.log('found: ', found)
-    return found ? found.credit : 0
+    return found ? found.credit-found.debit : 0
+  }
+
+  lookupHrs=(emailid)=>{
+    const{accrued}=this.state
+    const found = accrued.find((a)=>{
+      return a.someid == emailid && a.account == 'a5010-COGS'
+    })
+    //console.log('found: ', found)
+    return found ? found.hrs : 0
   }
 
   calcC=()=>{
@@ -327,14 +346,18 @@ class Pay extends React.Component{
 
 
   paySelected = ()=>{
-    const{persons}=this.state
-    const jper = persons
-      .filter((p)=>p.check)
-      .map((p)=>{
-        return p.jcrates
-      })
-    console.log('jper: ', jper)  
-    postJobRates(jper)    
+    // const{persons}=this.state
+    // const jper = persons
+    //   .filter((p)=>p.check)
+    //   .map((p)=>{
+    //     return p.jcrates
+    //   })
+    // console.log('jper: ', jper)  
+    // postJobRates(jper)
+    // .then((res)=>{
+    //   console.log('res: ', res)
+    //   this.apply2gl()
+    // })    
     this.apply2gl()
   }
 
@@ -352,10 +375,11 @@ class Pay extends React.Component{
 
   apply2gl=()=>{
     const{persons}=this.state
-    let journal = [] 
+    
     persons
       .filter((p)=>p.check)
       .map((p)=>{
+        let journal = [] 
         let blentry={account:'', wdprt:p.wprt, someid:p.emailid, job:'', cat:'', date:p.paydate, somenum: 0, debit:0, credit:0}
         let e ={...blentry}
         e.account ='a6010-gross'
@@ -455,18 +479,30 @@ class Pay extends React.Component{
             e.credit=p.burden.comp
             journal.push(e)
           }
-          if (p.burden.k401>0){
+          if (p.burden.k401>0 || p.ded.k401ded>0){
             e ={...blentry}
             e.account ='a2110-401K'
-            e.credit=p.burden.k401
+            e.credit=p.burden.k401 + p.ded.k401ded
             journal.push(e)
           }
-          if (p.burden.health>0){
+          if (p.burden.health>0 || p.ded.healthded>0){
             e ={...blentry}
             e.account ='a2120-health'
-            e.credit=p.burden.health
+            e.credit=p.burden.health + p.ded.healthded
             journal.push(e)
           }
+          // if (p.ded.k401ded>0){
+          //   e ={...blentry}
+          //   e.account ='a2110-401K'
+          //   e.debit=p.ded.k401ded
+          //   journal.push(e)
+          // }
+          // if (p.ded.healthded>0){
+          //   e ={...blentry}
+          //   e.account ='a2120-health'
+          //   e.debit=p.ded.healthded
+          //   journal.push(e)
+          // }          
           if (p.burden.holi>0){
             e ={...blentry}
             e.account ='a2130-holiday'
@@ -491,15 +527,13 @@ class Pay extends React.Component{
         e.account ='a6011-reg'
         e.credit=p.regot.reg
         journal.push(e)
-        e ={...blentry}
-        e.account ='a6012-ot'
-        e.credit=p.regot.ot
-        journal.push(e)
+        if(p.regot.ot>0){
+          e ={...blentry}
+          e.account ='a6012-ot'
+          e.credit=p.regot.ot
+          journal.push(e)
+        }
         if (p.burden){
-          // e ={...blentry}
-          // e.account ='a6020-burden'
-          // e.credit=p.burden.tburden
-          // journal.push(e)
           if (p.burden.ss>0 || p.burden.medi>0 ){
             e ={...blentry}
             e.cat='co'
@@ -533,21 +567,79 @@ class Pay extends React.Component{
           }
         }
         /* wages expense  */
+        e ={...blentry}
+        e.account ='a6030-wages'
+        e.debit=p.wh.gross
+        journal.push(e)
+        if(p.wtype=='1099'){
+          e ={...blentry}
+          e.account ='a6031-1099'
+          e.credit=p.wh.net
+          journal.push(e)
+        }else{
+          e ={...blentry}
+          e.account ='a6032-net'
+          e.credit=p.wh.net
+          journal.push(e)
+        }
+        if (p.wh.fedtax>0){
+          e ={...blentry}
+          e.account ='a6033-fed'
+          e.credit=p.wh.fedtax
+          journal.push(e)
+        }        
+        if (p.wh.sttax>0){
+          e ={...blentry}
+          e.account ='a6034-state'
+          e.credit=p.wh.sttax
+          journal.push(e)
+        }        
+        if (p.wh.ss>0){
+          e ={...blentry}
+          e.account ='a6036-SS'
+          e.credit=p.wh.ss
+          journal.push(e)
+        }        
+        if (p.wh.medi>0){
+          e ={...blentry}
+          e.account ='a6037-medi'
+          e.credit=p.wh.medi
+          journal.push(e)
+        }        
+        if (p.wh.meda>0){
+          e ={...blentry}
+          e.account ='a6038-meda'
+          e.credit=p.wh.meda
+          journal.push(e)
+        } 
+        if (p.ded.healthded>0 || p.ded.k401ded>0){
+          e ={...blentry}
+          e.account ='a6039-dedu'
+          e.credit=p.ded.healthded + p.ded.k401ded
+          journal.push(e)
+        }     
+        console.log('journal: ', journal) 
+        postJobRates(p.jcrates)
+        .then(()=>{
+          postJournal({journal, emailid:p.emailid, paydate:p.paydate})
+          .then((res)=>{
+            console.log('res: ', res)
+            const tribal = res.tribal[0]
+            tribal.date =tribal.date.split('T')[0]
+            console.log(tribal)
+            const roundingerror = drnd(tribal.debit-tribal.credit)
+            console.log('tribal.debit: ', tribal.debit, )
+            console.log('roundingerror: ', roundingerror)
+            const trbastr = `Trial Balance for ${tribal.someid} on ${tribal.date} is debit: \$${tribal.debit}, credit: \$${tribal.credit}, rounding error:\$${roundingerror}. If more than +/-$1.00 then there is a problem`
+            console.log('trbastr: ', trbastr)
+            if(Math.abs(roundingerror)>1){
+              window.alert(trbastr)
+            }
+            console.log('this.state: ', this.state)
+            this.setAsPaid()
+          })               
+        })
       })
-    console.log('journal: ', journal)  
-    postJournal(journal)
-      .then((res)=>{
-        const tribal = res.tribal[0]
-        console.log(tribal)
-        const roundingerror = drnd(tribal.debit-tribal.credit)
-        console.log('tribal.debit: ', tribal.debit, )
-        console.log('roundingerror: ', roundingerror)
-        const trbastr = `Trial Balance debit: \$${tribal.debit}, credit: \$${tribal.credit}, rounding error:\$${roundingerror}. If more than +/-$1.00 then there is a problem`
-        console.log('trbastr: ', trbastr)
-        window.alert(trbastr)
-        console.log('this.state: ', this.state)
-        // this.setAsPaid()
-      })   
   }
 
   inWords=(dec)=>{
@@ -713,44 +805,65 @@ class Pay extends React.Component{
   renderRegOt = (p)=>{
     if(p.regot){
       const{reg, gross, grossAP}=p.regot
+      const{hrsYtd, regYtd, otYtd, grossYtd, grossAPYtd}=p.accrued
       const ot = p.regot.ot
       return(
         <table style={style.table.table}><tbody>
         <tr style={style.table.tr}>
+          <td style={style.table.thtd}></td>
+          <th style={style.table.thtd}>current</th>
+          <th style={style.table.thtd}>YTD</th>
+        </tr>
+        <tr style={style.table.tr}>
+          <td style={style.table.thtd}>hrs.</td>
+          <th style={style.table.thtd}>{p.hrs.toFixed(2)}</th>
+          <td style={style.table.thtd}>{(p.hrs+hrsYtd).toFixed(2)}</td>
+        </tr>
+        {p.wtype!='1099' &&
+        <tr style={style.table.tr}>
           <td style={style.table.thtd}>reg.</td>
           <td style={style.table.thtd}>{reg.toFixed(2)}</td>
+          <td style={style.table.thtd}>{(reg+regYtd).toFixed(2)}</td>
         </tr>
+        }
+        {p.wtype!='1099' &&
         <tr style={style.table.tr}>
           <td style={style.table.thtd}>o.t.</td>
           <td style={style.table.thtd}>{ot.toFixed(2)}</td>
+          <td style={style.table.thtd}>{(ot+otYtd).toFixed(2)}</td>
         </tr>
-        {grossAP>0 && 
+        }  
+        {(grossAP>0 || grossAPYtd>0) && 
         <tr style={style.table.tr}>
           <td style={style.table.thtd}>APgross</td>
           <td style={style.table.thtd}>{grossAP.toFixed(2)}</td>
+          <td style={style.table.thtd}>{(grossAP+grossAPYtd).toFixed(2)}</td>
         </tr>
         }
         <tr style={style.table.tr}>
           <th style={style.table.thtd}>gross</th>
           <th style={style.table.thtd}>{gross.toFixed(2)}</th>
+          <th style={style.table.thtd}>{(gross+grossYtd).toFixed(2)}</th>
         </tr>
         </tbody></table>  
       )
     }
   }
   renderDed = (p)=>{
-    if(p.ded && (p.ded.healthded>0 || p.ded.k401ded>0)){
-
+    if(p.ded && p.wtype!='1099' &&(p.ded.healthded>0 || p.ded.k401ded>0)){
+      const{healthYtd, k401Ytd}=p.accrued
       return (
         <table style={style.table.table}><tbody>
         <tr><th style={style.table.col2} colSpan="2">Deductions</th></tr>  
         <tr style={style.table.tr}>
           <td style={style.table.thtd}>health</td>
           <td style={style.table.thtd}>{p.ded.healthded.toFixed(2)}</td>
+          <td style={style.table.thtd}>{(p.ded.healthded+healthYtd).toFixed(2)}</td>
         </tr>
         <tr style={style.table.tr}>
           <td style={style.table.thtd}>401K</td>
           <td style={style.table.thtd}>{p.ded.k401ded.toFixed(2)}</td>
+          <td style={style.table.thtd}>{(p.ded.k401ded+k401Ytd).toFixed(2)}</td>
         </tr>
         <tr style={style.table.tr}>
           <th style={style.table.thtd}>taxable</th>
@@ -763,35 +876,66 @@ class Pay extends React.Component{
 
   renderWh = (p)=>{
     if(p.wh && p.wtype!='1099'){
-
+      const{ssYtd, mediYtd, fedYtd, stYtd, netYtd}=p.accrued
       return (
         <table style={style.table.table}><tbody>
         <tr><th style={style.table.col2} colSpan="2">Taxes</th></tr>  
         <tr style={style.table.tr}>
           <td style={style.table.thtd}>ssi</td>
           <td style={style.table.thtd}>{p.wh.ss.toFixed(2)}</td>
+          <td style={style.table.thtd}>{(p.wh.ss+ ssYtd).toFixed(2)}</td>
         </tr>
         <tr style={style.table.tr}>
           <td style={style.table.thtd}>medicare</td>
           <td style={style.table.thtd}>{p.wh.medi.toFixed(2)}</td>
+          <td style={style.table.thtd}>{(p.wh.medi+mediYtd).toFixed(2)}</td>
         </tr>
         <tr style={style.table.tr}>
           <td style={style.table.thtd}>fed wh</td>
           <td style={style.table.thtd}>{p.wh.fedtax.toFixed(2)}</td>
+          <td style={style.table.thtd}>{(+fedYtd).toFixed(2)}</td>
         </tr>
         <tr style={style.table.tr}>
           <td style={style.table.thtd}>state wh</td>
           <td style={style.table.thtd}>{p.wh.sttax.toFixed(2)}</td>
+          <td style={style.table.thtd}>{(p.wh.sttax+stYtd).toFixed(2)}</td>
         </tr>
         <tr style={style.table.tr}>
           <th style={style.table.thtd}>net pay</th>
           <th style={style.table.thtd}>{p.wh.net.toFixed(2)}</th>
+          <th style={style.table.thtd}>{(p.wh.net+netYtd).toFixed(2)}</th>
         </tr>
         </tbody></table>  
       )
     }
   }
 
+  renderBen = (p)=>{
+    const{holidayYtd, personalYtd, vacationYtd}=p.accrued
+    const{holi, vaca, pers} = p.burden
+    if(p.wtype!='1099' && (holidayYtd!=0 || personalYtd!=0 || vacationYtd!=0 )){
+      return (
+        <table style={style.table.table}><tbody>
+        <tr><th style={style.table.col2} colSpan="2">Benefit Hrs Accrued</th></tr>  
+        <tr style={style.table.tr}>
+          <td style={style.table.thtd}>holiday</td>
+          <td style={style.table.thtd}>{(holi/p.rate).toFixed(2)}</td>
+          <td style={style.table.thtd}>{((holi+holidayYtd)/p.rate).toFixed(2)}</td>
+        </tr>
+        <tr style={style.table.tr}>
+          <td style={style.table.thtd}>vacation</td>
+          <td style={style.table.thtd}>{(vaca/p.rate).toFixed(2)}</td>
+          <td style={style.table.thtd}>{((vaca+vacationYtd)/p.rate).toFixed(2)}</td>
+        </tr>
+        <tr style={style.table.tr}>
+          <td style={style.table.thtd}>personal</td>
+          <td style={style.table.thtd}>{(pers/p.rate).toFixed(2)}</td>
+          <td style={style.table.thtd}>{((pers+personalYtd)/p.rate).toFixed(2)}</td>
+        </tr>
+        </tbody></table>  
+      )
+    }
+  }
 
 
   renderPay=()=>{
@@ -803,6 +947,7 @@ class Pay extends React.Component{
           const regot = this.renderRegOt(aperson)
           const wh = this.renderWh(aperson)
           const dedu = this.renderDed(aperson)
+          const ben = this.renderBen(aperson)
           const lid = 'li'+i
           return (
           <li id={lid} key={i} style={style.myli.li}>
@@ -810,6 +955,7 @@ class Pay extends React.Component{
             <input style={style.ckbox} type="checkbox" checked={aperson.check} onChange={this.handleCheck(i)}/> 
               <span><br/>
               {aperson.wprt}<br/>
+              {aperson.paydate}<br/>
               {aperson.emailid}<br/>
                <span>{aperson.firstmid} {aperson.lastname}</span> <br/>
                 {aperson.street}<br/>
@@ -819,10 +965,11 @@ class Pay extends React.Component{
             </div>
             <div style={style.myli.cat}>
               <span>  
-              ${aperson.rate} x {aperson.hrs}hrs<br/>
+              rate: ${aperson.rate}/hr<br/>
               {regot}
               {dedu}
               {wh}
+              {ben}
               </span>
             </div>
           </li >)
@@ -836,7 +983,8 @@ class Pay extends React.Component{
   }
 
   render(){
-    if(!this.state.waitng){
+    const{waiting}=this.state
+    if(!waiting){
       const{persons }=this.state
       if (persons){
         //this.getQuery()
@@ -878,7 +1026,7 @@ class Pay extends React.Component{
     }else{
       return(
         <div style={style.he}>
-          <h1>WAITING</h1>
+          <h1>THINKING</h1>
         </div>
       )
     }
