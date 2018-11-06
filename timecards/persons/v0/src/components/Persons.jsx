@@ -282,7 +282,7 @@ class Persons extends React.Component{
         const haylocalwh = aperson.haylocalwh ? (<span>&#10004;</span>) : 'no'
         const haywh = aperson.wtype=='1099' ? 0 : 1
         const nohayded = !aperson.healthemp && !aperson.healthco && !aperson.k401emp && !aperson.k401co
-        const nohayben = !aperson.vacation && !aperson.holiday && !aperson.personal  
+        const nohayben = aperson.vacation + aperson.holiday + aperson.personal  == 0
         const nohayname = !aperson.firstmid && !aperson.lastname 
         const tybase = aperson.wtype=='base'     
         return (
@@ -394,15 +394,17 @@ class Persons extends React.Component{
               <table style={style.table.table}>
               <tbody>
               <tr><th style={style.table.th} colSpan="2">Benefits</th></tr> 
-              <tr style={style.table.tr}>
-                <td style={style.table.thtd}>holiday</td>
-                <td style={style.table.thtd}>{aperson.vacation}</td>
-              </tr>
+              {aperson.vacation!='' && aperson.vacation!=0 &&
               <tr style={style.table.tr}>
                 <td style={style.table.thtd}>vacation</td>
+                <td style={style.table.thtd}>{aperson.vacation}</td>
+              </tr>}
+              {aperson.holiday!='' && aperson.holiday!=0 &&
+              <tr style={style.table.tr}>
+                <td style={style.table.thtd}>holiday</td>
                 <td style={style.table.thtd}>{aperson.holiday}</td>
-              </tr>
-              {aperson.personal!=0 &&
+              </tr>}
+              {aperson.personal!='' && aperson.personal!=0 &&
               <tr style={style.table.tr}>
                 <td style={style.table.tht}>personal</td>
                 <td style={style.table.thtd}>{aperson.personal}</td>

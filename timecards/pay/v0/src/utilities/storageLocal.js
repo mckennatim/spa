@@ -25,7 +25,11 @@ const storageLocal = (itemName)=>{
       }
     },
     getToken: ()=>getItem().token,
-    getKey: (key)=>getItem()[key]
+    getKey: (key)=>{
+      if(getItem()){
+        return getItem()[key]
+      }
+    }
   }
 }
 

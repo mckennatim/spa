@@ -107,7 +107,7 @@ class AddPerson extends React.Component {
   numChanged = field => e =>{
     let curperson= this.props.eperson.curperson
     let val = e.target.value
-    val= val.length==0 ? 0 : val
+    //val= val.length==0 ? 0 : val
     curperson[field] = val
     this.props.xmitChange({curperson:curperson});
   } 
@@ -540,7 +540,7 @@ class AddPerson extends React.Component {
               id="standard-name"
               label="Holiday"
               className={classes.textField}
-              type="number"
+              type="tel"
               value={curperson.holiday}
               onChange={this.numChanged('holiday')}
               margin="dense"
@@ -549,7 +549,7 @@ class AddPerson extends React.Component {
               id="standard-name"
               label="Personal"
               className={classes.textField}
-              type="number"
+              type="tel"
               value={curperson.personal}
               onChange={this.numChanged('personal')}
               margin="dense"

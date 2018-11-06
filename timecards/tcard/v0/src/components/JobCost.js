@@ -209,7 +209,8 @@ const style={
     overfow: 'hidden',
     float: 'left',
     border: '1px solid green',
-    background: 'white'
+    background: 'white',
+    marginBottom: '10px'
   },
   jc:{
     float: 'right',

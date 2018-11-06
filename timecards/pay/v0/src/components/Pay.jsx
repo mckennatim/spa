@@ -59,10 +59,14 @@ class Pay extends React.Component{
     fetchAccrued()
     .then((res)=>{
       console.log('res: ', res)
-      this.setState({accrued:res}, ()=>{
-        this.getPay()
-        console.log(this.lookupAccrued('mckenn.tim@gmail.com', 'a2010-S'))
-      })
+      if(!res.qmessage){
+        this.setState({accrued:res}, ()=>{
+          this.getPay()
+          console.log(this.lookupAccrued('mckenn.tim@gmail.com', 'a2010-S'))
+        })
+      }else{
+        this.setState({waiting:false, qmessage:res.qmessage})
+      }
     })
   }
 
@@ -222,23 +226,25 @@ class Pay extends React.Component{
     const {persons, rates} = this.state
     const{fedr,fedwh, strates} =rates
     const whp = persons.map((p)=>{
+      const hrsYtd = this.lookupHrs(p.emailid)
+      const regYtd = this.lookupAccrued(p.emailid, 'a6011-reg')
       if(p.wtype!='1099'){
-        const hrsYtd = this.lookupHrs(p.emailid)
         const ssYtd = this.lookupAccrued(p.emailid, 'a6036-SS')
         const mediYtd = this.lookupAccrued(p.emailid, 'a6037-medi')
         const stYtd = this.lookupAccrued(p.emailid, 'a2050-stWh')
         const fedYtd = this.lookupAccrued(p.emailid, 'a2050-fedWh')
         const netYtd = this.lookupAccrued(p.emailid, 'a6032-net')
-        const regYtd = this.lookupAccrued(p.emailid, 'a6011-reg')
         const otYtd = this.lookupAccrued(p.emailid, 'a6012-ot')
         const grossYtd = regYtd + otYtd
         const k401Ytd = this.lookupAccrued(p.emailid, 'a6023-401K')
         const healthYtd = this.lookupAccrued(p.emailid, 'a6024-health')
+        const coHealthYtd = this.lookupAccrued(p.emailid, 'a6024-health')
+        const co401kYtd = this.lookupAccrued(p.emailid, 'a6023-401K')
         const holidayYtd = this.lookupAccrued(p.emailid, 'a2130-holiday')
         const vacationYtd = this.lookupAccrued(p.emailid, 'a2140-vacation')
         const personalYtd = this.lookupAccrued(p.emailid, 'a2150-personal')
         const grossAPYtd = this.lookupAccrued(p.emailid, 'a2200-grossAP')
-        p.accrued = {hrsYtd, stYtd, fedYtd, ssYtd, mediYtd, netYtd, regYtd, otYtd, grossYtd, k401Ytd, healthYtd, holidayYtd, vacationYtd, personalYtd, grossAPYtd}
+        p.accrued = {hrsYtd, stYtd, fedYtd, ssYtd, mediYtd, netYtd, regYtd, otYtd, grossYtd, k401Ytd, healthYtd, holidayYtd, vacationYtd, personalYtd, grossAPYtd, coHealthYtd, co401kYtd}
         const{taxablegross, gross}=p.ded
         const subj2wh = p.w4exempt ? 0 : taxablegross-(fedr.allow*p.w4allow)
         let ss = taxablegross*fedr.ssw
@@ -253,6 +259,7 @@ class Pay extends React.Component{
         p.wh={gross:gross, taxablegross:taxablegross, ss:drnd(ss), medi:drnd(medi), meda:drnd(meda), fedtax:drnd(fedtax), sttax:drnd(sttax), net:drnd(net)}
       }else{
         p.wh={gross:p.regot.gross, net:p.regot.gross}
+        p.accrued={hrsYtd, grossYtd:regYtd, netYtd:regYtd}
       }
       return p
     })
@@ -699,65 +706,159 @@ class Pay extends React.Component{
         if(p.check){
           this.inWords(p.wh.net)
           cnt+=1
-          const ot=p.regot.mfot+ p.regot.saot+p.regot.suot
-          let regotc = ["", ""];
-          let regotd = [
-            ["hours", p.hrs],
-            ["rate", p.rate],
-            ["regular", p.regot.reg],
-            ["overtime", ot],
-            ["gross payable", p.regot.grossAP],
-            ["gross", p.regot.gross]
-          ];
-          let columns = ["Taxes", ""];
-          let whdata  
+          let regotc, regotd
+          const{gross}=p.regot
+          const{hrsYtd, grossYtd}=p.accrued
           if (p.wtype!='1099'){
-            whdata = [
-              ["ssi", p.wh.ss.toString()],
-              ["medicare", p.wh.medi],
-              ["fed wh", p.wh.fedtax],
-              ["st wh", p.wh.sttax],
-              ["netpay", p.wh.net]
+            const{reg, grossAP, ot}=p.regot
+            const{regYtd, otYtd, grossAPYtd}=p.accrued
+            regotc = ["", "current", "YTD"];
+            regotd = [
+              ["rate", p.rate.toFixed(2), ""],
+              ["hours", p.hrs.toFixed(2),(p.hrs+hrsYtd).toFixed(2)],
+              ["regular", reg.toFixed(2), (reg+regYtd).toFixed(2)],
+              ["overtime", ot.toFixed(2), (ot+otYtd).toFixed(2)],
+              ["gross payable", grossAP.toFixed(2), (grossAP+grossAPYtd).toFixed(2)],
+              ["gross", gross.toFixed(2), (gross+grossYtd).toFixed(2)]
+            ];
+          }else{
+            regotc = ["", "current", "YTD"];
+            regotd=[
+              ["rate", p.rate.toFixed(2), ""],
+              ["hours", p.hrs.toFixed(2),(p.hrs+hrsYtd).toFixed(2)],
+              ["gross", gross.toFixed(2), (gross+grossYtd).toFixed(2)]
+            ]
+            console.log('p.regot: ', p.regot)
+            console.log('p.accrued: ', p.accrued)
+          } 
+          let whc = ["Taxes", "current", "YTD"];
+          let whd  
+          const{netYtd}=p.accrued
+          if (p.wtype!='1099'){
+            const{ssYtd, mediYtd, fedYtd, stYtd}=p.accrued
+            whd = [
+              ["ssi", p.wh.ss.toFixed(2),(p.wh.ss+ ssYtd).toFixed(2)],
+              ["medicare", p.wh.medi.toFixed(2), (p.wh.medi+mediYtd).toFixed(2)],
+              ["fed wh", p.wh.fedtax.toFixed(2), (p.wh.fedtax+fedYtd).toFixed(2)],
+              ["st wh", p.wh.sttax.toFixed(2), (p.wh.sttax+stYtd).toFixed(2)],
+              ["netpay", p.wh.net.toFixed(2), (p.wh.net+netYtd).toFixed(2)]
             ];
           }else {
-            whdata = [
-              ["netpay", p.wh.net]
+            whd = [
+              ["taxes wh",0,0],
+              ["netpay", p.wh.net.toFixed(2), (p.wh.net+netYtd).toFixed(2)]
             ];
           }
+          let dedc, dedd
+          if (p.ded && p.wtype!='1099' &&(p.ded.healthded>0 || p.ded.k401ded>0)){
+            const{healthded, k401ded, taxablegross}=p.ded
+            const{healthYtd, k401Ytd}=p.accrued
+            dedc =["Deductions","","YTD"]
+            dedd =[
+              ["health", healthded.toFixed(2), (healthYtd+healthded).toFixed(2)],
+              ["401k", k401ded.toFixed(2), (k401ded+k401Ytd).toFixed(2)],
+              ["taxablegross", taxablegross.toFixed(2), ''],
+            ]
+          }
+          let contribc, contribd
+          if(p.ded && p.wtype!='1099' &&(p.burden.health>0 || p.burden.k401>0)){
+            const{coHealthYtd, co401kYtd}=p.accrued
+            const{health, k401} =  p.burden
+            contribc =["Co.Contrib.","","YTD"]
+            contribd=[
+              ["health", health.toFixed(2), (coHealthYtd+health).toFixed(2)],
+              ["401k", k401.toFixed(2), (k401+co401kYtd).toFixed(2)]
+            ]
+          }
+          let benc, bend, isben=false
+          if(p.wtype!='1099'){
+            const{holidayYtd, personalYtd, vacationYtd}=p.accrued
+            const{holi, vaca, pers} = p.burden
+            if(holidayYtd!=0 || personalYtd!=0 || vacationYtd!=0 ){
+              isben=true
+              benc= ["Benefit Hrs Accrued", "cur.", "bal."]
+              bend=[
+                ["holiday", (holi/p.rate).toFixed(1), ((holi+holidayYtd)/p.rate).toFixed(1)],
+                ["vacation", (vaca/p.rate).toFixed(1), ((vaca+vacationYtd)/p.rate).toFixed(1)],
+                ["personal", (pers/p.rate).toFixed(1), ((pers+personalYtd)/p.rate).toFixed(1)]
+              ]
+            }
+          }
+          const ckdate = moment(p.paydate).format("MM/DD/YY")
           if(cnt>0){doc.addPage()}
           doc.setFontSize(16)
-          doc.text(moment().format('MM/DD/YY'), pt(6.85), pt(.9))
+          doc.text(ckdate, pt(6.85), pt(.9))
           doc.text(`${p.firstmid} ${p.lastname}`, pt(1.5), pt(1.4))
           doc.text(`\$${p.wh.net}`, pt(6.85), pt(1.4))
           doc.text(this.inWords(p.wh.net), 100, 138)
           doc.setFontSize(12)
-          doc.text('for 2018-W23', 60, 194)
+          doc.text(`for ${p.wprt}`, 60, 194)
+          doc.text(`${p.firstmid} ${p.lastname}`, 50, 270)
+          doc.text(`for ${p.wprt}`, 50, 282)
           doc.autoTable(regotc, regotd,{
-            startY: 300, 
+            startY: 288, 
             showHeader: 'firstPage',
             margin: {right: 107},
-            tableWidth: 150,
+            tableWidth: 200,
             theme: 'grid',
             styles:{
-              //halign:'right'
+              halign:'right'
             }
           });
-          doc.autoTable(columns, whdata,{
-            startY: doc.autoTable.previous.finalY, 
+          // doc.setPage(1 + doc.internal.getCurrentPageInfo().pageNumber - doc.autoTable.previous.pageCount);
+          doc.autoTable(whc, whd,{
+            // startY: doc.autoTable.previous.finalY, 
+            startY:288,
             showHeader: 'firstPage',
-            margin: {right: 107},
-            tableWidth: 150,
+            margin: {left: 307},
+            tableWidth: 200,
             theme: 'grid',
             styles:{
-              //halign:'right'
+              halign:'right'
             }
           });
-
-          doc.text('dog and cats together', 60, doc.autoTable.previous.finalY + 100)
+          if (p.ded && p.wtype!='1099' &&(p.ded.healthded>0 || p.ded.k401ded>0)){
+            doc.autoTable(dedc, dedd,{
+              // startY: doc.autoTable.previous.finalY, 
+              startY:540,
+              showHeader: 'firstPage',
+              margin: {right: 107},
+              tableWidth: 200,
+              theme: 'grid',
+              styles:{
+                halign:'right'
+              }
+            });            
+          }
+          if(p.ded && p.wtype!='1099' &&(p.burden.health>0 || p.burden.k401>0)){
+            doc.autoTable(contribc, contribd,{
+              startY: doc.autoTable.previous.finalY, 
+              showHeader: 'firstPage',
+              margin: {right: 107},
+              tableWidth: 200,
+              theme: 'grid',
+              styles:{
+                halign:'right'
+              }
+            });           
+          }
+          if(isben){
+            doc.autoTable(benc, bend,{
+              startY:540, 
+              showHeader: 'firstPage',
+              margin: {left: 307},
+              tableWidth: 200,
+              theme: 'grid',
+              styles:{
+                halign:'right'
+              }
+            });           
+          }
         }
     })
     doc.autoPrint()
-    doc.save('pay.pdf')
+    const disdate = moment().format('YYYY-MM-DD')
+    doc.save(`pay${disdate}.pdf`)
   }
 
   getCurrent=(persons)=>{
@@ -804,9 +905,8 @@ class Pay extends React.Component{
 
   renderRegOt = (p)=>{
     if(p.regot){
-      const{reg, gross, grossAP}=p.regot
+      const{reg, gross, grossAP, ot}=p.regot
       const{hrsYtd, regYtd, otYtd, grossYtd, grossAPYtd}=p.accrued
-      const ot = p.regot.ot
       return(
         <table style={style.table.table}><tbody>
         <tr style={style.table.tr}>
@@ -851,23 +951,29 @@ class Pay extends React.Component{
   }
   renderDed = (p)=>{
     if(p.ded && p.wtype!='1099' &&(p.ded.healthded>0 || p.ded.k401ded>0)){
+      const{healthded, k401ded, taxablegross}=p.ded
       const{healthYtd, k401Ytd}=p.accrued
+      const tid = 'ded'+p.id
       return (
-        <table style={style.table.table}><tbody>
-        <tr><th style={style.table.col2} colSpan="2">Deductions</th></tr>  
+        <table id={tid} style={style.table.table}><tbody>
+        <tr>
+          <th style={style.table.col2} >Deductions</th>
+          <th> </th>
+          <th>YTD</th>
+        </tr>  
         <tr style={style.table.tr}>
           <td style={style.table.thtd}>health</td>
-          <td style={style.table.thtd}>{p.ded.healthded.toFixed(2)}</td>
-          <td style={style.table.thtd}>{(p.ded.healthded+healthYtd).toFixed(2)}</td>
+          <td style={style.table.thtd}>{healthded.toFixed(2)}</td>
+          <td style={style.table.thtd}>{(healthded+healthYtd).toFixed(2)}</td>
         </tr>
         <tr style={style.table.tr}>
           <td style={style.table.thtd}>401K</td>
-          <td style={style.table.thtd}>{p.ded.k401ded.toFixed(2)}</td>
-          <td style={style.table.thtd}>{(p.ded.k401ded+k401Ytd).toFixed(2)}</td>
+          <td style={style.table.thtd}>{k401ded.toFixed(2)}</td>
+          <td style={style.table.thtd}>{(k401ded+k401Ytd).toFixed(2)}</td>
         </tr>
         <tr style={style.table.tr}>
           <th style={style.table.thtd}>taxable</th>
-          <th style={style.table.thtd}>{p.ded.taxablegross.toFixed(2)}</th>
+          <th style={style.table.thtd}>{taxablegross.toFixed(2)}</th>
         </tr>
         </tbody></table>  
       )
@@ -879,7 +985,11 @@ class Pay extends React.Component{
       const{ssYtd, mediYtd, fedYtd, stYtd, netYtd}=p.accrued
       return (
         <table style={style.table.table}><tbody>
-        <tr><th style={style.table.col2} colSpan="2">Taxes</th></tr>  
+        <tr>
+          <th style={style.table.col2} >Taxes</th>
+          <th> </th>
+          <th>YTD</th>
+        </tr>  
         <tr style={style.table.tr}>
           <td style={style.table.thtd}>ssi</td>
           <td style={style.table.thtd}>{p.wh.ss.toFixed(2)}</td>
@@ -893,7 +1003,7 @@ class Pay extends React.Component{
         <tr style={style.table.tr}>
           <td style={style.table.thtd}>fed wh</td>
           <td style={style.table.thtd}>{p.wh.fedtax.toFixed(2)}</td>
-          <td style={style.table.thtd}>{(+fedYtd).toFixed(2)}</td>
+          <td style={style.table.thtd}>{(p.wh.fedtax+fedYtd).toFixed(2)}</td>
         </tr>
         <tr style={style.table.tr}>
           <td style={style.table.thtd}>state wh</td>
@@ -911,31 +1021,63 @@ class Pay extends React.Component{
   }
 
   renderBen = (p)=>{
-    const{holidayYtd, personalYtd, vacationYtd}=p.accrued
-    const{holi, vaca, pers} = p.burden
-    if(p.wtype!='1099' && (holidayYtd!=0 || personalYtd!=0 || vacationYtd!=0 )){
+    if(p.wtype!='1099'){
+      const{holidayYtd, personalYtd, vacationYtd}=p.accrued
+      const{holi, vaca, pers} = p.burden
+      if(holidayYtd!=0 || personalYtd!=0 || vacationYtd!=0 ){
+        const tid = 'ben'+p.id
+        return (
+          <table id={tid} style={style.table.table}><tbody>
+          <tr>
+            <th style={style.table.col2} colSpan="2">Benefit Hrs Accrued</th>
+            <th>bal</th>
+          </tr>  
+          <tr style={style.table.tr}>
+            <td style={style.table.thtd}>holiday</td>
+            <td style={style.table.thtd}>{(holi/p.rate).toFixed(1)}</td>
+            <td style={style.table.thtd}>{((holi+holidayYtd)/p.rate).toFixed(1)}</td>
+          </tr>
+          <tr style={style.table.tr}>
+            <td style={style.table.thtd}>vacation</td>
+            <td style={style.table.thtd}>{(vaca/p.rate).toFixed(1)}</td>
+            <td style={style.table.thtd}>{((vaca+vacationYtd)/p.rate).toFixed(1)}</td>
+          </tr>
+          <tr style={style.table.tr}>
+            <td style={style.table.thtd}>personal</td>
+            <td style={style.table.thtd}>{(pers/p.rate).toFixed(1)}</td>
+            <td style={style.table.thtd}>{((pers+personalYtd)/p.rate).toFixed(1)}</td>
+          </tr>
+          </tbody></table>  
+        )
+      }
+    }
+  }
+  renderContrib = (p)=>{
+    if(p.ded && p.wtype!='1099' &&(p.burden.health>0 || p.burden.k401>0)){
+      const{coHealthYtd, co401kYtd}=p.accrued
+      const{health, k401} =  p.burden
       return (
         <table style={style.table.table}><tbody>
-        <tr><th style={style.table.col2} colSpan="2">Benefit Hrs Accrued</th></tr>  
+        <tr>
+          <th style={style.table.col2} >Co. Contrib</th>
+          <th> </th>
+          <th>YTD</th>
+        </tr>  
         <tr style={style.table.tr}>
-          <td style={style.table.thtd}>holiday</td>
-          <td style={style.table.thtd}>{(holi/p.rate).toFixed(2)}</td>
-          <td style={style.table.thtd}>{((holi+holidayYtd)/p.rate).toFixed(2)}</td>
+          <td style={style.table.thtd}>health</td>
+          <td style={style.table.thtd}>{health.toFixed(2)}</td>
+          <td style={style.table.thtd}>{(health+coHealthYtd).toFixed(2)}</td>
         </tr>
         <tr style={style.table.tr}>
-          <td style={style.table.thtd}>vacation</td>
-          <td style={style.table.thtd}>{(vaca/p.rate).toFixed(2)}</td>
-          <td style={style.table.thtd}>{((vaca+vacationYtd)/p.rate).toFixed(2)}</td>
-        </tr>
-        <tr style={style.table.tr}>
-          <td style={style.table.thtd}>personal</td>
-          <td style={style.table.thtd}>{(pers/p.rate).toFixed(2)}</td>
-          <td style={style.table.thtd}>{((pers+personalYtd)/p.rate).toFixed(2)}</td>
+          <td style={style.table.thtd}>401K</td>
+          <td style={style.table.thtd}>{k401.toFixed(2)}</td>
+          <td style={style.table.thtd}>{(k401+co401kYtd).toFixed(2)}</td>
         </tr>
         </tbody></table>  
       )
     }
   }
+
 
 
   renderPay=()=>{
@@ -948,6 +1090,7 @@ class Pay extends React.Component{
           const wh = this.renderWh(aperson)
           const dedu = this.renderDed(aperson)
           const ben = this.renderBen(aperson)
+          const contrib = this.renderContrib(aperson)
           const lid = 'li'+i
           return (
           <li id={lid} key={i} style={style.myli.li}>
@@ -966,10 +1109,11 @@ class Pay extends React.Component{
             <div style={style.myli.cat}>
               <span>  
               rate: ${aperson.rate}/hr<br/>
-              {regot}
+               {regot}
               {dedu}
               {wh}
               {ben}
+              {contrib}
               </span>
             </div>
           </li >)
