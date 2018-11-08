@@ -135,7 +135,7 @@ class Pay extends React.Component{
         }
         reg = hrs*p.rate
         aot = saot+suot+mfot
-        gross=reg+aot
+        gross=drnd(reg+aot)
         if (p.weeklybase && p.weeklybase>0){
           if (gross > p.weeklybase && p.wtype=='base'){
             grossAP = gross - p.weeklybase
@@ -174,10 +174,10 @@ class Pay extends React.Component{
           if(p.k401emp>0){
             kded = p.k401emp*12.0/50
           }
-          const taxablegross = p.regot.gross - hded - kded
-          p.ded = {gross:drnd(p.regot.gross), healthded:drnd(hded), k401ded:drnd(kded), taxablegross:drnd(taxablegross) }
+          //p.ded = {gross:drnd(p.regot.gross), healthded:drnd(hded), k401ded:drnd(kded), taxablegross:drnd(taxablegross) }
+          p.ded = {healthded:drnd(hded), k401ded:drnd(kded), }
         }else{
-          p.ded = {gross:drnd(p.regot.gross), healthded:drnd(hded), k401ded:drnd(kded), taxablegross:drnd(p.regot.gross) }
+          p.ded = {healthded:drnd(hded), k401ded:drnd(kded) }
         }
         return p
       })
@@ -196,35 +196,36 @@ class Pay extends React.Component{
       }
       return tax
     }
-    const calcStateTax = (p, strates, ssmed)=>{
-      // console.log('in calcStateTax')
-      // console.log('strates: ', strates)
-      // console.log('state ', p.st, strates.st)
-      if(p.st!=strates.st){
+    const calcStateTax = (p, ss, media)=>{
+      const{ssYtd, mediYtd}=p.accrued
+      let{strates}=this.state.rates
+      if (strates.st!=p.st){
         strates=this.getStateRates(p.st)
       }
       switch(p.st) {
         case "MA":
-          let sttax, stSubj2tax
-          if(p.student || p.ded.taxablegross<strates.nowhbelow){
+          let sttax, statetaxable=p.regot.gross, stateded=0
+          if(p.student || p.regot.gross<strates.nowhbelow){
             sttax=0
           }else{
+            stateded = ssYtd + mediYtd >= strates.ficasub ? 0 : ss+media
             const hoh = p.sthoh ? strates.hohded : 0
             const blind = p.stblind ? strates.blided : 0
             const allow = p.stallow ? p.stallow : 1 
-            stSubj2tax = p.ded.taxablegross - strates.allow*allow -hoh - blind - ssmed
-            sttax = stSubj2tax*strates.rate + p.stadd
+            statetaxable = p.regot.gross - stateded
+            const subj2tax = statetaxable - strates.allow*allow -hoh - blind
+            sttax = subj2tax*strates.rate + p.stadd
             // console.log('p.staddtax: ', p.stadd)
             sttax = sttax>0 ? sttax : 0
           }
-          return sttax
+          return {sttax, statetaxable, stateded}
         default:  
           window.alert('We arent set up for '+p.st)
           return 0
       }
     } 
     const {persons, rates} = this.state
-    const{fedr,fedwh, strates} =rates
+    const{fedr,fedwh,cosr} =rates
     const whp = persons.map((p)=>{
       const hrsYtd = this.lookupHrs(p.emailid)
       const regYtd = this.lookupAccrued(p.emailid, 'a6011-reg')
@@ -243,20 +244,24 @@ class Pay extends React.Component{
         const holidayYtd = this.lookupAccrued(p.emailid, 'a2130-holiday')
         const vacationYtd = this.lookupAccrued(p.emailid, 'a2140-vacation')
         const personalYtd = this.lookupAccrued(p.emailid, 'a2150-personal')
+        const ptoYtd = this.lookupAccrued(p.emailid, 'a2160-PTO')
         const grossAPYtd = this.lookupAccrued(p.emailid, 'a2200-grossAP')
-        p.accrued = {hrsYtd, stYtd, fedYtd, ssYtd, mediYtd, netYtd, regYtd, otYtd, grossYtd, k401Ytd, healthYtd, holidayYtd, vacationYtd, personalYtd, grossAPYtd, coHealthYtd, co401kYtd}
-        const{taxablegross, gross}=p.ded
-        const subj2wh = p.w4exempt ? 0 : taxablegross-(fedr.allow*p.w4allow)
-        let ss = taxablegross*fedr.ssw
-        let medi = taxablegross*fedr.mediw
-        const ssmed = ssYtd + mediYtd >= strates.ficasub ? 0 : ss+medi //no fica ded over 2000
-
-        const meda = grossYtd > fedr.mediexcess ? taxablegross*fedr.mediadd : 0
+        p.accrued = {hrsYtd, stYtd, fedYtd, ssYtd, mediYtd, netYtd, regYtd, otYtd, grossYtd, k401Ytd, healthYtd, holidayYtd, vacationYtd, personalYtd, ptoYtd, grossAPYtd, coHealthYtd, co401kYtd}
+        const fedded = drnd(p.ded.healthded + p.ded.k401ded)
+        const fedtaxable = p.regot.gross - fedded
+        const ficaded = drnd(p.ded.healthded*cosr.healthFICAded - p.ded.k401ded*cosr.retireFICAded)
+        const ficataxable = p.regot.gross - ficaded
+        const subj2wh = p.w4exempt ? 0 : fedtaxable-(fedr.allow*p.w4allow)
+        let ss = p.regot.gross+ grossYtd> fedr.ssbase ? 0 : drnd(ficataxable*fedr.ssw)
+        let medi = drnd(ficataxable*fedr.mediw)
+        const addmedtaxable = p.regot.gross + grossYtd > fedr.mediexcess ? grossYtd-fedr.mediexcess : 0
+        const meda = drnd(addmedtaxable*fedr.mediadd)
+        const media = medi+meda
         const singmar = p.marital=='married' ? 'married' : 'single'
-        const fedtax = lookupFedTax(fedwh, singmar, 'weekly', subj2wh, p.w4add)
-        const sttax =  calcStateTax(p, strates, ssmed)
-        const net = taxablegross-fedtax-ss -medi - sttax
-        p.wh={gross:gross, taxablegross:taxablegross, ss:drnd(ss), medi:drnd(medi), meda:drnd(meda), fedtax:drnd(fedtax), sttax:drnd(sttax), net:drnd(net)}
+        const fedtax = drnd(lookupFedTax(fedwh, singmar, 'weekly', subj2wh, p.w4add))
+        const {sttax, statetaxable, stateded} =  calcStateTax(p, ss, media)
+        const net = p.regot.gross- p.ded.healthded - p.ded.k401ded - fedtax-ss -media - sttax
+        p.wh={gross:p.regot.gross, fedtaxable, ficataxable, statetaxable, ficaded, ss, medi, addmedtaxable, meda, fedded, fedtax, stateded, sttax, net}
       }else{
         p.wh={gross:p.regot.gross, net:p.regot.gross}
         p.accrued={hrsYtd, grossYtd:regYtd, netYtd:regYtd}
@@ -273,20 +278,21 @@ class Pay extends React.Component{
       if(p.wtype!='1099'){
         const{grossYtd}=p.accrued
         const{ gross, grossAP}=p.regot
-        const{taxablegross}=p.wh
-        const ss = drnd(taxablegross*fedr.sse)
-        const medi = drnd(taxablegross*fedr.medie)
+        let{ficataxable}=p.wh
+        const ss = p.regot.gross+ grossYtd> fedr.ssbase ? 0 : drnd(ficataxable*fedr.sse)
+        const medi = drnd(ficataxable*fedr.medie)//no employer match for additional
         let health = p.healthco>0 ? drnd(p.healthco*12.0/50) : 0
         let k401 = p.k401co>0 ? drnd(p.k401co*12.0/50) : 0
         let vaca = p.vacation>0 ? drnd(p.vacation/250*p.hrs*p.rate) : 0
         let holi = p.holiday>0 ? drnd(p.holiday/250*p.hrs*p.rate) : 0
         let pers = p.personal>0 ? drnd(p.personal/250*p.hrs*p.rate) : 0
+        let pto = p.pto>0 && pers==0 && holi==0 && vaca==0  ? drnd(p.pto/250*p.hrs*p.rate) : 0
         let suta = drnd(cosr.stuirate*gross)
         let comp = drnd(cosr.wcrate*gross)
         let futa = grossYtd > fedr.futa4first ? 0 : drnd(fedr.futa*gross)
         let tburden = drnd(ss+medi+health+k401+vaca+holi+pers+suta+comp+futa)
         let bpercent = (tburden+gross+grossAP)/(gross+grossAP)
-        p.burden={gross,ss,medi,health,k401,vaca,holi,pers,suta,futa,comp,tburden, bpercent}
+        p.burden={gross,ss,medi,health,k401,vaca,holi,pers,pto,suta,futa,comp,tburden, bpercent}
       }
       return p
     })
@@ -624,7 +630,61 @@ class Pay extends React.Component{
           e.account ='a6039-dedu'
           e.credit=p.ded.healthded + p.ded.k401ded
           journal.push(e)
-        }     
+        }
+        if(p.wtype!='1099') {
+          e ={...blentry}
+          e.account ='a6040-fedWages'
+          e.debit=p.regot.gross
+          journal.push(e)
+          e ={...blentry}
+          e.account ='a6041-fedTaxable'
+          e.credit=p.wh.fedtaxable
+          journal.push(e)
+          if (p.wh.fedded>0){
+            e ={...blentry}
+            e.account ='a6042-fedDed'
+            e.credit=p.wh.fedded
+            journal.push(e)
+          }          
+          e ={...blentry}
+          e.account ='a6050-stateWages'
+          e.debit=p.regot.gross
+          journal.push(e)
+          e ={...blentry}
+          e.account ='a6051-stateTaxable'
+          e.credit=p.wh.statetaxable
+          journal.push(e)
+          if (p.wh.stateded>0){
+            e ={...blentry}
+            e.account ='a6052-stateDed'
+            e.credit=p.wh.stateded
+            journal.push(e)
+          }          
+          e ={...blentry}
+          e.account ='a6060-FICAwages'
+          e.debit=p.regot.gross
+          journal.push(e)
+          e ={...blentry}
+          e.account ='a6061-FICAtaxable'
+          e.credit=p.wh.statetaxable
+          journal.push(e)
+          if (p.wh.stateded>0){
+            e ={...blentry}
+            e.account ='a6062-FICAded'
+            e.credit=p.wh.stateded
+            journal.push(e)
+          }          
+          if (p.wh.addmedtaxable>0){
+            e ={...blentry}
+            e.account ='a6042-fedDed'
+            e.debit=p.wh.addmedtaxable
+            journal.push(e)
+            e ={...blentry}
+            e.account ='a6042-fedDed'
+            e.credit=p.wh.addmedtaxable
+            journal.push(e)
+          }          
+        }  
         console.log('journal: ', journal) 
         postJobRates(p.jcrates)
         .then(()=>{
@@ -774,7 +834,7 @@ class Pay extends React.Component{
           if(p.wtype!='1099'){
             const{holidayYtd, personalYtd, vacationYtd}=p.accrued
             const{holi, vaca, pers} = p.burden
-            if(holidayYtd!=0 || personalYtd!=0 || vacationYtd!=0 ){
+            if(holidayYtd!=0 || personalYtd!=0 || vacationYtd!=0 || holi!=0 || vaca!=0 || pers!=0){
               isben=true
               benc= ["Benefit Hrs Accrued", "cur.", "bal."]
               bend=[
@@ -951,7 +1011,7 @@ class Pay extends React.Component{
   }
   renderDed = (p)=>{
     if(p.ded && p.wtype!='1099' &&(p.ded.healthded>0 || p.ded.k401ded>0)){
-      const{healthded, k401ded, taxablegross}=p.ded
+      const{healthded, k401ded}=p.ded
       const{healthYtd, k401Ytd}=p.accrued
       const tid = 'ded'+p.id
       return (
@@ -970,10 +1030,6 @@ class Pay extends React.Component{
           <td style={style.table.thtd}>401K</td>
           <td style={style.table.thtd}>{k401ded.toFixed(2)}</td>
           <td style={style.table.thtd}>{(k401ded+k401Ytd).toFixed(2)}</td>
-        </tr>
-        <tr style={style.table.tr}>
-          <th style={style.table.thtd}>taxable</th>
-          <th style={style.table.thtd}>{taxablegross.toFixed(2)}</th>
         </tr>
         </tbody></table>  
       )
@@ -1022,9 +1078,9 @@ class Pay extends React.Component{
 
   renderBen = (p)=>{
     if(p.wtype!='1099'){
-      const{holidayYtd, personalYtd, vacationYtd}=p.accrued
-      const{holi, vaca, pers} = p.burden
-      if(holidayYtd!=0 || personalYtd!=0 || vacationYtd!=0 ){
+      const{holidayYtd, personalYtd, vacationYtd, ptoYtd}=p.accrued
+      const{holi, vaca, pers, pto} = p.burden
+      if(holidayYtd!=0 || personalYtd!=0 || vacationYtd!=0 || ptoYtd!=0 || holi!=0 || vaca!=0 || pers!=0 || pto!=0){
         const tid = 'ben'+p.id
         return (
           <table id={tid} style={style.table.table}><tbody>

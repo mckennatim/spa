@@ -57,7 +57,10 @@ class Persons extends React.Component{
   getCurrent=(persons)=>{
     const cdate = moment().format('YYYY-MM-DD')
     const cperson = persons
-      .filter((person)=>person.rate>0 && person.effective && person.effective<=cdate && person.active )
+      .filter((person)=>{
+        const pdate = moment(person.effective).format('YYYY-MM-DD')
+        return person.rate>0 && person.effective && pdate<=cdate && person.active 
+      })
       .reduce((t,p)=>{
         const  oeid =t.slice(-1)[0].emailid
         if(oeid != p.emailid){
@@ -256,19 +259,22 @@ class Persons extends React.Component{
   }
 
   getQuery=()=>{
+    console.log('running get query: ')
     const params = this.props.cambio.page.params
     if(params && params.query =='rerender'){
       location.replace('#persons')
       setTimeout(()=>{
         this.getPersons()
-      },300)     
+      },1000)     
       
     }
   }
 
   renderPersons=()=>{
     let {persons}=this.state
+    console.log('persons: ', persons)
     persons = this.cfilt(persons)
+    console.log('persons: ', persons)
     const rpersons = persons
       .filter((cperson)=>this.afilt(cperson))
       .filter((dperson)=>this.efilt(dperson))

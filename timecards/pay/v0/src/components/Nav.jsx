@@ -16,6 +16,7 @@ const Nav = () =>{
       <li style={style.li}><a style={style.a} href={href}>apps</a></li>
         <li style={style.li}><a style={style.a} href="about" data-navigo>about</a></li>
         <li style={style.li}><a style={style.a} href="pay" data-navigo>pay</a></li>
+        <li style={style.li}><a style={style.a} href="report" data-navigo>report</a></li>
         <div></div>
       </ul>
     </div>

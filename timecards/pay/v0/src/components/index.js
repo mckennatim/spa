@@ -1,8 +1,9 @@
 import React from 'react'// eslint-disable-line no-unused-vars
 import {router} from '../app'
 import {App} from './App'
-import {Active} from './Active'
+import {Active} from './Active.jsx'
 import {Pay} from './Pay.jsx'
+import {Report} from './Report.jsx'
 import {Nav} from './Nav.jsx'
 import {Dog} from './Dog'
 import {Products} from './Products'
@@ -79,4 +80,4 @@ const multi =[
 //['watch', 'phone', 'phoneL', 'tablet', 'tabletL', 'laptop']
 const panes= [1,1,2,2,3,3,4]
 
-export {Active, Pay, Cat, About, Products,Home, Dog, App, Nav, multi, panes}
+export {Report, Active, Pay, Cat, About, Products,Home, Dog, App, Nav, multi, panes}

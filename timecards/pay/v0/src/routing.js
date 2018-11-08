@@ -15,6 +15,7 @@ const routing = ()=>{
       'dog': ()=>{switchPage({name: 'Dog', params: null});},
       'cat': ()=>{switchPage({name: 'Cat', params: null});},
       'pay': (params,query)=>{switchPage({name: 'Pay', params: {...params, query: query}});},
+      'report': (params,query)=>{switchPage({name: 'Report', params: {...params, query: query}});},
       'registered': (params, query)=> {switchPage({name: 'Registered', params: {...params, query: query}});} ,
       '*': ()=>{switchPage({name: 'Pay', params: null});}
     })
