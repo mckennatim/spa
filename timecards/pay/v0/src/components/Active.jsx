@@ -3,13 +3,13 @@ import {mapClass2Element} from '../hoc/mapClass2Element'
 
 class Active extends React.Component{
   active='mabibi'
-  componentDidMount(){
+  componentDidMount=()=>{
     this.getActive()
   }  
-  getActive(){
+  getActive=()=>{
     console.log('dog')
   }
-  render(){
+  render=()=>{
     return(
       <div style={style.he}>
         <h3> Active is {this.active}</h3>

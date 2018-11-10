@@ -249,7 +249,7 @@ class Pay extends React.Component{
         p.accrued = {hrsYtd, stYtd, fedYtd, ssYtd, mediYtd, netYtd, regYtd, otYtd, grossYtd, k401Ytd, healthYtd, holidayYtd, vacationYtd, personalYtd, ptoYtd, grossAPYtd, coHealthYtd, co401kYtd}
         const fedded = drnd(p.ded.healthded + p.ded.k401ded)
         const fedtaxable = p.regot.gross - fedded
-        const ficaded = drnd(p.ded.healthded*cosr.healthFICAded - p.ded.k401ded*cosr.retireFICAded)
+        const ficaded = drnd(p.ded.healthded*cosr.healthFICAded + p.ded.k401ded*cosr.retireFICAded)
         const ficataxable = p.regot.gross - ficaded
         const subj2wh = p.w4exempt ? 0 : fedtaxable-(fedr.allow*p.w4allow)
         let ss = p.regot.gross+ grossYtd> fedr.ssbase ? 0 : drnd(ficataxable*fedr.ssw)
@@ -260,7 +260,7 @@ class Pay extends React.Component{
         const singmar = p.marital=='married' ? 'married' : 'single'
         const fedtax = drnd(lookupFedTax(fedwh, singmar, 'weekly', subj2wh, p.w4add))
         const {sttax, statetaxable, stateded} =  calcStateTax(p, ss, media)
-        const net = p.regot.gross- p.ded.healthded - p.ded.k401ded - fedtax-ss -media - sttax
+        const net = drnd(p.regot.gross- p.ded.healthded - p.ded.k401ded - fedtax-ss -media - sttax)
         p.wh={gross:p.regot.gross, fedtaxable, ficataxable, statetaxable, ficaded, ss, medi, addmedtaxable, meda, fedded, fedtax, stateded, sttax, net}
       }else{
         p.wh={gross:p.regot.gross, net:p.regot.gross}
@@ -666,12 +666,12 @@ class Pay extends React.Component{
           journal.push(e)
           e ={...blentry}
           e.account ='a6061-FICAtaxable'
-          e.credit=p.wh.statetaxable
+          e.credit=p.wh.ficataxable
           journal.push(e)
           if (p.wh.stateded>0){
             e ={...blentry}
             e.account ='a6062-FICAded'
-            e.credit=p.wh.stateded
+            e.credit=p.wh.ficaded
             journal.push(e)
           }          
           if (p.wh.addmedtaxable>0){
@@ -811,13 +811,12 @@ class Pay extends React.Component{
           }
           let dedc, dedd
           if (p.ded && p.wtype!='1099' &&(p.ded.healthded>0 || p.ded.k401ded>0)){
-            const{healthded, k401ded, taxablegross}=p.ded
+            const{healthded, k401ded}=p.ded
             const{healthYtd, k401Ytd}=p.accrued
             dedc =["Deductions","","YTD"]
             dedd =[
               ["health", healthded.toFixed(2), (healthYtd+healthded).toFixed(2)],
-              ["401k", k401ded.toFixed(2), (k401ded+k401Ytd).toFixed(2)],
-              ["taxablegross", taxablegross.toFixed(2), ''],
+              ["401k", k401ded.toFixed(2), (k401ded+k401Ytd).toFixed(2)]
             ]
           }
           let contribc, contribd
