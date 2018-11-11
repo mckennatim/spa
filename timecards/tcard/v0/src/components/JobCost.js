@@ -11,7 +11,7 @@ class JobCost extends React.Component {
   }
 
   add4day=(e)=>{
-    this.setState({hrsleft:drnd(e.target.value)})
+    this.setState({hrsleft:e.target.value})
   }
 
   inpKey =(e)=>{
@@ -40,7 +40,7 @@ class JobCost extends React.Component {
   }
   
   addSome=(e)=>{
-    this.setState({hrsleft: drnd(this.props.puhrs-this.props.jchrs)})
+    this.setState({hrsleft: this.props.puhrs-this.props.jchrs})
     this.setState({showon:e.target.getAttribute('ix')})
   }
 
@@ -53,7 +53,7 @@ class JobCost extends React.Component {
 
   renderInput = ()=>{
     return(
-      <input style={style.jchr} type="number" value={drnd(this.state.hrsleft)} onChange={this.add4day} step=".25" onKeyUp={this.inpKey}/>
+      <input style={style.jchr} type="text" value={this.state.hrsleft} onChange={this.add4day} step=".25" onKeyUp={this.inpKey}/>
     )
   }
   renderList =()=>{

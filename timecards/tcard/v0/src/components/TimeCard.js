@@ -3,6 +3,8 @@ import {Day} from './Day'// eslint-disable-line no-unused-vars
 import {mapClass2Element} from '../hoc/mapClass2Element'
 
 class TimeCard extends React.Component{
+  state={selectedDay:9}
+
   constructor(props){
     super(props)
   }
@@ -38,13 +40,21 @@ class TimeCard extends React.Component{
     this.props.tcardChanges('submit',{showsub: false,status:'submitted', blabel:this.props.blabel})
     //console.log('this.props.blabel: ', this.props.blabel)
   }
+
+  handleClick=(idx)=>(tin)=>{
+    console.log('in timecards')
+    console.log('in tmecards', idx,tin)
+    this.setState({selectedDay:idx})
+  }
+
   renderDays=()=>{
     const {week}=this.props;
     const {wkarr, jobs}=this.props.tcard;
     console.log('wkarr: ', wkarr)
     const rd = wkarr.map((d)=>{
+      const isselected=d.idx==this.state.selectedDay
       return(
-        <Day key={d.idx} data={d} ismobile={this.props.ismobile} week={week} hayjobs={this.props.hayjobs} jobs={jobs} dayChanges={this.handleDayChanges}/>
+        <Day key={d.idx} data={d} ismobile={this.props.ismobile} week={week} hayjobs={this.props.hayjobs} jobs={jobs} dayChanges={this.handleDayChanges} gotClicked={this.handleClick(d.idx)} isselected={isselected}/>
       )
     })
     return rd

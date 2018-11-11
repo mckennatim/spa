@@ -4,11 +4,11 @@ import { putTcardJc, putTcardPu} from '../services/fetches'
 import {JobCost} from './JobCost'// eslint-disable-line no-unused-vars
 
 class Day extends React.Component {// eslint-disable-line no-unused-vars
-  
+  state ={cday:'tin9'}
   tinel =null
   hrs=0
   list = 'empty'
-    componentDidMount(){
+  componentDidMount(){
     this.tinel = document.getElementById('tin'+this.props.data.idx)
     this.setPunch()
   } 
@@ -70,6 +70,12 @@ class Day extends React.Component {// eslint-disable-line no-unused-vars
     }
   }
 
+  hiliThis=(tin)=>()=>{
+    //console.log('tin: ', tin)
+    //this.setState({cday:tin})
+    this.props.gotClicked(tin)
+  }
+
   renderIoList =(data)=>{
     const perarr = createPeriodArray(data.inout)
     return (
@@ -95,9 +101,8 @@ class Day extends React.Component {// eslint-disable-line no-unused-vars
     )
   }
   render() { 
-    //console.log('this.props.jobs: ', this.props.jobs)
-    
     const tin= 'tin'+this.props.data.idx
+    const dayhili = this.hiliCurrent(this.props.isselected)
     const {data, jobs}=this.props
     if(this.props.jobs.length==0){
       // console.log('Days render if jobs.length==0')
@@ -107,7 +112,7 @@ class Day extends React.Component {// eslint-disable-line no-unused-vars
     const inoutList = this.renderIoList(data)
     const now = moment().format("HH:mm")
     return ( 
-      <div style={style.tcardDiv}>
+      <div style={dayhili} onClick={this.hiliThis(tin)}>
         <div style={style.daydate.container}>
           <span style={style.daydate.day}> {moment(data.wdprt).format('ddd')} </span>
           <br/>
@@ -127,6 +132,18 @@ class Day extends React.Component {// eslint-disable-line no-unused-vars
       </div>
      );
   }
+  hiliCurrent=(tf)=>{
+    const nstyle = {...style}
+    const nhili ={...nstyle.tcardDiv}
+    if (tf){
+      nhili.background = '#99CCFF'
+    }else{
+      nhili.background = 'white'
+    }
+    return nhili
+  }
+
+
 }
 
 export{Day}
@@ -143,7 +160,8 @@ const style={
       boxShadow: '2px 2px green',
       borderRadius: '12px',
       float: 'left',
-      background: 'white'
+      background: 'white',
+      marginTop:'4px'
     },
     input:{
       margin: '6px 0 0 0',

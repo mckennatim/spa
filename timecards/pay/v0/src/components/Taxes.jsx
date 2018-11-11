@@ -1,5 +1,5 @@
 import React from 'react'// eslint-disable-line no-unused-vars
-import {mapClass2Element} from '../hoc/mapClass2Element'
+// import {mapClass2Element} from '../hoc/mapClass2Element'
 import {fetchTaxes, postPayment} from '../services/fetches'
 import InputLabel from '@material-ui/core/InputLabel';// eslint-disable-line no-unused-vars
 import MenuItem from '@material-ui/core/MenuItem';// eslint-disable-line no-unused-vars
@@ -37,7 +37,7 @@ const styles = theme => ({
   },
 });
 class Taxes extends React.Component{
-  state = {year:"", month:"", curmo:{}}
+  state = {year:"", month:"", curmo:{}, gov:'Fed'}
   active='mabibi'
   componentDidMount(){
     const cyr = moment().format('YYYY')*1
@@ -75,7 +75,7 @@ class Taxes extends React.Component{
     console.log('e.target.value: ', e.target.value)
     this.setState({month:e.target.value})
     const{fmobyqtr, cmo}=this.state
-    let showmox
+    let showmox,qmo
     switch (e.target.value) {
       case 'month':
         let curmo ={...this.state.curmo}
@@ -95,14 +95,31 @@ class Taxes extends React.Component{
         }
         this.setState({curmo, showmox})
         break;
-      case 'year':
+        case 'year':
         this.setState({moarr: fmobyqtr, showmox: 'list'})
-
+        console.log('in year')
+        break
+        case 'q1':
+        qmo=fmobyqtr.filter((q)=>q.qtr==1)
+        this.setState({moarr: qmo, showmox: 'list'})
+        console.log('in year')
+        break
+        case 'q2':
+        qmo=fmobyqtr.filter((q)=>q.qtr==2)
+        this.setState({moarr: qmo, showmox: 'list'})
+        console.log('in year')
+        break
+        case 'q3':
+        qmo=fmobyqtr.filter((q)=>q.qtr==3)
+        this.setState({moarr: qmo, showmox: 'list'})
+        console.log('in year')
+        break
+        case 'q4':
+        qmo=fmobyqtr.filter((q)=>q.qtr==4)
+        this.setState({moarr: qmo, showmox: 'list'})
         console.log('in year')
         break
       default:
-        
-
         break;
     }
   }
@@ -118,6 +135,7 @@ class Taxes extends React.Component{
   }
 
   recordPayment=()=>{
+    console.log('this..fmo: ', this.state.fmobyqtr)
     const{rmofo, mofo,acctsmo}=this.state
     if(!rmofo){
       const {cmo, paid, accrued, month}=this.state.curmo
@@ -131,7 +149,12 @@ class Taxes extends React.Component{
       const someid=`paid: ${mofo.paydate}`
       const dbpaydate = moment(`${this.state.year}-${mofo.mo.toString().padStart(2,'0')}-01`, 'YYYY-MM-DD').endOf('month').format('YYYY-MM-DD')
       console.log('dbpaydate: ', dbpaydate, someid)
-      const blentry={account:'', wdprt:'', someid:someid, job:'fed', cat:'payment', date:dbpaydate, somenum: 0, debit:0, credit:0}
+      const blentry={account:'', wdprt:mofo.ref, someid:someid, job:'fed', cat:'payment', date:dbpaydate, somenum: 0, debit:0, credit:0}
+      const fmobyqtr= this.state.fmobyqtr.slice()
+      console.log('fmobyqtr: ', fmobyqtr)
+      console.log('fmobyqtr.findIndex((f)=>f.mo==mofo.mo): ', fmobyqtr.findIndex((f)=>f.mo==mofo.mo))
+      console.log('mofo: ', mofo)
+      fmobyqtr[fmobyqtr.findIndex((f)=>f.mo==mofo.mo)].paid=mofo.pay
       let e
       const thaccts = acctsmo.filter((a)=>{
         return a.mo==curmo.cmo
@@ -149,18 +172,37 @@ class Taxes extends React.Component{
           ttot+=m.credit-m.debit
           return e
         })
+      e ={...blentry}
+      e.account ='a1010-cash'
+      e.credit=mofo.pay
+      journal.push(e)
       console.log('journal: ',ttot, mofo.pay, journal)
       postPayment({journal})
+      .then((res)=>{
+        console.log('res: ', res)
+        this.setState({showmox:'none', fmobyqtr})
+      })
     }
   }
-  selectMo=(field)=>e=>{
-    console.log('field: ', field)  
+  selectMo=(field)=>()=>{
+    //console.log('field: ', field, idx) 
+    const pay = field.accrued-field.paid
     let curmo ={...this.state.curmo} 
     curmo.paid = field.paid
     curmo.accrued =field.accrued
     curmo.month = field.month
     curmo.cmo = field.mo
-    this.setState({curmo})
+    // const fmobyqtr= this.state.fmobyqtr.slice()
+    // console.log('fmobyqtr: ', fmobyqtr)
+    // console.log('fmobyqtr.findIndex((f)=>f.mo==field.mo): ', fmobyqtr.findIndex((f)=>f.mo==field.mo))
+    // console.log('field: ', field)
+    // fmobyqtr[fmobyqtr.findIndex((f)=>f.mo==field.mo)].paid=field.accrued-field.paid
+    const mofo = {ref: '', mo: field.mo, month: field.month, pay:pay, paydate:this.state.now}
+    this.setState({curmo, rmofo:true, showmox:'but', mofo},this.recordPayment())
+  }
+
+  switchGov=(e)=>{
+    this.setState({gov:e.target.value})
   }
 
   renderMoFo = ()=>{
@@ -221,8 +263,6 @@ class Taxes extends React.Component{
            Record Payment
            </Button>
            {rmofo && this.renderMoFo()}
-         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex,
-         sit amet blandit leo lobortis eget.
        </div>       
      )
     }else if(showmox=='list'){
@@ -232,7 +272,7 @@ class Taxes extends React.Component{
           {moarr.map((m, i)=>{
             return (
             <li style={style.list.li} key={i}>
-              <div onClick={this.selectMo(m)}>{m.month}   
+              <div onClick={this.selectMo(m,i)}>{m.month}   
                 <div style={style.list.rt}>
                   accr.: {m.accrued.toFixed(2)} <br/> paid: {m.paid.toFixed(2)} <br/> 
                 </div> 
@@ -251,8 +291,7 @@ class Taxes extends React.Component{
 
   render(){
     const { classes } = this.props;
-    const{yrarr, curmo}=this.state
-    const {cmo,paid,accrued}=curmo
+    const{yrarr, curmo, gov}=this.state
     const mox = this.renderMoX()
     console.log('curmo: ', curmo)
     if (yrarr){
@@ -280,7 +319,7 @@ class Taxes extends React.Component{
             <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
               <div>
               <FormControl className={classes.formControl}>
-                <InputLabel htmlFor="age-simple">Monthly Fed  </InputLabel>
+                <InputLabel htmlFor="age-simple">Monthly {gov}  </InputLabel>
                 
                 <Select
                   value={this.state.month}
@@ -299,6 +338,18 @@ class Taxes extends React.Component{
                 </Select>
                 <FormHelperText>Paid/Accrued</FormHelperText>
               </FormControl>
+                <div style={{float:'right'}}>
+                  <span>
+                    <input checked={gov=='Fed'} id='f' type="radio" name='gov' value='Fed' 
+                      onChange={this.switchGov} />
+                    <label htmlFor="f">fed  </label>
+                  </span>   
+                  <span>
+                    <input checked={gov=='State'} id='s' type="radio" name='gov' value='State' 
+                      onChange={this.switchGov}/>
+                    <label htmlFor="s">state </label>
+                  </span>
+                </div>
                 <div style={{float:'right', width:'50%'}}>
                   Month: {this.state.curmo.month} <br/>
                   Accr.: {drnd(this.state.curmo.accrued)} <br/>
@@ -354,7 +405,7 @@ const style = {
       height:'40px',
       paddingTop: '8px',
       borderBottom: '1px solid',
-      width: '100%',
+      width: '170px',
       flex:1
     },
     rt:{
