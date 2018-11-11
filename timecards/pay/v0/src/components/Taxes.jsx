@@ -74,13 +74,19 @@ class Taxes extends React.Component{
     console.log('e.target.name: ', e.target.name)
     console.log('e.target.value: ', e.target.value)
     this.setState({month:e.target.value})
-    const{fmobyqtr, cmo}=this.state
+    const{fmobyqtr, smobyqtr, cmo, gov}=this.state
+    let fedstate
+    if(gov=='Fed'){
+      fedstate =fmobyqtr.slice()
+    }else{
+      fedstate = smobyqtr.slice()
+    }
     let showmox,qmo
     switch (e.target.value) {
       case 'month':
         let curmo ={...this.state.curmo}
         console.log('curmo: ', curmo)
-        const thmo = fmobyqtr.filter((m)=>{
+        const thmo = fedstate.filter((m)=>{
           console.log('m: ', m, curmo.cmo)
           return m.mo==cmo
         })
@@ -95,27 +101,27 @@ class Taxes extends React.Component{
         }
         this.setState({curmo, showmox})
         break;
-        case 'year':
-        this.setState({moarr: fmobyqtr, showmox: 'list'})
+      case 'year':
+        this.setState({moarr: fedstate, showmox: 'list'})
         console.log('in year')
         break
-        case 'q1':
-        qmo=fmobyqtr.filter((q)=>q.qtr==1)
+      case 'q1':
+        qmo=fedstate.filter((q)=>q.qtr==1)
         this.setState({moarr: qmo, showmox: 'list'})
         console.log('in year')
         break
-        case 'q2':
-        qmo=fmobyqtr.filter((q)=>q.qtr==2)
+      case 'q2':
+        qmo=fedstate.filter((q)=>q.qtr==2)
         this.setState({moarr: qmo, showmox: 'list'})
         console.log('in year')
         break
-        case 'q3':
-        qmo=fmobyqtr.filter((q)=>q.qtr==3)
+      case 'q3':
+        qmo=fedstate.filter((q)=>q.qtr==3)
         this.setState({moarr: qmo, showmox: 'list'})
         console.log('in year')
         break
-        case 'q4':
-        qmo=fmobyqtr.filter((q)=>q.qtr==4)
+      case 'q4':
+        qmo=fedstate.filter((q)=>q.qtr==4)
         this.setState({moarr: qmo, showmox: 'list'})
         console.log('in year')
         break
@@ -136,7 +142,7 @@ class Taxes extends React.Component{
 
   recordPayment=()=>{
     console.log('this..fmo: ', this.state.fmobyqtr)
-    const{rmofo, mofo,acctsmo}=this.state
+    const{rmofo, mofo, acctsmo, gov, fmobyqtr, smobyqtr}=this.state
     if(!rmofo){
       const {cmo, paid, accrued, month}=this.state.curmo
       const blmofo = {ref: '', mo: cmo, month: month, pay:accrued-paid, paydate:this.state.now}
@@ -150,38 +156,64 @@ class Taxes extends React.Component{
       const dbpaydate = moment(`${this.state.year}-${mofo.mo.toString().padStart(2,'0')}-01`, 'YYYY-MM-DD').endOf('month').format('YYYY-MM-DD')
       console.log('dbpaydate: ', dbpaydate, someid)
       const blentry={account:'', wdprt:mofo.ref, someid:someid, job:'fed', cat:'payment', date:dbpaydate, somenum: 0, debit:0, credit:0}
-      const fmobyqtr= this.state.fmobyqtr.slice()
-      console.log('fmobyqtr: ', fmobyqtr)
-      console.log('fmobyqtr.findIndex((f)=>f.mo==mofo.mo): ', fmobyqtr.findIndex((f)=>f.mo==mofo.mo))
+      let fedstate
+      if(gov=='Fed'){
+        fedstate =fmobyqtr.slice()
+      }else{
+        fedstate = smobyqtr.slice()
+      }
+      //const fmobyqtr= this.state.fmobyqtr.slice()
+      console.log('fedstate: ', fedstate)
+      console.log('fedstate.findIndex((f)=>f.mo==mofo.mo): ', fedstate.findIndex((f)=>f.mo==mofo.mo))
       console.log('mofo: ', mofo)
-      fmobyqtr[fmobyqtr.findIndex((f)=>f.mo==mofo.mo)].paid=mofo.pay
+      fedstate[fedstate.findIndex((f)=>f.mo==mofo.mo)].paid=mofo.pay
       let e
       const thaccts = acctsmo.filter((a)=>{
         return a.mo==curmo.cmo
       })
       console.log('thaccts: ', thaccts)
       let ttot= 0
-      const journal = thaccts
-        .filter((f)=>{
-          return f.account=='a2010-SS' || f.account=='a2020-medi' ||f.account=='a2030-meda' || f.account == 'a2050-fedWh'
+      if(gov=='Fed'){
+        const journal = thaccts
+          .filter((f)=>{
+            return f.account=='a2010-SS' || f.account=='a2020-medi' ||f.account=='a2030-meda' || f.account == 'a2050-fedWh'
+          })
+          .map((m)=>{
+            e ={...blentry}
+            e.account =m.account
+            e.debit=m.credit-m.debit
+            ttot+=m.credit-m.debit
+            return e
+          })
+        e ={...blentry}
+        e.account ='a1010-cash'
+        e.credit=mofo.pay
+        journal.push(e)
+        console.log('journal: ',ttot, mofo.pay, journal)
+        postPayment({journal})
+        .then((res)=>{
+          console.log('res: ', res)
+          this.setState({showmox:'none', fmobyqtr:fedstate})
         })
-        .map((m)=>{
-          e ={...blentry}
-          e.account =m.account
-          e.debit=m.credit-m.debit
-          ttot+=m.credit-m.debit
-          return e
+      }else{
+        const journal = []
+        e ={...blentry}
+        e.account ='a1010-cash'
+        e.job='state'
+        e.credit=mofo.pay
+        journal.push(e)
+        e ={...blentry}
+        e.account ='a2060-stWh'
+        e.job='state'
+        e.debit=mofo.pay
+        journal.push(e)
+        postPayment({journal})
+        .then((res)=>{
+          console.log('res: ', res)
+          this.setState({showmox:'none', smobyqtr:fedstate})
         })
-      e ={...blentry}
-      e.account ='a1010-cash'
-      e.credit=mofo.pay
-      journal.push(e)
-      console.log('journal: ',ttot, mofo.pay, journal)
-      postPayment({journal})
-      .then((res)=>{
-        console.log('res: ', res)
-        this.setState({showmox:'none', fmobyqtr})
-      })
+      }
+
     }
   }
   selectMo=(field)=>()=>{
