@@ -12,13 +12,26 @@ import FormHelperText from '@material-ui/core/FormHelperText';// eslint-disable-
 import Typography from '@material-ui/core/Typography';// eslint-disable-line no-unused-vars
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';// eslint-disable-line no-unused-vars
 import Button from '@material-ui/core/Button';// eslint-disable-line no-unused-vars
-import TextField from '@material-ui/core/TextField';// eslint-disable-line 
+import TextField from '@material-ui/core/TextField';// eslint-disable-line no-unused-vars
+import Table from '@material-ui/core/Table';// eslint-disable-line no-unused-vars 
+import TableBody from '@material-ui/core/TableBody';// eslint-disable-line no-unused-vars
+import TableCell from '@material-ui/core/TableCell';// eslint-disable-line no-unused-vars
+import TableRow from '@material-ui/core/TableRow';// eslint-disable-line no-unused-vars
+import Paper from '@material-ui/core/Paper';// eslint-disable-line no-unused-vars
 import {drnd} from '../utilities/getCfg'
 
 import { withStyles } from '@material-ui/core/styles';
 var moment = require('moment');
 
 const styles = theme => ({
+  troot: {
+    width: '100%',
+    marginTop: theme.spacing.unit * 3,
+    overflowX: 'auto',
+  },
+  table: {
+    minWidth: 300,
+  },
   root: {
     heading: {
       fontSize: theme.typography.pxToRem(15),
@@ -37,11 +50,12 @@ const styles = theme => ({
   },
 });
 class Taxes extends React.Component{
-  state = {year:"", month:"", curmo:{}, gov:'Fed'}
+  state = {year:"", month:"", quarter:"", curmo:{}, gov:'Fed', qgov:'Fed', mexp:false, qexp:false}
   active='mabibi'
   componentDidMount(){
     const cyr = moment().format('YYYY')*1
     const cmo = moment().format('MM')-1
+    const cqtr = moment().quarter()-1
     const now= moment().format('MM/DD/YYYY')
     console.log('cyr: ', cyr)
     console.log('cmo: ', cmo-1)
@@ -50,7 +64,7 @@ class Taxes extends React.Component{
       yrarr.push(cyr+i)
     }
     const curmo = {cmo:'', paid:0.000, accrued:0.000}
-    this.setState({yrarr, curmo, now, cmo},()=>console.log('this.state: ', this.state))
+    this.setState({yrarr, curmo, now, cmo, cqtr},()=>console.log('this.state: ', this.state))
   }  
   getReport=(year)=>{
     console.log(year)
@@ -70,79 +84,164 @@ class Taxes extends React.Component{
     this.setState({year: e.target.value}, this.getReport(val))
   }
 
+  handleQtrChange=(e)=>{
+    const selqtr= e.target.value
+    const{numempl, cqtr, qgov, acctsqtr, fqtrtot, fmobyqtr}=this.state
+    if(numempl==undefined) {
+      window.alert('select year first')
+    }else{
+      this.setState({ qexp:true, quarter:selqtr })  
+    }
+    const qnum = selqtr=='last' ? cqtr : selqtr[1]*1
+    if(qgov=='Fed' ){
+      let d941 = {
+        qnum: qnum,
+        rows:[], 
+        isdata:false
+      }
+      let trows =[]
+      if(numempl[qnum]){
+        let marr = [0,0,0]
+        fmobyqtr
+        .filter((f)=>f.qtr==qnum)
+        .map((m)=>{
+            marr[(m.mo - 3*(qnum-1))-1]=m.paid
+        })
+        console.log('marr: ', marr)
+        const tm = marr.reduce((t,a)=>t+a,0)
+        console.log('tm: ', tm)
+        
+
+
+ 
+        const fedtaxable = acctsqtr[acctsqtr.findIndex((a)=>a.account=='a6041-fedTaxable' && a.qtr==qnum )].credit
+        const fedwh = acctsqtr[acctsqtr.findIndex((a)=>a.account=='a2050-fedWh' && a.qtr==qnum )].credit
+        const sswages = acctsqtr[acctsqtr.findIndex((a)=>a.account=='a6061-FICAtaxable' && a.qtr==qnum )].credit
+        const sstax = acctsqtr[acctsqtr.findIndex((a)=>a.account=='a2010-SS' && a.qtr==qnum )].credit
+        const sstx = drnd(sswages*.124)
+        const mediwages = acctsqtr[acctsqtr.findIndex((a)=>a.account=='a6061-FICAtaxable' && a.qtr==qnum )].credit
+        const meditax = acctsqtr[acctsqtr.findIndex((a)=>a.account=='a2020-medi' && a.qtr==qnum )].credit
+        const meditx = drnd(mediwages*.029)
+        const ficatx = drnd(meditx+sstx)
+        const tx = drnd(ficatx+fedwh)
+        const correct = drnd(meditax+sstax-(meditx+sstx))
+        const tottax= drnd(correct+tx)
+        const deposits = fqtrtot[fqtrtot.findIndex((a)=>a.qtr==qnum )].paid
+
+
+        trows=[
+          {ln:'Line 1.', desc:'Number of Employees for Quarter', val:numempl[qnum].numempl},
+          {ln:'Line 2.', desc:'Wages tips & other compensation', val:fedtaxable},
+          {ln:'Line 3.', desc:'Fed income tax withheld', val:fedwh},
+          {ln:'Line 5a. Col1', desc:'Taxable Social Security Wages', val:sswages},
+          {ln:'Line 5a. Col2', desc:'Social Security Tax', val:sstx},
+          {ln:'Line 5c. Col1', desc:'Taxable Medicare Wages', val:mediwages},
+          {ln:'Line 5c. Col2', desc:'Medicare Tax', val:meditx},
+          {ln:'Line 5e.', desc:'Add Fica', val:ficatx},
+          {ln:'Line 6.', desc:'Total taxes before adjustm.', val:tx},
+          {ln:'Line 7.', desc:'Current qtr adjustm for cents', val:correct},
+          {ln:'Line 10,12.', desc:'Total taxes after adjustm.', val:tottax},
+          {ln:'Line 13.', desc:'Total deposits for quarter', val:deposits},
+          {ln:'Line 16. Month 1', desc:'Month 1 deposit', val:marr[0]},
+          {ln:'Line 16. Month 2', desc:'Month 2 deposit', val:marr[1]},
+          {ln:'Line 16. Month 3', desc:'Month 3 deposit', val:marr[2]},
+          {ln:'Line 16. Total', desc:'Total liability for quarter', val:tottax},
+        ]
+        d941.rows=trows
+        d941.isdata=true
+      }
+      
+      this.setState({d941})
+    }else{
+      console.log('')
+    }
+  }
+
   handleMonthChange=(e)=>{
     console.log('e.target.name: ', e.target.name)
     console.log('e.target.value: ', e.target.value)
-    this.setState({month:e.target.value})
-    const{fmobyqtr, smobyqtr, cmo, gov}=this.state
-    let fedstate
-    if(gov=='Fed'){
-      fedstate =fmobyqtr.slice()
+    const{fmobyqtr, smobyqtr, gov}=this.state
+    if(fmobyqtr==undefined) {
+      window.alert('select year first')
     }else{
-      fedstate = smobyqtr.slice()
-    }
-    let showmox,qmo
-    switch (e.target.value) {
-      case 'month':
-        let curmo ={...this.state.curmo}
-        console.log('curmo: ', curmo)
-        const thmo = fedstate.filter((m)=>{
-          console.log('m: ', m, curmo.cmo)
-          return m.mo==cmo
-        })
-        console.log('thmo: ', thmo)
-        curmo.paid = thmo[0].paid
-        curmo.accrued =thmo[0].accrued
-        curmo.month = thmo[0].month
-        curmo.cmo = thmo[0].mo
-        showmox='but'
-        if(curmo.accrued-curmo.paid<=0){
-          showmox='none'
-        }
-        this.setState({curmo, showmox})
-        break;
-      case 'year':
-        this.setState({moarr: fedstate, showmox: 'list'})
-        console.log('in year')
-        break
-      case 'q1':
-        qmo=fedstate.filter((q)=>q.qtr==1)
-        this.setState({moarr: qmo, showmox: 'list'})
-        console.log('in year')
-        break
-      case 'q2':
-        qmo=fedstate.filter((q)=>q.qtr==2)
-        this.setState({moarr: qmo, showmox: 'list'})
-        console.log('in year')
-        break
-      case 'q3':
-        qmo=fedstate.filter((q)=>q.qtr==3)
-        this.setState({moarr: qmo, showmox: 'list'})
-        console.log('in year')
-        break
-      case 'q4':
-        qmo=fedstate.filter((q)=>q.qtr==4)
-        this.setState({moarr: qmo, showmox: 'list'})
-        console.log('in year')
-        break
-      default:
-        break;
+      this.setState({month:e.target.value, mexp:true })  
+      let fedstate
+      if(gov=='Fed'){
+        fedstate =fmobyqtr.slice()
+      }else{
+        fedstate = smobyqtr.slice()
+      }
+      let showmox,qmo
+      switch (e.target.value) {
+        case 'month':
+          const{cmo}=this.state
+          let curmo={...this.state.curmo}
+          console.log('curmo: ', curmo)
+          const thmo = fedstate.filter((m)=>{
+            console.log('m: ', m, cmo)
+            return m.mo==cmo
+          })
+          console.log('thmo: ', thmo)
+          curmo.paid = thmo[0].paid
+          curmo.accrued =thmo[0].accrued
+          curmo.month = thmo[0].month
+          curmo.cmo = thmo[0].mo
+          const pay = curmo.accrued-curmo.paid
+          let mofo = {...this.state.mofo}
+          mofo.ref =''
+          mofo.mo= curmo.cmo
+          mofo.month = curmo.month
+          mofo.pay=pay
+          mofo.paydate = this.state.now
+          //mofo = {ref: '', mo: curmo.cmo, month: curmo.month, pay:pay, paydate:this.state.now}
+          showmox='but'
+          if(pay<=0){
+            showmox='none'
+          }
+          this.setState({curmo, mofo, showmox})
+          break;
+        case 'year':
+          this.setState({moarr: fedstate, showmox: 'list'})
+          console.log('in year')
+          break
+        case 'q1':
+          qmo=fedstate.filter((q)=>q.qtr==1)
+          this.setState({moarr: qmo, showmox: 'list'})
+          console.log('in year')
+          break
+        case 'q2':
+          qmo=fedstate.filter((q)=>q.qtr==2)
+          this.setState({moarr: qmo, showmox: 'list'})
+          console.log('in year')
+          break
+        case 'q3':
+          qmo=fedstate.filter((q)=>q.qtr==3)
+          this.setState({moarr: qmo, showmox: 'list'})
+          console.log('in year')
+          break
+        case 'q4':
+          qmo=fedstate.filter((q)=>q.qtr==4)
+          this.setState({moarr: qmo, showmox: 'list'})
+          console.log('in year')
+          break
+        default:
+          break;
+      }
     }
   }
+
   txtChanged = field => e =>{
     console.log('txtChanged')
     console.log('field, e: ', field, e)
     const {mofo}=this.state
     mofo[field]=e.target.value
     this.setState({mofo})
-    // let curperson= this.props.eperson.curperson
-    // curperson[field] = e.target.value
-    // this.props.xmitChange({curperson:curperson});
   }
 
   recordPayment=()=>{
     console.log('this..fmo: ', this.state.fmobyqtr)
     const{rmofo, mofo, acctsmo, gov, fmobyqtr, smobyqtr}=this.state
+    console.log('this.state: ', this.state)
     if(!rmofo){
       const {cmo, paid, accrued, month}=this.state.curmo
       const blmofo = {ref: '', mo: cmo, month: month, pay:accrued-paid, paydate:this.state.now}
@@ -216,27 +315,40 @@ class Taxes extends React.Component{
 
     }
   }
-  selectMo=(field)=>()=>{
-    //console.log('field: ', field, idx) 
+  selectMo=(field, idx)=>()=>{
+    console.log('in selectMo: ')
+    console.log('field: ', field, idx) 
     const pay = field.accrued-field.paid
     let curmo ={...this.state.curmo} 
     curmo.paid = field.paid
     curmo.accrued =field.accrued
     curmo.month = field.month
     curmo.cmo = field.mo
-    // const fmobyqtr= this.state.fmobyqtr.slice()
-    // console.log('fmobyqtr: ', fmobyqtr)
-    // console.log('fmobyqtr.findIndex((f)=>f.mo==field.mo): ', fmobyqtr.findIndex((f)=>f.mo==field.mo))
-    // console.log('field: ', field)
-    // fmobyqtr[fmobyqtr.findIndex((f)=>f.mo==field.mo)].paid=field.accrued-field.paid
-    const mofo = {ref: '', mo: field.mo, month: field.month, pay:pay, paydate:this.state.now}
-    this.setState({curmo, rmofo:true, showmox:'but', mofo},this.recordPayment())
+    let mofo = {...this.state.mofo}
+    mofo = {ref: '', mo: field.mo, month: field.month, pay:pay, paydate:this.state.now}
+    let showmox = 'but'
+    if(pay<=0){
+      showmox='none'
+    }
+    this.setState({curmo, rmofo:true, showmox, mofo:mofo})
   }
 
   switchGov=(e)=>{
     this.setState({gov:e.target.value})
   }
 
+  switchQgov=(e)=>{
+    this.setState({qgov:e.target.value})
+  } 
+  
+  clickCaret=(xp)=>()=>{
+    if(xp=='mexp'){
+      this.setState({mexp:false})
+    }else{
+      this.setState({qexp:false})
+    }
+  }
+  
   renderMoFo = ()=>{
     const { classes } = this.props;
     const {mofo}=this.state
@@ -321,11 +433,52 @@ class Taxes extends React.Component{
     }
   }
 
+  renderQox=()=>{
+    const { classes } = this.props;
+    const{qgov}=this.state
+    if(qgov=="Fed" && this.state.d941){
+      const{d941}=this.state
+      const{rows, isdata, qnum}=d941
+     return(
+        <div>
+          <h4>{qgov} 941 Data for Quarter {qnum}</h4>
+          {!isdata  && <p> no data for this quarter</p>}
+          <Paper className={classes.troot}>
+            <Table className={classes.table}>
+              <TableBody>
+                {rows.map((row,i)=> {
+                  return (
+                    <TableRow key={i}>
+                      <TableCell >
+                        {row.ln}
+                      </TableCell>
+                      <TableCell component="th" scope="row">
+                        {row.desc}
+                      </TableCell>
+                      <TableCell numeric>{row.val}</TableCell>
+                    </TableRow>
+                  );
+                })}
+              </TableBody>
+            </Table>
+          </Paper>
+        </div>
+      )
+    }else if(qgov=="State"){
+      return(
+        <div>
+          <h4>{qgov} 941 Data</h4>
+        </div>
+      )
+    }
+
+  }
+
   render(){
     const { classes } = this.props;
-    const{yrarr, curmo, gov}=this.state
+    const{yrarr, gov, qgov, mexp, qexp}=this.state
     const mox = this.renderMoX()
-    console.log('curmo: ', curmo)
+    const qox = this.renderQox()
     if (yrarr){
       return(
         <div>
@@ -347,12 +500,11 @@ class Taxes extends React.Component{
             </Select>
           </FormControl>
           </form>
-          <ExpansionPanel>
-            <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+          <ExpansionPanel expanded={mexp}>
+            <ExpansionPanelSummary>
               <div>
               <FormControl className={classes.formControl}>
                 <InputLabel htmlFor="age-simple">Monthly {gov}  </InputLabel>
-                
                 <Select
                   value={this.state.month}
                   onChange={this.handleMonthChange}
@@ -382,26 +534,61 @@ class Taxes extends React.Component{
                     <label htmlFor="s">state </label>
                   </span>
                 </div>
-                <div style={{float:'right', width:'50%'}}>
+
+              </div>
+            </ExpansionPanelSummary>
+            <ExpansionPanelDetails>
+              <div>
+              <i className="material-icons" onClick={this.clickCaret('mexp')} >keyboard_arrow_up</i>
+                <div>
                   Month: {this.state.curmo.month} <br/>
                   Accr.: {drnd(this.state.curmo.accrued)} <br/>
                   Paid: {drnd(this.state.curmo.paid)} 
                 </div>
+                {mox}
+              </div>
+            </ExpansionPanelDetails>
+          </ExpansionPanel>
+          <ExpansionPanel expanded={qexp}>
+            <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+            <div>
+              <FormControl className={classes.formControl}>
+                <InputLabel htmlFor="age-simple">Quarterly {qgov}  </InputLabel>
+                <Select
+                  value={this.state.quarter}
+                  onChange={this.handleQtrChange}
+                  inputProps={{
+                    name: 'quarter',
+                    id: 'age-simple',
+                  }}
+                > 
+                  <MenuItem value={'last'}>{'last quarter'}</MenuItem>
+                  <MenuItem value={'q1'}>{'quarter 1'}</MenuItem>
+                  <MenuItem value={'q2'}>{'quarter 2'}</MenuItem>
+                  <MenuItem value={'q3'}>{'quarter 3'}</MenuItem>
+                  <MenuItem value={'q4'}>{'quarter 4'}</MenuItem>
+                </Select>
+                <FormHelperText>Paid/Accrued</FormHelperText>
+              </FormControl>
+                <div style={{float:'right'}}>
+                  <span>
+                    <input checked={qgov=='Fed'} id='f' type="radio" name='qgov' value='Fed' 
+                      onChange={this.switchQgov} />
+                    <label htmlFor="f">fed  </label>
+                  </span>   
+                  <span>
+                    <input checked={qgov=='State'} id='s' type="radio" name='qgov' value='State' 
+                      onChange={this.switchQgov}/>
+                    <label htmlFor="s">state </label>
+                  </span>
+                </div>
               </div>
             </ExpansionPanelSummary>
             <ExpansionPanelDetails>
-              {mox}
-              
-            </ExpansionPanelDetails>
-          </ExpansionPanel>
-          <ExpansionPanel>
-            <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-              <Typography className={classes.heading}>Expansion Panel 2</Typography>
-            </ExpansionPanelSummary>
-            <ExpansionPanelDetails>
-            <Typography>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex,sit amet blandit leo lobortis eget.
-            </Typography>
+            <div>
+              <i className="material-icons" onClick={this.clickCaret('qexp')} >keyboard_arrow_up</i>
+              {qox}
+            </div>
             </ExpansionPanelDetails>
           </ExpansionPanel>
         </div>

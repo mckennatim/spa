@@ -53,7 +53,8 @@ a5010-COGS + a6000-labor  = a6010-gross + a6060-burden
 
 
 ##
-### 195-pay-report-mo
+### 196-pay-report-f941
+### 195-pay-report-mo-b
 ### 194-tcard-jobcost-day
 Fixed jobcost job entry to get rid of the 0 and have input be text so iphone detects return. Added current day highlighting so you can keep track of which day you are working on. maybe need mor padding around punc clock. Added margin of 4px on top of the timeclock
 ### 193-pay-reports-mo
