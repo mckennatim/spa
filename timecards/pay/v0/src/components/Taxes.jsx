@@ -1,6 +1,6 @@
 import React from 'react'// eslint-disable-line no-unused-vars
 // import {mapClass2Element} from '../hoc/mapClass2Element'
-import {fetchTaxes, postPayment} from '../services/fetches'
+import {fetchTaxes, postPayment, fetchPayments} from '../services/fetches'
 import InputLabel from '@material-ui/core/InputLabel';// eslint-disable-line no-unused-vars
 import MenuItem from '@material-ui/core/MenuItem';// eslint-disable-line no-unused-vars
 import FormControl from '@material-ui/core/FormControl';// eslint-disable-line no-unused-vars
@@ -86,21 +86,27 @@ class Taxes extends React.Component{
 
   handleQtrChange=(e)=>{
     const selqtr= e.target.value
-    const{numempl, cqtr, qgov, acctsqtr, fqtrtot, fmobyqtr}=this.state
+    const{numempl, cqtr, qgov, year}=this.state
+    const qnum = selqtr=='last' ? cqtr : selqtr[1]*1
     if(numempl==undefined) {
-      window.alert('select year first')
+      window.alert('select year first or else no records for that year')
     }else{
       this.setState({ qexp:true, quarter:selqtr })  
     }
-    const qnum = selqtr=='last' ? cqtr : selqtr[1]*1
+    const nempyq = numempl[numempl.findIndex((n)=>n.qtr==qnum && n.year==year)]
+    console.log('nempyq: ', nempyq) 
+    const nemp = nempyq  && nempyq.numempl   
+
     if(qgov=='Fed' ){
+      const{acctsqtr, fqtrtot, fmobyqtr}=this.state
+
       let d941 = {
         qnum: qnum,
         rows:[], 
         isdata:false
       }
       let trows =[]
-      if(numempl[qnum]){
+      if(nempyq){
         let marr = [0,0,0]
         fmobyqtr
         .filter((f)=>f.qtr==qnum)
@@ -110,10 +116,6 @@ class Taxes extends React.Component{
         console.log('marr: ', marr)
         const tm = marr.reduce((t,a)=>t+a,0)
         console.log('tm: ', tm)
-        
-
-
- 
         const fedtaxable = acctsqtr[acctsqtr.findIndex((a)=>a.account=='a6041-fedTaxable' && a.qtr==qnum )].credit
         const fedwh = acctsqtr[acctsqtr.findIndex((a)=>a.account=='a2050-fedWh' && a.qtr==qnum )].credit
         const sswages = acctsqtr[acctsqtr.findIndex((a)=>a.account=='a6061-FICAtaxable' && a.qtr==qnum )].credit
@@ -127,10 +129,8 @@ class Taxes extends React.Component{
         const correct = drnd(meditax+sstax-(meditx+sstx))
         const tottax= drnd(correct+tx)
         const deposits = fqtrtot[fqtrtot.findIndex((a)=>a.qtr==qnum )].paid
-
-
         trows=[
-          {ln:'Line 1.', desc:'Number of Employees for Quarter', val:numempl[qnum].numempl},
+          {ln:'Line 1.', desc:'Number of Employees for Quarter', val:nemp},
           {ln:'Line 2.', desc:'Wages tips & other compensation', val:fedtaxable},
           {ln:'Line 3.', desc:'Fed income tax withheld', val:fedwh},
           {ln:'Line 5a. Col1', desc:'Taxable Social Security Wages', val:sswages},
@@ -150,10 +150,41 @@ class Taxes extends React.Component{
         d941.rows=trows
         d941.isdata=true
       }
-      
       this.setState({d941})
-    }else{
-      console.log('')
+    }else if(qgov=='State' ){
+      fetchPayments(year)
+      .then((res)=>{
+        if(!res.qmessage){
+          this.setState({txpayments:res.results},()=>{
+            const{sqtrtot, year, txpayments}=this.state
+            console.log('txpayments: ', txpayments)
+            const qpayments =txpayments.filter((f)=>f.gov=='state' && f.qtr==qnum)
+            let s941 = {
+              qnum: qnum,
+              isdata:false,
+              rows:[]
+            }
+            const stwh = sqtrtot[sqtrtot.findIndex((a)=>a.qtr==qnum && a.year==year )].accrued
+            const stpaid = sqtrtot[sqtrtot.findIndex((a)=>a.qtr==qnum && a.year==year )].paid
+            const rows=[
+              {ln:'', desc:'Number of Employees for Quarter', val:nemp},
+              {ln:'line 1.', desc:'Amount withheld', val:stwh},
+              {ln:'line 2.', desc:'Previous payments made', val:stpaid},
+              {ln:'line 5.', desc:'Total tax due', val:drnd(stwh-stpaid)},
+            ]
+            qpayments.map((q)=>{
+              rows.push({
+                ln:'ref: '+q.ref,
+                desc: q.month +': ' + q.paydate,
+                val: q.paid
+              })
+            })
+            s941.rows = rows
+            this.setState({s941})
+            console.log('dog ia sss')
+          })
+        }
+      })
     }
   }
 
@@ -254,7 +285,7 @@ class Taxes extends React.Component{
       const someid=`paid: ${mofo.paydate}`
       const dbpaydate = moment(`${this.state.year}-${mofo.mo.toString().padStart(2,'0')}-01`, 'YYYY-MM-DD').endOf('month').format('YYYY-MM-DD')
       console.log('dbpaydate: ', dbpaydate, someid)
-      const blentry={account:'', wdprt:mofo.ref, someid:someid, job:'fed', cat:'payment', date:dbpaydate, somenum: 0, debit:0, credit:0}
+      const blentry={account:'', wdprt:mofo.ref, someid:someid, job:'fed', cat:'WhTaxPayment', date:dbpaydate, somenum: 0, debit:0, credit:0}
       let fedstate
       if(gov=='Fed'){
         fedstate =fmobyqtr.slice()
@@ -464,11 +495,38 @@ class Taxes extends React.Component{
           </Paper>
         </div>
       )
-    }else if(qgov=="State"){
+    }else if(qgov=="State" && this.state.s941){
+      const{s941}=this.state
+      console.log('s941: ', s941)
+      const{isdata, rows, qnum}=s941
       return(
         <div>
-          <h4>{qgov} 941 Data</h4>
+          <h4>{qgov} 941 Data for Quarter {qnum}</h4>
+          {!isdata  && <p> no data for this quarter</p>}
+          <Paper className={classes.troot}>
+            <Table className={classes.table}>
+              <TableBody>
+                {rows.map((row,i)=> {
+                  return (
+                    <TableRow key={i}>
+                      <TableCell >
+                        {row.ln}
+                      </TableCell>
+                      <TableCell component="th" scope="row">
+                        {row.desc}
+                      </TableCell>
+                      <TableCell numeric>{row.val}</TableCell>
+                    </TableRow>
+                  );
+                })}
+              </TableBody>
+            </Table>
+          </Paper>          
         </div>
+      )
+    }else{
+      return(
+        <h4>something has gon awry</h4>
       )
     }
 

@@ -324,5 +324,29 @@ const fetchTaxes=(year)=>{
   }
 }
 
-export{fetchSettings, fetchPay, fetchAccrued, postPay, putPay, newPay, deletePay, putCk, fetchCurrent, fetchRates, fetchTaxes, postJobRates, postJournal, postPayment}
+const fetchPayments=(year)=>{
+  var lsh = ls.getItem();
+  if(geta('lsh.token', lsh)){
+    let url= cfg.url.api+'/payroll/payments/'+year
+    let options= {
+      headers: {'Authorization': 'Bearer '+ lsh['token'],
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      method: 'GET'
+    }  
+    return(
+      fetch(url, options)
+        .then((response)=>response.json())
+        .then((json)=>{
+          return json
+        })
+    )        
+  }else{
+    let p2 =Promise.resolve({qmessage:'you dont exist! '})
+    return p2
+  }
+}
+
+export{fetchSettings, fetchPay, fetchAccrued, postPay, putPay, newPay, deletePay, putCk, fetchCurrent, fetchRates, fetchTaxes, fetchPayments, postJobRates, postJournal, postPayment}
 
