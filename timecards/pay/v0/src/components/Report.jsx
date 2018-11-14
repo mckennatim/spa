@@ -1,6 +1,7 @@
 import React from 'react'// eslint-disable-line no-unused-vars
 import {mapClass2Element} from '../hoc/mapClass2Element'
 import {Taxes} from './Taxes.jsx'// eslint-disable-line no-unused-vars
+import {JobCosts} from './JobCosts.jsx'// eslint-disable-line no-unused-vars
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';// eslint-disable-line no-unused-vars
@@ -34,20 +35,49 @@ class Report extends React.Component{
   active='mabibi'
 
   componentDidMount=()=>{
-    this.getReport()
+    this.getQuery()
   }  
 
   handleChange = (event, value) => {
-    this.setState({ value });
+    const loc = location.href.split('?')[0]
+    console.log('hash: ', location.hash)
+    console.log('value: ', value)
+    if(value==0){
+      location = loc+'?taxes'
+    }else if (value==1){
+      location = loc+'?jobcosts'
+    }
+
+    //this.setState({ value });
   };
   
-
-  getReport=()=>{
-    console.log('dog')
+  getQuery=()=>{
+    const {params}= this.props.cambio.page
+    if(params && params.query){
+      const{query}=params
+      console.log('query: ', query)
+      if(query=='jobcosts'){
+        this.setState({value:1})
+      }else if(query=='taxes'){
+        this.setState({value:0})
+      }
+    }
   }
+
+
   render=()=>{
-    const { classes } = this.props;
-    const { value } = this.state;
+    const { classes, cambio } = this.props;
+    const{params}=cambio.page
+    let { value } = this.state;
+    if(params && params.query){
+      const{query}= params
+      console.log('query: ', query)
+      if(query=='jobcosts'){
+        value=1
+      }else if(query=='taxes'){
+        value=0
+      }
+    }
     return (
       <div className={classes.root}>
         <AppBar position="static">
@@ -57,7 +87,7 @@ class Report extends React.Component{
           </Tabs>
         </AppBar>
         {value === 0 && <TabContainer><Taxes/></TabContainer>}
-        {value === 1 && <TabContainer>JobCosts</TabContainer>}
+        {value === 1 && <TabContainer><JobCosts/></TabContainer>}
       </div>
     );
   }

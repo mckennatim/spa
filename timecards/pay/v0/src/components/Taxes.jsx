@@ -9,8 +9,8 @@ import ExpansionPanel from '@material-ui/core/ExpansionPanel';// eslint-disable-
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';// eslint-disable-line no-unused-vars
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';// eslint-disable-line no-unused-vars
 import FormHelperText from '@material-ui/core/FormHelperText';// eslint-disable-line no-unused-vars
-import Typography from '@material-ui/core/Typography';// eslint-disable-line no-unused-vars
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';// eslint-disable-line no-unused-vars
+//import Typography from '@material-ui/core/Typography';// eslint-disable-line no-unused-vars
+//import ExpandMoreIcon from '@material-ui/icons/ExpandMore';// eslint-disable-line no-unused-vars
 import Button from '@material-ui/core/Button';// eslint-disable-line no-unused-vars
 import TextField from '@material-ui/core/TextField';// eslint-disable-line no-unused-vars
 import Table from '@material-ui/core/Table';// eslint-disable-line no-unused-vars 
@@ -608,7 +608,7 @@ class Taxes extends React.Component{
             </ExpansionPanelDetails>
           </ExpansionPanel>
           <ExpansionPanel expanded={qexp}>
-            <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+            <ExpansionPanelSummary>
             <div>
               <FormControl className={classes.formControl}>
                 <InputLabel htmlFor="age-simple">Quarterly {qgov}  </InputLabel>
