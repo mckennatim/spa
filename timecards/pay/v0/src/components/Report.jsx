@@ -55,7 +55,6 @@ class Report extends React.Component{
     const {params}= this.props.cambio.page
     if(params && params.query){
       const{query}=params
-      console.log('query: ', query)
       if(query=='jobcosts'){
         this.setState({value:1})
       }else if(query=='taxes'){
@@ -71,7 +70,6 @@ class Report extends React.Component{
     let { value } = this.state;
     if(params && params.query){
       const{query}= params
-      console.log('query: ', query)
       if(query=='jobcosts'){
         value=1
       }else if(query=='taxes'){

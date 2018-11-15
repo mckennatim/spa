@@ -212,6 +212,7 @@ const postPayment=(jor)=>{
   }
 }
 
+
 const putPay=(person)=>{
   console.log('person: ', person)
   var lsh = ls.getItem();
@@ -257,6 +258,30 @@ const putCk=(person)=>{
     return p2
   }
 }
+
+const putBid=(bid)=>{
+  const bidstr =JSON.stringify(bid)
+  var lsh = ls.getItem();
+  if(geta('lsh.token', lsh)){
+    let url= cfg.url.api+'/payroll/bid'
+    let options= {
+      headers: {'Authorization': 'Bearer '+ lsh['token'],
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      method: 'PUT',
+      body: bidstr
+    }  
+    return(
+      fetch(url, options)
+        .then((response)=>response.json())
+    )        
+  }else{
+    let p2 =Promise.resolve({qmessage:'you dont exist! '})
+    return p2
+  }
+}
+
 const newPay=(person)=>{
   var lsh = ls.getItem();
   if(geta('lsh.token', lsh)){
@@ -372,5 +397,29 @@ const fetchJobCosts=(year)=>{
   }
 }
 
-export{fetchSettings, fetchPay, fetchAccrued, postPay, putPay, newPay, deletePay, putCk, fetchCurrent, fetchRates, fetchTaxes, fetchPayments, fetchJobCosts, postJobRates, postJournal, postPayment}
+const fetchBids=()=>{
+  var lsh = ls.getItem();
+  if(geta('lsh.token', lsh)){
+    let url= cfg.url.api+'/payroll/bids/'
+    let options= {
+      headers: {'Authorization': 'Bearer '+ lsh['token'],
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      method: 'GET'
+    }  
+    return(
+      fetch(url, options)
+        .then((response)=>response.json())
+        .then((json)=>{
+          return json
+        })
+    )        
+  }else{
+    let p2 =Promise.resolve({qmessage:'you dont exist! '})
+    return p2
+  }
+}
+
+export{fetchSettings, fetchPay, fetchAccrued, postPay, putPay, newPay, deletePay, putCk, fetchCurrent, fetchRates, fetchTaxes, fetchPayments, fetchJobCosts, postJobRates, postJournal, postPayment, putBid, fetchBids}
 

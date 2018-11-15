@@ -41,6 +41,11 @@ https://www.accountingcapital.com/books-and-accounts/what-is-adjusted-trial-bala
 https://strategiccfo.com/standard-chart-of-accounts/
 http://www.quickbooks-training.net/standard-chart-accounts-account-types/
 
+https://www.probuilder.com/how-use-percentage-completion-accounting
+
+https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=9&ved=2ahUKEwjs1KinrtTeAhWPTN8KHbhUCmIQFjAIegQIBBAC&url=http%3A%2F%2Fecon.ucsb.edu%2F~harmon%2Fchapter19jes.pdf&usg=AOvVaw0ovP-peMmY8NT5yYX4o6r9
+
+
 timecards4jobs
 
 hours4job
@@ -53,6 +58,8 @@ a5010-COGS + a6000-labor  = a6010-gross + a6060-burden
 
 
 ##
+### 199-timecards-plumbing-done
+### 198=pay-reports-jobcosts
 ### 197-pay-reports-s941
 ### 196-pay-report-f941
 ### 195-pay-report-mo-b
