@@ -29,7 +29,7 @@ module.exports={
       'process.env.NODE_ENV': JSON.stringify('production')
     }),
     new webpack.optimize.UglifyJsPlugin({minimize: true}),
-    new CleanWebpackPlugin(['persons/*.js*']),
+    new CleanWebpackPlugin(['persons/*.js','persons/*.js.map' ]),
     new HtmlWebpackPlugin({
       hash: false,
       template: './src/index.html',

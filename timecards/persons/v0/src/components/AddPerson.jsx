@@ -3,7 +3,7 @@ var moment = require('moment');
 import {makeHref} from '../utilities/getCfg'
 import {router} from '../app'
 import {mapClass2Element} from '../hoc/mapClass2Element'
-import { putPerson, deletePerson, obliteratePerson } from '../services/fetches';
+import { putPerson, deletePerson, obliteratePerson, fetchState } from '../services/fetches';
 import {fetchTokdata} from '../../../../common/v0/src/services/fetches'
 import {setKeyVal} from '../actions/personacts';
 //import {setKeyVal} from '../actions/personacts';
@@ -16,10 +16,13 @@ import Checkbox from '@material-ui/core/Checkbox';// eslint-disable-line no-unus
 import FormControlLabel from '@material-ui/core/FormControlLabel';// eslint-disable-line no-unused-vars
 import FormGroup from '@material-ui/core/FormGroup';// eslint-disable-line no-unused-vars
 import InputAdornment from '@material-ui/core/InputAdornment';// eslint-disable-line no-unused-vars
-import FormControl from '@material-ui/core/FormControl';// eslint-disable-line no-unused-vars
 import FormLabel from '@material-ui/core/FormLabel';// eslint-disable-line no-unused-vars
 import Radio from '@material-ui/core/Radio';// eslint-disable-line no-unused-vars
 import RadioGroup from '@material-ui/core/RadioGroup';// eslint-disable-line no-unused-vars
+import InputLabel from '@material-ui/core/InputLabel';// eslint-disable-line no-unused-vars
+import MenuItem from '@material-ui/core/MenuItem';// eslint-disable-line no-unused-vars
+import FormControl from '@material-ui/core/FormControl';// eslint-disable-line no-unused-vars
+import Select from '@material-ui/core/Select';// eslint-disable-line no-unused-vars
 
 
 
@@ -57,6 +60,7 @@ const styles = theme => ({
   },
   formControl: {
     margin: theme.spacing.unit * 3,
+    minWidth: 200,
   },
   group: {
     margin: `${theme.spacing.unit}px 0`,
@@ -64,7 +68,13 @@ const styles = theme => ({
 });
 
 class AddPerson extends React.Component {
-  state = {eperson:this.props.eperson, newup:'update', istokdata:true}
+  state = {
+    eperson:this.props.eperson, 
+    newup:'update', 
+    istokdata:true,
+    haylocal:false,
+    localities:[]
+  }
 
   componentDidMount() {
     this.setState({eperson:this.props.eperson})
@@ -97,9 +107,33 @@ class AddPerson extends React.Component {
     this.props.xmitChange({curperson:curperson});
   }
 
+  ck4local = (st)=>{
+    fetchState(st)
+    .then((res)=>{
+      console.log('res: ', res)
+      const ratesobj = JSON.parse(res[0].ratesobj)
+      console.log('ratesobj: ', ratesobj)
+      if(ratesobj && ratesobj.local && ratesobj.local.length>0){
+        const localities = ratesobj.local.map((l)=>l.locality)
+        this.setState({haylocal:true, localities})
+      }
+    })
+  }
+
+  stateChanged = field => e =>{
+    let st = e.target.value.toUpperCase()
+    if (st.length==2){
+      console.log('check4local')
+      this.ck4local(st)
+    }
+    let curperson= this.props.eperson.curperson
+    curperson[field] = st
+    this.props.xmitChange({curperson:curperson})
+  }
+
   txtChanged = field => e =>{
     console.log('txtChanged')
-    console.log('field, e: ', field, e)
+    console.log('field, e: ', field, e.target.value)
     let curperson= this.props.eperson.curperson
     curperson[field] = e.target.value
     this.props.xmitChange({curperson:curperson});
@@ -172,6 +206,7 @@ class AddPerson extends React.Component {
     const { classes } = this.props;
     const{curperson, update, isPartner}=this.props.eperson
     const newup = update ? 'udpate' : 'new'
+    const{localities, haylocal}= this.state
     return (
       <div style={astyles.outer.div}>
       <form style={astyles.inner.div} className={classes.container} noValidate autoComplete="off">
@@ -222,16 +257,57 @@ class AddPerson extends React.Component {
           label="St"
           className={classes.textField}
           value={curperson.st}
-          onChange={this.txtChanged('st')}
+          onChange={this.stateChanged('st')}
           helperText='use the 2 letter abreviation'
           margin="dense"
         /> 
+        {haylocal && 
+          <FormControl className={classes.formControl}>
+            <InputLabel htmlFor="age-simple">Locality</InputLabel>
+            <Select
+              value={curperson.locality}
+              onChange={this.txtChanged('locality')}
+              inputProps={{
+                name: 'locality',
+                id: 'locality-simple',
+              }}
+            > 
+              {localities.map((l,i)=>
+                <MenuItem key={i} value={l}>{l}</MenuItem>
+                )}
+            </Select>
+          </FormControl>
+        }
         <TextField
           id="standard-name"
           label="Zip"
           className={classes.textField}
           value={curperson.zip}
           onChange={this.txtChanged('zip')}
+          margin="dense"
+        /> 
+        <TextField
+          id="standard-name"
+          label="Phone"
+          className={classes.textField}
+          value={curperson.phone}
+          onChange={this.txtChanged('phone')}
+          margin="dense"
+        /> 
+        <TextField
+          id="standard-name"
+          label="Emergency Person"
+          className={classes.textField}
+          value={curperson.emerperson}
+          onChange={this.txtChanged('emerperson')}
+          margin="dense"
+        /> 
+        <TextField
+          id="standard-name"
+          label="Emergency Phone"
+          className={classes.textField}
+          value={curperson.emerphone}
+          onChange={this.txtChanged('emerphone')}
           margin="dense"
         /> 
         <FormControl component="fieldset" className={classes.formControl}>

@@ -24,6 +24,9 @@ You are now ready to run the update:
     npm install
 
 ncheckalldddd
+## ux
+https://medium.freecodecamp.org/ux-best-practices-how-to-design-scannable-app-screenshots-89e370bf433e
+
 ## tags
 https://gridbyexample.com/examples/example13/
 https://www.mozilla.org/en-US/firefox/60.0a2/whatsnew/#cssgrid
@@ -58,6 +61,7 @@ a5010-COGS + a6000-labor  = a6010-gross + a6060-burden
 
 
 ##
+### 200-signup
 ### 199-timecards-plumbing-done
 ### 198=pay-reports-jobcosts
 ### 197-pay-reports-s941

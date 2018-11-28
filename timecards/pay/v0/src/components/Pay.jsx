@@ -3,7 +3,7 @@ var moment = require('moment');
 // import {router} from '../app'
 import {mapClass2Element} from '../hoc/mapClass2Element'
 // import {fetchPay, postPay, fetchSettings, fetchRates, postJobRates, postJournal} from '../services/fetches'
-import {fetchPay, fetchRates, fetchAccrued, postJournal, postJobRates} from '../services/fetches'
+import {fetchPay, fetchRates, fetchState, fetchAccrued, postJournal, postJobRates} from '../services/fetches'
 // import{adjWdprtDn, padWk} from  '../../../../common/v0/src/utilities/reroo'
 // import { setEdit, setKeyVal} from '../actions/personacts';
 import { setKeyVal} from '../actions/personacts';
@@ -184,6 +184,12 @@ class Pay extends React.Component{
       this.setState({persons:dedpers},()=>this.calcWh())
   }
 
+  getStateRates=(st)=>{
+    fetchState(st)
+    .then((res)=>{
+      console.log('res: ', res)
+    })
+  }
 
   calcWh=()=>{
     const lookupFedTax=(fedwh, singmar,period, subj2wh, w4add)=>{
@@ -219,6 +225,9 @@ class Pay extends React.Component{
             sttax = sttax>0 ? sttax : 0
           }
           return {sttax, statetaxable, stateded}
+        case "MD":
+          window.alert('We arent quite set up for '+p.st)
+          return {sttax:0, statetaxable:0, stateded:0}
         default:  
           window.alert('We arent set up for '+p.st)
           return 0
@@ -1381,3 +1390,42 @@ const style = {
   }
 }
 
+
+const MD = {
+  progress:[
+    {excess:2885, add: .0025}, 
+    {excess:3365, add: .005},
+    {excess:4327, add: .0075},
+    {excess:5769, add: .01}
+  ],
+  local:[
+    {locality: 'Delaware', rate:.032, progressive:false},
+    {locality: "Allegany County", rate:.0305, progressive:true} ,
+    {locality: "Anne Arundel County", rate:.0250, progressive:true} ,
+    {locality: "Baltimore City", rate:.0320, progressive:true} ,
+    {locality: "Baltimore County", rate:.0283, progressive:true} ,
+    {locality: "Calvert County", rate:.0300, progressive:true} ,
+    {locality: "Caroline County", rate:.0273, progressive:true} ,
+    {locality: "Carroll County", rate:.0303, progressive:true} ,
+    {locality: "Cecil County", rate:.0280, progressive:true} ,
+    {locality: "Charles County", rate:.0303, progressive:true} ,
+    {locality: "Dorchester County", rate:.0262, progressive:true} ,
+    {locality: "Frederick County", rate:.0296, progressive:true} ,
+    {locality: "Garrett County", rate:.0265, progressive:true} ,
+    {locality: "Harford County", rate:.0306, progressive:true} ,
+    {locality: "Howard County", rate:.0320, progressive:true} ,
+    {locality: "Kent County", rate:.0285, progressive:true} ,
+    {locality: "Montgomery County", rate:.0320, progressive:true} ,
+    {locality: "Prince George's County", rate:.0320, progressive:true} ,
+    {locality: "Queen Anne's County", rate:.0320, progressive:true} ,
+    {locality: "St. Mary's County", rate:.0300, progressive:true} ,
+    {locality: "Somerset County", rate:.0320, progressive:true} ,
+    {locality: "Talbot County", rate:.0240, progressive:true} ,
+    {locality: "Washington County", rate:.0280, progressive:true} ,
+    {locality: "Wicomico County", rate:.0320, progressive:true} ,
+    {locality: "Worcester County", rate:.0175, progressive:true} ,
+    {locality: "Nonresidents", rate:.0175, progressive:true}     
+  ]
+}
+
+console.log('JSON.stringify(MD): ', JSON.stringify(MD))

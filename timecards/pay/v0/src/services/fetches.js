@@ -49,6 +49,30 @@ const fetchRates=()=>{
     return p2
   }
 }
+const fetchState=(st)=>{
+  var lsh = ls.getItem();
+  if(geta('lsh.token', lsh)){
+    let url= cfg.url.api+'/payroll/state/'+st
+    let options= {headers: {'Authorization': 'Bearer '+ lsh['token']}}
+    return(
+      fetch(url, options)
+        .then((response)=>response.json())
+        .then((json)=>{
+          if(json.message){
+            return {qmessage: json.message}
+          }else{
+            return json
+          }
+        })
+        .catch((e)=>{
+          return {qmessage: e.message}
+        })
+      )         
+  }else{
+    let p2 =Promise.resolve({qmessage:'you dont exist! Try re-registering '})
+    return p2
+  }
+}
 const fetchPay=()=>{
   var lsh = ls.getItem();
   if(geta('lsh.token', lsh)){
@@ -421,5 +445,5 @@ const fetchBids=()=>{
   }
 }
 
-export{fetchSettings, fetchPay, fetchAccrued, postPay, putPay, newPay, deletePay, putCk, fetchCurrent, fetchRates, fetchTaxes, fetchPayments, fetchJobCosts, postJobRates, postJournal, postPayment, putBid, fetchBids}
+export{fetchSettings, fetchPay, fetchAccrued, postPay, putPay, newPay, deletePay, putCk, fetchCurrent, fetchRates, fetchTaxes, fetchPayments, fetchJobCosts, postJobRates, postJournal, postPayment, putBid, fetchBids, fetchState}
 

@@ -1,5 +1,5 @@
 {
-  "name": "Timecards Pay",
+  "name": "Splash-Tcard",
   "icons": [
     {
       "src": "icons/android/mipmap-ldpi/ic_launcher.png",
@@ -45,6 +45,5 @@
     }
   ],
   "start_url": "index.html",
-  "display": "standalone",
-  "orientation": "portrait"
+  "display": "standalone"
 }

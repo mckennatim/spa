@@ -303,6 +303,10 @@ class Persons extends React.Component{
               {aperson.street}<br/>
               </div> }
               {aperson.city}, {aperson.st} {aperson.zip}<br/>
+              {aperson.locality}<br/>
+              {aperson.phone}<br/>
+              emer.person: {aperson.emerperson}<br/>
+              emer.phone: {aperson.emerphone}<br/>
               role: {aperson.role}<br/>
               effective: {date}<br/>
               active: {active}<br/>

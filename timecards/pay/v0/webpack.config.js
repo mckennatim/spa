@@ -5,7 +5,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 module.exports={
   entry: "./src/app.js",
   plugins: [
-    new CleanWebpackPlugin(['dist/*.js*']),
+    new CleanWebpackPlugin(['dist/*.js', 'dist/*.js.map']),
     new HtmlWebpackPlugin({
       hash: false,
       template: './src/index.html',
