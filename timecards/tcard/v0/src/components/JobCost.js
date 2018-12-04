@@ -53,7 +53,7 @@ class JobCost extends React.Component {
 
   renderInput = ()=>{
     return(
-      <input style={style.jchr} type="text" value={drnd(this.state.hrsleft)} onChange={this.add4day} step=".25" onKeyUp={this.inpKey}/>
+      <input style={style.jchr} type="number" value={this.state.hrsleft} onChange={this.add4day} step=".25" onKeyUp={this.inpKey}/>
     )
   }
   renderList =()=>{

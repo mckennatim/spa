@@ -5,6 +5,8 @@ import {mapClass2Element} from '../hoc/mapClass2Element'
 // import {fetchCtoken, fetchCoids} from '../../../../common/v0/src/services/fetches'
 import {postUniCoid, fetchCtoken, fetchCoids} from '../services/fetches'
 import {setKeyVal} from '../actions/shared';
+import FormControl from '@material-ui/core/FormControl';// eslint-disable-line no-unused-vars
+
 import TextField from '@material-ui/core/TextField';// eslint-disable-line no-unused-vars
 import Button from '@material-ui/core/Button';// eslint-disable-line no-unused-vars
 import PropTypes from 'prop-types';
@@ -46,7 +48,14 @@ const styles = theme => ({
 });
 
 class Registered extends React.Component {
-  state = {newco:this.props.newco, newup:'update', showbut:false, errorcoid:'', settingup:false}
+  state = {
+    newco:this.props.newco, 
+    newup:'update', 
+    showbut:false, 
+    errorcoid:'', 
+    settingup:false,
+    today:new Date()
+  }
   myRef = React.createRef();
 
   componentDidMount() {
@@ -98,8 +107,21 @@ class Registered extends React.Component {
 
   clickCoid=(e)=>{
     const idx =e.target.getAttribute('idx')
+    // console.log('idx: ', idx)
     const co = this.state.cos[idx]
-    this.getCtoken(this.state.ttoken, co)
+    // console.log('co: ', co)
+    if(idx){
+      const gtil = new Date(co.goodtil)
+      if(gtil> this.state.today){
+        this.getCtoken(this.state.ttoken, co)
+      }else{
+        if(co.role=='partner'){
+          window.alert('contact Tim @ mckenna.tim@gmail.com to extend your access')
+        }else{
+          window.alert('Let your boss know that access has expired so that they can extend it')
+        }
+      }
+    }
   }
 
   getCtoken=(token,co)=>{
@@ -190,6 +212,38 @@ class Registered extends React.Component {
     // this.setState({shownew:true})
   }
 
+  getLiStyle=(co)=>{
+    const listyle = {
+      li:{
+        background: '#99CCCC',
+        padding: '6px',
+        overflow: 'hidden',
+        border: 'solid 1px black'
+      },
+      divgt:{
+        float:'right'
+      },
+      divbu:{
+        float:'right'
+      },
+      message: 'co. enrolled til: ',
+      showbut: false    
+    }
+    const gtil = new Date(co.goodtil)
+    if(gtil< this.state.today){
+      listyle.li.background='#ede8af'
+      listyle.message = 'reg. expired on: '
+      if(co.role=='partner'){
+        listyle.showbut = true
+      }
+    }
+    return listyle
+  }
+
+  gotoGetData=(co)=>()=>{
+    console.log('co: ', co)
+  }
+
   renderCkBut=(showbut)=>{
     const { classes } = this.props;
     if(showbut){
@@ -233,7 +287,7 @@ class Registered extends React.Component {
     return(
       <div>
         {!this.state.shownew && 
-        <p>We have no record of this emailid on any machine as active in any company. Maybe your company is past its renewal date. You are welcome to become a beta tester. You will be registered for a month but will be able to extend</p>
+        <p>We have no record of this emailid on any machine as active in any company. Maybe your company removed its data from our servers. You are welcome to become a beta tester or to demo the system. Beta Testers will be registered for a month but will be able to extend. Demo sessions last an hour and then the data gets reset.</p>
         }
       <h4>Choose a Company ID</h4>
       <p>Enter a company id that starts with a letter and contains just letters and numbers, no spaces or special characters, at least 6 characters and less than 12. It just needs to be unique and identifiable by you, you won't need to remember it since your company is tied to your email id {emailid}</p> 
@@ -259,6 +313,7 @@ class Registered extends React.Component {
         onChange={this.txtChanged(['co'], 'coid')}
         margin="dense"
       /> 
+
       </div>
     )
   }
@@ -290,12 +345,23 @@ class Registered extends React.Component {
     return(
       <div style={style.he}>
         <h4>You Are Registered  </h4>
-        <span>You are registered on this app for multiple businesses. Select which on you want to be logged in at. This app will remeber your last business selection. To switch later, just <a href={cfg.url.authqry}>register</a> again then select another business</span>
+        <span>You are registered on this app for multiple businesses. Select which on you want to be logged in to. This app will remeber your last business selection. To switch later, just <a href={cfg.url.authqry}>register</a> again then select another business</span>
         <h4>Select a business/org/entity </h4>
         <ul style={style.myli.ul}>
-          {this.state.cos.map((co,i)=>(
-            <li style={style.myli.li} key={i} idx={i} onClick={this.clickCoid}>{co.coid} as {co.role} </li>
-          ))}
+          {this.state.cos.map((co,i)=>{
+            const listyle = this.getLiStyle(co)
+            return(
+            <li style={listyle.li} key={i} idx={i} onClick={this.clickCoid}>
+              <span idx={i} style={{fontWeight:'bold'}}>{co.coid} </span>
+              <span idx={i}>as {co.role}</span>
+              {listyle.showbut && (
+                <div style={listyle.divgt}>
+                  <button onClick={this.gotoGetData(co)}>get data</button>
+                </div>
+              )}
+              <div idx={i} style={listyle.divgt}>{listyle.message} {co.goodtil.split('T')[0]}</div>
+            </li>
+          )})}
         </ul>
         <button onClick={this.addNew}>or add a new company</button>
         {this.state.shownew  && this.renderTryCoid()}

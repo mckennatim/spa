@@ -3,6 +3,9 @@ import {router} from '../app'
 import {App} from './App'
 import {Active} from './Active'
 import {Blank} from './Blank.jsx'
+import {XuseEffect} from './XuseEffect.jsx'
+import {AddCompany} from './AddCompany.jsx'
+import {GetData} from './GetData.jsx'
 import {Splash} from './Splash.jsx'
 import {About} from './About.jsx'
 import {UrApps} from './UrApps.jsx'
@@ -35,5 +38,5 @@ const multi =[]
 //['watch', 'phone', 'phoneL', 'tablet', 'tabletL', 'laptop']
 const panes= [1,1,2,2,3,3,4]
 
-export {Active, UrApps, Blank, Splash, Company, About, Home, App, Nav, Registered, multi, panes}
+export {Active, UrApps, Blank, GetData, Splash, Company, About, Home, App, Nav, Registered, XuseEffect, AddCompany, multi, panes}
 

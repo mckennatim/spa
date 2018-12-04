@@ -89,7 +89,8 @@ class Splash extends React.Component{
   };
 
   renderGoTo=()=>{
-    if(this.state.isreg){
+    const {isreg}=this.state
+    if(isreg){
       return(
       <div>
         <button onClick={this.gotoUrApps}>this machine is registerd,go to your apps</button>
@@ -120,9 +121,9 @@ class Splash extends React.Component{
       <div className={classes.root}>
         <AppBar position="static" style={style.appbar}>
           <Toolbar>
-            <IconButton className={classes.menuButton} color="inherit" aria-label="Menu">
+            {/* <IconButton className={classes.menuButton} color="inherit" aria-label="Menu">
               <MenuIcon />
-            </IconButton>
+            </IconButton> */}
             <Typography variant="title" color="inherit" className={classes.grow}>
               JobCost PayTime
             </Typography>
@@ -153,6 +154,7 @@ class Splash extends React.Component{
                     <MenuItem value={'urapps'} onClick={this.handleClose}>My Apps</MenuItem>
                     <MenuItem value={'newc'} onClick={this.handleClose}>Add Company</MenuItem>
                     <MenuItem value={'logout'} onClick={this.handleClose}>Logout</MenuItem>
+                    <MenuItem value={'getData'} onClick={this.handleClose}>Get My Data</MenuItem>
                 </Menu>
               </div>
             )}
@@ -179,8 +181,15 @@ class Splash extends React.Component{
         </div>
         <div style={style.content2}>
           <div style={style.outer} >
-            <h3> Splash is {this.active}</h3>
-            <p>Typical JS snobbery in these comments. Everyone knows a huge proportion of JavaScript on the web is written on jQuery, so it is perfectly acceptable to provide a solution here for jQuery if it already has a built-in method for testing objects. It's likely that thousands of developers looking for help will find this answer helpful. Nobody said it's the only way to do it. I notice how nobody acts all elitist about the guy who posted a solution to use underscore.js</p> 
+          <h3> Timecards Apps Suite {this.active}</h3>
+            <h4>Easy timecard and jobcost entry in the field</h4>
+            <p>Mobile first design for quick data entry on phones tablet or laptop. Continuous updating to server every time you punch in or out.</p> 
+            <h4>Payroll, Monthly and 941 Withholding</h4>
+            <p>Accrued taxes and benefits reporting each pay period.</p>
+            <h4>You own your data</h4>
+            <p>You can delete from our servers or make a copy any time. Company info and personnel files are always available to you as are all general ledger journal entries</p>
+            <h4>Jobcost Reporting</h4>
+            <p>Labor costs for all jobs and categories within jobs are updated each week when you run payroll. See up to the minute reports on job cost labor vs estimate/contract labor with all emplyer witholding, insurance and benefit costs factored in.</p>
         </div>
 
           </div>
@@ -192,8 +201,11 @@ class Splash extends React.Component{
         </div>
       </div>
       <div style={style.outer} >
-        <h3> Splash is {this.active}</h3>
-        <p>Typical JS snobbery in these comments. Everyone knows a huge proportion of JavaScript on the web is written on jQuery, so it is perfectly acceptable to provide a solution here for jQuery if it already has a built-in method for testing objects. It's likely that thousands of developers looking for help will find this answer helpful. Nobody said it's the only way to do it. I notice how nobody acts all elitist about the guy who posted a solution to use underscore.js</p>
+        <h3> Timecards Apps Suite {this.active}</h3>
+        <h4>Easy timecard and jobcost entry in the field</h4>
+        <h4>Payroll, Monthly and 941 Withholding</h4>
+        <h4>You own your data</h4>
+        <p>You can delete from our servers or make a copy any time. </p>
 
         <h2>timecards splash</h2>
         <span>Landing page for an incredible application that will change the way you run your business. Beta testing will start soon.</span><br/>
@@ -219,16 +231,16 @@ const style = {
   outer:{
     background: '#99CCFF',
     overflow:'hidden',
-    padding: '4px',
-    margin: '2px 10px 10px 10px'
+    // padding: '4px',
+    // margin: '2px 10px 10px 10px'
   },
   img:{
-    margin: '6px',
-    border: '6px solid #99CCFF',
+    // margin: '6px',
+    // border: '6px solid #99CCFF',
     width: '100%'
   },
   appbar:{
-    background: '#99CCFF',
+    background: '#464E8C',
     color:'black'
   },  
   container:{
@@ -241,6 +253,7 @@ const style = {
     alignItems: 'stretch'
   },
   content:{
+    padding: '8px',
     minHeight:'200px',
     background: '#99CCFF',
     flexGrow: 1,
@@ -248,6 +261,7 @@ const style = {
     flexBasis: '225px'  
   },
   content2:{
+    padding: '8px',
     minHeight:'200px',
     background: '#99CCFF',
     flexGrow: 2,
